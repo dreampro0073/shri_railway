@@ -72,8 +72,8 @@
 				<span class="text text-right">Mobile: {{$print_data->mobile}}</span>
 			</div>
 		</div>
-		
-		<table style="width:100%;margin: -1;" border="1" cellpadding="4" cellspacing="0" ></table>
+
+		<table style="width:100%;margin: -1;" border="1" cellpadding="4" cellspacing="0" >
 			<tr>
 				<td class="w-45">Item</td>
 				<td class="w-16">Price</td>

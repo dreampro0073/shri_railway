@@ -73,7 +73,7 @@
 			</div>
 		</div>
 		
-		<table style="width:100%;margin: -1;" cellpadding="4" cellspacing="0" >
+		<table style="width:100%;margin: -1;" border="1" cellpadding="4" cellspacing="0" ></table>
 			<tr>
 				<td class="w-45">Item</td>
 				<td class="w-16">Price</td>

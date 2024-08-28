@@ -68,6 +68,7 @@
                     <thead style="background-color: rgba(0,0,0,.075);">
                         <tr class="table-primary">
                             <th>S.no</th>
+                            <th>Barcodevalue</th>
                             <th>Item</th>
                             <th>Item Short Name</th>
                             <th>Price</th>
@@ -79,6 +80,7 @@
                     <tbody ng-if="canteen_items.length > 0">
                         <tr ng-repeat="item in canteen_items">
                             <td>@{{ $index+1 }}</td>
+                            <td>@{{ item.barcodevalue }}</td>
                             <td>@{{ item.item_name }}</td>
                             <td>@{{ item.item_short_name }}</td>
                             <td>@{{ item.price }}</td>

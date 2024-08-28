@@ -58,3 +58,5 @@ ALTER TABLE `locker_rate_list`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 COMMIT;
 ?>
+
+ALTER TABLE `daily_entries` CHANGE `check_in` `check_in` TIME NULL DEFAULT NULL;

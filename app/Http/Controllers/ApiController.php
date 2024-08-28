@@ -619,6 +619,7 @@ class ApiController extends Controller {
                 'total_amount' =>$request->total_amount,
                 'pay_type' =>$request->pay_type,
                 'date' => date('Y-m-d'),
+                'check_in' => date("H:i:s"),
                 'created_at' => date("Y-m-d H:i:s"),
             ];
 

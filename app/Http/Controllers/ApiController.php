@@ -624,27 +624,50 @@ class ApiController extends Controller {
 
 
             $entry_id = DB::table('daily_entries')->insertGetId($ins_data);
-            $items = $request->products;
-            $total_amount = 0;
-            $final_ar = [];
-            if(sizeof($items) > 0){
-                foreach ($items as $key => $item) {
-                    if($item['quantity'] !=0){
-                        DB::table('daily_entry_items')->insert([
-                            'canteen_item_id' => $item['canteen_item_id'],
-                            'entry_id' => $entry_id,
-                            'paid_amount' => $item['paid_amount'],
-                            'quantity' => $item['quantity'],
-                        ]);
 
-                        $check = DB::table('canteen_items')->where('id',$item['canteen_item_id'])->first();
-                        $avil_stock = $check->stock;
-                        DB::table('canteen_items')->where('id',$item['canteen_item_id'])->update([
-                            'stock' => $avil_stock - $item['quantity'],
-                        ]);
-                    }       
+            $items = $request->products;
+            $final_items = [];
+            foreach ($items as $key => $item) {
+                
+                $canteen_item_id = $item['canteen_item_id'];
+                $filtered_array = array_filter($final_items, function ($obj) use ($canteen_item_id) {
+                    return $obj['canteen_item_id'] == $canteen_item_id;
+                });
+
+                $found_key = array_search($canteen_item_id, array_column($final_items, 'canteen_item_id'));
+
+                
+                if(!$filtered_array){
+                    $item['paid_amount'] = $item['price'];
+                    array_push($final_items, $item);
+                }else{
+                    $f_ar = $final_items[$found_key];
+                    array_splice($final_items,$found_key,1);
+                    $f_ar['paid_amount'] = $f_ar['paid_amount'] + $item['price'];
+                    $f_ar['quantity'] = $f_ar['quantity'] + $item['quantity'];
+
+                    array_push($final_items,$f_ar);
                 }
             }
+
+            
+            foreach ($final_items as $key => $item) {
+                if($item['quantity'] !=0){
+                    DB::table('daily_entry_items')->insert([
+                        'canteen_item_id' => $item['canteen_item_id'],
+                        'entry_id' => $entry_id,
+                        'paid_amount' => $item['paid_amount'],
+                        'quantity' => $item['quantity'],
+                    ]);
+
+                    $check = DB::table('canteen_items')->where('id',$item['canteen_item_id'])->first();
+                    $avil_stock = $check->stock;
+                    DB::table('canteen_items')->where('id',$item['canteen_item_id'])->update([
+                        'stock' => $avil_stock - $item['quantity'],
+                    ]);
+                }       
+            }
+
 
             $data['success'] = true;
             $data['unique_id'] = $unique_id;
@@ -670,10 +693,10 @@ class ApiController extends Controller {
         $s_entry->paid_amount = $s_entry->paid_amount*1;
         $s_entry->pay_type = $s_entry->pay_type*1;
         if($s_entry->pay_type == 1){
-            $s_entry->show_pay_type = 'UPI';
+            $s_entry->show_pay_type = 'Cash';
         }
         if($s_entry->pay_type == 2){
-            $s_entry->show_pay_type = 'Cash';
+            $s_entry->show_pay_type = 'UPI';
         }
         $s_entry->show_date = date("d M Y");
         $s_entry->total_amount = $s_entry->total_amount*1;

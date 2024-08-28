@@ -129,6 +129,9 @@
 		</div>
 		<div style="margin-top:10px;text-align:center;">
 			<p>
+				<b>Please submit your slip at the counter at the time of checkout.</b>
+			</p>
+			<p>
 				<b>*Note : Passengers must protect their own Mobile and luggage.</b>
 			</p>
 

@@ -116,9 +116,9 @@
 				<td class="w-16">--</td>
 			</tr>
 			<tr>
-				<td class="w-46" ><b>Total</b></td>
-				<td class="w-20">{{$print_data->total_member}}</td>
-				<td class="w-16">{{$total_amount}}</td>
+				<th class="w-46"><b>Total</b></th>
+				<th class="w-20"><b>{{$print_data->total_member}}</b></th>
+				<th class="w-16"><b>{{$total_amount}}</b></th>
 			</tr>
 		</table>
 		<div style="margin-top: 20px;text-align: center;">

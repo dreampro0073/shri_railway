@@ -827,7 +827,7 @@ app.controller('sittingCtrl', function($scope , $http, $timeout , DBService, $in
                     if((unixTimestamp+600) > $scope.entries[i].str_checkout_time){
                         $scope.entries[i].check_class = "t-warning";
                     } else {
-                        $scope.entries[i].check_class = "t-info";
+                        $scope.entries[i].check_class = "bg-secondary";
                     }
                 }
             }

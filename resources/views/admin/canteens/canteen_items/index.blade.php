@@ -43,15 +43,14 @@
 
                         <div class="col-md-9">
                             <div class="row">
-                                                 
+                                <div class="col-md-3 form-group">
+                                    <label>Barcode Value</label>
+                                    <input id="barcodevalue_search" autofocus type="text" ng-model="filter.barcodevalue_search" class="form-control" required />
+                                </div>           
                                 <div class="col-md-3 form-group">
                                     <label class="label-control">Name</label>
                                     <input type="text" class="form-control" ng-model="filter.item_name" />
-                                </div>                    
-                                <div class="col-md-3 form-group">
-                                    <label class="label-control">Mobile</label>
-                                    <input type="text" class="form-control" ng-model="filter.item_short_name" />
-                                </div>
+                                </div>           
                               
                             </div>
                         </div>

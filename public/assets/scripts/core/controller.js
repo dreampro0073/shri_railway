@@ -1001,7 +1001,9 @@ app.controller('canteenItemsCtrl', function($scope , $http, $timeout , DBService
     $scope.stockData = {
         stock:'',
     };
-    $scope.filter = {};
+    $scope.filter = {
+        barcodevalue_search:'',
+    };
     $scope.canteen_item_id = 0;
     $scope.canteen_item_stock_id = 0;
     $scope.canteen_items = [];
@@ -1013,7 +1015,9 @@ app.controller('canteenItemsCtrl', function($scope , $http, $timeout , DBService
         });
     }
     $scope.filterClear = function(){
-        $scope.filter = {};
+        $scope.filter = {
+            barcodevalue_search:'',
+        };
         $scope.init();
     }
 

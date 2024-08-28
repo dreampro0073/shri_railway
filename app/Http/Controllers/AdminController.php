@@ -62,4 +62,13 @@ class AdminController extends Controller {
             "subsidebar" => "daily_entries",
         ]);
 	}
+
+	public function barcodeGen($type){
+		//1- Tea -10
+		//2- Tea -20
+		//3- Coffee -10
+		//4- Coffee -20
+		//1- Tea -10
+		//1- Tea -10
+	}
 }

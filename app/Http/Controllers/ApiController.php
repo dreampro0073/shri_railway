@@ -297,6 +297,13 @@ class ApiController extends Controller {
         if($request->has('item_name')){
             $canteen_items = $canteen_items->where('item_name','LIKE','%'.$request->item_name.'%');
         }
+        if($request->has('item_name')){
+            $canteen_items = $canteen_items->where('item_short_name','LIKE','%'.$request->item_name.'%');
+        }
+
+         if($request->has('barcodevalue_search')){
+            $canteen_items = $canteen_items->where('barcodevalue','LIKE','%'.$request->barcodevalue_search.'%');
+        }
 
         $canteen_items = $canteen_items->where('client_id',$client_id)->orderBy('id','DESC')->get();
 

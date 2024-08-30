@@ -655,7 +655,7 @@ class SittingController extends Controller {
 			$entry->save();
 		} else{
 			DB::table("e_entries")->where("id", $e_entry->id)->update([
-				"pay_type" = $e_entry->pay_type == 1 ? 2 : 1,
+				"pay_type" => $e_entry->pay_type == 1 ? 2 : 1,
 			]);
 		}
 		

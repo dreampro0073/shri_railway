@@ -43,6 +43,13 @@
                 </div>
             </div>
             <hr>
+            <div class="row">
+                <div class="col-md-4">Change Cash to UPI</div>
+                <div class="col-md-2">@{{change_data.change_cash_to_UPI}}</div>
+                <div class="col-md-4">Change UPI to Cash</div>
+                <div class="col-md-2">@{{change_data.change_UPI_to_cash}}</div>
+            </div>
+            <hr>
             @endif
             <table class="table table-bordered table-striped" style="width:100%;">
                 <thead>

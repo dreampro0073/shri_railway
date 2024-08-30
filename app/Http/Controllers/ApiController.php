@@ -666,6 +666,7 @@ class ApiController extends Controller {
                         'entry_id' => $entry_id,
                         'paid_amount' => $item['paid_amount'],
                         'quantity' => $item['quantity'],
+                        'created_at' => date("Y-m-d H:i:s"),
                     ]);
 
                     $check = DB::table('canteen_items')->where('id',$item['canteen_item_id'])->first();

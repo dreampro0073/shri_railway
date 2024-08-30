@@ -56,6 +56,11 @@ class ShiftController extends Controller {
 			$last_hour_cash_total += $sitting_data['last_hour_cash_total'];
 			$last_hour_total += $sitting_data['last_hour_total'];
 			$data['sitting_data'] = $sitting_data;
+
+			if($user_id && Auth::user()->priv == 2){
+				$data['chage_pay_type_data'] = Sitting::getChangePayTypeLog($input_date, $user_id);
+			}
+
 		}
 
 		if(in_array(2, $service_ids)){

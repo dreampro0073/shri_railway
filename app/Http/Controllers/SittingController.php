@@ -632,4 +632,34 @@ class SittingController extends Controller {
 		return Response::json($data, 200, []);
 	}
 
+	public function checkoutWithoutPenalty($id){
+		if(Auth::user()->priv == 2){
+			$entry = Sitting::where("checkout_status", "!=", 1)->where('id',$id)->first();
+			$entry->is_late = 1;
+			$entry->checkout_status = 1;
+			$entry->checkout_by = Auth::id();
+			$entry->checkout_time = date("Y-m-d H:i:s");
+			$entry->save();
+		} 
+
+		return Redirect::back();
+	}	
+
+	public function changePayType($id){
+		$entry = Sitting::where("checkout_status", "!=", 1)->where("added_by", Auth::id())->where('id',$id)->first();
+		$entry->pay_type = $entry->pay_type == 1 ? 2 : 1;
+		$entry->save();
+		
+		DB::table("change_pay_type_log")->insert([
+			"sitting_id"=>$id,
+			"old_pay_type"=> $entry->pay_type == 1 ? 2 : 1,
+			"new_pay_type"=> $entry->pay_type,
+			"changed_by"=> Auth::id(),
+			"date"=>date("Y-m-d"),
+			"created_at"=>date("Y-m-d H:i:s"),
+		]);
+
+		return Redirect::back();
+	}
+
 }

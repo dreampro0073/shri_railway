@@ -899,6 +899,8 @@ app.controller('shiftCtrl', function($scope , $http, $timeout , DBService) {
                 $scope.last_hour_upi_total = data.last_hour_upi_total ; 
                 $scope.last_hour_cash_total = data.last_hour_cash_total ; 
                 $scope.last_hour_total = data.last_hour_total ;
+                $scope.change_data = data.chage_pay_type_data ;
+                console.log($scope.change_data);
 
                 $scope.check_shift = data.check_shift ; 
                 $scope.shift_date = data.shift_date ; 

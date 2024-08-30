@@ -29,8 +29,6 @@
                             <label>PNR/UID</label>
                             <input type="text" ng-model="formData.pnr_uid" class="form-control"  />
                         </div>
-                       
-                      
                     </div>
                    
                     <div class="row">
@@ -51,13 +49,13 @@
                             <label>Baby/Staff</label>
                             <input type="number" ng-model="formData.no_of_baby_staff" class="form-control" ng-disabled="checkout_process" />
                         </div>
-
-                        <div class="col-md-3 form-group">
-                            <label>Pay Type</label>
-                            <select ng-model="formData.pay_type" class="form-control" required >
-                                <option value="">--select--</option>
-                                <option ng-repeat="item in pay_types" ng-value=@{{item.value}}>@{{ item.label}}</option>
-                            </select>
+                        
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Pay Type</label><br>
+                                <label><input tabindex="-1" type="radio" ng-model="formData.pay_type" ng-value="1">&nbsp;Cash</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <label><input type="radio" ng-model="formData.pay_type" ng-value="2">&nbsp;UPI</label>
+                            </div>
                         </div>
                     </div>
                     <div class="row">

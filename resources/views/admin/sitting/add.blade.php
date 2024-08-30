@@ -62,15 +62,14 @@
 
                     </div>
                     <div class="row">
-
-                        <div class="col-md-3 form-group">
-                            <label>Pay Type</label>
-                            <select ng-model="formData.pay_type" class="form-control" required >
-                                <option value="">--select--</option>
-                                <option ng-repeat="item in pay_types" ng-value=@{{item.value}}>@{{ item.label}}</option>
-                            </select>
+                        
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Pay Type</label><br>
+                                <label><input tabindex="-1" type="radio" ng-model="formData.pay_type" ng-value="1">&nbsp;Cash</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <label><input type="radio" ng-model="formData.pay_type" ng-value="2">&nbsp;UPI</label>
+                            </div>
                         </div>
-
 
                         <div class="col-md-4 form-group" ng-if="formData.id > 0">
                             <label>Checkout</label>

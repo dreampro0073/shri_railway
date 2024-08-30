@@ -49,6 +49,8 @@ Route::group(['middleware'=>'auth'],function(){
 			Route::get('/print-unq/{type}/{print_id?}', [SittingController::class,'printPostUnq']);
 			Route::get('/print/{id?}', [SittingController::class,'printPost']);
 			// Route::get('/print-report', [SittingController::class,'printReports']);
+			Route::get('/checkout-without-penalty/{id?}', [SittingController::class,'checkoutWithoutPenalty']);
+			Route::get('/change-pay-type/{id?}', [SittingController::class,'changePayType']);
 
 		});
 		

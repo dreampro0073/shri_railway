@@ -57,6 +57,12 @@ ALTER TABLE `locker_rate_list`
 ALTER TABLE `locker_rate_list`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 COMMIT;
-?>
+
 
 ALTER TABLE `daily_entries` CHANGE `check_in` `check_in` TIME NULL DEFAULT NULL;
+
+CREATE TABLE `change_pay_type_log` ( `id` INT NOT NULL AUTO_INCREMENT , `sitting_id` INT NULL DEFAULT NULL , `old_pay_type` TINYINT(1) NOT NULL DEFAULT '0' , `new_pay_type` TINYINT(1) NOT NULL DEFAULT '0' , `changed_by` INT NULL DEFAULT NULL , `created_at` TIMESTAMP NULL DEFAULT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+
+ALTER TABLE `change_pay_type_log` ADD `date` DATE NULL DEFAULT NULL AFTER `new_pay_type`;
+
+?>

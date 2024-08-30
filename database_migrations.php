@@ -65,4 +65,6 @@ CREATE TABLE `change_pay_type_log` ( `id` INT NOT NULL AUTO_INCREMENT , `sitting
 
 ALTER TABLE `change_pay_type_log` ADD `date` DATE NULL DEFAULT NULL AFTER `new_pay_type`;
 
+ALTER TABLE `change_pay_type_log` ADD `e_entry_id` INT NULL DEFAULT NULL AFTER `sitting_id`;
+
 ?>

@@ -646,14 +646,24 @@ class SittingController extends Controller {
 	}	
 
 	public function changePayType($id){
-		$entry = Sitting::where("checkout_status", "!=", 1)->where("added_by", Auth::id())->where('id',$id)->first();
-		$entry->pay_type = $entry->pay_type == 1 ? 2 : 1;
-		$entry->save();
+
+		$e_entry = DB::table("e_entries")->where("entry_id", $id)->orderBy("id", "DESC")->first();
+		if(!$e_entry){
+			$entry = Sitting::where("checkout_status", "!=", 1)->where("added_by", Auth::id())->where('id',$id)->first();
+
+			$entry->pay_type = $entry->pay_type == 1 ? 2 : 1;
+			$entry->save();
+		} else{
+			DB::table("e_entries")->where("id", $e_entry->id)->update([
+				"pay_type" = $e_entry->pay_type == 1 ? 2 : 1,
+			]);
+		}
 		
 		DB::table("change_pay_type_log")->insert([
 			"sitting_id"=>$id,
 			"old_pay_type"=> $entry->pay_type == 1 ? 2 : 1,
 			"new_pay_type"=> $entry->pay_type,
+			"e_entry_id"=> $e_entry ? $e_entry->id : 0,
 			"changed_by"=> Auth::id(),
 			"date"=>date("Y-m-d"),
 			"created_at"=>date("Y-m-d H:i:s"),

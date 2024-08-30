@@ -180,11 +180,16 @@ class Sitting extends Model
         return $p_date;
     }
 
-    public function getChangePayTypeLog($date, $user_id){
-        $change_cash_to_UPI = DB::table("change_pay_type_log")->where("date", date("Y-m-d", strtotime($date)))->where("added_by", $user_id)->where("new_pay_type", 2)->count();
-        $change_UPI_to_cash = DB::table("change_pay_type_log")->where("date", date("Y-m-d", strtotime($date)))->where("added_by", $user_id)->where("new_pay_type", 1)->count();
-        $date["change_cash_to_UPI"] = $change_cash_to_UPI;
-        $date["change_UPI_to_cash"] = $change_UPI_to_cash;
+    public function getChangePayTypeLog($input_date, $user_id){
+        if($input_date == ''){
+            $input_date = date("Y-m-d");
+        }
+        $change_cash_to_UPI = DB::table("change_pay_type_log")->where("date", date("Y-m-d", strtotime($input_date)))->where("changed_by", $user_id)->where("new_pay_type", 2)->count();
+        $change_UPI_to_cash = DB::table("change_pay_type_log")->where("date", date("Y-m-d", strtotime($input_date)))->where("changed_by", $user_id)->where("new_pay_type", 1)->count();
+        $data["change_cash_to_UPI"] = $change_cash_to_UPI;
+        $data["change_UPI_to_cash"] = $change_UPI_to_cash;
+        $data["success"] = true;
+
         return $data;
 
     }

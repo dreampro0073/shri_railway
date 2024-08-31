@@ -842,6 +842,37 @@ app.controller('sittingCtrl', function($scope , $http, $timeout , DBService, $in
         }
     });
 
+
+    $scope.checkoutAlert = function() {
+        console.log('hello');
+        DBService.postCall($scope.filter, '/api/sitting/checkout-alert').then((data) => {
+            if (data.success) {
+                // var alert_ar = data.alert_ar;
+
+                // setTimeout(() => {
+                    
+                // },300);
+                // $scope.speak(alert_ar[0]);
+                $scope.speak(data.message);
+
+            }else{
+
+            }
+        });
+    }
+    setInterval($scope.checkoutAlert, 30000);
+
+    $scope.speak = function(message) {
+        const utterance = new SpeechSynthesisUtterance(message);
+        const voices = speechSynthesis.getVoices();
+        utterance.voice = voices[0];
+        utterance.rate = 0.8; 
+        utterance.pitch = 1;
+        utterance.volume = 1;
+        speechSynthesis.speak(utterance);
+    }
+
+
     // $scope.delete = function (id) {
     //     if(confirm("Are you sure?") == true){
     //         DBService.getCall('/api/sitting/delete/'+id).then((data) => {

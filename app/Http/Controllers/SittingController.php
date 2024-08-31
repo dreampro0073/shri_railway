@@ -672,4 +672,102 @@ class SittingController extends Controller {
 		return Redirect::back();
 	}
 
+	public function checkoutAlert(){
+        $str_first_time = strtotime("now");
+        $str_second_time = $str_first_time + 30000;
+
+        $first_time = date("Y-m-d H:i:s", $str_first_time);
+        $second_time = date("Y-m-d H:i:s", $str_second_time);
+
+        // $first_alerts = Sitting::where("alert_count", 0)
+        //     ->where("checkout_status", 0)
+        //     ->whereBetween("checkout_date", [$first_time, $second_time])
+        //     ->where("client_id", auth()->user()->client_id)
+        //     ->get();
+
+        // $alert_ar = [];
+
+        // if (sizeof($first_alerts) > 0) {
+        //     foreach ($first_alerts as $first_alert) {
+        //         $entry = Sitting::find($first_alert->id);
+        //         $entry->alert_count = $entry->alert_count + 1;
+        //         $entry->save();
+
+        //         $ar = ["Dear ".$entry->name." The Slip Id ".$entry->slip_id." Your checkout time in 5 minutes please checkout otherewise extends your time Thank you"];
+
+        //         $alert_ar[] = $ar;
+                
+        //     }
+        // }
+
+        // if(sizeof($alert_ar) > 0){
+        // 	$data['success'] = true;
+        // 	$data['alert_ar'] = $alert_ar;
+        // }else{
+        // 	$data['success'] = false;
+        // 	$data['message'] = 'Alert not found';
+        // }
+        
+        $first_alerts = Sitting::where("alert_count", 0)
+            ->where("checkout_status", 0)
+            // ->whereBetween("checkout_date", [$first_time, $second_time])
+            ->where("client_id", auth()->user()->client_id)
+            ->first();
+
+        // $first_alerts = Sitting::find($first_alert->id);
+        $first_alerts->alert_count = $first_alerts->alert_count + 1;
+        $first_alerts->save();
+
+        $message  = "Dear ".$first_alerts->name." The Slip Id ".$first_alerts->slip_id." Your checkout time in 5 minutes please checkout otherewise extends your time Thank you";
+
+        $data['success'] = true;
+        $data['message'] = $message;
+
+       
+
+        return Response::json($data,200,array());
+
+        // $second_alerts = Sitting::where("alert_count", '>', 2)
+        //     ->where("checkout_status", 0)
+        //     ->where("checkout_date", '<', $first_time) 
+        //     ->where("client_id", auth()->user()->client_id)
+        //     ->get();
+
+        // if (sizeof($second_alerts) > 0) {
+        //     foreach ($second_alerts as $second_alert) {
+        //         $entry = Sitting::find($second_alert->id);
+        //         $entry->alert_count = $entry->alert_count + 1;
+        //         $entry->save();
+
+        //         if ($entry) {
+        //             echo '
+        //             <!DOCTYPE html>
+        //             <html lang="en">
+        //               <head>
+        //                 <script src="script.js"></script>
+        //               </head>
+        //               <body>
+        //                 <script type="text/javascript">
+        //                   function speak() {
+        //                     alert(0);
+        //                     const utterance = new SpeechSynthesisUtterance("Welcome to this tutorial!");
+
+        //                     const voices = speechSynthesis.getVoices();
+        //                     utterance.voice = voices[0];
+
+        //                     speechSynthesis.speak(utterance);
+        //                   }
+                          
+        //                   window.onload = function() {
+        //                     speak();
+        //                   }
+        //                 </script>
+        //               </body>
+        //             </html>
+        //             ';
+        //         }
+        //     }
+        // }
+    }
+
 }

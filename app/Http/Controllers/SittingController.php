@@ -674,24 +674,46 @@ class SittingController extends Controller {
 
 	public function checkoutAlert(){
         $str_first_time = strtotime("now");
-        $str_second_time = $str_first_time + 30000;
+        $str_second_time = $str_first_time + 300;
 
         $first_time = date("Y-m-d H:i:s", $str_first_time);
         $second_time = date("Y-m-d H:i:s", $str_second_time);
         
-        $first_alerts = Sitting::where("alert_count", 0)
+        $first_alert = Sitting::where("alert_count", 0)
             ->where("checkout_status", 0)
             ->whereBetween("checkout_date", [$first_time, $second_time])
             ->where("client_id", auth()->user()->client_id)
             ->first();
 
-        $first_alerts->alert_count = $first_alerts->alert_count + 1;
-        $first_alerts->save();
+        if($first_alert){
 
-        $message  = "Dear ".$first_alerts->name." The Slip Id ".$first_alerts->slip_id." Your checkout time in 5 minutes please checkout otherewise extends your time Thank you";
+	        $first_alert->alert_count = $first_alert->alert_count + 1;
+	        $first_alert->save();
 
-        $data['success'] = true;
-        $data['message'] = $message;
+	        $message  = "Dear ".$first_alert->name." The Slip Id ".$first_alert->slip_id." Your checkout time in 5 minutes please checkout otherewise extends your time Thank you";
+
+	        $data['success'] = true;
+	        $data['message'] = $message;
+	    } else {
+
+	    	$second_alert = Sitting::where("alert_count", '>', 2)
+            ->where("checkout_status", 0)
+            ->where("checkout_date", '<', $first_time) 
+            ->where("client_id", auth()->user()->client_id)
+            ->first();
+
+            if($second_alert){
+		        $second_alert->alert_count = $second_alert->alert_count + 1;
+		        $second_alert->save();
+
+		        $message  = "Dear ".$second_alert->name." The Slip Id ".$second_alert->slip_id." Your checkout time has expired, please checkout otherwise your time will be extended. Thank you";
+
+		        $data['success'] = true;
+		        $data['message'] = $message;
+		    } else {
+		    	$data["success"] = false;
+		    }
+	    }
 
         return Response::json($data,200,array());
 

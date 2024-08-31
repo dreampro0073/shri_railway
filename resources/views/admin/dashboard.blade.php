@@ -3,10 +3,25 @@
 @section('main')
 <?php 
     $service_ids = Session::get('service_ids');
+    $auto_alert_status = Session::get('auto_alert_status');
 ?>
 
 <div class="main">
-    <h1 class="h3 mb-2 text-gray-800">Dashboard</h1>	
+
+    <div class="row">
+        <div class="col-md-10">
+            <h1 class="h3 mb-2 text-gray-800">Dashboard</h1>	
+        </div>
+        @if(in_array(1, $service_ids) && Auth::user()->is_auto_alert_access == 1)
+            <div class="col-md-2" style="margin-top:10px;">
+                @if($auto_alert_status)
+                    <button class="btn btn-danger btn-sm" id="textField" onclick="<?php Session::put('auto_alert_status',false);?>">Auto Alert Off</button>
+                @else
+                    <button class="btn btn-primary btn-sm" id="textField" onclick="<?php Session::put('auto_alert_status',true); ?>">Auto Alert On</button>
+                @endif
+            </div>
+        @endif
+    </div>
     <div class="row">
         @if(in_array(1, $service_ids) || Auth::user()->priv == 1)
             <div class="col-md-3">

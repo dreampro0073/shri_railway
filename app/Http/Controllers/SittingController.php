@@ -690,61 +690,38 @@ class SittingController extends Controller {
 	        $first_alert->alert_count = $first_alert->alert_count + 1;
 	        $first_alert->save();
 
-	        $message  = "Dear ".$first_alert->name." The Slip Id ".$first_alert->slip_id." Your checkout time in 5 minutes please checkout otherewise extends your time Thank you";
+	        $message  = "Dear ".$first_alert->name." This is a gentle reminder that your slip ID ".$first_alert->slip_id." is due for checkout in 5 minutes. Please take a moment to check out or extend your time. Thank you for your attention and cooperation.
+
+	        	Priya ".$first_alert->name.", Yeh ek vinamra anusmarak hai ki aapki parchi ID ".$first_alert->slip_id." ka checkout 5 minute mein hone wala hai. Kripya samay nikaal kar checkout karein ya apna samay badha lein. Aapke dhyaan aur sahyog ke liye dhanyavaad.";
 
 	        $data['success'] = true;
 	        $data['message'] = $message;
 	    } else {
 
-	    	$second_alert = Sitting::where("alert_count", '>', 2)
+	    	$second_alert = Sitting::where("alert_count", '<', 2)
             ->where("checkout_status", 0)
             ->where("checkout_date", '<', $first_time) 
-            ->where("client_id", auth()->user()->client_id)
+            ->where("client_id", Auth::user()->client_id)
             ->first();
 
             if($second_alert){
 		        $second_alert->alert_count = $second_alert->alert_count + 1;
 		        $second_alert->save();
 
-		        $message  = "Dear ".$second_alert->name." The Slip Id ".$second_alert->slip_id." Your checkout time has expired, please checkout otherwise your time will be extended. Thank you";
+		        $message  = "Dear ".$second_alert->name." Your slip ID ".$second_alert->slip_id." has exceeded the checkout time. Please check out at your earliest convenience, or your time will be automatically extended. Thank you for your cooperation.  
+
+		        	Priya ".$second_alert->name.", Aapki slip ID ".$second_alert->slip_id." ka checkout samay samaapt ho gaya hai. Kripya jaldi se jaldi checkout karein, anyatha aapka samay automatic taur par badha diya jayega. Aapke sahyog ke liye dhanyavaad. ";
 
 		        $data['success'] = true;
 		        $data['message'] = $message;
 		    } else {
 		    	$data["success"] = false;
+		    	$data['message'] = "Not Found";
 		    }
 	    }
 
         return Response::json($data,200,array());
 
-        // $first_alerts = Sitting::where("alert_count", 0)
-        //     ->where("checkout_status", 0)
-        //     ->whereBetween("checkout_date", [$first_time, $second_time])
-        //     ->where("client_id", auth()->user()->client_id)
-        //     ->get();
-
-        // $alert_ar = [];
-
-        // if (sizeof($first_alerts) > 0) {
-        //     foreach ($first_alerts as $first_alert) {
-        //         $entry = Sitting::find($first_alert->id);
-        //         $entry->alert_count = $entry->alert_count + 1;
-        //         $entry->save();
-
-        //         $ar = ["Dear ".$entry->name." The Slip Id ".$entry->slip_id." Your checkout time in 5 minutes please checkout otherewise extends your time Thank you"];
-
-        //         $alert_ar[] = $ar;
-                
-        //     }
-        // }
-
-        // if(sizeof($alert_ar) > 0){
-        // 	$data['success'] = true;
-        // 	$data['alert_ar'] = $alert_ar;
-        // }else{
-        // 	$data['success'] = false;
-        // 	$data['message'] = 'Alert not found';
-        // }
     }
 
 }

@@ -69,4 +69,6 @@ ALTER TABLE `change_pay_type_log` ADD `e_entry_id` INT NULL DEFAULT NULL AFTER `
 
 ALTER TABLE `sitting_entries` ADD `alert_count` TINYINT(1) NOT NULL DEFAULT '0' AFTER `m_slip`;
 
+ALTER TABLE `users` ADD `is_auto_alert_access` TINYINT(1) NOT NULL DEFAULT '0' COMMENT '0=>false, 1=>true' AFTER `last_login`;
+
 ?>

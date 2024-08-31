@@ -847,20 +847,11 @@ app.controller('sittingCtrl', function($scope , $http, $timeout , DBService, $in
         console.log('hello');
         DBService.postCall($scope.filter, '/api/sitting/checkout-alert').then((data) => {
             if (data.success) {
-                // var alert_ar = data.alert_ar;
-
-                // setTimeout(() => {
-                    
-                // },300);
-                // $scope.speak(alert_ar[0]);
                 $scope.speak(data.message);
-
-            }else{
-
             }
         });
     }
-    setInterval($scope.checkoutAlert, 30000);
+    setInterval($scope.checkoutAlert, 60000);
 
     $scope.speak = function(message) {
         const utterance = new SpeechSynthesisUtterance(message);
@@ -869,7 +860,10 @@ app.controller('sittingCtrl', function($scope , $http, $timeout , DBService, $in
         utterance.rate = 0.8; 
         utterance.pitch = 1;
         utterance.volume = 1;
+
+       
         speechSynthesis.speak(utterance);
+
     }
 
 

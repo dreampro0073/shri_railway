@@ -114,6 +114,9 @@
         </div>
 		
     </div>
+    <div ng-controller="checkoutAlertCtrl">
+        
+    </div>
     <script type="text/javascript">
         var base_url = "{{url('/')}}";
         var CSRF_TOKEN = "{{ csrf_token() }}";
@@ -142,6 +145,7 @@
     <script type="text/javascript" src="{{url('assets/scripts/core/app.js')}}" ></script>
     <script type="text/javascript" src="{{url('assets/scripts/core/services.js')}}" ></script>
     <script type="text/javascript" type="text/javascript" src="{{url('assets/scripts/core/controller.js?v='.$version)}}"></script>
+    <script type="text/javascript" type="text/javascript" src="{{url('assets/scripts/core/checkout_alert.js?v='.$version)}}"></script>
     <script>
       angular.module("app").constant("CSRF_TOKEN", "{{ csrf_token() }}");
     </script>

@@ -681,48 +681,27 @@ class SittingController extends Controller {
         
         $first_alerts = Sitting::where("alert_count", 0)
             ->where("checkout_status", 0)
-            ->whereBetween("checkout_date", [$first_time, $second_time])
+            // ->whereBetween("checkout_date", [$first_time, $second_time])
             ->where("client_id", auth()->user()->client_id)
             ->first();
 
-        $first_alerts->alert_count = $first_alerts->alert_count + 1;
-        $first_alerts->save();
+        
 
-        $message  = "Dear ".$first_alerts->name." The Slip Id ".$first_alerts->slip_id." Your checkout time in 5 minutes please checkout otherewise extends your time Thank you";
+        if($first_alerts){
+			$first_alerts->alert_count = $first_alerts->alert_count + 1;
+			$first_alerts->save();
 
-        $data['success'] = true;
-        $data['message'] = $message;
+			$message  = "Dear ".$first_alerts->name." The Slip Id ".$first_alerts->slip_id." Your sitting time is over. Please check out or extend your time. Thank you for your cooperation.";
+
+			$data['success'] = true;
+			$data['message'] = $message;
+        }else{
+        	$data['success'] = false;
+			$data['message'] = "Not Found";
+        }
 
         return Response::json($data,200,array());
 
-        // $first_alerts = Sitting::where("alert_count", 0)
-        //     ->where("checkout_status", 0)
-        //     ->whereBetween("checkout_date", [$first_time, $second_time])
-        //     ->where("client_id", auth()->user()->client_id)
-        //     ->get();
-
-        // $alert_ar = [];
-
-        // if (sizeof($first_alerts) > 0) {
-        //     foreach ($first_alerts as $first_alert) {
-        //         $entry = Sitting::find($first_alert->id);
-        //         $entry->alert_count = $entry->alert_count + 1;
-        //         $entry->save();
-
-        //         $ar = ["Dear ".$entry->name." The Slip Id ".$entry->slip_id." Your checkout time in 5 minutes please checkout otherewise extends your time Thank you"];
-
-        //         $alert_ar[] = $ar;
-                
-        //     }
-        // }
-
-        // if(sizeof($alert_ar) > 0){
-        // 	$data['success'] = true;
-        // 	$data['alert_ar'] = $alert_ar;
-        // }else{
-        // 	$data['success'] = false;
-        // 	$data['message'] = 'Alert not found';
-        // }
     }
 
 }

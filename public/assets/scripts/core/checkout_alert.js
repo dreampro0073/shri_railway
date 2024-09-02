@@ -17,7 +17,8 @@ app.controller('checkoutAlertCtrl', function($scope , $http, $timeout , DBServic
     $scope.speak = function(message) {
         const utterance = new SpeechSynthesisUtterance(message);
         const voices = speechSynthesis.getVoices();
-        utterance.voice = voices[0];
+        // utterance.voice = voices[0];
+        utterance.voice = voices.find(voice => voice.lang === 'en-US');
         utterance.rate = 0.8; 
         utterance.pitch = 0.8;
         utterance.volume = 1;     

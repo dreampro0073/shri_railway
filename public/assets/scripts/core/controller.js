@@ -1131,6 +1131,15 @@ app.controller('canteenItemsCtrl', function($scope , $http, $timeout , DBService
         };
     }
 
+    $scope.printBarcode = function(canteen_item_stock_id){
+        $scope.canteen_item_stock_id = canteen_item_stock_id;
+        DBService.postCall({canteen_item_stock_id : $scope.canteen_item_stock_id}, '/api/canteen-items/stocks/print-barcode').then((data) => {
+            if (data.success) {
+                
+            }
+        });
+    }    
+
     $scope.editStock = function(canteen_item_stock_id){
         $scope.canteen_item_stock_id = canteen_item_stock_id;
         DBService.postCall({canteen_item_stock_id : $scope.canteen_item_stock_id}, '/api/canteen-items/stocks/edit').then((data) => {

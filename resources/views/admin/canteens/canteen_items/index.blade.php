@@ -87,6 +87,7 @@
                             <td>@{{ item.stock }} <a href="{{url('admin/canteens/items/stock/')}}/@{{item.id}}" style="margin-left: 20px;text-decoration: underline;">View Stock</a></td>
                             <td>
                                 <a href="javascript:;" class="btn btn-sm btn-warning" ng-click="edit(item.id)">Edit</a>
+                                <a href="javascript:;" class="btn btn-sm btn-warning" ng-click="printBarcode(item.id)">Print Barcode</a>
                             </td>
 
                            

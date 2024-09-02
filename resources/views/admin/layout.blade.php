@@ -114,9 +114,11 @@
         </div>
 		
     </div>
+    @if(Auth::user()->is_auto_alert_access == 1)
     <div ng-controller="checkoutAlertCtrl">
         
     </div>
+    @endif
     <script type="text/javascript">
         var base_url = "{{url('/')}}";
         var CSRF_TOKEN = "{{ csrf_token() }}";

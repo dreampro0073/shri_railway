@@ -2,8 +2,9 @@ app.controller('checkoutAlertCtrl', function($scope , $http, $timeout , DBServic
     $scope.loading = false;
 
     $scope.checkoutAlert = function() {
+
         var autoAlertStatus = auto_alert_status;
-        if(autoAlertStatus == 1){
+        if(autoAlertStatus == 1 && authCheck == 1){
             DBService.postCall($scope.filter, '/api/sitting/checkout-alert').then((data) => {
                 if (data.success) {
                     $scope.speak(data.message);

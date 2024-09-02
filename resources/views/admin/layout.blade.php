@@ -121,6 +121,7 @@
         var base_url = "{{url('/')}}";
         var CSRF_TOKEN = "{{ csrf_token() }}";
         var auto_alert_status = "{{Session::get('auto_alert_status')}}";
+        var authCheck = "{{Auth::user()->is_auto_alert_access}}";
     </script>
     <script type="text/javascript" src="{{url('assets/scripts/jquery.min.js')}}"></script>
     <script type="text/javascript" src="{{url('bootstrap3/js/bootstrap.min.js')}}"></script>

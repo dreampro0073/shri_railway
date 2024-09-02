@@ -20,7 +20,7 @@ app.controller('checkoutAlertCtrl', function($scope , $http, $timeout , DBServic
         // utterance.voice = voices[0];
         utterance.voice = voices.find(voice => voice.lang === 'en-US');
         utterance.rate = 0.8; 
-        utterance.pitch = 0.8;
+        utterance.pitch = 1.2;
         utterance.volume = 1;     
         speechSynthesis.speak(utterance);
     }

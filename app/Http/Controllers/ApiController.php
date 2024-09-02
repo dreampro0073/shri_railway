@@ -604,91 +604,74 @@ class ApiController extends Controller {
         $user = Auth::user();
         $client_id = $user->client_id;
 
-        $cre = [
-            // 'name'=>$request->name,
+        $unique_id = strtotime("now");
+        $ins_data = [
+            'unique_id' => strtotime("now"),
+            'client_id' => $user->client_id,
+            'added_by' => $user->id,
+            'name' => $request->has('name')?$request->name:Auth::user()->name,
+            'mobile' => $request->has('mobile')?$request->mobile:null,
+            'unique_id' => $unique_id,
+            'total_amount' =>$request->total_amount,
+            'pay_type' =>$request->pay_type,
+            'date' => date('Y-m-d'),
+            'check_in' => date("H:i:s"),
+            'created_at' => date("Y-m-d H:i:s"),
         ];
-        $rules = [
-            // 'name'=>'required',
-        ];
-
-        $validator = Validator::make($cre,$rules);
-        $date = DailyEntry::getPDate();
-
-        if($validator->passes()){
-            $unique_id = strtotime("now");
-            $ins_data = [
-                'unique_id' => strtotime("now"),
-                'client_id' => $user->client_id,
-                'added_by' => $user->id,
-                'name' => $request->has('name')?$request->name:Auth::user()->name,
-                'mobile' => $request->has('mobile')?$request->mobile:null,
-                'unique_id' => $unique_id,
-                'total_amount' =>$request->total_amount,
-                'pay_type' =>$request->pay_type,
-                'date' => date('Y-m-d'),
-                'check_in' => date("H:i:s"),
-                'created_at' => date("Y-m-d H:i:s"),
-            ];
 
 
-            $entry_id = DB::table('daily_entries')->insertGetId($ins_data);
+        $entry_id = DB::table('daily_entries')->insertGetId($ins_data);
 
-            $items = $request->products;
-            $final_items = [];
-            foreach ($items as $key => $item) {
-                
-                $canteen_item_id = $item['canteen_item_id'];
-                $filtered_array = array_filter($final_items, function ($obj) use ($canteen_item_id) {
-                    return $obj['canteen_item_id'] == $canteen_item_id;
-                });
+        $items = $request->products;
+        $final_items = [];
+        foreach ($items as $key => $item) {
+            
+            $canteen_item_id = $item['canteen_item_id'];
+            $filtered_array = array_filter($final_items, function ($obj) use ($canteen_item_id) {
+                return $obj['canteen_item_id'] == $canteen_item_id;
+            });
 
-                $found_key = array_search($canteen_item_id, array_column($final_items, 'canteen_item_id'));
-
-                
-                if(!$filtered_array){
-                    $item['paid_amount'] = $item['price'];
-                    array_push($final_items, $item);
-                }else{
-                    $f_ar = $final_items[$found_key];
-                    array_splice($final_items,$found_key,1);
-                    $f_ar['paid_amount'] = $f_ar['paid_amount'] + $item['price'];
-                    $f_ar['quantity'] = $f_ar['quantity'] + $item['quantity'];
-
-                    array_push($final_items,$f_ar);
-                }
-            }
+            $found_key = array_search($canteen_item_id, array_column($final_items, 'canteen_item_id'));
 
             
-            foreach ($final_items as $key => $item) {
-                if($item['quantity'] !=0){
-                    DB::table('daily_entry_items')->insert([
-                        'canteen_item_id' => $item['canteen_item_id'],
-                        'entry_id' => $entry_id,
-                        'paid_amount' => $item['paid_amount'],
-                        'quantity' => $item['quantity'],
-                        'created_at' => date("Y-m-d H:i:s"),
-                    ]);
+            if(!$filtered_array){
+                $item['paid_amount'] = $item['price'];
+                array_push($final_items, $item);
+            }else{
+                $f_ar = $final_items[$found_key];
+                array_splice($final_items,$found_key,1);
+                $f_ar['paid_amount'] = $f_ar['paid_amount'] + $item['price'];
+                $f_ar['quantity'] = $f_ar['quantity'] + $item['quantity'];
 
-                    $check = DB::table('canteen_items')->where('id',$item['canteen_item_id'])->first();
-                    $avil_stock = $check->stock;
-                    DB::table('canteen_items')->where('id',$item['canteen_item_id'])->update([
-                        'stock' => $avil_stock - $item['quantity'],
-                    ]);
-                }       
+                array_push($final_items,$f_ar);
             }
-
-
-            $data['success'] = true;
-            $data['unique_id'] = $unique_id;
-            $data['billing_date'] = date("M d Y h:i:sA");
-            $data['entry_id'] = $entry_id;
-            $data['message'] = "Item's detail is stored successfully!";
-
-        } else {
-            $message = $validator->errors()->first();
-            $data['success'] = false;
-            $data['message'] = $message;
         }
+
+        
+        foreach ($final_items as $key => $item) {
+            if($item['quantity'] !=0){
+                DB::table('daily_entry_items')->insert([
+                    'canteen_item_id' => $item['canteen_item_id'],
+                    'entry_id' => $entry_id,
+                    'paid_amount' => $item['paid_amount'],
+                    'quantity' => $item['quantity'],
+                    'created_at' => date("Y-m-d H:i:s"),
+                ]);
+
+                $check = DB::table('canteen_items')->where('id',$item['canteen_item_id'])->first();
+                $avil_stock = $check->stock;
+                DB::table('canteen_items')->where('id',$item['canteen_item_id'])->update([
+                    'stock' => $avil_stock - $item['quantity'],
+                ]);
+            }       
+        }
+
+
+        $data['success'] = true;
+        $data['unique_id'] = $unique_id;
+        $data['billing_date'] = date("M d Y h:i:sA");
+        $data['entry_id'] = $entry_id;
+        $data['message'] = "Item's detail is stored successfully!";
 
         return Response::json($data, 200, []);
     }

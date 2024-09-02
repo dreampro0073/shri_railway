@@ -1264,11 +1264,11 @@ app.controller('dailyEntryCtrl', function($scope , $http, $timeout , DBService) 
             
             return;
         }
-        if($scope.formData.name == ''){
-            alert("Plese enter the name");
+        // if($scope.formData.name == ''){
+        //     alert("Plese enter the name");
             
-            return;
-        }
+        //     return;
+        // }
         if($scope.formData.pay_type == ''){
             alert("Plese select the pay type");
            

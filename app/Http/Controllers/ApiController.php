@@ -605,10 +605,10 @@ class ApiController extends Controller {
         $client_id = $user->client_id;
 
         $cre = [
-            'name'=>$request->name,
+            // 'name'=>$request->name,
         ];
         $rules = [
-            'name'=>'required',
+            // 'name'=>'required',
         ];
 
         $validator = Validator::make($cre,$rules);
@@ -620,7 +620,7 @@ class ApiController extends Controller {
                 'unique_id' => strtotime("now"),
                 'client_id' => $user->client_id,
                 'added_by' => $user->id,
-                'name' => $request->has('name')?$request->name:null,
+                'name' => $request->has('name')?$request->name:Auth::user()->name,
                 'mobile' => $request->has('mobile')?$request->mobile:null,
                 'unique_id' => $unique_id,
                 'total_amount' =>$request->total_amount,

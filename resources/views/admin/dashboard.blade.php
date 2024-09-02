@@ -6,7 +6,7 @@
     $auto_alert_status = Session::get('auto_alert_status');
 ?>
 
-<div class="main">
+<div class="main" ng-controller="dashboardCtrl">
 
     <div class="row">
         <div class="col-md-10">
@@ -14,11 +14,11 @@
         </div>
         @if(in_array(1, $service_ids) && Auth::user()->is_auto_alert_access == 1)
             <div class="col-md-2" style="margin-top:10px;">
-                @if($auto_alert_status)
-                    <button class="btn btn-danger btn-sm" id="textField" onclick="<?php Session::put('auto_alert_status',false);?>">Auto Alert Off</button>
-                @else
-                    <button class="btn btn-primary btn-sm" id="textField" onclick="<?php Session::put('auto_alert_status',true); ?>">Auto Alert On</button>
-                @endif
+                
+                <button ng-if="auto_alert_status == 1" class="btn btn-danger btn-sm" ng-click="changeAlert()">Auto Alert Off</button>
+           
+                <button ng-if="auto_alert_status == 0" class="btn btn-primary btn-sm" ng-click="changeAlert()">Auto Alert On</button>
+               
             </div>
         @endif
     </div>
@@ -100,8 +100,7 @@
 
 
 @section('footer_scripts')
-    <?php $version = "0.0.3"; ?>
-        
+    <?php $version = "0.0.3"; ?>    
     <script type="text/javascript" src="{{url('assets/scripts/core/client_ctrl.js?v='.$version)}}" ></script>
 
     

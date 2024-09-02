@@ -136,7 +136,7 @@ class UserController extends Controller {
     }
 
     public function editUser(Request $request){
-        $user = User::where('id', $request->user_id)->where("client_id", Auth::user()->where("priv", '!=', '4')->client_id)->first();
+        $user = User::where('id', $request->user_id)->where("client_id", Auth::user()->client_id)->where("priv", '!=', '4')->first();
         if($user){
             $user->mobile = $user->mobile*1;
         }

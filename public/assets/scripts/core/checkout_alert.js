@@ -19,7 +19,7 @@ app.controller('checkoutAlertCtrl', function($scope , $http, $timeout , DBServic
         const voices = speechSynthesis.getVoices();
         utterance.voice = voices[0];
         utterance.rate = 0.8; 
-        utterance.pitch = 1;
+        utterance.pitch = 0.8;
         utterance.volume = 1;     
         speechSynthesis.speak(utterance);
     }

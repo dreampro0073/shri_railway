@@ -71,4 +71,14 @@ class AdminController extends Controller {
 		//1- Tea -10
 		//1- Tea -10
 	}
+
+	public function printBarcode($id=0){
+		$item = DB::table('canteen_items')->where('id',$id)->first();
+		if($item){
+			return view('admin.canteens.canteen_items.barcode',compact('item'));
+
+		}else{
+			return "NO data found";
+		}
+	}
 }

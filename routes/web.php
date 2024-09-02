@@ -78,6 +78,7 @@ Route::group(['middleware'=>'auth'],function(){
 			Route::group(['prefix'=>"items"], function(){
 				Route::get('/',[AdminController::class,'canteenItems']);
 				Route::get('/stock/{canteen_item_id}',[AdminController::class,'canteenItemStocks']);
+				Route::get('/print-barcode/{id}',[AdminController::class,'printBarcode']);
 			});
 
 
@@ -104,8 +105,6 @@ Route::group(['middleware'=>'auth'],function(){
 Route::get('set-slip-id',[SittingController::class,'setSlipId']);
 
 Route::group(['prefix'=>"api"], function(){	
-	Route::post('/set-checkout-alert',[UserController::class,'setCheckoutAlert']);
-
 	Route::group(['prefix'=>"shift"], function(){
 		Route::post('/init',[ShiftController::class,'init']);
 		Route::post('/prev-init',[ShiftController::class,'prevInit']);

@@ -146,7 +146,11 @@
     <script type="text/javascript" src="{{url('assets/scripts/core/app.js')}}" ></script>
     <script type="text/javascript" src="{{url('assets/scripts/core/services.js')}}" ></script>
     <script type="text/javascript" type="text/javascript" src="{{url('assets/scripts/core/controller.js?v='.$version)}}"></script>
-    <script type="text/javascript" type="text/javascript" src="{{url('assets/scripts/core/checkout_alert.js?v='.$version)}}"></script>
+
+    @if(Auth::user()->is_auto_alert_access == 1)
+        <script type="text/javascript" type="text/javascript" src="{{url('assets/scripts/core/checkout_alert.js?v='.$version)}}"></script>
+    @endif
+    
     <script>
       angular.module("app").constant("CSRF_TOKEN", "{{ csrf_token() }}");
     </script>

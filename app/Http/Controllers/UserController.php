@@ -62,8 +62,7 @@ class UserController extends Controller {
                     Session::put('gst_no',$client->gst);
                     Session::put('service_ids',$service_ids);
                     Session::put('address',$client->address);
-                    Session::put('auto_alert_status',false);
-                    
+                    Session::put('auto_alert_status',1);     
                     
                 }
                 return Redirect::to('/admin/dashboard');
@@ -74,6 +73,15 @@ class UserController extends Controller {
         } else {
             return Redirect::back()->withErrors($validator)->withInput();
         }
+    }
+    public function setCheckoutAlert(Request $request){
+        $session_value = Session::get('auto_alert_status') == 1 ? 0 : 1 ;
+        Session::put('auto_alert_status',$session_value);
+
+        $data['success'] = true;
+        $data['auto_alert_status'] = Session::get('auto_alert_status');
+
+        return Response::json($data,200,array());
     }
 
     public function resetPassword(){

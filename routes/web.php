@@ -104,6 +104,8 @@ Route::group(['middleware'=>'auth'],function(){
 Route::get('set-slip-id',[SittingController::class,'setSlipId']);
 
 Route::group(['prefix'=>"api"], function(){	
+	Route::post('/set-checkout-alert',[UserController::class,'setCheckoutAlert']);
+
 	Route::group(['prefix'=>"shift"], function(){
 		Route::post('/init',[ShiftController::class,'init']);
 		Route::post('/prev-init',[ShiftController::class,'prevInit']);

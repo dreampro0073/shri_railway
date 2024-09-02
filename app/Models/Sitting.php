@@ -180,7 +180,7 @@ class Sitting extends Model
         return $p_date;
     }
 
-    public function getChangePayTypeLog($input_date, $user_id){
+    public static function getChangePayTypeLog($input_date, $user_id){
         if($input_date == ''){
             $input_date = date("Y-m-d");
         }

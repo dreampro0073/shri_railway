@@ -13,7 +13,7 @@ app.controller('checkoutAlertCtrl', function($scope , $http, $timeout , DBServic
         }
     }
     
-    setInterval($scope.checkoutAlert, 15000);
+    setInterval($scope.checkoutAlert, 30000);
 
     $scope.speak = function(message) {
         // const utterance = new SpeechSynthesisUtterance(message);

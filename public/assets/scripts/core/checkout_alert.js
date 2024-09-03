@@ -13,7 +13,7 @@ app.controller('checkoutAlertCtrl', function($scope , $http, $timeout , DBServic
         }
     }
     
-    setInterval($scope.checkoutAlert, 30000);
+    setInterval($scope.checkoutAlert, 10000);
 
     $scope.speak = function(message) {
         // const utterance = new SpeechSynthesisUtterance(message);
@@ -36,8 +36,8 @@ app.controller('checkoutAlertCtrl', function($scope , $http, $timeout , DBServic
         } else {
           utterance.voice = voices[0];
         }
-        utterance.pitch = 0.75; // Lower pitch for a deeper voice
-        utterance.rate = 0.9;  // Slightly slower rate for a more deliberate pace
+        utterance.pitch = 0.87; // Lower pitch for a deeper voice
+        utterance.rate = 0.78;  // Slightly slower rate for a more deliberate pace
         speechSynthesis.speak(utterance);
     }
 

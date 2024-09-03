@@ -28,7 +28,7 @@ app.controller('checkoutAlertCtrl', function($scope , $http, $timeout , DBServic
         const utterance = new SpeechSynthesisUtterance(message);
 
      
-        let voices = speechSynthesis.getVoices();
+        // let voices = speechSynthesis.getVoices();
 
         // let indianVoice = voices.find(voice => voice.lang.includes('hi-IN'));
         // utterance.voice = voices.find(voice => voice.lang === 'en-US');
@@ -39,9 +39,31 @@ app.controller('checkoutAlertCtrl', function($scope , $http, $timeout , DBServic
         //   utterance.voice = voices[0];
         // }
         // utterance.lang = 'hi-IN'; // Set language to Hindi
-        utterance.voice = voices.find(voice => voice.lang === 'en-US');
-        utterance.pitch = 0.87; // Lower pitch for a deeper voice
-        utterance.rate = 0.78;  // Slightly slower rate for a more deliberate pace
+        
+        // utterance.voice = voices.find(voice => voice.lang === 'en-US');
+        // utterance.pitch = 0.87; // Lower pitch for a deeper voice
+        // utterance.rate = 0.78;  // Slightly slower rate for a more deliberate pace
+        // speechSynthesis.speak(utterance);
+
+        // Set language to Hindi
+        utterance.lang = 'hi-IN'; 
+        
+        // Get the list of voices available on the browser
+        const voices = window.speechSynthesis.getVoices();
+        
+        // Select a female voice (usually includes the word "female" or "फ़ीमेल" in the name)
+        const femaleVoice = voices.find(voice => voice.lang === 'hi-IN' && (voice.name.includes('Female') || voice.name.includes('फ़ीमेल')));
+        
+        // If a female voice is found, set it to the speech
+        if (femaleVoice) {
+            utterance.voice = femaleVoice;
+        }
+        
+        // Set pitch, rate, and volume
+        utterance.pitch = 1;
+        utterance.rate = 1;
+        utterance.volume = 1;
+
         speechSynthesis.speak(utterance);
     }
 

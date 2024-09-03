@@ -114,11 +114,10 @@
         </div>
 		
     </div>
-    @if(Auth::user()->is_auto_alert_access == 1)
+    
     <div ng-controller="checkoutAlertCtrl">
         
     </div>
-    @endif
     <script type="text/javascript">
         var base_url = "{{url('/')}}";
         var CSRF_TOKEN = "{{ csrf_token() }}";
@@ -150,10 +149,7 @@
     <script type="text/javascript" src="{{url('assets/scripts/core/services.js')}}" ></script>
     <script type="text/javascript" type="text/javascript" src="{{url('assets/scripts/core/controller.js?v='.$version)}}"></script>
 
-    @if(Auth::user()->is_auto_alert_access == 1)
-        <script type="text/javascript" type="text/javascript" src="{{url('assets/scripts/core/checkout_alert.js?v='.$version)}}"></script>
-    @endif
-    
+    <script type="text/javascript" type="text/javascript" src="{{url('assets/scripts/core/checkout_alert.js?v='.$version)}}"></script>
     <script>
       angular.module("app").constant("CSRF_TOKEN", "{{ csrf_token() }}");
     </script>

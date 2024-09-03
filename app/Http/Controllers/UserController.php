@@ -62,7 +62,7 @@ class UserController extends Controller {
                     Session::put('gst_no',$client->gst);
                     Session::put('service_ids',$service_ids);
                     Session::put('address',$client->address);
-                    Session::put('auto_alert_status',1);     
+                    Session::put('auto_alert_status',0);     
                     
                 }
                 return Redirect::to('/admin/dashboard');

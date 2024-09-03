@@ -3,7 +3,6 @@
 @section('main')
 <?php 
     $service_ids = Session::get('service_ids');
-    $auto_alert_status = Session::get('auto_alert_status');
 ?>
 
 <div class="main" ng-controller="dashboardCtrl">

@@ -62,8 +62,8 @@ app.controller('checkoutAlertCtrl', function($scope , $http, $timeout , DBServic
         }
         
         // Set pitch, rate, and volume
-        utterance.pitch = 1;
-        utterance.rate = 1;
+        utterance.pitch = 0.87;
+        utterance.rate = 0.78;
         utterance.volume = 1;
 
         speechSynthesis.speak(utterance);

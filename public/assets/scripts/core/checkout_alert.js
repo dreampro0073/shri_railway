@@ -38,7 +38,8 @@ app.controller('checkoutAlertCtrl', function($scope , $http, $timeout , DBServic
         // } else {
         //   utterance.voice = voices[0];
         // }
-        utterance.lang = 'hi-IN'; // Set language to Hindi
+        // utterance.lang = 'hi-IN'; // Set language to Hindi
+        utterance.voice = voices.find(voice => voice.lang === 'en-US');
         utterance.pitch = 0.87; // Lower pitch for a deeper voice
         utterance.rate = 0.78;  // Slightly slower rate for a more deliberate pace
         speechSynthesis.speak(utterance);

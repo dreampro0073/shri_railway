@@ -52,11 +52,13 @@ app.controller('checkoutAlertCtrl', function($scope , $http, $timeout , DBServic
         const voices = window.speechSynthesis.getVoices();
         
         // Select a female voice (usually includes the word "female" or "फ़ीमेल" in the name)
-        const femaleVoice = voices.find(voice => voice.lang === 'hi-IN' && (voice.name.includes('Female') || voice.name.includes('फ़ीमेल')));
+        const femaleVoice = voices.find(voice => voice.lang === 'en-US' && (voice.name.includes('Female') || voice.name.includes('फ़ीमेल')));
         
         // If a female voice is found, set it to the speech
         if (femaleVoice) {
             utterance.voice = femaleVoice;
+        }else{
+            utterance.voice = voices[0];
         }
         
         // Set pitch, rate, and volume

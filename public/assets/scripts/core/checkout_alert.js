@@ -30,12 +30,15 @@ app.controller('checkoutAlertCtrl', function($scope , $http, $timeout , DBServic
      
         let voices = speechSynthesis.getVoices();
 
-        let indianVoice = voices.find(voice => voice.lang.includes('hi-IN'));
-        if (indianVoice) {
-          utterance.voice = indianVoice;
-        } else {
-          utterance.voice = voices[0];
-        }
+        // let indianVoice = voices.find(voice => voice.lang.includes('hi-IN'));
+        // utterance.voice = voices.find(voice => voice.lang === 'en-US');
+
+        // if (indianVoice) {
+        //   utterance.voice = indianVoice;
+        // } else {
+        //   utterance.voice = voices[0];
+        // }
+        utterance.lang = 'hi-IN'; // Set language to Hindi
         utterance.pitch = 0.87; // Lower pitch for a deeper voice
         utterance.rate = 0.78;  // Slightly slower rate for a more deliberate pace
         speechSynthesis.speak(utterance);

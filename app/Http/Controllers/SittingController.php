@@ -713,7 +713,7 @@ class SittingController extends Controller {
 		        // 	Priya ".$second_alert->name.", Aapki slip ID ".$second_alert->slip_id." ka checkout samay samaapt ho gaya hai. Kripya jaldi se jaldi checkout karein, anyatha aapka samay automatic taur par badha diya jayega. Aapke sahyog ke liye dhanyavaad. ";
 		        // $message  = "Dear ".$second_alert->name." Your slip ID ".$second_alert->slip_id." has exceeded the checkout time. Please check out at your earliest convenience, or your time will be automatically extended. Thank you for your cooperation.";
 		           $message  = "प्रिय ".$second_alert->name.",
-					स्लिप आईडी ".$second_alert->slip_id.", आपका चेकआउट समय समाप्त हो चुका है। कृपया समय से अपना चेकआउट कर लीजिए या अपना बैठने का समय बढ़वा लीजिए। धन्यवाद।";
+					स्लिप आईडी ".$second_alert->slip_id.", आपका चेकआउट समय समाप्त हो चुका है। कृपया समय से अपना चेकआउट कर लीजिए या अपना बैठने का समय बढ़वा लीजिए। धन्यवाद। dhanyavaad";
 
 		        $data['success'] = true;
 		        $data['message'] = $message;

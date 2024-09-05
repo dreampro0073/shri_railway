@@ -71,9 +71,11 @@ class CollectedSitting extends Model{
                 $e_amount = 0;
 
                 if($e_hours > 0 && $e_hours < $entry->hours_occ){
+                    // $e_amount = $e_hours*$rate_list->adult_rate*$entry->no_of_adults + $e_hours*$rate_list->child_rate*$entry->no_of_children;
                     $e_amount = $e_hours*$rate_list->adult_rate*$entry->no_of_adults + $e_hours*$rate_list->child_rate*$entry->no_of_children;
+
                 }
-                // dd($e_amount);
+                
 
                 if($e_adults > 0){
                     $e_amount += $e_hours*$rate_list->adult_rate*$e_adults;

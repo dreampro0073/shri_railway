@@ -28,16 +28,18 @@ class ShiftController extends Controller {
 
 		$input_date = $request->input_date;
 		$user_id = $request->has('user_id')?$request->user_id:0;
+		
 		$client_id = Auth::user()->client_id;
+		
 		if($request->client_id){
 			$client_id = $request->client_id;
-			$service_ids = DB::table("client_services")->where('status',1)->where("client_id", $client_id)->pluck($ids)->toArray();
+			$service_ids = DB::table("client_services")->where('status',1)->where("client_id", $client_id)->pluck('services_id')->toArray();
 		} else {
 			$service_ids = Session::get('service_ids');
 		}
 
 		$users = DB::table('users')->select('id','name')->where('priv','!=',4)->where("client_id", $client_id)->get();
-		$clients = DB::table('clients')->where('org_id',Auth::user()->org_id)->pluck("name", 'id')->toArray();
+		$clients = DB::table('clients')->where('org_id', Auth::user()->org_id)->pluck("name", 'id')->toArray();
 
 
 		$current_shift = Entry::checkShift();
@@ -52,12 +54,8 @@ class ShiftController extends Controller {
             $user_id = Auth::id();
         }
 
-        // if(Auth::user()->priv ==4 && Auth::id() == 23){
-        // 	$user_id = 19;
-        // }
-
 		if(in_array(1, $service_ids)){
-			$sitting_data = Sitting::totalShiftData($input_date,$user_id);
+			$sitting_data = Sitting::totalShiftData($input_date,$user_id,$client_id);
 			$total_shift_upi += $sitting_data['total_shift_upi'];
 			$total_shift_cash += $sitting_data['total_shift_cash'];
 			$total_collection += $sitting_data['total_collection'];
@@ -73,7 +71,7 @@ class ShiftController extends Controller {
 		}
 
 		if(in_array(2, $service_ids)){
-			$cloak_data = CloakRoom::totalShiftData($input_date,$user_id);
+			$cloak_data = CloakRoom::totalShiftData($input_date,$user_id,$client_id);
 			$total_shift_upi += $cloak_data['total_shift_upi'];
 			$total_shift_cash += $cloak_data['total_shift_cash'];
 			$total_collection += $cloak_data['total_collection'];
@@ -84,7 +82,7 @@ class ShiftController extends Controller {
 		}
 		
 		if(in_array(3, $service_ids)){
-			$canteen_data = Canteen::totalShiftData($input_date,$user_id);
+			$canteen_data = Canteen::totalShiftData($input_date,$user_id,$client_id);
 			$total_shift_upi += $canteen_data['total_shift_upi'];
 			$total_shift_cash += $canteen_data['total_shift_cash'];
 			$total_collection += $canteen_data['total_collection'];
@@ -95,7 +93,7 @@ class ShiftController extends Controller {
 		}		
 
 		if(in_array(4, $service_ids)){
-			$massage_data = Massage::totalShiftData($input_date,$user_id);
+			$massage_data = Massage::totalShiftData($input_date,$user_id,$client_id);
 			$total_shift_upi += $massage_data['total_shift_upi'];
 			$total_shift_cash += $massage_data['total_shift_cash'];
 			$total_collection += $massage_data['total_collection'];
@@ -106,7 +104,7 @@ class ShiftController extends Controller {
 		}		
 
 		if(in_array(5, $service_ids)){
-			$locker_data = Locker::totalShiftData($input_date,$user_id);
+			$locker_data = Locker::totalShiftData($input_date,$user_id,$client_id);
 			$total_shift_upi += $locker_data['total_shift_upi'];
 			$total_shift_cash += $locker_data['total_shift_cash'];
 			$total_collection += $locker_data['total_collection'];
@@ -125,6 +123,7 @@ class ShiftController extends Controller {
 
 		$data['success'] = true;
 		$data['users'] = $users;
+		$data['service_ids'] = $service_ids;
 		$data['clients'] = $clients;
 		return Response::json($data, 200, []);
 	}

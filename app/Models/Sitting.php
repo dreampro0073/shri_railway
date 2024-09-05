@@ -91,9 +91,8 @@ class Sitting extends Model
         }
         return $slip_id;
     }
-    public static function totalShiftData($input_date='',$user_id=0){
+    public static function totalShiftData($input_date='',$user_id=0, $client_id){
         $check_shift = Entry::checkShift();
-        $client_id = Auth::user()->client_id;
         
         $total_shift_cash = 0;
         $total_shift_upi = 0;       

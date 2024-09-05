@@ -11,7 +11,7 @@ class Canteen extends Model
 
     protected $table = 'canteens';
 
-        public static function totalShiftData($input_date= "", $user_id=0){
+        public static function totalShiftData($input_date= "", $user_id=0, $client_id){
         $check_shift = Entry::checkShift();
         
         $total_shift_cash = 0;
@@ -33,7 +33,6 @@ class Canteen extends Model
             $input_date = date("Y-m-d",strtotime($input_date));
         }
         
-        $client_id = Auth::user()->client_id;
         if(Auth::user()->priv != 2){
             $user_id = Auth::id();
         }

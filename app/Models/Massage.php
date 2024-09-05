@@ -27,7 +27,7 @@ class Massage extends Model
     public static function rateList(){
         return DB::table("massage_rate_list")->where("client_id", Auth::user()->client_id)->first();
     }
-    public static function totalShiftData($input_date='',$user_id=0){
+    public static function totalShiftData($input_date='',$user_id=0, $client_id){
         $check_shift = Entry::checkShift();
         
         $total_shift_cash = 0;
@@ -47,24 +47,24 @@ class Massage extends Model
         }
 
         $input_date = date("Y-m-d",strtotime($input_date));
-        $last_hour_upi_total = Massage::where('client_id',Auth::user()->client_id)->where('date',$input_date)->where('pay_type',2)->whereBetween('created_at', [date('Y-m-d H:00:00'), date("Y-m-d H:i:s")])->sum("paid_amount"); 
+        $last_hour_upi_total = Massage::where('client_id',$client_id)->where('date',$input_date)->where('pay_type',2)->whereBetween('created_at', [date('Y-m-d H:00:00'), date("Y-m-d H:i:s")])->sum("paid_amount"); 
 
         if($user_id != 0){
-            $total_shift_upi = Massage::where('client_id',Auth::user()->client_id)->where('date',$input_date)->where('added_by',$user_id)->where('pay_type',2)->sum("paid_amount");
+            $total_shift_upi = Massage::where('client_id',$client_id)->where('date',$input_date)->where('added_by',$user_id)->where('pay_type',2)->sum("paid_amount");
 
-            $total_shift_cash = Massage::where('client_id',Auth::user()->client_id)->where('date',$input_date)->where('added_by',$user_id)->where('pay_type',1)->sum("paid_amount");
+            $total_shift_cash = Massage::where('client_id',$client_id)->where('date',$input_date)->where('added_by',$user_id)->where('pay_type',1)->sum("paid_amount");
 
-            $last_hour_upi_total = Massage::where('client_id',Auth::user()->client_id)->where('date',$input_date)->where('added_by',$user_id)->where('pay_type',2)->whereBetween('created_at', [date('Y-m-d H:00:00'), date("Y-m-d H:i:s")])->sum("paid_amount"); 
+            $last_hour_upi_total = Massage::where('client_id',$client_id)->where('date',$input_date)->where('added_by',$user_id)->where('pay_type',2)->whereBetween('created_at', [date('Y-m-d H:00:00'), date("Y-m-d H:i:s")])->sum("paid_amount"); 
 
-            $last_hour_cash_total = Massage::where('client_id',Auth::user()->client_id)->where('date',$input_date)->where('added_by',$user_id)->where('pay_type',1)->whereBetween('created_at', [date('Y-m-d H:00:00'), date("Y-m-d H:i:s")])->sum("paid_amount");
+            $last_hour_cash_total = Massage::where('client_id',$client_id)->where('date',$input_date)->where('added_by',$user_id)->where('pay_type',1)->whereBetween('created_at', [date('Y-m-d H:00:00'), date("Y-m-d H:i:s")])->sum("paid_amount");
         }else{
-            $total_shift_upi = Massage::where('client_id',Auth::user()->client_id)->where('date',$input_date)->where('pay_type',2)->sum("paid_amount");
+            $total_shift_upi = Massage::where('client_id',$client_id)->where('date',$input_date)->where('pay_type',2)->sum("paid_amount");
 
-            $total_shift_cash = Massage::where('client_id',Auth::user()->client_id)->where('date',$input_date)->where('pay_type',1)->sum("paid_amount");
+            $total_shift_cash = Massage::where('client_id',$client_id)->where('date',$input_date)->where('pay_type',1)->sum("paid_amount");
 
-            $last_hour_upi_total = Massage::where('client_id',Auth::user()->client_id)->where('date',$input_date)->where('pay_type',2)->whereBetween('created_at', [date('Y-m-d H:00:00'), date("Y-m-d H:i:s")])->sum("paid_amount"); 
+            $last_hour_upi_total = Massage::where('client_id',$client_id)->where('date',$input_date)->where('pay_type',2)->whereBetween('created_at', [date('Y-m-d H:00:00'), date("Y-m-d H:i:s")])->sum("paid_amount"); 
 
-            $last_hour_cash_total = Massage::where('client_id',Auth::user()->client_id)->where('date',$input_date)->where('pay_type',1)->whereBetween('created_at', [date('Y-m-d H:00:00'), date("Y-m-d H:i:s")])->sum("paid_amount");
+            $last_hour_cash_total = Massage::where('client_id',$client_id)->where('date',$input_date)->where('pay_type',1)->whereBetween('created_at', [date('Y-m-d H:00:00'), date("Y-m-d H:i:s")])->sum("paid_amount");
         }
         
         

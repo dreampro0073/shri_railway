@@ -20,14 +20,14 @@
             </div>
             <hr>
             @if(Auth::user()->priv == 2)
-            <div class="col-md-3 form-group" >
-                <select ng-model="filter.client_id" class="form-control" convert-to-number>
-                    <option value="">Select</option>
-                    <option value="@{{client.id}}" ng-repeat="client in clients">@{{client.name}}</option>
-                </select>
-                
-            </div> 
             <div class="row">
+                <div class="col-md-3 form-group" >
+                    <select ng-model="filter.client_id" class="form-control" ng-change="changeFilter()"  convert-to-number>
+                        <option value="">Select</option>
+                        <option value="@{{key}}" ng-repeat="(key, value) in clients">@{{value}}</option>
+                    </select>
+                </div> 
+
                 <div class="col-md-3 form-group">
                     <input type="text" class="datepicker form-control" ng-model="filter.input_date">
                     
@@ -74,8 +74,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @if(in_array(1, $service_ids))
-                    <tr>
+                    <tr ng-if="service_ids.includes(1)">
                        <td>Sitting</td> 
                         <td>@{{sitting_data.last_hour_upi_total}}</td>
                         <td>@{{sitting_data.last_hour_cash_total}}</td>
@@ -83,10 +82,8 @@
                         <td>@{{sitting_data.total_shift_upi}}</td>
                         <td>@{{sitting_data.total_shift_cash}}</td>
                         <td>@{{sitting_data.total_collection}}</td>
-                    </tr>
-                    @endif                    
-                    @if(in_array(2, $service_ids))
-                    <tr>
+                    </tr>                   
+                    <tr ng-if="service_ids.includes(2)">
                         <td>Cloakroom</td> 
                         <td>@{{cloak_data.last_hour_upi_total}}</td>
                         <td>@{{cloak_data.last_hour_cash_total}}</td>
@@ -95,9 +92,7 @@
                         <td>@{{cloak_data.total_shift_cash}}</td>
                         <td>@{{cloak_data.total_collection}}</td>
                     </tr>
-                    @endif                    
-                    @if(in_array(3, $service_ids))
-                    <tr>
+                    <tr ng-if="service_ids.includes(3)">
                         <td>Canteen</td> 
                         <td>@{{canteen_data.last_hour_upi_total}}</td>
                         <td>@{{canteen_data.last_hour_cash_total}}</td>
@@ -106,9 +101,7 @@
                         <td>@{{canteen_data.total_shift_cash}}</td>
                         <td>@{{canteen_data.total_collection}}</td>
                     </tr>
-                    @endif
-                    @if(in_array(4, $service_ids))
-                    <tr>
+                    <tr ng-if="service_ids.includes(4)">
                         <td>Massage</td> 
                         <td>@{{massage_data.last_hour_upi_total}}</td>
                         <td>@{{massage_data.last_hour_cash_total}}</td>
@@ -117,10 +110,7 @@
                         <td>@{{massage_data.total_shift_cash}}</td>
                         <td>@{{massage_data.total_collection}}</td>
                     </tr>
-                    @endif
-
-                     @if(in_array(5, $service_ids))
-                    <tr>
+                    <tr ng-if="service_ids.includes(5)">
                         <td>Locker</td> 
                         <td>@{{locker_data.last_hour_upi_total}}</td>
                         <td>@{{locker_data.last_hour_cash_total}}</td>
@@ -129,8 +119,6 @@
                         <td>@{{locker_data.total_shift_cash}}</td>
                         <td>@{{locker_data.total_collection}}</td>
                     </tr>
-                    @endif
-                    
                     <tr>
                         <td><b>Grand Total</b></td> 
                         <td><b>@{{last_hour_upi_total}}</b></td>

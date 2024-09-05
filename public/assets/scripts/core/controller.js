@@ -43,8 +43,6 @@ app.controller('cloackCtrl', function($scope , $http, $timeout , DBService) {
                 }
             }
         });
-
-        $("#productName").focus();
     }
     $scope.getData = (page) => {
         $scope.filter.page_no = $scope.filter.page_no + page;
@@ -82,7 +80,7 @@ app.controller('cloackCtrl', function($scope , $http, $timeout , DBService) {
     $scope.checkoutCloak = function(entry_id){
         $scope.entry_id = entry_id;
         if(confirm("Are you sure?") == true){
-             DBService.postCall({entry_id : $scope.entry_id}, '/api/cloak-rooms/checkout-init/1').then((data) => {
+             DBService.postCall({entry_id : $scope.entry_id}, '/api/cloak-rooms/checkout-init').then((data) => {
                 if (data.timeOut) {
                     $scope.formData = data.l_entry;      
                     $("#checkoutCloakModel").modal("show");
@@ -98,7 +96,7 @@ app.controller('cloackCtrl', function($scope , $http, $timeout , DBService) {
     }
 
     $scope.checkoutCloak1 = function(){
-        DBService.postCall({productName : $scope.productName}, '/api/cloak-rooms/checkout-init/2').then((data) => {
+        DBService.postCall({productName : $scope.productName}, '/api/cloak-rooms/checkout-init1').then((data) => {
             $scope.productName = '';
             if (data.timeOut) {
                 $scope.formData = data.l_entry;
@@ -106,9 +104,11 @@ app.controller('cloackCtrl', function($scope , $http, $timeout , DBService) {
                 $("#checkoutCloakModel").modal("show");
             }else{
                 $scope.init(); 
+                alert(data.message);
 
                 $scope.filter.id = '';
                 
+
             }
             
         });
@@ -200,7 +200,7 @@ app.controller('cloackCtrl', function($scope , $http, $timeout , DBService) {
                 };
                 $scope.init();
                 setTimeout(function(){
-                    window.open(base_url+'/admin/cloak-rooms/print/'+data.id,'_blank');
+                    window.open(base_url+'/admin/cloak-rooms/print-unq/2/'+data.print_id,'_blank');
                 }, 800);
             }
             $scope.loading = false;
@@ -219,7 +219,6 @@ app.controller('cloackCtrl', function($scope , $http, $timeout , DBService) {
             $scope.formData.balance_amount = amount - $scope.formData.paid_amount;
         }
     }
-
     $scope.delete = function (id) {
         if(confirm("Are you sure?") == true){
             DBService.getCall('/api/cloak-rooms/delete/'+id).then((data) => {
@@ -1274,11 +1273,7 @@ app.controller('dailyEntryCtrl', function($scope , $http, $timeout , DBService) 
             
             return;
         }
-        // if($scope.formData.name == ''){
-        //     alert("Plese enter the name");
-            
-        //     return;
-        // }
+       
         if($scope.formData.pay_type == ''){
             alert("Plese select the pay type");
            
@@ -1421,10 +1416,6 @@ app.controller('cloackPenltyCollectCtrl', function($scope , $http, $timeout , DB
 
     $scope.pData = {
 
-    }
-
-    $scope.hideModal = () => {
-       $("#exampleModalCenter").modal("hide");
     }
    
     $scope.init = function () {

@@ -48,7 +48,7 @@
 		}
 	</style>
 </head>
-<body>
+<body oncontextmenu="return false;">
 	<div class="main" id="printableArea">
 		<h4>
 			{{Session::get('client_name')}}
@@ -57,13 +57,25 @@
 			</span>
 		</h4>
 		<h5>
-			<span class="text">Sl. No: <b style="font-size:18px;">{{ $print_data->id }}</b></span>
+			<span class="text">Slip Id: <b style="font-size:18px;">{{ $print_data->slip_id }}</b></span>
 		</h5>
+		@if($type == 1 && Auth::user()->priv == 3 && $print_data->print_count < 1)
+    		<div class="table-div">
+    			<div class="w-50">
+    
+            		<div style="text-align:left;">
+            			<svg id="barcode"></svg>
+            		</div>
+    
+    			</div>
+			<div class="w-50">
+				<div style="text-align:left;">
+        			<svg id="barcode1"></svg>
+        		</div>
+			</div>
 
-		<div style="text-align:center;">
-			<svg id="barcode"></svg>
 		</div>
-
+		@endif
 		
 		<div class="table-div">
 			<div class="w-50">
@@ -110,7 +122,7 @@
 				<tr>
 					<td class="w-46">For first 24 hours or part there of</td>
 					<td class="w-20">{{$rate_list->first_rate}}/- Per Package</td>
-					<td class="w-16" rowspan="2">{{$print_data->no_of_bag}}</td>
+					<td class="w-16" rowspan="2"><strong>{{$print_data->no_of_bag}}</strong></td>
 					<td class="w-16">{{$print_data->for_first_day}}</td>
 				</tr>
 				<tr>
@@ -132,6 +144,7 @@
 				</tr>
 			</tbody>
 		</table>
+	
 
 		<div style="margin-top:10px;text-align: right;">
 			<span style="text-align:right;font-weight: bold;">Note: We are not responsible for keeping eatable items inside your bag. Rats can be destroy your food and bags</span>
@@ -157,8 +170,17 @@
 			height: 40,
 			displayValue: false
 		});
+		
+		JsBarcode("#barcode1", bill_no, {
+			// format: "pharmacode",
+			lineColor: "#000",
+			width: 1,
+			height: 40,
+			displayValue: false
+		});
 	</script>
 	<script type="text/javascript">
+	    var print_count = "{{$print_data->print_count}}";
 		
 		window.onload = function(e){ 
 		    var printContents = document.getElementById("printableArea").innerHTML;
@@ -166,7 +188,19 @@
 			document.body.innerHTML = printContents;
 			window.print();
 			document.body.innerHTML = originalContents; 
+			// window.close();
 		}
+		if(print_count < 1){
+		    document.addEventListener('keydown', function(event) {
+                if (event.ctrlKey && event.key === 'p') {
+                    location.reload();
+                }else{
+                	console.log('no');
+    
+                }
+            });
+		}
+		
 	</script>
 </body>
 </html>

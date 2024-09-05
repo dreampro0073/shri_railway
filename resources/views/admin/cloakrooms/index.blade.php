@@ -19,10 +19,10 @@
                                     <label class="label-control">Slip ID</label>
                                     <input type="text" class="form-control" ng-model="filter.id" />
                                 </div>                    
-                                <div class="col-md-2 form-group">
+                                <!-- <div class="col-md-2 form-group">
                                     <label class="label-control">Bill Number</label>
                                     <input type="text" class="form-control" ng-model="filter.unique_id" />
-                                </div>                    
+                                </div>  -->                   
                                 <div class="col-md-3 form-group">
                                     <label class="label-control">Name</label>
                                     <input type="text" class="form-control" ng-model="filter.name" />
@@ -67,7 +67,7 @@
                     <thead style="background-color: rgba(0,0,0,.075);">
                         <tr class="table-primary">
                             <th>S.no</th>
-                            <th>Bill no</th>
+                            
                             <th>Name</th>
                             <th>Mobile No</th>
                             <th>Check In/Valid Upto</th>
@@ -87,7 +87,7 @@
                     <tbody ng-if="l_entries.length > 0" >
                         <tr ng-repeat="item in l_entries " ng-class="{'my_class': item.deleted == 1}">
                             <td>@{{ item.id }}</td>
-                            <td>@{{ item.unique_id }}</td>
+                           
                             <td>@{{ item.name }}</td>
                             <td>@{{ item.mobile_no }}</td>
                             <td>
@@ -112,15 +112,23 @@
 
                             <td>
                                 @if(Auth::user()->priv != 4)
-                                    @if($type == 0)
-                                        <a href="javascript:;" ng-click="checkoutCloak(item.id)" class="btn btn-danger btn-sm">Checkout</a>
-                                       
-                                    @endif
+                                    
+                                  
+                               
                                 @endif
+                                @if(Auth::user()->priv == 1 || Auth::user()->priv == 2)
+                                    
+                                    
+
+                                    <div style="margin-top:4px;"></div>
+                                    <a ng-if="item.barcodevalue" href="{{url('/admin/cloak-rooms/print-unq/1')}}/@{{item.barcodevalue}}" class="btn btn-success btn-sm" target="_blank">Print Slip</a>
+                                @endif
+
+                                <a ng-if="type == 0" href="javascript:;" ng-click="checkoutCloak(item.id)" class="btn btn-danger btn-sm">Checkout</a> 
+                                
                                 <div style="margin-top:4px;"></div>
-                                <a href="{{url('/admin/cloak-rooms/print')}}/@{{item.id}}" class="btn btn-success btn-sm" target="_blank">Print</a>
-                                <div style="margin-top:4px;"></div>
-                                 <a ng-if="item.barcodevalue" href="{{url('/admin/cloak-rooms/print-unq/1')}}/@{{item.barcodevalue}}" class="btn btn-success btn-sm" target="_blank">Print Slip</a>
+                                <a href="{{url('/admin/cloak-rooms/print-unq/2')}}/@{{item.barcodevalue}}" class="btn btn-success btn-sm" target="_blank">Print</a>
+                                
                             </td>
                         </tr>
                     </tbody>

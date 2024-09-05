@@ -11,7 +11,6 @@
                     <h2 class="">Total Shift Collection (<?php echo date("d-m-Y"); ?>)</h2>
                 </div>
                 @if(Auth::user()->priv != 2)
-
                     <div class="col-md-6 text-right" style="padding-top: 25px;">
                         <a href="{{url('/admin/shift/print/1')}}" class="btn btn-sm btn-warning"  target="_blank">
                             Print
@@ -21,11 +20,18 @@
             </div>
             <hr>
             @if(Auth::user()->priv == 2)
+            <div class="col-md-3 form-group" >
+                <select ng-model="filter.client_id" class="form-control" convert-to-number>
+                    <option value="">Select</option>
+                    <option value="@{{client.id}}" ng-repeat="client in clients">@{{client.name}}</option>
+                </select>
+                
+            </div> 
             <div class="row">
                 <div class="col-md-3 form-group">
                     <input type="text" class="datepicker form-control" ng-model="filter.input_date">
                     
-                </div>
+                </div>               
                 <div class="col-md-3 form-group" >
                     <select ng-model="filter.user_id" class="form-control" convert-to-number>
                         <option value="">Select</option>

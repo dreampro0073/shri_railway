@@ -71,4 +71,7 @@ ALTER TABLE `sitting_entries` ADD `alert_count` TINYINT(1) NOT NULL DEFAULT '0' 
 
 ALTER TABLE `users` ADD `is_auto_alert_access` TINYINT(1) NOT NULL DEFAULT '0' COMMENT '0=>false, 1=>true' AFTER `last_login`;
 
+ALTER TABLE `users` ADD `org_id` INT NULL DEFAULT NULL AFTER `last_login`;
+ALTER TABLE `clients` ADD `org_id` INT NULL DEFAULT NULL AFTER `address`;
+
 ?>

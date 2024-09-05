@@ -28,8 +28,17 @@ class ShiftController extends Controller {
 
 		$input_date = $request->input_date;
 		$user_id = $request->has('user_id')?$request->user_id:0;
-		$users = DB::table('users')->select('id','name')->where('priv','!=',4)->where("client_id", Auth::user()->client_id)->get();
-		$service_ids = Session::get('service_ids');
+		$client_id = Auth::user()->client_id;
+		if($request->client_id){
+			$client_id = $request->client_id;
+			$service_ids = DB::table("client_services")->where('status',1)->where("client_id", $client_id)->pluck($ids)->toArray();
+		} else {
+			$service_ids = Session::get('service_ids');
+		}
+
+		$users = DB::table('users')->select('id','name')->where('priv','!=',4)->where("client_id", $client_id)->get();
+		$clients = DB::table('clients')->where('org_id',Auth::user()->org_id)->pluck("name", 'id')->toArray();
+
 
 		$current_shift = Entry::checkShift();
 		$total_shift_upi = 0;
@@ -116,6 +125,7 @@ class ShiftController extends Controller {
 
 		$data['success'] = true;
 		$data['users'] = $users;
+		$data['clients'] = $clients;
 		return Response::json($data, 200, []);
 	}
 	

@@ -885,15 +885,18 @@ app.controller('shiftCtrl', function($scope , $http, $timeout , DBService) {
     $scope.canteen_data = [];
     $scope.massage_data = [];
     $scope.locker_data = [];
+    $scope.clients = [];
     $scope.filter = {
         input_date:'',
         user_id:'',
+        client_id:'',
     }
 
     $scope.clear = function(){
         $scope.filter = {
             input_date:'',
             user_id:'',
+            client_id:'',
         }
         $scope.init();
     }
@@ -910,6 +913,7 @@ app.controller('shiftCtrl', function($scope , $http, $timeout , DBService) {
             if (data.success) { 
 
                 $scope.users = data.users;                 
+                $scope.clients = data.clients;                 
                 
                 $scope.sitting_data = data.sitting_data; 
                 $scope.cloak_data = data.cloak_data; 

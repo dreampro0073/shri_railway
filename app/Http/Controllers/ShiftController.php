@@ -39,7 +39,7 @@ class ShiftController extends Controller {
 		}
 
 		$users = DB::table('users')->select('id','name')->where('priv','!=',4)->where("client_id", $client_id)->get();
-		$clients = DB::table('clients')->where('org_id', Auth::user()->org_id)->pluck("name", 'id')->toArray();
+		$clients = DB::table('clients')->where('org_id', Auth::user()->org_id)->pluck("client_name", 'id')->toArray();
 
 
 		$current_shift = Entry::checkShift();

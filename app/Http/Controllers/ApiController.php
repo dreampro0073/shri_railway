@@ -653,6 +653,7 @@ class ApiController extends Controller {
                 DB::table('daily_entry_items')->insert([
                     'canteen_item_id' => $item['canteen_item_id'],
                     'entry_id' => $entry_id,
+                    'client_id' => Auth::user()->client_id,
                     'paid_amount' => $item['paid_amount'],
                     'quantity' => $item['quantity'],
                     'created_at' => date("Y-m-d H:i:s"),

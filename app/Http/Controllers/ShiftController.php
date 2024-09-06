@@ -142,6 +142,8 @@ class ShiftController extends Controller {
 		$canteen_data = [];
 		$massage_data = [];
 		$locker_data = [];
+
+		$client_id = Auth::user()->client_id;
        
 		if(Auth::user()->priv != 2){
             $user_id = Auth::id();
@@ -153,7 +155,7 @@ class ShiftController extends Controller {
         $input_date = date("Y-m-d");
 
 		if(in_array(1, $service_ids)){
-			$sitting_data = Sitting::totalShiftData($input_date,$user_id);
+			$sitting_data = Sitting::totalShiftData($input_date,$user_id,$client_id);
 			$total_shift_upi += $sitting_data['total_shift_upi'];
 			$total_shift_cash += $sitting_data['total_shift_cash'];
 			$total_collection += $sitting_data['total_collection'];
@@ -161,7 +163,7 @@ class ShiftController extends Controller {
 		}
 
 		if(in_array(2, $service_ids)){
-			$cloak_data = CloakRoom::totalShiftData($input_date,$user_id);
+			$cloak_data = CloakRoom::totalShiftData($input_date,$user_id,$client_id);
 			$total_shift_upi += $cloak_data['total_shift_upi'];
 			$total_shift_cash += $cloak_data['total_shift_cash'];
 			$total_collection += $cloak_data['total_collection'];
@@ -169,7 +171,7 @@ class ShiftController extends Controller {
 		}
 		
 		if(in_array(3, $service_ids)){
-			$canteen_data = Canteen::totalShiftData($input_date,$user_id);
+			$canteen_data = Canteen::totalShiftData($input_date,$user_id,$client_id);
 			$total_shift_upi += $canteen_data['total_shift_upi'];
 			$total_shift_cash += $canteen_data['total_shift_cash'];
 			$total_collection += $canteen_data['total_collection'];
@@ -177,7 +179,7 @@ class ShiftController extends Controller {
 		}		
 
 		if(in_array(4, $service_ids)){
-			$massage_data = Massage::totalShiftData($input_date,$user_id);
+			$massage_data = Massage::totalShiftData($input_date,$user_id,$client_id);
 			$total_shift_upi += $massage_data['total_shift_upi'];
 			$total_shift_cash += $massage_data['total_shift_cash'];
 			$total_collection += $massage_data['total_collection'];
@@ -185,7 +187,7 @@ class ShiftController extends Controller {
 		}		
 
 		if(in_array(5, $service_ids)){
-			$locker_data = Locker::totalShiftData($input_date,$user_id);
+			$locker_data = Locker::totalShiftData($input_date,$user_id,$client_id);
 			$total_shift_upi += $locker_data['total_shift_upi'];
 			$total_shift_cash += $locker_data['total_shift_cash'];
 			$total_collection += $locker_data['total_collection'];

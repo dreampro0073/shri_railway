@@ -1100,7 +1100,7 @@ app.controller('canteenItemsCtrl', function($scope , $http, $timeout , DBService
         $scope.loading = true;
         DBService.postCall($scope.formData, '/api/canteen-items/store').then((data) => {
             if (data.success) {
-                // alert(data.message);
+                alert(data.message);
                 $("#exampleModalCenter").modal("hide");
 
                 $scope.formData = {

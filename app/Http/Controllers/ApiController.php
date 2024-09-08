@@ -346,8 +346,13 @@ class ApiController extends Controller {
             $rules['barcodevalue'] = 'required';
 
         }else{
-            $rules['barcodevalue'] = 'required|unique:canteen_items';
+            $c_item = CanteenItem::find($request->id);
+            if($c_item->client_id == $client_id){
+                $rules['barcodevalue'] = 'required|unique:canteen_items';
 
+            }else{
+                $rules['barcodevalue'] = 'required';
+            }
         }
 
         $validator = Validator::make($cre,$rules);

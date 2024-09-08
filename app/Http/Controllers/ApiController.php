@@ -607,13 +607,19 @@ class ApiController extends Controller {
     public function store(Request $request){
         $user = Auth::user();
         $client_id = $user->client_id;
+        $name = $user->name;
+        if($request->has('name')){
+            if($request->name !=''){
+                $name = $request->name;
+            }
+        }
 
         $unique_id = strtotime("now");
         $ins_data = [
             'unique_id' => strtotime("now"),
             'client_id' => $user->client_id,
             'added_by' => $user->id,
-            'name' => $request->has('name')?$request->name:Auth::user()->name,
+            'name' => $name,
             'mobile' => $request->has('mobile')?$request->mobile:null,
             'unique_id' => $unique_id,
             'total_amount' =>$request->total_amount,

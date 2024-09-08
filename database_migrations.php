@@ -76,5 +76,7 @@ ALTER TABLE `clients` ADD `org_id` INT NULL DEFAULT NULL AFTER `address`;
 
 ALTER TABLE `clients` ADD `client_name` VARCHAR(255) NULL DEFAULT NULL AFTER `name`;
 ALTER TABLE `daily_entry_items` ADD `client_id` INT NULL DEFAULT NULL AFTER `entry_id`;
+ALTER TABLE `lockers` ADD `client_id` INT NOT NULL DEFAULT '0' AFTER `locker_no`;
+UPDATE lockers SET client_id = 1;
 
 ?>

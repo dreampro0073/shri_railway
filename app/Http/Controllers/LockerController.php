@@ -22,7 +22,8 @@ class LockerController extends Controller {
 	}
 	
 	public function initLocker(Request $request){
-		$l_entries = DB::table('locker_entries')->select('locker_entries.*');
+		$client_id = Auth::user()->client_id;
+		$l_entries = DB::table('locker_entries')->select('locker_entries.*')->where("locker_entries.client_id", $client_id);
 		if($request->unique_id){
 			$l_entries = $l_entries->where('locker_entries.unique_id', 'LIKE', '%'.$request->unique_id.'%');
 		}
@@ -41,7 +42,7 @@ class LockerController extends Controller {
 		$l_entries = $l_entries->orderBy('id', "DESC")->get();
 
 		foreach ($l_entries as $key => $item) {
-			$bm_amount = DB::table('locker_penalty')->where('locker_entry_id','=',$item->id)->sum('paid_amount');
+			$bm_amount = DB::table('locker_penalty')->where("locker_penalty.client_id", $client_id)->where('locker_entry_id','=',$item->id)->sum('paid_amount');
 			$item->checkout_date = date("d-m-Y H:i:s", strtotime($item->checkout_date));
 			$item->checkin_date = date("d-m-Y H:i:s", strtotime($item->checkin_date));
 			$item->sh_paid_amount = $item->paid_amount + $bm_amount;
@@ -61,7 +62,8 @@ class LockerController extends Controller {
 		return Response::json($data, 200, []);
 	}
 	public function editLocker(Request $request){
-		$l_entry = Locker::where('id', $request->entry_id)->first();
+		$client_id = Auth::user()->client_id;
+		$l_entry = Locker::where('id', $request->entry_id)->where("client_id", $client_id)->first();
 
 		$sl_lockers = [];
 
@@ -75,13 +77,13 @@ class LockerController extends Controller {
 			$sl_lockers = explode(',', $l_entry->locker_ids);
 
 
-			$bm_amount = DB::table('locker_penalty')->where('locker_entry_id','=',$l_entry->id)->sum('paid_amount');
+			$bm_amount = DB::table('locker_penalty')->where("client_id", $client_id)->where('locker_entry_id','=',$l_entry->id)->sum('paid_amount');
 			$l_entry->paid_amount = $l_entry->paid_amount + $bm_amount;
 
 			$l_entry->bm_amount = $bm_amount;
 		}
 
-		$data["rate_list"] = DB::table("locker_rate_list")->where("client_id", Auth::user()->client_id)->first();
+		$data["rate_list"] = DB::table("locker_rate_list")->where("client_id", $client_id)->first();
 
 		$data['success'] = true;
 		$data['l_entry'] = $l_entry;
@@ -103,10 +105,9 @@ class LockerController extends Controller {
 	}
 
 	public function store(Request $request){
-
+		$client_id = Auth::user()->client_id;
 		$check_shift = Entry::checkShift();
 		$user_id = Auth::id();
-
 
 		$cre = [
 			'name'=>$request->name,
@@ -124,7 +125,7 @@ class LockerController extends Controller {
 			$paid_amount = $request->paid_amount;
 			if($request->id){
 				$group_id = $request->id;
-				$entry = Locker::find($request->id);
+				$entry = Locker::where("client_id", $client_id)->find($request->id);
 				$message = "Updated Successfully!";
 				$entry->check_in = date("H:i:s",strtotime($request->check_in));
 				
@@ -136,6 +137,7 @@ class LockerController extends Controller {
 					'shift' => $check_shift,
 					'date' =>$date,
 					'added_by' =>Auth::id(),
+					'client_id' =>$client_id,
 					'current_time' => date("H:i:s"),
 					'created_at' => date('Y-m-d H:i:s'),
 				]);
@@ -154,6 +156,7 @@ class LockerController extends Controller {
 
 			}
 
+			$entry->client_id = $client_id;
 			$entry->name = $request->name;
 			$entry->nos = $request->nos;
 			$entry->pnr_uid = $request->pnr_uid;
@@ -170,7 +173,7 @@ class LockerController extends Controller {
 
 			$entry->save();
 
-			DB::table('lockers')->whereIn('id',$request->sl_lockers)->update([
+			DB::table('lockers')->whereIn('id',$request->sl_lockers)->where("client_id", $client_id)->update([
 				'status' => 1,
 			]);
 			
@@ -186,10 +189,10 @@ class LockerController extends Controller {
 	}
 
 	public function printPost($id = 0){
+		$client_id = Auth::user()->client_id;
+        $print_data = DB::table('locker_entries')->where("client_id", $client_id)->where('id', $id)->first();
 
-        $print_data = DB::table('locker_entries')->where('id', $id)->first();
-
-        $bm_amount = DB::table('locker_penalty')->where('locker_entry_id','=',$print_data->id)->sum('paid_amount');
+        $bm_amount = DB::table('locker_penalty')->where('locker_entry_id','=',$print_data->id)->where("client_id", $client_id)->sum('paid_amount');
 			$print_data->paid_amount = $print_data->paid_amount + $bm_amount;
 
 			$print_data->bm_amount = $bm_amount;
@@ -198,15 +201,15 @@ class LockerController extends Controller {
 	}
 
     public function checkoutInit(Request $request){
-
+    	$client_id = Auth::user()->client_id;
     	$now_time = strtotime(date("Y-m-d H:i:s",strtotime("+5 minutes")));
 
-    	$l_entry = Locker::where('id', $request->entry_id)->first();
+    	$l_entry = Locker::where('id', $request->entry_id)->where("client_id", $client_id)->first();
     	$checkout_time = strtotime($l_entry->checkout_date);
 
     	if($checkout_time > $now_time){
     		$data['timeOut'] = false;
-    		$entry = Locker::find($request->entry_id);
+    		$entry = Locker::where("client_id", $client_id)->find($request->entry_id);
     		$entry->status = 1; 
     		$entry->checkout_status = 1; 
     		$entry->save();
@@ -215,7 +218,7 @@ class LockerController extends Controller {
 			$locker_ids = explode(',', $l_entry->locker_ids);
 
 
-    		DB::table('lockers')->whereIn('id',$locker_ids)->update(['status'=>0]);
+    		DB::table('lockers')->where("client_id", $client_id)->whereIn('id',$locker_ids)->update(['status'=>0]);
     
     	} else {
     		$extra_time = round($now_time - $checkout_time)/(60 * 60 * 24);
@@ -246,9 +249,9 @@ class LockerController extends Controller {
     }
 
     public function checkoutStore(Request $request){
+    	$client_id = Auth::user()->client_id;
     	$check_shift = Entry::checkShift();
-    	$entry = Locker::find($request->id);
-
+    	$entry = Locker::where("client_id", $client_id)->find($request->id);
 
 		$entry->status = 1; 
 		$entry->checkout_status = 1;
@@ -261,24 +264,25 @@ class LockerController extends Controller {
 
 		DB::table('locker_penalty')->insert([
 			'locker_entry_id' => $entry->id,
-			'penalty_amount' => $request->balance,
+			'paid_amount' => $request->balance,
 			'pay_type' => $request->pay_type,
 			'shift' => $check_shift,
 			'date' =>$date,
 			'added_by' =>Auth::id(),
 			'current_time' => date("H:i:s"),
 			'created_at' => date('Y-m-d H:i:s'),
+			'client_id' => $client_id,
 		]);
 
 		$locker_ids = explode(',', $request->locker_ids);
 
-		DB::table('lockers')->whereIn('id',$locker_ids)->update(['status'=>0]);
+		DB::table('lockers')->where("client_id", $client_id)->whereIn('id',$locker_ids)->update(['status'=>0]);
 		$data['success'] = true;
 		return Response::json($data, 200, []);
     }
     
     public function delete($id){
-    	DB::table('locker_entries')->where('id',$id)->update([
+    	DB::table('locker_entries')->where("client_id", $client_id)->where('id',$id)->update([
     		'deleted' => 1,
     		'delete_by' => Auth::id(),
     		'delete_time' => date("Y-m-d H:i:s"),

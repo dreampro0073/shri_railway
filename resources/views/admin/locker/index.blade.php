@@ -61,7 +61,7 @@
                     </thead>
                     <tbody ng-if="l_entries.length > 0" >
                         <tr ng-repeat="item in l_entries " ng-class="{'my_class': item.deleted == 1}">
-                            <td>@{{ $index+1 }}</td>
+                            <td>@{{ $index+1 }} </td>
                             <td>@{{ item.unique_id }}</td>
                             <td>@{{ item.locker_ids }}</td>
                             <td>@{{ item.name }}</td>

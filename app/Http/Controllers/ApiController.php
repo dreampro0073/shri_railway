@@ -346,10 +346,9 @@ class ApiController extends Controller {
             $rules['barcodevalue'] = 'required';
 
         }else{
-            $c_item = CanteenItem::find($request->id);
-            if($c_item->client_id == $client_id){
+            $c_item = CanteenItem::where('barcodevalue', $request->barcodevalue)->where('client_id', $client_id)->first();
+            if($c_item){
                 $rules['barcodevalue'] = 'required|unique:canteen_items';
-
             }else{
                 $rules['barcodevalue'] = 'required';
             }

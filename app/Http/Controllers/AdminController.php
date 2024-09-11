@@ -84,7 +84,7 @@ class AdminController extends Controller {
 	}
 	public function setBarcode(){
         
-        $items = DB::table('canteen_items')->where('is_manual',1)->whereNull('barcodevalue')->where('barvalue_avail',0)->get();
+        $items = DB::table('canteen_items')->where('is_manual',1)->whereNull('barcodevalue')->where('barvalue_avail',0)->where('client_id',Auth::user()->client_id)->get();
 
         $barcode = strtotime("now")."12";
         $count = 0;
@@ -105,7 +105,7 @@ class AdminController extends Controller {
 	}
 	public function printItemsBarcode(){
         
-        $items = DB::table('canteen_items')->where('is_manual',1)->get();
+        $items = DB::table('canteen_items')->where('is_manual',1)->where('client_id',Auth::user()->client_id)->get();
         // return view('admin.canteens.canteen_items.mbarcode',compact('items'));
 
     	// return $pdf->download('invoice.pdf');

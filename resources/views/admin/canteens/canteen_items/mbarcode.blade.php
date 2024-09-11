@@ -9,14 +9,16 @@
 		</tr>
 	</thead>
 	<tbody>
+		<?php $count =1; ?>
 		@foreach($items as $key => $item)
 		<tr>
 
-			<td>{{$key++}}</td>
+			<td>{{$count}}</td>
 			<td>{{$item->item_name}}</td>
 			<td>{{$item->price}}</td>
 			<td>{{$item->barcodevalue}} </td>
 		</tr>
+		<?php $count++; ?>
 		@endforeach
 	</tbody>
 </table>

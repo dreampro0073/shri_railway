@@ -79,4 +79,48 @@ ALTER TABLE `daily_entry_items` ADD `client_id` INT NULL DEFAULT NULL AFTER `ent
 ALTER TABLE `lockers` ADD `client_id` INT NOT NULL DEFAULT '0' AFTER `locker_no`;
 UPDATE lockers SET client_id = 1;
 
+ALTER TABLE `canteen_items` ADD `is_manual` TINYINT NOT NULL DEFAULT '0' AFTER `added_by`;
+ALTER TABLE `canteen_items` ADD `barvalue_avail` TINYINT NOT NULL DEFAULT '1' AFTER `is_manual`;
+INSERT INTO canteen_items(canteen_id,item_name,price,is_manual,barvalue_avail) VALUES (2,'CREAM BUN', 30,1,0);
+INSERT INTO canteen_items(canteen_id,item_name,price,is_manual,barvalue_avail) VALUES (2,'BROWNI', 60,1,0);
+INSERT INTO canteen_items(canteen_id,item_name,price,is_manual,barvalue_avail) VALUES (2,'CREAM ROLL', 20,1,0);
+INSERT INTO canteen_items(canteen_id,item_name,price,is_manual,barvalue_avail) VALUES (2,'VEG PATIES', 30,1,0);
+INSERT INTO canteen_items(canteen_id,item_name,price,is_manual,barvalue_avail) VALUES (2,'PANEER PATIES', 40,1,0);
+INSERT INTO canteen_items(canteen_id,item_name,price,is_manual,barvalue_avail) VALUES (2,'CUP CAKE', 30,1,0);
+INSERT INTO canteen_items(canteen_id,item_name,price,is_manual,barvalue_avail) VALUES (2,'PESTRY', 50,1,0);
+INSERT INTO canteen_items(canteen_id,item_name,price,is_manual,barvalue_avail) VALUES (2,'HOTDOG', 60,1,0);
+INSERT INTO canteen_items(canteen_id,item_name,price,is_manual,barvalue_avail) VALUES (2,'PIZZA BASKET', 70,1,0);
+INSERT INTO canteen_items(canteen_id,item_name,price,is_manual,barvalue_avail) VALUES (2,'SWEET PUFF', 20,1,0);
+INSERT INTO canteen_items(canteen_id,item_name,price,is_manual,barvalue_avail) VALUES (2,'PANEER PAW ROLL', 70,1,0);
+INSERT INTO canteen_items(canteen_id,item_name,price,is_manual,barvalue_avail) VALUES (2,'ONION RINGS', 30,1,0);
+INSERT INTO canteen_items(canteen_id,item_name,price,is_manual,barvalue_avail) VALUES (2,'VEG WRAP', 50,1,0);
+INSERT INTO canteen_items(canteen_id,item_name,price,is_manual,barvalue_avail) VALUES (2,'DONUT', 50,1,0);
+INSERT INTO canteen_items(canteen_id,item_name,price,is_manual,barvalue_avail) VALUES (2,'BAKED SAMOSA', 25,1,0);
+INSERT INTO canteen_items(canteen_id,item_name,price,is_manual,barvalue_avail) VALUES (2,'PANEER WRAP', 70, 1,0);
+INSERT INTO canteen_items(canteen_id,item_name,price,is_manual,barvalue_avail) VALUES (2,'VEG SANDWICH', 60,1,0);
+INSERT INTO canteen_items(canteen_id,item_name,price,is_manual,barvalue_avail) VALUES (2,'CHEESE SANDWICH', 70,1,0);
+INSERT INTO canteen_items(canteen_id,item_name,price,is_manual,barvalue_avail) VALUES (2,'VEG TIKKA SANDWICH', 60, 1,0);
+INSERT INTO canteen_items(canteen_id,item_name,price,is_manual,barvalue_avail) VALUES (2,'PANEER TIKKA SANDWICH',0, 80,1);
+INSERT INTO canteen_items(canteen_id,item_name,price,is_manual,barvalue_avail) VALUES (2,'SLICE CAKE', 120,1,0);
+INSERT INTO canteen_items(canteen_id,item_name,price,is_manual,barvalue_avail) VALUES (2,'PIZZA', 100,1,0);
+INSERT INTO canteen_items(canteen_id,item_name,price,is_manual,barvalue_avail) VALUES (2,'VEG BURGER', 50,1,0);
+INSERT INTO canteen_items(canteen_id,item_name,price,is_manual,barvalue_avail) VALUES (2,'CHEESE BURGER', 60,1,0);
+INSERT INTO canteen_items(canteen_id,item_name,price,is_manual,barvalue_avail) VALUES (2,'CHEESE COOKIE', 130,1,0);
+INSERT INTO canteen_items(canteen_id,item_name,price,is_manual,barvalue_avail) VALUES (2,'SEB COOKIE', 110,1,0);
+INSERT INTO canteen_items(canteen_id,item_name,price,is_manual,barvalue_avail) VALUES (2,'CHOCO CHIPS COOKIES',0, 130,1);
+INSERT INTO canteen_items(canteen_id,item_name,price,is_manual,barvalue_avail) VALUES (2,'JEERA COOKIE', 120,1,0);
+INSERT INTO canteen_items(canteen_id,item_name,price,is_manual,barvalue_avail) VALUES (2,'VEG MOMO', 60, 1,0);
+INSERT INTO canteen_items(canteen_id,item_name,price,is_manual,barvalue_avail) VALUES (2,'CHICKEN MOM', 70, 1,0);
+INSERT INTO canteen_items(canteen_id,item_name,price,is_manual,barvalue_avail) VALUES (2,'NORTH INDIAN VEG THALI',0, 140,1);
+INSERT INTO canteen_items(canteen_id,item_name,price,is_manual,barvalue_avail) VALUES (2,'NORTH INDIA NON-VEG THALI',0, 180,1);
+INSERT INTO canteen_items(canteen_id,item_name,price,is_manual,barvalue_avail) VALUES (2,'EGG CURRY WITH RICE', 100,0, 1);
+INSERT INTO canteen_items(canteen_id,item_name,price,is_manual,barvalue_avail) VALUES (2,'CHICKEN CURRY WITH RICE',0, 150, 1);
+INSERT INTO canteen_items(canteen_id,item_name,price,is_manual,barvalue_avail) VALUES (2,'RED TEA', 30, 1,0);
+INSERT INTO canteen_items(canteen_id,item_name,price,is_manual,barvalue_avail) VALUES (2,'SPECIAL TEA', 20,1,0);
+INSERT INTO canteen_items(canteen_id,item_name,price,is_manual,barvalue_avail) VALUES (2,'SPECIAL TEA -SUGAR FREE',0, 30,1);
+INSERT INTO canteen_items(canteen_id,item_name,price,is_manual,barvalue_avail) VALUES (2,'BLACK TEA', 20,1,0);
+INSERT INTO canteen_items(canteen_id,item_name,price,is_manual,barvalue_avail) VALUES (2,'GREEN TEA', 30,1,0);
+INSERT INTO canteen_items(canteen_id,item_name,price,is_manual,barvalue_avail) VALUES (2,'COFFEE', 20,1,0);
+INSERT INTO canteen_items(canteen_id,item_name,price,is_manual,barvalue_avail) VALUES (2,'COFFEE CAPACHINO', 30,1,0);
+
 ?>

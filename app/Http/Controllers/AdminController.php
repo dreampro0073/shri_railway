@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Redirect, Validator, Hash, Response, Session, DB;
 
 use App\Models\User, App\Models\Plan;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class AdminController extends Controller {
 
@@ -80,5 +81,44 @@ class AdminController extends Controller {
 		}else{
 			return "NO data found";
 		}
+	}
+	public function setBarcode(){
+        
+        $items = DB::table('canteen_items')->where('is_manual',1)->whereNull('barcodevalue')->where('barvalue_avail',0)->get();
+
+        $barcode = strtotime("now")."12";
+        $count = 0;
+
+        foreach ($items as $key => $item) {
+        	$check = DB::table("canteen_items")->where('barcodevalue',$barcode)->first();
+        	if($check){
+        		$barcode = $barcode+30;
+        	}
+        	DB::table('canteen_items')->where('id',$item->id)->update([
+        		'barcodevalue' => $barcode+$key,
+        		'barvalue_avail' => 1,
+        	]);
+        	$count++;
+        }
+
+        return "Done".$count;
+	}
+	public function printItemsBarcode(){
+        
+        $items = DB::table('canteen_items')->where('is_manual',1)->get();
+        // return view('admin.canteens.canteen_items.mbarcode',compact('items'));
+
+    	// return $pdf->download('invoice.pdf');
+
+        // foreach ($items as $key => $item) {
+        // 	$generator = new \Picqer\Barcode\BarcodeGeneratorHTML();
+        // 	$barcode = $generator->getBarcode($item->barcodevalue, $generator::TYPE_CODE_128);
+  
+        
+        // }
+
+        $pdf = Pdf::loadView('admin.canteens.canteen_items.mbarcode',compact('items'));
+
+    	return $pdf->download('items.pdf');
 	}
 }

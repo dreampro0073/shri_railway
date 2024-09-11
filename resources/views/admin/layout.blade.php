@@ -69,10 +69,7 @@
                             <li class="@if(isset($sidebar)) @if($sidebar == 'export') active @endif @endif">
                                 <a href="{{url('/admin/cloak-rooms/export')}}"><i class="fa fa-medkit" aria-hidden="true"></i>Export Cloakroom</a>
                             </li>
-                        @endif
-
-
-                        
+                        @endif                     
                         @if(in_array(3, $service_ids) || Auth::user()->priv == 1)
                             @if(Auth::user()->priv == 2 || Auth::user()->priv == 1)
                                 <li class="@if(isset($sidebar)) @if($sidebar == 'cant_items') active @endif @endif">

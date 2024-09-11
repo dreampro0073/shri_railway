@@ -12,7 +12,7 @@ use App\Models\Entry, App\Models\User, App\Models\Sitting,App\Models\Massage,App
 class SittingController extends Controller {
 
 	public function print1(Request $request){
-		$entries = DB::table('sitting_entries')->select('name','pnr_uid','date','check_in','no_of_adults','no_of_children','no_of_baby_staff');
+		$entries = DB::table('sitting_entries')->select('id','name','pnr_uid','date','check_in','no_of_adults','no_of_children','no_of_baby_staff','paid_amount');
 
 		if($request->has('from_date')){
 			$entries = $entries->where('date','>=',date("Y-m-d",strtotime($request->from_date)));
@@ -22,6 +22,7 @@ class SittingController extends Controller {
 		}
 		$entries = $entries->orderBy('id','DESC')->get();
 
+		
 		$str = "<table cellspacing='0' cellpadding='5' border='1'>"; 
 		$str .= "<tr>";
 		$str .= "<td>SN</td>";
@@ -32,24 +33,26 @@ class SittingController extends Controller {
 		$str .= "<td>Adults</td>";
 		$str .= "<td>Children</td>";
 		$str .= "<td>Baby/Staff</td>";
+		$str .= "<td>Amount</td>";
 		
 		$str .= "</tr>";
 		$count = 1;
 
 		foreach ($entries as $entry) {
 
-			
+			$e_sum = Sitting::eSum($entry->id);
+			$entry->paid_amount = $entry->paid_amount+$e_sum;
 
 		    $str .= "<tr>";
 		    $str .= "<td>".$count."</td>";
 		    $str .= "<td>".$entry->name."</td>";
 		    $str .= "<td>".$entry->pnr_uid."</td>";
-		    $str .= "<td>".$entry->date."</td>";
-		    $str .= "<td>".$entry->check_in."</td>";
+		    $str .= "<td>".date("d-m-Y",strtotime($entry->date))."</td>";
+		    $str .= "<td>".date("h:i A",strtotime($entry->check_in))."</td>";
 		    $str .= "<td>".$entry->no_of_adults."</td>";
 		    $str .= "<td>".$entry->no_of_children."</td>";
 		    $str .= "<td>".$entry->no_of_baby_staff."</td>";
-		    
+		    $str .= "<td>".$entry->paid_amount."</td>";   
 		    $str .= "</tr>";
 		    $count++;
 		    

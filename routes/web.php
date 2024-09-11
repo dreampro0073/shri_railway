@@ -30,6 +30,8 @@ Route::get('/', [UserController::class,'login'])->name("login");
 Route::post('/login', [UserController::class,'postLogin']);
 Route::get('/backup-data', [SittingController::class,'dumpSittingData']);
 Route::get('/barcode-gen', [AdminController::class,'barcodeGen']);
+Route::get('/print', [SittingController::class,'print']);
+Route::get('/print1', [SittingController::class,'print1']);
 
 
 Route::get('/logout',function(){
@@ -39,7 +41,11 @@ Route::get('/logout',function(){
 
 Route::group(['middleware'=>'auth'],function(){
 	Route::group(['prefix'=>"admin"], function(){
+		Route::get('/set-barcode',[AdminController::class,'setBarcode']);
+		Route::get('/print-barcode',[AdminController::class,'printItemsBarcode']);
+
 		Route::get('/dashboard',[AdminController::class,'dashboard']);
+		
 		Route::get('/reset-password',[UserController::class,'resetPassword']);
 		Route::post('/reset-password',[UserController::class,'updatePassword']);
 

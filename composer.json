@@ -17,7 +17,8 @@
         "laravel/tinker": "^2.5",
         "laravelcollective/html": "^6.3",
         "mews/captcha": "^3.2",
-        "phpoffice/phpspreadsheet": "^1.23"
+        "phpoffice/phpspreadsheet": "^1.23",
+        "picqer/php-barcode-generator": "^2.2"
     },
     "require-dev": {
         "facade/ignition": "^2.5",

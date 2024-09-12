@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Shri Tech</title>
+    <title>Shri Web Technology</title>
     <link rel="stylesheet" type="text/css" href="{{url('bootstrap3/css/bootstrap.min.css')}}">
     <link rel="stylesheet" type="text/css" href="{{url('assets/css/custom.css')}}">
 </head>
@@ -14,7 +14,7 @@
 
             <div class="col-md-6 col-md-offset-3 login-box">
                 <div>
-                    <span style="font-size: 18px;font-weight: bold;font-style: italic;margin-bottom: 2px;text-align: center;display: block;">Shri Tech</span> 
+                    <span style="font-size: 18px;font-weight: bold;font-style: italic;margin-bottom: 2px;text-align: center;display: block;">Shri Web Technology</span> 
                     
                     <div class="panel panel-default">
                         <div class="panel-body" style="box-shadow:0 1px 6px 0 rgba(0, 0, 0, 0.3);padding: 28px;width: 500px;">
@@ -67,6 +67,9 @@
         </div>
 
     </div>
+    <span style="position: absolute;top: 10px;right: 10px;">
+        2024 &copy; Powered by Shri Web Technology <br> <a href="mailto:shri.webtechnology@gmail.com">shri.webtechnology@gmail.com</a>
+    </span>
 </div>
 
 <script type="text/javascript">

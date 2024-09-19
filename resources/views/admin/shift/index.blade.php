@@ -29,7 +29,7 @@
                 </div> 
 
                 <div class="col-md-3 form-group">
-                    <input type="text" class="datepicker form-control" ng-model="filter.input_date">
+                    <input type="text" placeholder="DD-MM-YYYY" class="datepicker form-control" ng-model="filter.input_date">
                     
                 </div>               
                 <div class="col-md-3 form-group" >

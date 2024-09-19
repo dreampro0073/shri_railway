@@ -123,4 +123,10 @@ INSERT INTO canteen_items(canteen_id,item_name,price,is_manual,barvalue_avail) V
 INSERT INTO canteen_items(canteen_id,item_name,price,is_manual,barvalue_avail) VALUES (2,'COFFEE', 20,1,0);
 INSERT INTO canteen_items(canteen_id,item_name,price,is_manual,barvalue_avail) VALUES (2,'COFFEE CAPACHINO', 30,1,0);
 
+CREATE TABLE `nnhp`.`total_incomes` ( `id` INT NOT NULL , `date` DATE NULL DEFAULT NULL , `total_amount` INT NOT NULL , `advance_amount` INT NOT NULL , `back_balance` INT NOT NULL , `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , `created_at` TIMESTAMP NULL DEFAULT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+ALTER TABLE `total_incomes` ADD `added_by` INT NOT NULL DEFAULT '0' AFTER `back_balance`;
+ALTER TABLE `total_incomes` ADD `all_total` INT NOT NULL DEFAULT '0' AFTER `back_balance`;
+ALTER TABLE `total_incomes` CHANGE `total_amount` `total_amount` INT(11) NOT NULL DEFAULT '0', CHANGE `back_balance` `back_balance` INT(11) NOT NULL DEFAULT '0';
+ALTER TABLE `incomes` ADD `income_id` INT NOT NULL DEFAULT '0' AFTER `id`;
+
 ?>

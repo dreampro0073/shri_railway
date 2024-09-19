@@ -10,7 +10,9 @@
 
     <link rel="stylesheet" type="text/css" href="{{url('bootstrap3/css/bootstrap.min.css')}}">
     <link rel="stylesheet" type="text/css" href="{{url('assets/font-awesome/css/font-awesome.min.css')}}">
-    <link rel="stylesheet" type="text/css" href="https://unpkg.com/gijgo@1.9.14/css/gijgo.min.css">
+    <!-- <link rel="stylesheet" type="text/css" href="https://unpkg.com/gijgo@1.9.14/css/gijgo.min.css"> -->
+
+    <link rel="stylesheet" type="text/css" href="{{url('plugins/bootstrap-datepicker/css/datepicker3.css')}}">
 
     <link href="{{url('assets/css/selectize.css')}}" rel="stylesheet" type="text/css"/>
     
@@ -85,6 +87,17 @@
                         <li class="@if(isset($sidebar)) @if($sidebar == 'shift') active @endif @endif">
                             <a href="{{url('/admin/shift/current')}}"><i class="fa fa-industry" aria-hidden="true"></i>Shift Status</a>
                         </li>
+
+                        @if(Auth::user()->priv == 2)
+                        <li class="@if(isset($sidebar)) @if($sidebar == 'income') active @endif @endif">
+                            <a href="{{url('/admin/income')}}"><i class="fa fa-medkit" aria-hidden="true"></i>Income</a>
+                        </li>
+
+                        <li class="@if(isset($sidebar)) @if($sidebar == 'expenses') active @endif @endif">
+                            <a href="{{url('/admin/expenses')}}"><i class="fa fa-sitemap"></i>Expenses</a>
+                        </li>
+
+                        @endif
                         @if(Auth::user()->priv == 2)
                             <li class="@if(isset($sidebar)) @if($sidebar == 'users') active @endif @endif">
                                 <a href="{{url('/admin/users')}}"><i class="fa fa-users" aria-hidden="true"></i>Users</a>
@@ -124,29 +137,32 @@
     <script type="text/javascript" src="{{url('assets/scripts/jquery.min.js')}}"></script>
     <script type="text/javascript" src="{{url('bootstrap3/js/bootstrap.min.js')}}"></script>
     <!-- <script type="text/javascript" src="{{url('date/bootstrapp-time.min.js')}}"></script> -->
-     <script src="https://unpkg.com/gijgo@1.9.14/js/gijgo.min.js" type="text/javascript"></script>
+     <!-- <script src="https://unpkg.com/gijgo@1.9.14/js/gijgo.min.js" type="text/javascript"></script> -->
+    <script type="text/javascript" src="{{url('plugins/bootstrap-datepicker/js/bootstrap-datepicker.js')}}"></script>
 
     <script>
-        $('.datepicker').datepicker({
-            uiLibrary: 'bootstrap4',
-            // format: 'dd/mm/YYYY',
-        });
-        $('.datepicker1').datepicker({
-            uiLibrary: 'bootstrap4',
-            // format: 'dd/mm/YYYY',
-        });
+        // $('.datepicker').datepicker({
+        //     uiLibrary: 'bootstrap4',
+        //     // format: 'dd/mm/YYYY',
+        // });
+        // $('.datepicker1').datepicker({
+        //     uiLibrary: 'bootstrap4',
+        //     // format: 'dd/mm/YYYY',
+        // });
     </script>
     <script type="text/javascript" src="{{url('assets/scripts/selectize.min.js')}}" ></script>
     <script type="text/javascript" src="{{url('assets/scripts/angular.min.js')}}" ></script>
+    <script type="text/javascript" src="{{url('assets/scripts/ng-file-upload.min.js')}}" ></script>
     <script type="text/javascript" src="{{url('assets/scripts/angular-selectize.js')}}" ></script>
     
     <script type="text/javascript" src="{{url('assets/scripts/jcs-auto-validate.js')}}" ></script>
-    <!-- <script type="text/javascript" src="{{url('assets/js/custom.js')}}"></script> -->
+    <script type="text/javascript" src="{{url('assets/scripts/core/custom.js')}}"></script>
     <script type="text/javascript" src="{{url('assets/scripts/core/app.js')}}" ></script>
     <script type="text/javascript" src="{{url('assets/scripts/core/services.js')}}" ></script>
     <script type="text/javascript" type="text/javascript" src="{{url('assets/scripts/core/controller.js?v='.$version)}}"></script>
-
     <script type="text/javascript" type="text/javascript" src="{{url('assets/scripts/core/checkout_alert.js?v='.$version)}}"></script>
+    @yield('footer_scripts')
+
     <script>
       angular.module("app").constant("CSRF_TOKEN", "{{ csrf_token() }}");
     </script>

@@ -121,4 +121,29 @@ class AdminController extends Controller {
 
     	return $pdf->download('items.pdf');
 	}
+
+	public function uploadFile(Request $request){
+        $destination = 'uploads/';
+        
+        if($request->media){
+            $file = $request->media;
+            $extension = $request->media->getClientOriginalExtension();
+            if(in_array($extension, User::fileExtensions())){
+                $name = strtotime("now").'.'.strtolower($extension);
+                $file = $file->move($destination, $name);
+                $data["media"] = $destination.$name;
+
+                $data["success"] = true;
+                $data["media_link"] = url($destination.$name);
+            }else{
+                $data['success'] = false;
+                $data['message'] = 'Invalid file format';
+            }
+        }else{
+            $data['success'] = false;
+            $data['message'] ='file not found';
+        }
+
+        return Response::json($data, 200, array());
+    }
 }

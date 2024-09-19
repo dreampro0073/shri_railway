@@ -1,6 +1,6 @@
 var app = angular.module('app', [
 	'jcs-autoValidate',
-  // 'ngFileUpload',
+  'ngFileUpload',
   'selectize'
 ]);
 

@@ -304,3 +304,30 @@ app.controller('IncomeCtrl', function($scope , $http, $timeout , DBService, Uplo
 
 
 });
+
+app.controller('SummaryCtrl', function($scope , $http, $timeout , DBService, Upload) {
+
+    $scope.loading = false;
+    $scope.searchData = { };
+
+
+    $scope.init = function(){
+        $scope.loading = true;
+        DBService.postCall($scope.searchData,'/api/summary/init').then(function(data){
+            if(data.success){
+                $scope.clients = data.clients;
+            }
+
+            $scope.loading = false;
+        }); 
+    }
+    $scope.onSearch = function(){
+        $scope.init();
+    }
+    
+    $scope.clearFilter = function(){
+        $scope.searchData = { };
+        $scope.init();
+    }
+
+});

@@ -128,6 +128,10 @@ Route::group(['middleware'=>'auth'],function(){
 			Route::get('/add',[IncomeController::class,'editForm']);
 			Route::get('/edit/{income_id}',[IncomeController::class,'editForm']);
 			Route::get('/print/{income_id}',[IncomeController::class,'printIncome']);
+		});		
+
+		Route::group(["prefix"=>"summary"],function(){
+			Route::get('/',[IncomeController::class,'summary']);
 		});
 	});
 });
@@ -225,6 +229,10 @@ Route::group(['prefix'=>"api"], function(){
 		Route::post('/edit',[IncomeController::class,'edit']);
 		Route::post('/store',[IncomeController::class,'store']);
 		Route::get('/delete/{income_id}',[IncomeController::class,'delete']);
+	});	
+
+	Route::group(["prefix"=>"summary"],function(){
+		Route::post('/init',[IncomeController::class,'summaryInit']);
 	});
 
 

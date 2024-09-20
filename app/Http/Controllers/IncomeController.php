@@ -29,8 +29,6 @@ class IncomeController extends Controller {
 
     public function init(Request $request){
 
-
-
         $incomes = DB::table('incomes')->select('incomes.*','clients.client_name')->leftJoin('clients','clients.id','=','incomes.client_id');
         if ($request->from) {
             $incomes = $incomes->where('incomes.from','LIKE','%'.$request->from.'%');
@@ -221,6 +219,66 @@ class IncomeController extends Controller {
 
         // Output the generated PDF to Browser
         $dompdf->stream();
+    }
+
+    public function summary(Request $request){
+        $sidebar = 'summary';
+        $subsidebar = 'summary';
+        return view('admin.incomes.summary',[
+            'sidebar'=>$sidebar,
+            'subsidebar'=>$subsidebar,
+        ]);
+    }
+
+    public function summaryInit(Request $request){
+        $to_date = $request->to_date ? date("Y-m-d", strtotime($request->to_date)) : date("Y-m-d");
+        $from_date = $request->from_date ? date("Y-m-d", strtotime($request->from_date)) : date("Y-m-d");
+        $client_id = $request->client_id ? $request->client_id : Auth::user()->client_id;
+        $income_types = Expense::incomeTypes();
+
+        $incomes = DB::table('incomes')->select('incomes.*','clients.client_name')->leftJoin('clients','clients.id','=','incomes.client_id');
+
+        $date_ar = [];
+        if($from_date && $to_date){
+            $incomes = $incomes->whereBetween('incomes.date',[date("Y-m-d",strtotime($from_date)),date("Y-m-d",strtotime($to_date))]);
+        }
+
+        if ($client_id) {
+            $incomes = $incomes->where('incomes.client_id','=',$client_id);
+        }
+
+        if ($request->income_type) {
+            $incomes = $incomes->where('incomes.income_type','=',$request->income_type);
+        }
+
+        $incomes = $incomes->orderBy('incomes.date','DESC')->get();
+
+        $total_income = 0;
+
+        foreach ($incomes as $key => $income) {
+            $income->show_income_type = (isset($income->income_type))?$income_types[$income->income_type]:'NA';
+        }
+
+        $expenses = Expense::select('expenses.*','clients.client_name')->leftJoin('clients','clients.id','=','expenses.client_id');
+        
+        if($from_date && $to_date){
+            $expenses = $expenses->whereBetween('expenses.date',[date("Y-m-d",strtotime($from_date)),date("Y-m-d",strtotime($to_date))]);
+        }
+
+        if ($client_id) {
+            $expenses = $expenses->where('expenses.client_id','=',$client_id);
+        }
+        $expenses = $expenses->orderBy('expenses.date','DESC')->get();
+
+        $clients = DB::table('clients')->select("client_name", 'id')->where('org_id', Auth::user()->org_id)->get();
+
+        $data['success'] = true;
+        $data['clients'] = $clients;
+        $data['income_types'] = $income_types;
+        $data['incomes'] = $incomes;
+        $data['expenses'] = $expenses;
+        
+        return Response::json($data,200,[]);
     }
 
 

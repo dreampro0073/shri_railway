@@ -30,7 +30,7 @@
                     <input type="text" placeholder="MM/DD/YYYY" class="form-control datepicker" ng-model="searchData.to_date">
                 </div>
                 <div class="col-md-3 form-group">
-                    <label>Client</label>
+                    <label>Branch</label>
 
                     <select ng-model="searchData.client_id" class="form-control" convert-to-number required>
                         <option value="">Select</option>
@@ -67,7 +67,7 @@
                 <tr>
                     <th>Sn</th>
                     <th>Date</th>
-                    <th>Client</th>
+                    <th>Branch</th>
                     <!-- <th>Type</th> -->
                     <th>Total Amount</th>
                     <th>Remarks</th>

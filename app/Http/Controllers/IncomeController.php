@@ -89,10 +89,8 @@ class IncomeController extends Controller {
             $income = DB::table('incomes')->find($request->income_id);
             if ($income) {
                 $income->date = date('d-m-Y',strtotime($income->date));
-                
                 $multiple_income = DB::table('income_entries')->where('income_id',$income->id)->get();
                 $income->multiple_income = $multiple_income;
-                // $income->client_id = $income->client_id;
             }
             $data['income'] = $income;
         }

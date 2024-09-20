@@ -41,6 +41,7 @@
 			<thead>
 				<tr>
 					<th>Give To</th>
+					<th>Remarks</th>
 					<th>Type</th>
 					<th>Amount</th>
 				</tr>
@@ -49,6 +50,7 @@
 			<tbody>
 				@foreach($expense->multiple_expense as $item)
 				<tr>
+					<td>{{$item->expense_type}}</td>
 					<td>{{$item->remarks}}</td>
 					<td>
 						@if($item->expense_account == 1)

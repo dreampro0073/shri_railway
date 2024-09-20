@@ -19,7 +19,7 @@
 	<h3 style="text-align:center;">Income - {{$income->date}}</h3>
 	<table style="width:100%;" cellpadding="4" cellspacing="0">
 		<tr>
-			<td>Client</td>
+			<td>Branch</td>
 			<td>{{$income->client_name}}</td>
 
 		</tr>

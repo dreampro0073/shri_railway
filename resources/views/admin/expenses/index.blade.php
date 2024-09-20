@@ -37,7 +37,7 @@
                         <option ng-value="@{{item.id}}" ng-repeat="(key, item) in clients">@{{item.client_name}}</option>
                     </select>
                 </div>
-                <div class="col-md-3 " style="padding-top:10px;">
+                <div class="col-md-3 " style="padding-top:23px;">
                     <button type="submit" ng-click="onSearch()" class="btn btn-primary">Search</button>
                     <button type="submit" ng-click="clearFilter()" class="btn btn-warning">Clear</button>
                 </div>

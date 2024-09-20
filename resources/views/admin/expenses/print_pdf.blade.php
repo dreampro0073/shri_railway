@@ -19,7 +19,7 @@
 	<h3 style="text-align:center;">Expense - {{$expense->date}}</h3>
 	<table style="width:100%;" cellpadding="4" cellspacing="0">
 		<tr>
-			<td>Client</td>
+			<td>Branch</td>
 			<td>{{$expense->client_name}}</td>
 
 		</tr>
@@ -62,8 +62,6 @@
 					<td>{{$item->total_amount}}</td>
 				</tr>
 				@endforeach
-
-
 			</tbody>
 		</table>
 	@endif

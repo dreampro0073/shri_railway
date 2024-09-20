@@ -29,7 +29,7 @@
                     <input type="text" placeholder="DD-MM-YYYY" class="form-control datepicker" ng-model="searchData.to_date">
                 </div>
                 <div class="col-md-3 form-group">
-                    <label>Client</label>
+                    <label>Branch</label>
 
                     <select ng-model="searchData.client_id" class="form-control" convert-to-number required>
                         <option value="">Select</option>

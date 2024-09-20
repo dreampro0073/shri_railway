@@ -88,13 +88,17 @@
                             <a href="{{url('/admin/shift/current')}}"><i class="fa fa-industry" aria-hidden="true"></i>Shift Status</a>
                         </li>
 
-                        @if(Auth::user()->priv == 2)
+                        @if(Auth::user()->priv == 2 && in_array(6, $service_ids))
                         <li class="@if(isset($sidebar)) @if($sidebar == 'income') active @endif @endif">
-                            <a href="{{url('/admin/income')}}"><i class="fa fa-medkit" aria-hidden="true"></i>Income</a>
+                            <a href="{{url('/admin/income')}}"><i class="fa fa-money" aria-hidden="true"></i>Income</a>
                         </li>
 
                         <li class="@if(isset($sidebar)) @if($sidebar == 'expenses') active @endif @endif">
-                            <a href="{{url('/admin/expenses')}}"><i class="fa fa-sitemap"></i>Expenses</a>
+                            <a href="{{url('/admin/expenses')}}"><i class="fa fa-money"></i>Expenses</a>
+                        </li>                        
+
+                        <li class="@if(isset($sidebar)) @if($sidebar == 'summary') active @endif @endif">
+                            <a href="{{url('/admin/summary')}}"><i class="fa fa-money"></i>Day Summary</a>
                         </li>
 
                         @endif

@@ -129,4 +129,5 @@ ALTER TABLE `total_incomes` ADD `all_total` INT NOT NULL DEFAULT '0' AFTER `back
 ALTER TABLE `total_incomes` CHANGE `total_amount` `total_amount` INT(11) NOT NULL DEFAULT '0', CHANGE `back_balance` `back_balance` INT(11) NOT NULL DEFAULT '0';
 ALTER TABLE `incomes` ADD `income_id` INT NOT NULL DEFAULT '0' AFTER `id`;
 
+ALTER TABLE `client_services` CHANGE `services_id` `services_id` INT(11) NOT NULL DEFAULT '0' COMMENT '1=sittinng,2=cloakroom, 3=canteen,4= Massage, 5=Locker,6=Ledger account';
 ?>

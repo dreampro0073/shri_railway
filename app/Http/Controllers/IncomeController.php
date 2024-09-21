@@ -236,22 +236,23 @@ class IncomeController extends Controller {
         $client_id = $request->client_id ? $request->client_id : Auth::user()->client_id;
         $income_types = Expense::incomeTypes();
 
-        $incomes = DB::table('incomes')->select('incomes.*','clients.client_name')->leftJoin('clients','clients.id','=','incomes.client_id');
+        $incomes_sql = DB::table('incomes')->select('incomes.*','clients.client_name')->leftJoin('clients','clients.id','=','incomes.client_id');
 
         $date_ar = [];
         if($from_date && $to_date){
-            $incomes = $incomes->whereBetween('incomes.date',[date("Y-m-d",strtotime($from_date)),date("Y-m-d",strtotime($to_date))]);
+            $incomes_sql = $incomes_sql->whereBetween('incomes.date',[date("Y-m-d",strtotime($from_date)),date("Y-m-d",strtotime($to_date))]);
         }
 
         if ($client_id) {
-            $incomes = $incomes->where('incomes.client_id','=',$client_id);
+            $incomes_sql = $incomes_sql->where('incomes.client_id','=',$client_id);
         }
 
         if ($request->income_type) {
-            $incomes = $incomes->where('incomes.income_type','=',$request->income_type);
+            $incomes_sql = $incomes_sql->where('incomes.income_type','=',$request->income_type);
         }
-
-        $incomes = $incomes->orderBy('incomes.date','DESC')->get();
+        $total_incomes = $incomes_sql;
+        $total_incomes = $total_incomes->sum("all_total");
+        $incomes = $incomes_sql->orderBy('incomes.date','DESC')->get();
 
         $total_income = 0;
 
@@ -259,16 +260,18 @@ class IncomeController extends Controller {
             $income->show_income_type = (isset($income->income_type))?$income_types[$income->income_type]:'NA';
         }
 
-        $expenses = Expense::select('expenses.*','clients.client_name')->leftJoin('clients','clients.id','=','expenses.client_id');
+        $expenses_sql = Expense::select('expenses.*','clients.client_name')->leftJoin('clients','clients.id','=','expenses.client_id');
         
         if($from_date && $to_date){
-            $expenses = $expenses->whereBetween('expenses.date',[date("Y-m-d",strtotime($from_date)),date("Y-m-d",strtotime($to_date))]);
-        }
-
+            $expenses_sql = $expenses_sql->whereBetween('expenses.date',[date("Y-m-d",strtotime($from_date)),date("Y-m-d",strtotime($to_date))]);
+        } 
+        
         if ($client_id) {
-            $expenses = $expenses->where('expenses.client_id','=',$client_id);
+            $expenses_sql = $expenses_sql->where('expenses.client_id','=',$client_id);
         }
-        $expenses = $expenses->orderBy('expenses.date','DESC')->get();
+        $total_expenses = $expenses_sql;
+        $total_expenses = $total_expenses->sum("total_amount");
+        $expenses = $expenses_sql->orderBy('expenses.date','DESC')->get();
 
         $clients = DB::table('clients')->select("client_name", 'id')->where('org_id', Auth::user()->org_id)->get();
 
@@ -277,11 +280,21 @@ class IncomeController extends Controller {
         $data['income_types'] = $income_types;
         $data['incomes'] = $incomes;
         $data['expenses'] = $expenses;
+        $data['total_expenses'] = $total_expenses;
+        $data['total_incomes'] = $total_incomes;
+
+        if($request->export){
+            $dompdf = new Dompdf();
+
+            $html = view('admin.incomes.summary_pdf',['data'=>$data]);
+            $dompdf->loadHtml($html);
+            $dompdf->setPaper('A4', 'portrait');
+            $dompdf->render();
+            $dompdf->stream();
+        }
         
         return Response::json($data,200,[]);
     }
-
-
 
 }
 

@@ -309,13 +309,23 @@ app.controller('SummaryCtrl', function($scope , $http, $timeout , DBService, Upl
 
     $scope.loading = false;
     $scope.searchData = { };
+    $scope.incomes = [];
+    $scope.expenses = [];
+    $scope.total_incomes = 0;
+    $scope.total_expenses = 0;
 
+    $scope.formData.export = false;
 
     $scope.init = function(){
         $scope.loading = true;
         DBService.postCall($scope.searchData,'/api/summary/init').then(function(data){
             if(data.success){
                 $scope.clients = data.clients;
+                $scope.incomes = data.incomes;
+                $scope.expenses = data.expenses;
+                $scope.total_incomes = data.total_incomes;
+                $scope.total_expenses = data.total_expenses;
+                $scope.formData.export = false;
             }
 
             $scope.loading = false;
@@ -327,6 +337,11 @@ app.controller('SummaryCtrl', function($scope , $http, $timeout , DBService, Upl
     
     $scope.clearFilter = function(){
         $scope.searchData = { };
+        $scope.init();
+    }    
+
+    $scope.export = function(){
+        $scope.formData.export = true;
         $scope.init();
     }
 

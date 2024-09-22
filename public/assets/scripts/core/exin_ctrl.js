@@ -193,15 +193,21 @@ app.controller('IncomeCtrl', function($scope , $http, $timeout , DBService, Uplo
     $scope.income_types = [];
 
     $scope.edit = function(){
-        DBService.postCall({income_id:$scope.income_id},'/api/income/edit').then(function(data){
+        DBService.postCall($scope.formData,'/api/income/edit').then(function(data){
             if (data.success) {
                 $scope.income_types = data.income_types; 
                 $scope.clients = data.clients;               
                 if (data.income) {
                     $scope.formData= data.income;
+                } else {
+                    $scope.formData = {client_id: data.client_id, date: data.date,all_total:0,total_amount:0,back_balance:0,multiple_income:[{amount:''}]};
                 }
             }
         });
+    }
+
+    $scope.changeDate = function(){
+        $scope.edit();
     }
 
     $scope.viewIncome = function(index){

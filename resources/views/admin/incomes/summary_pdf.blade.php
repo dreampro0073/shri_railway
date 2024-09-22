@@ -17,26 +17,23 @@
 <body>
 	
 	<table style="width:100%;" cellpadding="4" cellspacing="0">
-		<tr>
-			<td>Branch</td>
-			<td>{{$data["branch"]->client_name}}</td>
-		</tr>
-		<tr>
-			<td>To</td>
-			<td>{{$data["to_date"]}}</td>
-		</tr>		
-		<tr>
-			<td>From</td>
-			<td>{{$data["from_date"]}}</td>
-		</tr>
-	</table>	
-
-	<table style="width:100%;" cellpadding="4" cellspacing="0">
-        <thead>
+		<thead>
+			<tr>
+				<th colspan="3">Branch</th>
+				<th>To</th>
+				<th>From</th>
+			</tr>
+			<tr>
+				<th colspan="3">{{$data["branch"]->client_name}}</th>
+				<th>{{date("d M Y", strtotime($data["to_date"]))}}</th>
+				<th>{{date("d M Y", strtotime($data["from_date"]))}}</th>
+			</tr>
+			<tr>
+	        	<th colspan="5"><h3 class="page-title">Incomes</h3></th>
+	        </tr>
             <tr>
                 <th>Sn</th>
                 <th>Date</th>
-                <th>Branch</th>
                 <th>All Amount</th>
                 <th>Total Amount</th>
                 <th>Back Balance</th>
@@ -48,7 +45,6 @@
 		            <tr>
 		                <td>{{$index+1}}</td>
 		                <td>{{date("d M Y", strtotime($income->date))}}</td>
-		                <td>{{$income->client_name}}</td>
 		                <td>
 		                    <span>{{$income->all_total}}</span>
 		                </td>
@@ -57,54 +53,45 @@
 		            </tr>
 		        @endforeach
 		    @endif
-        </tbody>
-	</table>
-	<table style="width:100%;" cellpadding="4" cellspacing="0">
-        <thead>
+		   	<tr>
+	        	<th colspan="5"><h3 class="page-title">Expenses</h3></th>
+	        </tr>
             <tr>
                 <th>Sn</th>
                 <th>Date</th>
-                <th>Branch</th>
                 <th>Total Amount</th>
-                <th>Remarks</th>
+                <th colspan="2">Remarks</th>
             </tr>
-        </thead>
-        <tbody>
         	@if(sizeof($data['expenses']) > 0)
 	        	@foreach($data["expenses"] as $index => $expense)
 			        <tr>
 			            <td>{{$index+1}}</td>
 			            <td>{{date("d M Y", strtotime($expense->date))}}</td>
-			            <td>{{$expense->client_name}}</td>
 			            <td>{{$expense->total_amount}}</td>
-			            <td style="font-size: 11px">{{$expense->remarks}}</td>
+			            <td colspan="2" style="font-size: 11px">{{$expense->remarks}}</td>
 			        </tr>
 	            @endforeach
 	        @endif
-        </tbody>
-    </table>
-    <table style="width:100%;" cellpadding="4" cellspacing="0">
-		<tr>
-			<td>Total Income</td>
-			<td>{{$data["total_incomes"]}}</td>
-		</tr>
-		<tr>
-			<td>Total </td>
-			<td>{{$data["total_expenses"]}}</td>
-		</tr>
-		<tr>
-			<td>Balance</td>
-			<td>{{$data["total_incomes"] - $data["total_expenses"] }}</td>
-		</tr>
+	        <tr>
+	        	<th colspan="5"><h3 class="page-title">Summary</h3></th>
+	        </tr>
+			<tr>
+				<th>Total Income</th>
+				<th>Total Expenses</th>
+				<th colspan="3">Balance</th>
+			</tr>
+			<tr>
+				<th>{{$data["total_incomes"]}}</th>
+				<th>{{$data["total_expenses"]}}</th>
+				<th colspan="3">{{$data["total_incomes"] - $data["total_expenses"] }}</th>
+			</tr>
+		</tbody>
 	</table>
 
 	<h4 style="text-align:right;">
 		{{Auth::user()->name}}
 		<br>
 		<span style="font-size:14px;">{{date("d M Y")}}</span>
-	</h4>
-
-	
-
+	</h4> 
 </body>
 </html>

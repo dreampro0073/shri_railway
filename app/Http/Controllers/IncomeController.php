@@ -83,9 +83,35 @@ class IncomeController extends Controller {
     public function edit(Request $request){
 
         $data['income_types']= Expense::incomeTypes();
+        $date = $request->date?$request->date : date("Y-m-d");
+        $client_id = $request->client_id ? $request->client_id : Auth::user()->client_id;
+        $income = DB::table('incomes')->where("date", date('Y-m-d',strtotime($date)))->where("client_id", $client_id)->first();
+        if ($income) {
+            $income->date = date('d-m-Y',strtotime($income->date));
+            $multiple_income = DB::table('income_entries')->where('income_id',$income->id)->get();
+            $income->multiple_income = $multiple_income;
+        }
+        $data['income'] = $income;
+        $data['client_id'] = $client_id;
+        $data['date'] = date('d-m-Y',strtotime($date));
+        $clients = DB::table('clients')->select("client_name", 'id')->where('org_id', Auth::user()->org_id)->get();
 
-        if ($request->income_id) {
-            $income = DB::table('incomes')->find($request->income_id);
+        $data['success'] = true;
+        $data['clients'] = $clients;
+
+        return Response::json($data,200,[]);
+    }    
+
+    public function editX(Request $request){
+
+        $data['income_types']= Expense::incomeTypes();
+
+        if ($request->income_id || $request->date) {
+            if($request->income_id){
+                $income = DB::table('incomes')->find($request->income_id);
+            }else{
+                $income = DB::table('incomes')->where("date", date('Y-m-d',strtotime($request->date)))->first();
+            }
             if ($income) {
                 $income->date = date('d-m-Y',strtotime($income->date));
                 $multiple_income = DB::table('income_entries')->where('income_id',$income->id)->get();

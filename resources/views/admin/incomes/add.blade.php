@@ -21,13 +21,12 @@
                 <div class="col-md-3 form-group">
                     <label>Date</label>
 
-                    <input type="text" placeholder="DD-MM-YYYY" class="datepicker form-control" ng-model="formData.date" required>
+                    <input type="text" ng-change="changeDate()" placeholder="DD-MM-YYYY" class="datepicker form-control" ng-model="formData.date" required>
                     
                 </div> 
                 <div class="col-md-3 form-group">
                     <label>Client</label>
-
-                    <select ng-model="formData.client_id" class="form-control" required convert-to-number>
+                    <select ng-model="formData.client_id" ng-change="changeDate()" class="form-control" required convert-to-number>
                         <option value="">Select</option>
                         <option value="@{{item.id}}" ng-repeat="item in clients">@{{item.client_name}}</option>
                     </select>

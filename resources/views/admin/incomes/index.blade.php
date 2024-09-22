@@ -79,7 +79,7 @@
                     
                     <td style="text-align: center;">
                        
-                        <a href="{{url('/admin/income/edit')}}/@{{income.id}}" class="btn btn-sm btn-warning">Edit</a>
+                        <!-- <a href="{{url('/admin/income/edit')}}/@{{income.id}}" class="btn btn-sm btn-warning">Edit</a> -->
                         <a href="{{url('/admin/income/print')}}/@{{income.id}}" class="btn btn-sm btn-primary">Print</a>
                         <!-- <button class="btn btn-sm btn-danger" ng-click="deleteIncome(income,$index)">Delete</i></button> -->
                     </td>

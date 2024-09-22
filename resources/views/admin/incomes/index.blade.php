@@ -57,10 +57,10 @@
                 <tr>
                     <th>Sn</th>
                     <th>Date</th>
-                    <th>Client</th>
-                    <th>All Amount</th>
-                    <th>Total Amount</th>
+                    <th>Branch</th>
                     <th>Back Balance</th>
+                    <th>Total Amount</th>
+                    <th>All Amount</th>
                     
                     <th>#</th>
                 </tr>
@@ -70,11 +70,11 @@
                     <td>@{{$index+1}}</td>
                     <td >@{{income.date|date:'dd-MM-yyyy'}}</td>
                     <td >@{{income.client_name}}</td>
+                    <td>@{{income.back_balance}}</td>
+                    <td>@{{income.total_amount}}</td>
                     <td>
                         <span>@{{income.all_total}}</span>
                     </td>
-                    <td>@{{income.total_amount}}</td>
-                    <td>@{{income.back_balance}}</td>
                     
                     
                     <td style="text-align: center;">

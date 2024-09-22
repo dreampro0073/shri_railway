@@ -20,13 +20,13 @@
 		<thead>
 			<tr>
 				<th colspan="3">Branch</th>
-				<th>To</th>
 				<th>From</th>
+				<th>To</th>
 			</tr>
 			<tr>
 				<th colspan="3">{{$data["branch"]->client_name}}</th>
-				<th>{{date("d M Y", strtotime($data["to_date"]))}}</th>
 				<th>{{date("d M Y", strtotime($data["from_date"]))}}</th>
+				<th>{{date("d M Y", strtotime($data["to_date"]))}}</th>
 			</tr>
 			<tr>
 	        	<th colspan="5"><h3 class="page-title">Incomes</h3></th>
@@ -53,6 +53,15 @@
 		            </tr>
 		        @endforeach
 		    @endif
+		    <tr>
+                <td>Cash</td>
+                <td>{{date("d M Y", strtotime($income->date))}}</td>
+                <td>
+                    <span>{{$income->all_total}}</span>
+                </td>
+                <td>{{$income->total_amount}}</td>
+                <td>{{$income->back_balance}}</td>
+            </tr>		    
 		   	<tr>
 	        	<th colspan="5"><h3 class="page-title">Expenses</h3></th>
 	        </tr>

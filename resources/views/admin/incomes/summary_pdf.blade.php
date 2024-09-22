@@ -43,21 +43,22 @@
             </tr>
         </thead>
         <tbody>
-        	@foreach($data["incomes"] as $income){
-	            <tr>
-	                <td>{{$index+1}}</td>
-	                <td>{{date("d M Y", strtotime($income->date))}}</td>
-	                <td>{{$income->client_name}}</td>
-	                <td>
-	                    <span>{{$income->all_total}}</span>
-	                </td>
-	                <td>{{$income->total_amount}}</td>
-	                <td>{{$income->back_balance}}</td>
-	            </tr>
-	        @endfoeach
+	        @if(sizeof($data['incomes']) > 0)
+	        	@foreach($data["incomes"] as $index => $income){
+		            <tr>
+		                <td>{{$index+1}}</td>
+		                <td>{{date("d M Y", strtotime($income->date))}}</td>
+		                <td>{{$income->client_name}}</td>
+		                <td>
+		                    <span>{{$income->all_total}}</span>
+		                </td>
+		                <td>{{$income->total_amount}}</td>
+		                <td>{{$income->back_balance}}</td>
+		            </tr>
+		        @endforeach
+		    @endif
         </tbody>
 	</table>
-
 	<table style="width:100%;" cellpadding="4" cellspacing="0">
         <thead>
             <tr>
@@ -69,19 +70,20 @@
             </tr>
         </thead>
         <tbody>
-        	@foreach($data["expenses"] as $expense)
-		        <tr>
-		            <td>{{$index+1}}</td>
-		            <td>{{date("d M Y", strtotime($expense->date))}}</td>
-		            <td>{{$expense->client_name}}</td>
-		            <td>{{$expense->total_amount}}</td>
-		            <td style="font-size: 11px">{{$expense->remarks}}</td>
-		        </tr>
-            @endforeach
+        	@if(sizeof($data['expenses']) > 0)
+	        	@foreach($data["expenses"] as $index => $expense)
+			        <tr>
+			            <td>{{$index+1}}</td>
+			            <td>{{date("d M Y", strtotime($expense->date))}}</td>
+			            <td>{{$expense->client_name}}</td>
+			            <td>{{$expense->total_amount}}</td>
+			            <td style="font-size: 11px">{{$expense->remarks}}</td>
+			        </tr>
+	            @endforeach
+	        @endif
         </tbody>
     </table>
-
-	<table style="width:100%;" cellpadding="4" cellspacing="0">
+    <table style="width:100%;" cellpadding="4" cellspacing="0">
 		<tr>
 			<td>Total Income</td>
 			<td>{{$data["total_incomes"]}}</td>
@@ -101,6 +103,8 @@
 		<br>
 		<span style="font-size:14px;">{{date("d M Y")}}</span>
 	</h4>
+
+	
 
 </body>
 </html>

@@ -31,6 +31,7 @@
                     <button type="submit" ng-click="onSearch()" class="btn btn-primary">Search</button>
                     <button type="submit" ng-click="clearFilter()" class="btn btn-warning">Clear</button>
                     <button type="submit" ng-click="export()" class="btn btn-danger">Export</button>
+                    
                 </div>
             </div>
         </div>

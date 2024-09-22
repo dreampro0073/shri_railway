@@ -15,6 +15,7 @@ use App\Models\Income;
 use App\Models\Expense;
 use App\Models\IncomeEntry;
 use Dompdf\Dompdf;
+use Illuminate\Support\Facades\File;
 
 class IncomeController extends Controller {
 
@@ -282,6 +283,8 @@ class IncomeController extends Controller {
         $data['expenses'] = $expenses;
         $data['total_expenses'] = $total_expenses;
         $data['total_incomes'] = $total_incomes;
+
+
         
 
         if($request->export == 1){
@@ -293,7 +296,16 @@ class IncomeController extends Controller {
             $dompdf->loadHtml($html);
             $dompdf->setPaper('A4', 'portrait');
             $dompdf->render();
-            $dompdf->stream();
+            // $dompdf->stream();
+            $pdfContent = $dompdf->output();
+
+            $filename = strtotime("now").".pdf";
+
+            $pdfPath = public_path('temp/'.$filename);
+            File::ensureDirectoryExists(public_path('temp'));
+            File::put($pdfPath, $pdfContent);
+
+            $data['export_link'] = $filename;
         }
         
         return Response::json($data,200,[]);

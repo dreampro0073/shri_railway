@@ -314,7 +314,7 @@ app.controller('SummaryCtrl', function($scope , $http, $timeout , DBService, Upl
     $scope.total_incomes = 0;
     $scope.total_expenses = 0;
 
-    $scope.formData.export = false;
+    $scope.searchData.export = false;
 
     $scope.init = function(){
         $scope.loading = true;
@@ -325,7 +325,7 @@ app.controller('SummaryCtrl', function($scope , $http, $timeout , DBService, Upl
                 $scope.expenses = data.expenses;
                 $scope.total_incomes = data.total_incomes;
                 $scope.total_expenses = data.total_expenses;
-                $scope.formData.export = false;
+                $scope.searchData.export = false;
             }
 
             $scope.loading = false;
@@ -341,7 +341,7 @@ app.controller('SummaryCtrl', function($scope , $http, $timeout , DBService, Upl
     }    
 
     $scope.export = function(){
-        $scope.formData.export = true;
+        $scope.searchData.export = true;
         $scope.init();
     }
 

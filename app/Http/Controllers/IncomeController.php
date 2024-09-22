@@ -282,11 +282,15 @@ class IncomeController extends Controller {
         $data['expenses'] = $expenses;
         $data['total_expenses'] = $total_expenses;
         $data['total_incomes'] = $total_incomes;
+        
 
-        if($request->export){
+        if($request->export == 1){
+            $data["to_date"] = $to_date;
+            $data["from_date"] = $from_date;
+            $data["branch"] = DB::table('clients')->where('id', $client_id)->first();
             $dompdf = new Dompdf();
-
             $html = view('admin.incomes.summary_pdf',['data'=>$data]);
+            return $html;
             $dompdf->loadHtml($html);
             $dompdf->setPaper('A4', 'portrait');
             $dompdf->render();

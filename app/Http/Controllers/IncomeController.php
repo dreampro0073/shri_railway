@@ -290,7 +290,6 @@ class IncomeController extends Controller {
             $data["branch"] = DB::table('clients')->where('id', $client_id)->first();
             $dompdf = new Dompdf();
             $html = view('admin.incomes.summary_pdf',['data'=>$data]);
-            return $html;
             $dompdf->loadHtml($html);
             $dompdf->setPaper('A4', 'portrait');
             $dompdf->render();

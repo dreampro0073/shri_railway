@@ -33,7 +33,7 @@
 
                     <select ng-model="searchData.client_id" class="form-control" convert-to-number required>
                         <option value="">Select</option>
-                        <option value="@{{item.id}}" ng-repeat="(key, item) in clients">@{{item.client_name}}</option>
+                        <option value="@{{key}}" ng-repeat="(key, value) in clients">@{{value}}</option>
                     </select>
                 </div> 
                 <div class="col-md-3 " style="margin-top:28px;">

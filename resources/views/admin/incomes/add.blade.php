@@ -7,11 +7,11 @@
 @endsection
 
 @section('main')
-	<div class="row">
+	<div class="row mt-3 mb-3">
         <div class="col-md-6">
             <h2 class="page-title">{{($income_id == 0)?'Add Income':'Update Income'}}</h2>
         </div>
-        <div class="col-md-6 text-right">
+        <div class="col-md-6 text-right" style="padding-top: 23px;">
             <a href="{{url('/admin/income')}}" class="btn btn-success" >Go Back</a>
         </div>
     </div>
@@ -28,7 +28,7 @@
                     <label>Client</label>
                     <select ng-model="formData.client_id" ng-change="changeDate()" class="form-control" required convert-to-number>
                         <option value="">Select</option>
-                        <option value="@{{item.id}}" ng-repeat="item in clients">@{{item.client_name}}</option>
+                        <option value="@{{key}}" ng-repeat="(key,value) in clients">@{{value}}</option>
                     </select>
                     
                 </div> 

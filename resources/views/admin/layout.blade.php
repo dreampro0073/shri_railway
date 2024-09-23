@@ -79,17 +79,45 @@
                                 </li>
                             @endif
                             <li class="@if(isset($sidebar)) @if($sidebar == 'daily_entries') active @endif @endif">
-                                <a href="{{url('/admin/daily-entries')}}"><i class="fa fa-shopping-bag" aria-hidden="true"></i>Daily Entries</a>
+                                <a href="{{url('/admin/daily-entries')}}">
+                                    <i class="fa fa-shopping-bag" aria-hidden="true"></i>Daily Entries
+                                </a>
                             </li>
                         
                         @endif
 
+                        @if(Auth::user()->priv == 2 && in_array(6, $service_ids))
+
+                        <li class="@if(isset($sidebar)) @if($sidebar == 'acc') active @endif @endif">
+                            <a class="nav-link collapsed" href="#javascript:;" data-toggle="collapse" data-target="#collapseTwo"
+                                aria-expanded="true" aria-controls="collapseTwo">
+                                <i class="fa fa-industry" aria-hidden="true"></i>
+                                <span>Accounting</span>
+
+                                <i class="fa fa-chevron-down ab" aria-hidden="true"></i>
+
+                            </a>
+                            <ul id="collapseTwo" class="collapse @if(isset($sidebar)) @if($sidebar == 'acc') in @endif @endif" aria-labelledby="headingTwo" data-parent="#accordionSidebar" style="padding-left: 30px;">
+                                <li class="@if(isset($subsidebar)) @if($subsidebar == 'income') active @endif @endif">
+                                    <a class="collapse-item" href="{{url('/admin/income')}}">Income</a>
+                                </li>
+                                <li class="@if(isset($subsidebar)) @if($subsidebar == 'expenses') active @endif @endif">
+                                    <a class="collapse-item" href="{{url('/admin/expenses')}}">Expense</a>
+                                </li>
+                                <li class="@if(isset($subsidebar)) @if($subsidebar == 'summary') active @endif @endif">
+                                    <a class="collapse-item" href="{{url('/admin/summary')}}">Summary</a>
+                                </li>
+                               
+                            </ul>
+                        </li>
+
+                        @endif
                         <li class="@if(isset($sidebar)) @if($sidebar == 'shift') active @endif @endif">
                             <a href="{{url('/admin/shift/current')}}"><i class="fa fa-industry" aria-hidden="true"></i>Shift Status</a>
                         </li>
 
                         @if(Auth::user()->priv == 2 && in_array(6, $service_ids))
-                        <li class="@if(isset($sidebar)) @if($sidebar == 'income') active @endif @endif">
+                        <!-- <li class="@if(isset($sidebar)) @if($sidebar == 'income') active @endif @endif">
                             <a href="{{url('/admin/income')}}"><i class="fa fa-money" aria-hidden="true"></i>Income</a>
                         </li>
 
@@ -99,7 +127,7 @@
 
                         <li class="@if(isset($sidebar)) @if($sidebar == 'summary') active @endif @endif">
                             <a href="{{url('/admin/summary')}}"><i class="fa fa-money"></i>Day Summary</a>
-                        </li>
+                        </li> -->
 
                         @endif
                         @if(Auth::user()->priv == 2)
@@ -114,6 +142,7 @@
                         <li>
                             <a href="{{url('/logout')}}"><i class="fa fa-sign-out"></i>Logout</a>
                         </li>
+                        
                     </ul>
                     
                 </div>

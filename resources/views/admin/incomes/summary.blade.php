@@ -9,7 +9,7 @@
 @section('main')
 
 	<div ng-controller="SummaryCtrl" ng-init="init();" >
-        <div style="margin-bottom: 20px;padding-bottom: 20px;border-bottom:  1px solid #555;">
+        <div class="mb-3 mt-3" style="border-bottom:  1px solid #555;padding: 20px 0;">
             <div class="row">
                 <div class="col-md-2 form-group">
                     <label>From Date</label>
@@ -24,7 +24,7 @@
 
                     <select ng-model="searchData.client_id" class="form-control" convert-to-number required>
                         <option value="">Select</option>
-                        <option value="@{{item.id}}" ng-repeat="(key, item) in clients">@{{item.client_name}}</option>
+                        <option value="@{{key}}" ng-repeat="(key, value) in clients">@{{value}}</option>
                     </select>
                 </div> 
                 <div class="col-md-5 " style="margin-top:28px;">
@@ -40,7 +40,7 @@
         </div>
         <div class="row mt-3 mb-3">
             <div class="col-md-6">
-                <h2 class="page-title">Incomes</h2>
+                <h2 class="page-title">Income</h2>
             </div>
         </div>
         <table ng-if="!loading" class="table table-condensed table-bordered table-striped" >
@@ -72,7 +72,7 @@
 
         <div class="row mt-3 mb-3">
             <div class="col-md-6">
-                <h2 class="page-title">Expenses</h2>
+                <h2 class="page-title">Expense</h2>
             </div>
         </div>
 

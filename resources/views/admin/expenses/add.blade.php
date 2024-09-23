@@ -25,10 +25,11 @@
                 <div class="col-md-3 form-group">
                     <label>Client</label>
 
-                    <select ng-model="formData.client_id" class="form-control" convert-to-number required>
+                    <select ng-model="formData.client_id" class="form-control" required convert-to-number>
                         <option value="">Select</option>
-                        <option value="@{{item.id}}" ng-repeat="(key, item) in clients">@{{item.client_name}}</option>
-                    </select>    
+                        <option value="@{{key}}" ng-repeat="(key,value) in clients">@{{value}}</option>
+                    </select>
+                       
                 </div>
                  <div class="form-group col-md-2">
                     <label>Total Amount</label>

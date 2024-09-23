@@ -10,5 +10,13 @@
 			<td>{{$item->amount}}</td>
 		</tr>
 		@endforeach
+		<tr>
+			<td>Total Cash</td>
+			<td>{{$total_cash}}</td>
+		</tr>
+		<tr>
+			<td>Total UPI</td>
+			<td>{{$total_upi}}</td>
+		</tr>
 	</tbody>
 </table>

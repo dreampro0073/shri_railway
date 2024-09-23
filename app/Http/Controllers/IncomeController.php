@@ -21,7 +21,7 @@ use Illuminate\Support\Facades\File;
 class IncomeController extends Controller {
 
 	public function index(Request $request){
-		$sidebar = 'income';
+		$sidebar = 'acc';
         $subsidebar = 'income';
         return view('admin.incomes.index',[
             'sidebar'=>$sidebar,
@@ -41,7 +41,7 @@ class IncomeController extends Controller {
     }
 
     public function editForm($income_id = 0){
-        $sidebar = 'income';
+        $sidebar = 'acc';
         $subsidebar = 'income';
         return view('admin.incomes.add',[
             'sidebar'=>$sidebar,
@@ -162,12 +162,21 @@ class IncomeController extends Controller {
 
         $dompdf = new Dompdf();
         $income = DB::table('incomes')->select('incomes.*','clients.client_name')->leftJoin('clients','clients.id','=','incomes.client_id')->where('incomes.id',$income_id)->first();
+
+        $total_cash = 0;
+        $total_upi = 0;
+
         if ($income) {
             $income->multiple_income = Income::getMultiIncomes($income);
             $income->date = date('d-m-Y',strtotime($income->date));
+
+
+            $total_cash = DB::table('income_entries')->where('income_id',$income_id)->whereIn('income_type',[1,3,5,7])->sum('amount');
+
+            $total_upi = DB::table('income_entries')->where('income_id',$income_id)->whereIn('income_type',[2,4,6,8])->sum('amount');
         }
 
-        $html = view('admin.incomes.print_pdf',['income'=>$income]);
+        $html = view('admin.incomes.print_pdf',['income'=>$income,'total_upi'=>$total_upi,'total_cash'=>$total_cash]);
         $dompdf->loadHtml($html);
         $dompdf->setPaper('A4', 'portrait');
         $dompdf->render();
@@ -175,7 +184,7 @@ class IncomeController extends Controller {
     }
 
     public function summary(Request $request){
-        $sidebar = 'summary';
+        $sidebar = 'acc';
         $subsidebar = 'summary';
         return view('admin.incomes.summary',[
             'sidebar'=>$sidebar,

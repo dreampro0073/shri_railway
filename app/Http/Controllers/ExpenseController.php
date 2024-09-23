@@ -11,14 +11,14 @@ use Illuminate\Support\Facades\Auth;
 
 use Redirect, Validator, Hash, Response, Session, DB;
 
-use App\Models\Expense,App\Models\ExpenseEntry;
+use App\Models\Expense,App\Models\ExpenseEntry,App\Models\Sitting;
 use Dompdf\Dompdf;
 
 
 class ExpenseController extends Controller {
 
 	public function index(Request $request){
-		$sidebar = 'expenses';
+		$sidebar = 'acc';
         $subsidebar = 'expenses';
         return view('admin.expenses.index',[
             'sidebar'=>$sidebar,
@@ -57,7 +57,7 @@ class ExpenseController extends Controller {
     }
 
     public function editForm($expense_id = 0){
-        $sidebar= 'expenses';
+        $sidebar = 'acc';
         $subsidebar = 'expenses';
         return view('admin.expenses.add',[
             'sidebar'=>$sidebar,
@@ -80,7 +80,7 @@ class ExpenseController extends Controller {
             }
            
         }
-        $clients = DB::table('clients')->select("client_name", 'id')->where('org_id', Auth::user()->org_id)->get();
+        $clients = Sitting::getBranches();
 
         $data['success'] = true;
         $data['clients'] = $clients;

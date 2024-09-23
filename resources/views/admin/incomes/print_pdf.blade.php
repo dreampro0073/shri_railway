@@ -46,7 +46,7 @@
 	</table>
 	<hr>
 	@if(sizeof($income->multiple_income) > 0)
-		@include("admin/incomes/multi_income_table");
+		@include("admin/incomes/multi_income_table")
 	@endif
 
 	<h4 style="text-align:right;">

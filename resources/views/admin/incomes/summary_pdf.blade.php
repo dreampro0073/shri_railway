@@ -59,7 +59,20 @@
 					@endif
 		        @endforeach
 		    @endif
-        </tbody>		    
+        </tbody>
+    </table>
+    <table style="width:100%;" cellpadding="4" cellspacing="0">
+    	<tr>
+			<td>Total Cash</td>
+			<td>{{$data['total_cash']}}</td>
+		</tr>
+		<tr>
+			<td>Total UPI</td>
+			<td>{{$data['total_upi']}}</td>
+		</tr>
+    </table>
+    <table style="width:100%;" cellpadding="4" cellspacing="0">
+    	<tbody>
 		   	<tr>
 	        	<th colspan="5"><h3 class="page-title">Expenses</h3></th>
 	        </tr>

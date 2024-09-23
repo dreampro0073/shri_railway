@@ -170,13 +170,12 @@ class IncomeController extends Controller {
             $income->multiple_income = Income::getMultiIncomes($income);
             $income->date = date('d-m-Y',strtotime($income->date));
 
+            $income->total_cash = DB::table('income_entries')->where('income_id',$income_id)->whereIn('income_type',[1,3,5,7])->sum('amount');
 
-            $total_cash = DB::table('income_entries')->where('income_id',$income_id)->whereIn('income_type',[1,3,5,7])->sum('amount');
-
-            $total_upi = DB::table('income_entries')->where('income_id',$income_id)->whereIn('income_type',[2,4,6,8])->sum('amount');
+            $income->total_upi = DB::table('income_entries')->where('income_id',$income_id)->whereIn('income_type',[2,4,6,8])->sum('amount');
         }
 
-        $html = view('admin.incomes.print_pdf',['income'=>$income,'total_upi'=>$total_upi,'total_cash'=>$total_cash]);
+        $html = view('admin.incomes.print_pdf',['income'=>$income]);
         $dompdf->loadHtml($html);
         $dompdf->setPaper('A4', 'portrait');
         $dompdf->render();
@@ -215,11 +214,17 @@ class IncomeController extends Controller {
         $total_incomes = $incomes_sql;
         $total_incomes = $total_incomes->sum("all_total");
         $incomes = $incomes_sql->orderBy('incomes.date','DESC')->get();
+        $total_cash = 0;
+        $total_upi = 0;
 
         foreach ($incomes as $key => $income) {
             $income->multiple_income = Income::getMultiIncomes($income);
             $income->date = date('d-m-Y',strtotime($income->date));
             $income->show_income_type = (isset($income->income_type))?$income_types[$income->income_type]:'NA';
+            $income->total_cash = DB::table('income_entries')->where('income_id',$income->id)->whereIn('income_type',[1,3,5,7])->sum('amount');
+            $total_cash  = $total_cash + $income->total_cash;
+            $income->total_upi = DB::table('income_entries')->where('income_id',$income->id)->whereIn('income_type',[2,4,6,8])->sum('amount');
+            $total_upi  = $total_upi + $income->total_upi;
         }
 
         $expenses_sql = Expense::select('expenses.*','clients.client_name')->leftJoin('clients','clients.id','=','expenses.client_id');
@@ -243,6 +248,8 @@ class IncomeController extends Controller {
         $data['total_expenses'] = $total_expenses;
         $data['total_incomes'] = $total_incomes;
 
+        $data['total_cash'] = $total_cash;
+        $data['total_upi'] = $total_upi;
 
         if($request->export == 1){
             $data["to_date"] = $to_date;

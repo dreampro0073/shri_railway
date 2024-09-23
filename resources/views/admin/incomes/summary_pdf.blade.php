@@ -15,28 +15,27 @@
 	</style>
 </head>
 <body>
-	
+	<table style="width:100%;" cellpadding="4" cellspacing="0">
+		<tr>
+			<th>Branch</th>
+			<th>From</th>
+			<th>To</th>
+		</tr>
+		<tr>
+			<th>{{$data["branch"]->client_name}}</th>
+			<th>{{date("d M Y", strtotime($data["from_date"]))}}</th>
+			<th>{{date("d M Y", strtotime($data["to_date"]))}}</th>
+		</tr>
+	</table>
+	<h3 class="page-title">Incomes</h3>
 	<table style="width:100%;" cellpadding="4" cellspacing="0">
 		<thead>
-			<tr>
-				<th colspan="3">Branch</th>
-				<th>From</th>
-				<th>To</th>
-			</tr>
-			<tr>
-				<th colspan="3">{{$data["branch"]->client_name}}</th>
-				<th>{{date("d M Y", strtotime($data["from_date"]))}}</th>
-				<th>{{date("d M Y", strtotime($data["to_date"]))}}</th>
-			</tr>
-			<tr>
-	        	<th colspan="5"><h3 class="page-title">Incomes</h3></th>
-	        </tr>
             <tr>
                 <th>Sn</th>
                 <th>Date</th>
-                <th>All Amount</th>
-                <th>Total Amount</th>
                 <th>Back Balance</th>
+                <th>Collected Amount</th>
+                <th>Total Amount</th>
             </tr>
         </thead>
         <tbody>
@@ -45,23 +44,22 @@
 		            <tr>
 		                <td>{{$index+1}}</td>
 		                <td>{{date("d M Y", strtotime($income->date))}}</td>
+		                <td>{{$income->back_balance}}</td>
+		                <td>{{$income->total_amount}}</td>
 		                <td>
 		                    <span>{{$income->all_total}}</span>
 		                </td>
-		                <td>{{$income->total_amount}}</td>
-		                <td>{{$income->back_balance}}</td>
 		            </tr>
+		            @if(sizeof($income->multiple_income) > 0)
+		            	<tr>
+		            		<td colspan="5">
+								@include("admin/incomes/multi_income_table")
+							</td>
+						</tr>
+					@endif
 		        @endforeach
 		    @endif
-		    <tr>
-                <td>Cash</td>
-                <td>{{date("d M Y", strtotime($income->date))}}</td>
-                <td>
-                    <span>{{$income->all_total}}</span>
-                </td>
-                <td>{{$income->total_amount}}</td>
-                <td>{{$income->back_balance}}</td>
-            </tr>		    
+        </tbody>		    
 		   	<tr>
 	        	<th colspan="5"><h3 class="page-title">Expenses</h3></th>
 	        </tr>

@@ -175,7 +175,6 @@ app.controller('IncomeCtrl', function($scope , $http, $timeout , DBService, Uplo
             if(data.success){
                 $scope.incomes = data.incomes;
                 $scope.income_types = data.income_types;
-                $scope.total_income = data.total_income;
                 $scope.clients = data.clients;
                 
             }

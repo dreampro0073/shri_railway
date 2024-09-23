@@ -39,7 +39,6 @@ class ShiftController extends Controller {
 		}
 
 		$users = DB::table('users')->select('id','name')->where('priv','!=',4)->where("client_id", $client_id)->get();
-		$clients = DB::table('clients')->where('org_id', Auth::user()->org_id)->pluck("client_name", 'id')->toArray();
 
 
 		$current_shift = Entry::checkShift();
@@ -124,7 +123,7 @@ class ShiftController extends Controller {
 		$data['success'] = true;
 		$data['users'] = $users;
 		$data['service_ids'] = $service_ids;
-		$data['clients'] = $clients;
+		$data['clients'] = Sitting::getBranches();
 		return Response::json($data, 200, []);
 	}
 	

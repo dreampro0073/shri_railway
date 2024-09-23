@@ -46,23 +46,7 @@
 	</table>
 	<hr>
 	@if(sizeof($income->multiple_income) > 0)
-		<table style="width:100%;" cellpadding="4" cellspacing="0">
-			<thead>
-				<tr>
-					<th>Income Type</th>
-					<th>Amount</th>
-				</tr>
-			</thead>
-
-			<tbody>
-				@foreach($income->multiple_income as $item)
-				<tr>
-					<td>{{$item->show_income_type}}</td>
-					<td>{{$item->amount}}</td>
-				</tr>
-				@endforeach
-			</tbody>
-		</table>
+		@include("admin/incomes/multi_income_table");
 	@endif
 
 	<h4 style="text-align:right;">

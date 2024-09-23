@@ -19,6 +19,10 @@ class Sitting extends Model
         return $ar;
     }
 
+    public static function getBranches($entry_id=0){
+        return DB::table('clients')->where('org_id', Auth::user()->org_id)->pluck("client_name", 'id')->toArray();
+    }    
+
     public static function eSum($entry_id=0){
         return DB::table('e_entries')->where('is_collected',0)->where('entry_id',$entry_id)->sum('paid_amount');
     }

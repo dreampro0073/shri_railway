@@ -50,7 +50,7 @@
             </div>
         </div>
         <div ng-if="loading" class="alert alert-warning">
-            Loading
+            Loading...
         </div>
         <table ng-if="!loading" class="table table-condensed table-bordered table-striped" >
             <thead>

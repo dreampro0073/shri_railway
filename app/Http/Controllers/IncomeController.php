@@ -14,6 +14,7 @@ use Redirect, Validator, Hash, Response, Session, DB;
 use App\Models\Income;
 use App\Models\Expense;
 use App\Models\IncomeEntry;
+use App\Models\Sitting;
 use Dompdf\Dompdf;
 use Illuminate\Support\Facades\File;
 
@@ -29,43 +30,12 @@ class IncomeController extends Controller {
     }
 
     public function init(Request $request){
-
-        $incomes = DB::table('incomes')->select('incomes.*','clients.client_name')->leftJoin('clients','clients.id','=','incomes.client_id');
-        if ($request->from) {
-            $incomes = $incomes->where('incomes.from','LIKE','%'.$request->from.'%');
-        }
-        $date_ar = [];
-        if($request->from_date && $request->to_date){
-            $incomes = $incomes->whereBetween('incomes.date',[date("Y-m-d",strtotime($request->from_date)),date("Y-m-d",strtotime($request->to_date))]);
-
-        }
-
-        if ($request->client_id) {
-            $incomes = $incomes->where('incomes.client_id','=',$request->client_id);
-        }
-
-        if ($request->income_type) {
-            $incomes = $incomes->where('incomes.income_type','=',$request->income_type);
-        }
-
-        
-        $incomes = $incomes->orderBy('incomes.date','DESC')->get();
-
+        $incomes = Income::getIncomes($request);
         $income_types = Expense::incomeTypes();
-
-        $total_income = 0;
-
-        foreach ($incomes as $key => $income) {
-            $income->show_income_type = (isset($income->income_type))?$income_types[$income->income_type]:'NA';
-        }
-
-        $clients = DB::table('clients')->select("client_name", 'id')->where('org_id', Auth::user()->org_id)->get();
-
         $data['success'] = true;
         $data['income_types']= Expense::incomeTypes();
-        $data['clients'] = $clients;
+        $data['clients'] = Sitting::getBranches();
         $data['incomes'] = $incomes;
-        $data['total_income'] = $total_income;
         
         return Response::json($data,200,[]);
     }
@@ -94,38 +64,12 @@ class IncomeController extends Controller {
         $data['income'] = $income;
         $data['client_id'] = $client_id;
         $data['date'] = date('d-m-Y',strtotime($date));
-        $clients = DB::table('clients')->select("client_name", 'id')->where('org_id', Auth::user()->org_id)->get();
 
         $data['success'] = true;
-        $data['clients'] = $clients;
+        $data['clients'] = Sitting::getBranches();
 
         return Response::json($data,200,[]);
     }    
-
-    public function editX(Request $request){
-
-        $data['income_types']= Expense::incomeTypes();
-
-        if ($request->income_id || $request->date) {
-            if($request->income_id){
-                $income = DB::table('incomes')->find($request->income_id);
-            }else{
-                $income = DB::table('incomes')->where("date", date('Y-m-d',strtotime($request->date)))->first();
-            }
-            if ($income) {
-                $income->date = date('d-m-Y',strtotime($income->date));
-                $multiple_income = DB::table('income_entries')->where('income_id',$income->id)->get();
-                $income->multiple_income = $multiple_income;
-            }
-            $data['income'] = $income;
-        }
-        $clients = DB::table('clients')->select("client_name", 'id')->where('org_id', Auth::user()->org_id)->get();
-
-        $data['success'] = true;
-        $data['clients'] = $clients;
-
-        return Response::json($data,200,[]);
-    }
 
     public function store(Request $request){
 
@@ -217,34 +161,16 @@ class IncomeController extends Controller {
     public function printIncome($income_id=0){
 
         $dompdf = new Dompdf();
-
         $income = DB::table('incomes')->select('incomes.*','clients.client_name')->leftJoin('clients','clients.id','=','incomes.client_id')->where('incomes.id',$income_id)->first();
         if ($income) {
+            $income->multiple_income = Income::getMultiIncomes($income);
             $income->date = date('d-m-Y',strtotime($income->date));
-            
-            $multiple_income = DB::table('income_entries')->where('income_id',$income->id)->get();
-
-            $income_types = Expense::incomeTypes();
-
-           
-            foreach ($multiple_income as $key => $item) {
-                $item->show_income_type = (isset($item->income_type))?$income_types[$item->income_type]:'NA';
-            }
-
-            $income->multiple_income = $multiple_income;
         }
-        // dd($income);
 
         $html = view('admin.incomes.print_pdf',['income'=>$income]);
         $dompdf->loadHtml($html);
-
-        // (Optional) Setup the paper size and orientation
         $dompdf->setPaper('A4', 'portrait');
-
-        // Render the HTML as PDF
         $dompdf->render();
-
-        // Output the generated PDF to Browser
         $dompdf->stream();
     }
 
@@ -281,9 +207,9 @@ class IncomeController extends Controller {
         $total_incomes = $total_incomes->sum("all_total");
         $incomes = $incomes_sql->orderBy('incomes.date','DESC')->get();
 
-        $total_income = 0;
-
         foreach ($incomes as $key => $income) {
+            $income->multiple_income = Income::getMultiIncomes($income);
+            $income->date = date('d-m-Y',strtotime($income->date));
             $income->show_income_type = (isset($income->income_type))?$income_types[$income->income_type]:'NA';
         }
 
@@ -300,18 +226,14 @@ class IncomeController extends Controller {
         $total_expenses = $total_expenses->sum("total_amount");
         $expenses = $expenses_sql->orderBy('expenses.date','DESC')->get();
 
-        $clients = DB::table('clients')->select("client_name", 'id')->where('org_id', Auth::user()->org_id)->get();
-
         $data['success'] = true;
-        $data['clients'] = $clients;
+        $data['clients'] = Sitting::getBranches();
         $data['income_types'] = $income_types;
         $data['incomes'] = $incomes;
         $data['expenses'] = $expenses;
         $data['total_expenses'] = $total_expenses;
         $data['total_incomes'] = $total_incomes;
 
-
-        
 
         if($request->export == 1){
             $data["to_date"] = $to_date;
@@ -322,7 +244,6 @@ class IncomeController extends Controller {
             $dompdf->loadHtml($html);
             $dompdf->setPaper('A4', 'portrait');
             $dompdf->render();
-            // $dompdf->stream();
             $pdfContent = $dompdf->output();
 
             $filename = strtotime("now").".pdf";

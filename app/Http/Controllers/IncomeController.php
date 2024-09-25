@@ -52,15 +52,17 @@ class IncomeController extends Controller {
 
     public function edit(Request $request){
 
-
-
         // $date = $request->date?date("Y-m-d",strtotime($request->date)):date("Y-m-d");
-        $date = $request->date?date("Y-m-d",strtotime($request->date)):"2024-09-25";
+        $date = $request->date?date("Y-m-d",strtotime($request->date)):"2024-09-20";
         $client_id = $request->client_id ? $request->client_id : Auth::user()->client_id;
 
         $service_ids = Entry::getServiceIds($client_id);
 
         $check = Income::where('date',$date)->where('client_id',$client_id)->first();
+        $income_entries = [];
+        if($check){
+            $income_entries = DB::table("income_entries")->where("income_id", $check->id)->pluck("remarks", 'service_id')->toArray();
+        }
 
         $c_services = [];
         $total_amount = 0;
@@ -69,9 +71,10 @@ class IncomeController extends Controller {
             $c_services[] = [
                 "service_id" =>1,
                 "source" => "Sitting",
-                "cash_amount"=>$sitting_data['total_shift_upi'],
-                "upi_amount"=>$sitting_data['total_shift_cash'],
+                "upi_amount"=>$sitting_data['total_shift_upi'],
+                "cash_amount"=>$sitting_data['total_shift_cash'],
                 "total_amount"=>$sitting_data['total_collection'],
+                "remarks" => isset($income_entries[1]) ? $income_entries[1] : "",
             ];
 
             $total_amount += $sitting_data['total_collection'];
@@ -82,9 +85,10 @@ class IncomeController extends Controller {
             $c_services[] = [
                 "service_id" =>2,
                 "source" => "cloakroom",
-                "cash_amount"=>$cloak_data['total_shift_upi'],
-                "upi_amount"=>$cloak_data['total_shift_cash'],
+                "upi_amount"=>$cloak_data['total_shift_upi'],
+                "cash_amount"=>$cloak_data['total_shift_cash'],
                 "total_amount"=>$cloak_data['total_collection'],
+                "remarks" => isset($income_entries[2]) ? $income_entries[2] : "",
             ];
 
             $total_amount += $cloak_data['total_collection'];
@@ -95,9 +99,10 @@ class IncomeController extends Controller {
             $c_services[] = [
                 "service_id" =>3,
                 "source" => "Canteen",
-                "cash_amount"=>$cant_data['total_shift_upi'],
-                "upi_amount"=>$cant_data['total_shift_cash'],
+                "upi_amount"=>$cant_data['total_shift_upi'],
+                "cash_amount"=>$cant_data['total_shift_cash'],
                 "total_amount"=>$cant_data['total_collection'],
+                "remarks" => isset($income_entries[3]) ? $income_entries[3] : "",
             ];
             $total_amount += $cant_data['total_collection'];
         }
@@ -106,9 +111,10 @@ class IncomeController extends Controller {
             $c_services[] = [
                 "service_id" =>4,
                 "source" => "Massage",
-                "cash_amount"=>$massage_data['total_shift_upi'],
-                "upi_amount"=>$massage_data['total_shift_cash'],
+                "upi_amount"=>$massage_data['total_shift_upi'],
+                "cash_amount"=>$massage_data['total_shift_cash'],
                 "total_amount"=>$massage_data['total_collection'],
+                "remarks" => isset($income_entries[4]) ? $income_entries[4] : "",
             ];
             $total_amount += $massage_data['total_collection'];
         }
@@ -117,9 +123,10 @@ class IncomeController extends Controller {
             $c_services[] = [
                 "service_id" =>5,
                 "source" => "Locker",
-                "cash_amount"=>$locker_data['total_shift_upi'],
-                "upi_amount"=>$locker_data['total_shift_cash'],
+                "upi_amount"=>$locker_data['total_shift_upi'],
+                "cash_amount"=>$locker_data['total_shift_cash'],
                 "total_amount"=>$locker_data['total_collection'],
+                "remarks" => isset($income_entries[5]) ? $income_entries[5] : "",
             ];
             $total_amount += $locker_data['total_collection'];
         }
@@ -130,9 +137,10 @@ class IncomeController extends Controller {
                 $c_services[] = [
                     "service_id" =>7,
                     "source" => "Others",
-                    "cash_amount"=>$other_data->upi_amount ? $other_data->upi_amount : 0,
-                    "upi_amount"=>$other_data->cash_amount ? $other_data->cash_amount : 0,
+                    "cash_amount"=>$other_data->cash_amount ? $other_data->cash_amount : 0,
+                    "upi_amount"=>$other_data->upi_amount ? $other_data->upi_amount : 0,
                     "total_amount"=>$other_data->total_amount ? $other_data->total_amount : 0,
+                    "remarks" => isset($income_entries[7]) ? $income_entries[7] : "",
                 ];
             }else{
                 $c_services[] = [
@@ -141,6 +149,7 @@ class IncomeController extends Controller {
                     "cash_amount"=>0,
                     "upi_amount"=>0,
                     "total_amount"=>0,
+                    "remarks" => "",
                 ];
             }
             
@@ -164,7 +173,8 @@ class IncomeController extends Controller {
         $formData->date = date('d-m-Y',strtotime($date));
         $formData->client_id = $client_id;
         $formData->c_services = $c_services;
-        $formData->total_amount = $total_amount;
+        // $formData->total_amount = $total_amount;
+        // $formData->back_balance = isset($check) ? $check->back_balance : 5;
         
 
         $data['success'] = true;

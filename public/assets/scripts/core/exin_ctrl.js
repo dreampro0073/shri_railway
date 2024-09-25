@@ -160,6 +160,8 @@ app.controller('IncomeCtrl', function($scope , $http, $timeout , DBService, Uplo
         date:'',
         client_id:'',
         c_services:[],
+        total_amount: 0,
+        back_balance: 0,
     };
 
     // $scope.c_services = [];
@@ -195,6 +197,7 @@ app.controller('IncomeCtrl', function($scope , $http, $timeout , DBService, Uplo
             if (data.success) {
                 $scope.clients = data.clients;               
                 $scope.formData = data.formData;
+                $scope.calAllSum();
             }
         });
     }
@@ -286,19 +289,14 @@ app.controller('IncomeCtrl', function($scope , $http, $timeout , DBService, Uplo
         };
     }
 
-    $scope.removeFileX = function(){
-        $scope.single_income.attachment = '';
-    }
-
-
-    $scope.addMore = function(){
-        $scope.formData.multiple_income.push(JSON.parse(JSON.stringify($scope.single_income)));
-    }
-
     $scope.calAllSum = () => {
-        const totalAmount = $scope.formData.multiple_income.reduce((sum, item) => sum + item.amount, 0);
-        $scope.formData.total_amount = totalAmount;
-        $scope.formData.all_total= parseInt($scope.formData.total_amount)+parseInt($scope.formData.back_balance);
+        $scope.formData.cash_amount = $scope.formData.c_services.reduce((sum, item) => sum + item.cash_amount, 0);
+        $scope.formData.upi_amount = $scope.formData.c_services.reduce((sum, item) => sum + item.upi_amount, 0);
+        
+        console.log($scope.formData.cash_amount);
+        // $scope.formData.total_amount = parseInt($scope.formData.cash_amount)+parseInt($scope.formData.upi_amount);
+
+        // $scope.formData.all_total= parseInt($scope.formData.total_amount)+parseInt($scope.formData.back_balance);
     }
 
 

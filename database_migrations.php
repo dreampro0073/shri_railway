@@ -130,4 +130,13 @@ ALTER TABLE `total_incomes` CHANGE `total_amount` `total_amount` INT(11) NOT NUL
 ALTER TABLE `incomes` ADD `income_id` INT NOT NULL DEFAULT '0' AFTER `id`;
 
 ALTER TABLE `client_services` CHANGE `services_id` `services_id` INT(11) NOT NULL DEFAULT '0' COMMENT '1=sittinng,2=cloakroom, 3=canteen,4= Massage, 5=Locker,6=Ledger account';
+
+
+CREATE TABLE `nnhp`.`incomes` ( `id` INT NOT NULL AUTO_INCREMENT , `client_id` INT NOT NULL DEFAULT '0' , `date` DATE NULL DEFAULT NULL , `cash_amount` DOUBLE NOT NULL DEFAULT '0' , `upi_amount` DOUBLE NOT NULL DEFAULT '0' , `total_amount` DOUBLE NOT NULL DEFAULT '0' , `back_balance` DOUBLE NOT NULL DEFAULT '0' , `day_total` DOUBLE NOT NULL DEFAULT '0' , `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , `created_at` TIMESTAMP NULL DEFAULT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+
+CREATE TABLE `nnhp`.`income_entries` ( `id` INT NOT NULL AUTO_INCREMENT , `income_id` INT NOT NULL DEFAULT '0' , `client_id` INT NOT NULL DEFAULT '0' , `service_id` INT NOT NULL DEFAULT '0' , `cash_amount` DOUBLE NOT NULL DEFAULT '0' , `upi_amount` DOUBLE NOT NULL DEFAULT '0' , `total_amount` DOUBLE NOT NULL DEFAULT '0' , `date` DATE NULL DEFAULT NULL , `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , `created_at` TIMESTAMP NULL DEFAULT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+
+
+
+
 ?>

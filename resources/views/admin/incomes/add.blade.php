@@ -49,44 +49,40 @@
                 </div>
             </div>
             <hr>
-            <div ng-repeat="single_income in formData.multiple_income" style="margin-bottom: 10px;padding-bottom: 10px;border-bottom: 1px solid #f6f6f6;">
-               
+            <div ng-repeat="c_service in formData.c_services" style="margin-bottom: 10px;padding-bottom: 10px;border-bottom: 1px solid #f6f6f6;">
+
                 <div class="row">
                      
-                    <div class="col-md-2 form-group">
-                        <label>From</label>
-                        <select class="form-control" convert-to-number ng-model="single_income.income_type">
-                            <option value="">Select</option>
-                            <option ng-repeat="(key,value) in income_types" value="@{{key}}">@{{value}}</option>
-                        </select>
+                    <div class="col-md-3 form-group">
+                        <label>Source</label>
+                        <input type="text" readonly ng-model="c_service.source" class="form-control">
                     </div>
-                        
                     
-                    <div class="col-md-4 form-group">
-                        <label>Amount</label>
-                        <input type="number" ng-model="single_income.amount" class="form-control" ng-change="calAllSum()">
+                    <div class="col-md-2 form-group">
+                        <label>Cash Amount</label>
+                        <input type="text" ng-readonly="c_service.service_id != 7" ng-model="c_service.cash_amount" class="form-control">
+                        
                     </div>
-                    <div class="col-md-6 form-group">
+                    <div class="col-md-2 form-group">
+                        <label>UPI Amount</label>
+                        <input type="text" ng-readonly="c_service.service_id != 7" ng-model="c_service.upi_amount" class="form-control">
+                        
+                    </div>
+                    <div class="col-md-2 form-group">
+                        <label>Total Amount</label>
+                        <input type="text" ng-readonly="c_service.service_id != 7" ng-model="c_service.total_amount" class="form-control">
+                        
+                    </div>
+                    <div class="col-md-3 form-group">
                         <label>Remarks</label>
-                        <input type="text" ng-model="single_income.remarks" class="form-control">
+                        <input type="text" ng-model="c_service.remarks" class="form-control">
                     </div>
-                    <!-- <div class="col-md-3">
-                        <div class="form-group">
-                            <label>Upload Income File</label><br>
-                            <button type="button" ng-show="single_income.attachment == '' || single_income.attachment == null " class="btn btn-sm btn-secondary upload-btn" ngf-select="uploadFile($file,'attachment',single_income)" ladda="single_income.uploading" data-style="expand-right" >Attachment</button>
-                                
-                            <a class="btn btn-primary ng-cloak" href="{{url('/')}}/@{{single_income.attachment}}" ng-show="single_income.attachment != '' && single_income.attachment != null" target="_blank">View</a>
-
-                            <a class="btn btn-danger ng-cloak" ng-click="single_income.attachment = '' " ng-show="single_income.attachment != '' && single_income.attachment != null "><i class="fa fa-remove"></i></a>
-                        </div>
-                    </div> -->
+                
                 </div>
             </div>
-            <div class="row">
-                
-            </div>
+            
             <div style="margin-top: 15px;">
-                <a ng-if="income_id==0" href="javascript:;" ng-click="addMore()" class="btn btn-warning">Add More</a>
+                <!-- <a ng-if="income_id==0" href="javascript:;" ng-click="addMore()" class="btn btn-warning">Add More</a> -->
                 <button type="submit" ladda="processing" class="btn btn-primary">Submit</button>
             </div>
             

@@ -22,6 +22,10 @@ class Entry extends Model
         ]);
     }
 
+    public static function getServiceIds($client_id){
+        return DB::table("client_services")->where('status',1)->where("client_id", $client_id)->pluck('services_id')->toArray();
+    }
+
     public static function payTypes(){
         $ar = [];
         $ar[] = ['value'=>1,'label'=>'Cash'];

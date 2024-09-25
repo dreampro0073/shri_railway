@@ -14,7 +14,7 @@ use Redirect, Validator, Hash, Response, Session, DB;
 use App\Models\Income;
 use App\Models\Expense;
 use App\Models\IncomeEntry;
-use App\Models\Sitting;
+use App\Models\Sitting,App\Models\CloakRoom, App\Models\Canteen,App\Models\Massage,App\Models\Locker,App\Models\Entry;
 use Dompdf\Dompdf;
 use Illuminate\Support\Facades\File;
 
@@ -50,26 +50,132 @@ class IncomeController extends Controller {
         ]);
     }
 
-    // public function edit(Request $request){
+    public function edit(Request $request){
 
-    //     $data['income_types']= Expense::incomeTypes();
-    //     $date = $request->date?$request->date : date("Y-m-d");
-    //     $client_id = $request->client_id ? $request->client_id : Auth::user()->client_id;
-    //     $income = DB::table('incomes')->where("date", date('Y-m-d',strtotime($date)))->where("client_id", $client_id)->first();
-    //     if ($income) {
-    //         $income->date = date('d-m-Y',strtotime($income->date));
-    //         $multiple_income = DB::table('income_entries')->where('income_id',$income->id)->get();
-    //         $income->multiple_income = $multiple_income;
-    //     }
-    //     $data['income'] = $income;
-    //     $data['client_id'] = $client_id;
-    //     $data['date'] = date('d-m-Y',strtotime($date));
 
-    //     $data['success'] = true;
-    //     $data['clients'] = Sitting::getBranches();
 
-    //     return Response::json($data,200,[]);
-    // }    
+        // $date = $request->date?date("Y-m-d",strtotime($request->date)):date("Y-m-d");
+        $date = $request->date?date("Y-m-d",strtotime($request->date)):"2024-09-25";
+        $client_id = $request->client_id ? $request->client_id : Auth::user()->client_id;
+
+        $service_ids = Entry::getServiceIds($client_id);
+
+        $check = Income::where('date',$date)->where('client_id',$client_id)->first();
+
+        $c_services = [];
+        $total_amount = 0;
+        if(in_array(1,$service_ids)){
+            $sitting_data = Sitting::totalShiftData($date,0,$client_id);
+            $c_services[] = [
+                "service_id" =>1,
+                "source" => "Sitting",
+                "cash_amount"=>$sitting_data['total_shift_upi'],
+                "upi_amount"=>$sitting_data['total_shift_cash'],
+                "total_amount"=>$sitting_data['total_collection'],
+            ];
+
+            $total_amount += $sitting_data['total_collection'];
+        }
+
+        if(in_array(2,$service_ids)){
+            $cloak_data = CloakRoom::totalShiftData($date,0,$client_id);
+            $c_services[] = [
+                "service_id" =>2,
+                "source" => "cloakroom",
+                "cash_amount"=>$cloak_data['total_shift_upi'],
+                "upi_amount"=>$cloak_data['total_shift_cash'],
+                "total_amount"=>$cloak_data['total_collection'],
+            ];
+
+            $total_amount += $cloak_data['total_collection'];
+        }
+
+        if(in_array(3,$service_ids)){
+            $cant_data = Canteen::totalShiftData($date,0,$client_id);
+            $c_services[] = [
+                "service_id" =>3,
+                "source" => "Canteen",
+                "cash_amount"=>$cant_data['total_shift_upi'],
+                "upi_amount"=>$cant_data['total_shift_cash'],
+                "total_amount"=>$cant_data['total_collection'],
+            ];
+            $total_amount += $cant_data['total_collection'];
+        }
+        if(in_array(4,$service_ids)){
+            $massage_data = Massage::totalShiftData($date,0,$client_id);
+            $c_services[] = [
+                "service_id" =>4,
+                "source" => "Massage",
+                "cash_amount"=>$massage_data['total_shift_upi'],
+                "upi_amount"=>$massage_data['total_shift_cash'],
+                "total_amount"=>$massage_data['total_collection'],
+            ];
+            $total_amount += $massage_data['total_collection'];
+        }
+        if(in_array(5,$service_ids)){
+            $locker_data = Locker::totalShiftData($date,0,$client_id);
+            $c_services[] = [
+                "service_id" =>5,
+                "source" => "Locker",
+                "cash_amount"=>$locker_data['total_shift_upi'],
+                "upi_amount"=>$locker_data['total_shift_cash'],
+                "total_amount"=>$locker_data['total_collection'],
+            ];
+            $total_amount += $locker_data['total_collection'];
+        }
+        if(in_array(7,$service_ids)){
+            if($check){
+                $other_data = DB::table("income_entries")->where("income_id", $check->id)->where("service_id", 7)->first();
+
+                $c_services[] = [
+                    "service_id" =>7,
+                    "source" => "Others",
+                    "cash_amount"=>$other_data->upi_amount ? $other_data->upi_amount : 0,
+                    "upi_amount"=>$other_data->cash_amount ? $other_data->cash_amount : 0,
+                    "total_amount"=>$other_data->total_amount ? $other_data->total_amount : 0,
+                ];
+            }else{
+                $c_services[] = [
+                    "service_id" =>7,
+                    "source" => "Others",
+                    "cash_amount"=>0,
+                    "upi_amount"=>0,
+                    "total_amount"=>0,
+                ];
+            }
+            
+        }
+
+        // $data['income_types']= Expense::incomeTypes();
+        // $date = $request->date?$request->date : date("Y-m-d");
+        // $client_id = $request->client_id ? $request->client_id : Auth::user()->client_id;
+        // $income = DB::table('incomes')->where("date", date('Y-m-d',strtotime($date)))->where("client_id", $client_id)->first();
+        // if ($income) {
+        //     $income->date = date('d-m-Y',strtotime($income->date));
+        //     $multiple_income = DB::table('income_entries')->where('income_id',$income->id)->get();
+        //     $income->multiple_income = $multiple_income;
+        // }
+        // $data['income'] = $income;
+
+
+
+
+        $formData  = new \stdClass;
+        $formData->date = date('d-m-Y',strtotime($date));
+        $formData->client_id = $client_id;
+        $formData->c_services = $c_services;
+        $formData->total_amount = $total_amount;
+        
+
+        $data['success'] = true;
+        $data['clients'] = Sitting::getBranches();
+        $data['formData'] = $formData;
+        // $data['c_services'] = $c_services;
+        // $data['client_id'] = $client_id;
+        // $data['date'] = date('d-m-Y',strtotime($date));
+
+        return Response::json($data,200,[]);
+    }    
 
     // public function store(Request $request){
 
@@ -142,45 +248,11 @@ class IncomeController extends Controller {
     //     }
 
         
+
     //     return Response::json($data,200,array());
     // }
 
-    // public function delete($income_id){
-    //     $income= Income::find($income_id);
-    //     if ($income) {
-    //         $income->delete();
-    //         $data['success'] = true;
-    //         $data['message'] = 'Income deleted successfully';
-    //     }else{
-    //         $data['success'] = false;
-    //         $data['message'] = 'Income not found';
-    //     }
-    //     return Response::json($data,200,array());
-    // }
 
-    // public function printIncome($income_id=0){
-
-    //     $dompdf = new Dompdf();
-    //     $income = DB::table('incomes')->select('incomes.*','clients.client_name')->leftJoin('clients','clients.id','=','incomes.client_id')->where('incomes.id',$income_id)->first();
-
-    //     $total_cash = 0;
-    //     $total_upi = 0;
-
-    //     if ($income) {
-    //         $income->multiple_income = Income::getMultiIncomes($income);
-    //         $income->date = date('d-m-Y',strtotime($income->date));
-
-    //         $total_cash = DB::table('income_entries')->where('income_id',$income_id)->whereIn('income_type',[1,3,5,7])->sum('amount');
-
-    //         $total_upi = DB::table('income_entries')->where('income_id',$income_id)->whereIn('income_type',[2,4,6,8])->sum('amount');
-    //     }
-
-    //     $html = view('admin.incomes.print_pdf',['income'=>$income,'total_upi'=>$total_upi,'total_cash'=>$total_cash]);
-    //     $dompdf->loadHtml($html);
-    //     $dompdf->setPaper('A4', 'portrait');
-    //     $dompdf->render();
-    //     $dompdf->stream();
-    // }
 
     public function summary(Request $request){
         $sidebar = 'acc';
@@ -214,11 +286,17 @@ class IncomeController extends Controller {
         $total_incomes = $incomes_sql;
         $total_incomes = $total_incomes->sum("all_total");
         $incomes = $incomes_sql->orderBy('incomes.date','DESC')->get();
+        $total_cash = 0;
+        $total_upi = 0;
 
         foreach ($incomes as $key => $income) {
             $income->multiple_income = Income::getMultiIncomes($income);
             $income->date = date('d-m-Y',strtotime($income->date));
             $income->show_income_type = (isset($income->income_type))?$income_types[$income->income_type]:'NA';
+            $income->total_cash = DB::table('income_entries')->where('income_id',$income->id)->whereIn('income_type',[1,3,5,7])->sum('amount');
+            $total_cash  = $total_cash + $income->total_cash;
+            $income->total_upi = DB::table('income_entries')->where('income_id',$income->id)->whereIn('income_type',[2,4,6,8])->sum('amount');
+            $total_upi  = $total_upi + $income->total_upi;
         }
 
         $expenses_sql = Expense::select('expenses.*','clients.client_name')->leftJoin('clients','clients.id','=','expenses.client_id');
@@ -242,6 +320,8 @@ class IncomeController extends Controller {
         $data['total_expenses'] = $total_expenses;
         $data['total_incomes'] = $total_incomes;
 
+        $data['total_cash'] = $total_cash;
+        $data['total_upi'] = $total_upi;
 
         if($request->export == 1){
             $data["to_date"] = $to_date;

@@ -33,7 +33,7 @@ class ShiftController extends Controller {
 		
 		if($request->client_id){
 			$client_id = $request->client_id;
-			$service_ids = DB::table("client_services")->where('status',1)->where("client_id", $client_id)->pluck('services_id')->toArray();
+			$service_ids = Entry::getServiceIds($client_id);
 		} else {
 			$service_ids = Session::get('service_ids');
 		}

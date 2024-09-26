@@ -18,7 +18,7 @@
 	</style>
 </head>
 <body>
-	<h3 style="text-align:center;">Income - {{$check->date}}</h3>
+	<h3 style="text-align:center;">Income - {{date("d-m-Y",strtotime($check->date))}}</h3>
 	<table style="width:100%;" cellpadding="4" cellspacing="0">
 		<tr>
 			<td>Branch</td>

@@ -138,7 +138,7 @@
 			<p style="margin-top:10px;font-size: 16px;">
 				<strong>Thanks Visit Again</strong>
 			</p>
-			<span style="font-size:10px;line-height:1.2;display: inline-block;margin-top:10px;">
+			<span style="font-size:12px;line-height:1.2;display: inline-block;margin-top:10px;">
 		        2024 &copy; Aadhyasri Web Solutions, shri.webtechnology@gmail.com
 		    </span>
 		</div>	

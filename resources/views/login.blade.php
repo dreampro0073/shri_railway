@@ -68,7 +68,7 @@
 
     </div>
     <span style="position: absolute;top: 10px;right: 10px;">
-        2024 &copy; Powered by Aadhyasri Web Solutions <br> <a href="mailto:shri.webtechnology@gmail.com">shri.webtechnology@gmail.com</a>
+        2024 &copy; Powered by Aadhyasri Web Solutions <br> <a href="mailto:aadhyasriwebsolutions@gmail.com">aadhyasriwebsolutions@gmail.com</a>
     </span>
 </div>
 

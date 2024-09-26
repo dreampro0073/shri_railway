@@ -158,7 +158,7 @@
 				<strong>Thanks Visit Again</strong>
 			</p>
 			<span style="font-size:12px;line-height:1.2;display: inline-block;margin-top:10px;">
-		        2024 &copy; Aadhyasri Web Solutions, shri.webtechnology@gmail.com
+		        2024 &copy; Aadhyasri Web Solutions, aadhyasriwebsolutions@gmail.com
 		    </span>
 		</div>
 	</div>

@@ -123,7 +123,7 @@ INSERT INTO canteen_items(canteen_id,item_name,price,is_manual,barvalue_avail) V
 INSERT INTO canteen_items(canteen_id,item_name,price,is_manual,barvalue_avail) VALUES (2,'COFFEE', 20,1,0);
 INSERT INTO canteen_items(canteen_id,item_name,price,is_manual,barvalue_avail) VALUES (2,'COFFEE CAPACHINO', 30,1,0);
 
-CREATE TABLE `nnhp`.`total_incomes` ( `id` INT NOT NULL , `date` DATE NULL DEFAULT NULL , `total_amount` INT NOT NULL , `advance_amount` INT NOT NULL , `back_balance` INT NOT NULL , `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , `created_at` TIMESTAMP NULL DEFAULT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+CREATE TABLE `total_incomes` ( `id` INT NOT NULL , `date` DATE NULL DEFAULT NULL , `total_amount` INT NOT NULL , `advance_amount` INT NOT NULL , `back_balance` INT NOT NULL , `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , `created_at` TIMESTAMP NULL DEFAULT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
 ALTER TABLE `total_incomes` ADD `added_by` INT NOT NULL DEFAULT '0' AFTER `back_balance`;
 ALTER TABLE `total_incomes` ADD `all_total` INT NOT NULL DEFAULT '0' AFTER `back_balance`;
 ALTER TABLE `total_incomes` CHANGE `total_amount` `total_amount` INT(11) NOT NULL DEFAULT '0', CHANGE `back_balance` `back_balance` INT(11) NOT NULL DEFAULT '0';
@@ -132,11 +132,13 @@ ALTER TABLE `incomes` ADD `income_id` INT NOT NULL DEFAULT '0' AFTER `id`;
 ALTER TABLE `client_services` CHANGE `services_id` `services_id` INT(11) NOT NULL DEFAULT '0' COMMENT '1=sittinng,2=cloakroom, 3=canteen,4= Massage, 5=Locker,6=Ledger account';
 
 
-CREATE TABLE `nnhp`.`incomes` ( `id` INT NOT NULL AUTO_INCREMENT , `client_id` INT NOT NULL DEFAULT '0' , `date` DATE NULL DEFAULT NULL , `cash_amount` DOUBLE NOT NULL DEFAULT '0' , `upi_amount` DOUBLE NOT NULL DEFAULT '0' , `total_amount` DOUBLE NOT NULL DEFAULT '0' , `back_balance` DOUBLE NOT NULL DEFAULT '0' , `day_total` DOUBLE NOT NULL DEFAULT '0' , `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , `created_at` TIMESTAMP NULL DEFAULT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+CREATE TABLE `incomes` ( `id` INT NOT NULL AUTO_INCREMENT , `client_id` INT NOT NULL DEFAULT '0' , `date` DATE NULL DEFAULT NULL , `cash_amount` DOUBLE NOT NULL DEFAULT '0' , `upi_amount` DOUBLE NOT NULL DEFAULT '0' , `total_amount` DOUBLE NOT NULL DEFAULT '0' , `back_balance` DOUBLE NOT NULL DEFAULT '0' , `day_total` DOUBLE NOT NULL DEFAULT '0' , `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , `created_at` TIMESTAMP NULL DEFAULT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
 
-CREATE TABLE `nnhp`.`income_entries` ( `id` INT NOT NULL AUTO_INCREMENT , `income_id` INT NOT NULL DEFAULT '0' , `client_id` INT NOT NULL DEFAULT '0' , `service_id` INT NOT NULL DEFAULT '0' , `cash_amount` DOUBLE NOT NULL DEFAULT '0' , `upi_amount` DOUBLE NOT NULL DEFAULT '0' , `total_amount` DOUBLE NOT NULL DEFAULT '0' , `date` DATE NULL DEFAULT NULL , `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , `created_at` TIMESTAMP NULL DEFAULT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+CREATE TABLE `income_entries` ( `id` INT NOT NULL AUTO_INCREMENT , `income_id` INT NOT NULL DEFAULT '0' , `client_id` INT NOT NULL DEFAULT '0' , `service_id` INT NOT NULL DEFAULT '0' , `cash_amount` DOUBLE NOT NULL DEFAULT '0' , `upi_amount` DOUBLE NOT NULL DEFAULT '0' , `total_amount` DOUBLE NOT NULL DEFAULT '0' , `date` DATE NULL DEFAULT NULL , `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , `created_at` TIMESTAMP NULL DEFAULT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
 
+ALTER TABLE `income_entries` ADD `remarks` VARCHAR(255) NULL DEFAULT NULL AFTER `date`;
 
+ALTER TABLE `income_entries` ADD `source` VARCHAR(255) NULL DEFAULT NULL AFTER `service_id`;
 
 
 ?>

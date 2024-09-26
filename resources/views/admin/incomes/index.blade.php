@@ -40,13 +40,6 @@
                     <button type="submit" ng-click="onSearch()" class="btn btn-primary">Search</button>
                     <button type="submit" ng-click="clearFilter()" class="btn btn-warning">Clear</button>
                 </div>
-                <!-- <div class="col-md-2 form-group">
-                    <label>From</label>
-                    <select class="form-control" convert-to-number ng-model="searchData.income_type">
-                        <option value="">Select</option>
-                        <option ng-repeat="(key,value) in income_types" value="@{{key}}">@{{value}}</option>
-                    </select>
-                </div> -->
             </div>
         </div>
         <div ng-if="loading" class="alert alert-warning">

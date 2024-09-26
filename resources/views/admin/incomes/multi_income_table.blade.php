@@ -1,22 +1,29 @@
-<table style="width:100%;" cellpadding="4" cellspacing="0">
-	<tbody>
-		<tr>
-			<th>Income Type</th>
-			<th>Amount</th>
-		</tr>
-		@foreach($income->multiple_income as $item)
-		<tr>
-			<td>{{$item->show_income_type}}</td>
-			<td>{{$item->amount}}</td>
-		</tr>
-		@endforeach
-		<tr>
-			<td>Total Cash</td>
-			<td>{{$income->total_cash}}</td>
-		</tr>
-		<tr>
-			<td>Total UPI</td>
-			<td>{{$income->total_upi}}</td>
-		</tr>
-	</tbody>
+<table class="table table-condensed table-bordered table-striped ts" cellspacing="0" cellpadding="4">
+    <thead>
+        <tr>
+            <th>Sn</th>
+            <th>From</th>
+           
+            <th>Cash Amount</th>
+            <th>UPI Amount</th>
+            <th>Total Amount</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($income->c_services as $index => $item): ?>
+            <tr>
+                <td><?php echo $index + 1; ?></td>
+                <td>{{$item['source']}}</td>
+                <td>{{$item['cash_amount']}}</td>
+                <td>{{$item['upi_amount']}}</td>
+                <td>{{$item['total_amount']}}</td>
+            </tr>
+        <?php endforeach; ?>
+        <tr>
+	        <td colspan="2"><b>Total</b></td>
+	        <td><b>{{$check->cash_amount}}</b></td>
+	        <td><b>{{$check->upi_amount}}</b></td>
+	        <td><b>{{$check->total_amount}}</b></td>
+	    </tr>
+    </tbody>
 </table>

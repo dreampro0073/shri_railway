@@ -11,45 +11,44 @@
 		}
 		table tr th,td{
 			border: 1px solid #000;
-
+		}
+		table.ts tr th td{
+			text-align: center;
 		}
 	</style>
 </head>
 <body>
-	<h3 style="text-align:center;">Income - {{$income->date}}</h3>
+	<h3 style="text-align:center;">Income - {{$check->date}}</h3>
 	<table style="width:100%;" cellpadding="4" cellspacing="0">
 		<tr>
 			<td>Branch</td>
-			<td>{{$income->client_name}}</td>
+			<td>{{$check->client_name}}</td>
 
 		</tr>
 		<tr>
 			<td>Date</td>
-			<td>{{$income->date}}</td>
-			
+			<td>{{date("d-m-Y",strtotime($check->date))}}</td>
 		</tr>
 		<tr>
 			<td>Total Amount</td>
-			<td>{{$income->total_amount}}</td>
-			
+			<td>{{$check->total_amount}}</td>	
 		</tr>
 		<tr>
 			<td>Back Balance</td>
-			<td>{{$income->back_balance}}</td>
-			
+			<td>{{$check->back_balance}}</td>	
 		</tr>
 		<tr>
-			<td>All Amount</td>
-			<td>{{$income->all_total}}</td>
+			<td>Day Total Amount</td>
+			<td>{{$check->day_total}}</td>
 			
 		</tr>
 	</table>
 	<hr>
-	@if(sizeof($income->multiple_income) > 0)
-		@include("admin/incomes/multi_income_table")
+	@if(sizeof($income->c_services) > 0)
+		@include('admin.incomes.multi_income_table')
 	@endif
 
-	<h4 style="text-align:right;">
+    <h4 style="text-align:right;">
 		{{Auth::user()->name}}
 		<br>
 		<span style="font-size:14px;">{{date("d M Y")}}</span>

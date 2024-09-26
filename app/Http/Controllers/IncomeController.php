@@ -40,6 +40,27 @@ class IncomeController extends Controller {
         return Response::json($data,200,[]);
     }
 
+    public function printIncome($income_id=0){
+        $check = Income::select('incomes.*','clients.client_name')->leftJoin('clients','clients.id','=','incomes.client_id')->where('incomes.id',$income_id)->first();
+
+        // dd($check);
+        if($check){
+            $date = date("Y-m-d",strtotime($check->date));
+            $client_id = $check->client_id;
+
+            $dompdf = new Dompdf();
+            $income = $this->getFormData($date, $client_id);
+
+            // dd($income);
+
+            $html = view('admin.incomes.print_pdf',['income'=>$income,'check'=>$check]);
+            $dompdf->loadHtml($html);
+            $dompdf->setPaper('A4', 'portrait');
+            $dompdf->render();
+            $dompdf->stream();
+        }
+    }
+
     public function editForm($income_id = 0){
         $sidebar = 'acc';
         $subsidebar = 'income';
@@ -52,16 +73,24 @@ class IncomeController extends Controller {
 
     public function edit(Request $request){
 
-
-
-        // $date = $request->date?date("Y-m-d",strtotime($request->date)):date("Y-m-d");
-        $date = $request->date?date("Y-m-d",strtotime($request->date)):"2024-09-25";
+        $date = $request->date?date("Y-m-d",strtotime($request->date)):date("Y-m-d");
         $client_id = $request->client_id ? $request->client_id : Auth::user()->client_id;
 
-        $service_ids = Entry::getServiceIds($client_id);
+        $data['success'] = true;
+        $data['clients'] = Sitting::getBranches();
+        $data['formData'] = $this->getFormData($date, $client_id);
 
+        return Response::json($data,200,[]);
+    } 
+
+    public function getFormData($date, $client_id){
         $check = Income::where('date',$date)->where('client_id',$client_id)->first();
+        $income_entries = [];
+        if($check){
+            $income_entries = DB::table("income_entries")->where("income_id", $check->id)->pluck("remarks", 'service_id')->toArray();
+        }
 
+        $service_ids = Entry::getServiceIds($client_id);
         $c_services = [];
         $total_amount = 0;
         if(in_array(1,$service_ids)){
@@ -69,9 +98,10 @@ class IncomeController extends Controller {
             $c_services[] = [
                 "service_id" =>1,
                 "source" => "Sitting",
-                "cash_amount"=>$sitting_data['total_shift_upi'],
-                "upi_amount"=>$sitting_data['total_shift_cash'],
+                "upi_amount"=>$sitting_data['total_shift_upi'],
+                "cash_amount"=>$sitting_data['total_shift_cash'],
                 "total_amount"=>$sitting_data['total_collection'],
+                "remarks" => isset($income_entries[1]) ? $income_entries[1] : "",
             ];
 
             $total_amount += $sitting_data['total_collection'];
@@ -82,9 +112,10 @@ class IncomeController extends Controller {
             $c_services[] = [
                 "service_id" =>2,
                 "source" => "cloakroom",
-                "cash_amount"=>$cloak_data['total_shift_upi'],
-                "upi_amount"=>$cloak_data['total_shift_cash'],
+                "upi_amount"=>$cloak_data['total_shift_upi'],
+                "cash_amount"=>$cloak_data['total_shift_cash'],
                 "total_amount"=>$cloak_data['total_collection'],
+                "remarks" => isset($income_entries[2]) ? $income_entries[2] : "",
             ];
 
             $total_amount += $cloak_data['total_collection'];
@@ -95,9 +126,10 @@ class IncomeController extends Controller {
             $c_services[] = [
                 "service_id" =>3,
                 "source" => "Canteen",
-                "cash_amount"=>$cant_data['total_shift_upi'],
-                "upi_amount"=>$cant_data['total_shift_cash'],
+                "upi_amount"=>$cant_data['total_shift_upi'],
+                "cash_amount"=>$cant_data['total_shift_cash'],
                 "total_amount"=>$cant_data['total_collection'],
+                "remarks" => isset($income_entries[3]) ? $income_entries[3] : "",
             ];
             $total_amount += $cant_data['total_collection'];
         }
@@ -106,9 +138,10 @@ class IncomeController extends Controller {
             $c_services[] = [
                 "service_id" =>4,
                 "source" => "Massage",
-                "cash_amount"=>$massage_data['total_shift_upi'],
-                "upi_amount"=>$massage_data['total_shift_cash'],
+                "upi_amount"=>$massage_data['total_shift_upi'],
+                "cash_amount"=>$massage_data['total_shift_cash'],
                 "total_amount"=>$massage_data['total_collection'],
+                "remarks" => isset($income_entries[4]) ? $income_entries[4] : "",
             ];
             $total_amount += $massage_data['total_collection'];
         }
@@ -117,9 +150,10 @@ class IncomeController extends Controller {
             $c_services[] = [
                 "service_id" =>5,
                 "source" => "Locker",
-                "cash_amount"=>$locker_data['total_shift_upi'],
-                "upi_amount"=>$locker_data['total_shift_cash'],
+                "upi_amount"=>$locker_data['total_shift_upi'],
+                "cash_amount"=>$locker_data['total_shift_cash'],
                 "total_amount"=>$locker_data['total_collection'],
+                "remarks" => isset($income_entries[5]) ? $income_entries[5] : "",
             ];
             $total_amount += $locker_data['total_collection'];
         }
@@ -130,9 +164,10 @@ class IncomeController extends Controller {
                 $c_services[] = [
                     "service_id" =>7,
                     "source" => "Others",
-                    "cash_amount"=>$other_data->upi_amount ? $other_data->upi_amount : 0,
-                    "upi_amount"=>$other_data->cash_amount ? $other_data->cash_amount : 0,
+                    "cash_amount"=>$other_data->cash_amount ? $other_data->cash_amount : 0,
+                    "upi_amount"=>$other_data->upi_amount ? $other_data->upi_amount : 0,
                     "total_amount"=>$other_data->total_amount ? $other_data->total_amount : 0,
+                    "remarks" => isset($income_entries[7]) ? $income_entries[7] : "",
                 ];
             }else{
                 $c_services[] = [
@@ -141,117 +176,88 @@ class IncomeController extends Controller {
                     "cash_amount"=>0,
                     "upi_amount"=>0,
                     "total_amount"=>0,
+                    "remarks" => "",
                 ];
             }
             
         }
 
-        // $data['income_types']= Expense::incomeTypes();
-        // $date = $request->date?$request->date : date("Y-m-d");
-        // $client_id = $request->client_id ? $request->client_id : Auth::user()->client_id;
-        // $income = DB::table('incomes')->where("date", date('Y-m-d',strtotime($date)))->where("client_id", $client_id)->first();
-        // if ($income) {
-        //     $income->date = date('d-m-Y',strtotime($income->date));
-        //     $multiple_income = DB::table('income_entries')->where('income_id',$income->id)->get();
-        //     $income->multiple_income = $multiple_income;
-        // }
-        // $data['income'] = $income;
-
-
-
-
         $formData  = new \stdClass;
         $formData->date = date('d-m-Y',strtotime($date));
         $formData->client_id = $client_id;
         $formData->c_services = $c_services;
-        // $formDa ta->total_amount = $total_amount;
-        
+        $formData->back_balance = isset($check) ? $check->back_balance : 0;
+        if($check){
+            $formData->id = $check->id;
+        }
 
-        $data['success'] = true;
-        $data['clients'] = Sitting::getBranches();
-        $data['formData'] = $formData;
-        // $data['c_services'] = $c_services;
-        // $data['client_id'] = $client_id;
-        // $data['date'] = date('d-m-Y',strtotime($date));
 
+
+        return $formData;
+    
+    }
+
+    public function store(Request $request){
+        $cre =[];
+        $rules =[];
+        $validator = Validator::make($cre,$rules);
+
+        if($validator->passes()){
+            $income = Income::find($request->id);
+
+            $date = date("Y-m-d",strtotime($request->date));
+
+            if(!$income){
+                $income = new Income;
+            }
+
+            $income->date = $date;
+            $income->client_id = $request->client_id;
+            $income->total_amount = $request->total_amount;
+            $income->back_balance = $request->back_balance;
+            $income->day_total = $request->all_total;
+            $income->cash_amount = $request->cash_amount;
+            $income->upi_amount = $request->upi_amount;
+            
+            $income->save();
+
+            if(sizeof($request->c_services) > 0){
+                foreach ($request->c_services as $key => $item) {
+                    $check = DB::table('income_entries')->where('service_id',$item['service_id'])->where('income_id',$income->id)->first();
+
+
+                    $ins_data  = [
+                        'income_id' => $income->id,
+                        'client_id' => $income->client_id,
+                        'service_id' => $item['service_id'],
+                        'cash_amount' => $item['cash_amount'],
+                        'upi_amount' => $item['upi_amount'],
+                        'total_amount' => $item['total_amount'],
+                        'remarks' => $item['remarks'],
+                        'source' => $item['source'],
+                        'date' =>$date,
+                        
+                    ];
+
+                    if($check){
+                        DB::table('income_entries')->where('id',$check->id)->update($ins_data);
+                    }else{
+                        DB::table('income_entries')->insert($ins_data);
+
+                    }
+                }
+            }
+
+
+            $data["success"] = true;
+            $data["message"] = "Updated Successfully !";
+        }else{
+            $data['success']=false;
+            $data['message'] =$validator->errors()->first();
+        }
         return Response::json($data,200,[]);
-    }    
 
-    // public function store(Request $request){
-
-    //     $cre = [
-            
-    //     ];
-    //     $rules=[
-            
-    //     ];
-    //     $validator = Validator::make($cre,$rules);
-    //     if ($validator->passes()) {
-    //         $income = Income::find($request->id);
-    //         $data['message']= 'Updated successfully';
-
-    //         if(!$income){
-    //             $income = new Income;
-    //             $data['message']='Added successfully';
-    //         }   
-
-    //         $income->date = $request->has('date')?date("Y-m-d",strtotime($request->date)):date("Y-m-d");
-    //         $income->total_amount = $request->total_amount;
-    //         $income->back_balance = $request->back_balance;
-    //         $income->all_total = $request->all_total;
-    //         $income->added_by = Auth::id();
-    //         $income->client_id = $request->client_id;
-    //         $income->save();
-
-    //         if ($request->multiple_income) {
-    //             if (sizeof($request->multiple_income)>0) {
-    //                 $multiple_income = $request->multiple_income;
-    //                 foreach ($multiple_income as $single_income) {
-    //                     if (isset($single_income['id'])) {
-    //                         $income_entry = IncomeEntry::find($single_income['id']);       
-    //                     }else{
-    //                         $income_entry = new IncomeEntry;
-                            
-    //                     }
-    //                     $income_entry->from =(isset($single_income['from']))?$single_income['from']:0;
-    //                     $income_entry->date =$income->date;
-                        
-                        
-
-    //                     if (isset($single_income['attachment'])) {
-    //                         if ($single_income['attachment'] !=null && $single_income['attachment']) {
-    //                             $income_entry->income_file = $single_income['attachment'];
-    //                         }else{
-    //                             $income_entry->income_file =null;
-    //                         }
-    //                     }
-
-    //                     $income_entry->amount =(isset($single_income['amount']))?$single_income['amount']:null;
-                        
-    //                     $income_entry->income_type =(isset($single_income['income_type']))?$single_income['income_type']:0;
-    //                     $income_entry->remarks =(isset($single_income['remarks']))?$single_income['remarks']:null;
-    //                     $income_entry->income_id = $income->id;
-    //                     $income_entry->client_id = $income->client_id;
-    //                     $income_entry->save();
-
-    //                     $data['success'] =true;
-    //                 }
-
-    //             }else{
-    //                 $data['success']=false;
-    //                 $data['message'] =$validator->errors()->first();
-    //             }
-    //         }
-    //     }else{
-    //         $data['success'] =false;
-    //         $data['message']='Please fill details';
-    //     }
-
-        
-
-    //     return Response::json($data,200,array());
-    // }
-
+    } 
 
 
     public function summary(Request $request){

@@ -175,7 +175,6 @@ app.controller('IncomeCtrl', function($scope , $http, $timeout , DBService, Uplo
                 $scope.incomes = data.incomes;
                 $scope.income_types = data.income_types;
                 $scope.clients = data.clients;
-                
             }
 
             $scope.loading = false;
@@ -195,6 +194,7 @@ app.controller('IncomeCtrl', function($scope , $http, $timeout , DBService, Uplo
             if (data.success) {
                 $scope.clients = data.clients;               
                 $scope.formData = data.formData;
+                $scope.calAllSum();
             }
         });
     }
@@ -296,8 +296,14 @@ app.controller('IncomeCtrl', function($scope , $http, $timeout , DBService, Uplo
     }
 
     $scope.calAllSum = () => {
-        const totalAmount = $scope.formData.multiple_income.reduce((sum, item) => sum + item.amount, 0);
-        $scope.formData.total_amount = totalAmount;
+
+        console.log('hello')
+        
+        const cash_amount = $scope.formData.c_services.reduce((sum, item) => sum + item.cash_amount, 0);
+        const upi_amount = $scope.formData.c_services.reduce((sum, item) => sum + item.upi_amount, 0);
+        const total_amount = $scope.formData.c_services.reduce((sum, item) => sum + item.total_amount, 0);
+
+        $scope.formData.total_amount = total_amount;
         $scope.formData.all_total= parseInt($scope.formData.total_amount)+parseInt($scope.formData.back_balance);
     }
 

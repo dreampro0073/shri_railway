@@ -60,17 +60,17 @@
                     
                     <div class="col-md-2 form-group">
                         <label>Cash Amount</label>
-                        <input type="text" ng-readonly="c_service.service_id != 7" ng-model="c_service.cash_amount" class="form-control">
+                        <input type="text" ng-readonly="c_service.service_id != 7" ng-model="c_service.cash_amount" ng-change="calAllSum()" class="form-control">
                         
                     </div>
                     <div class="col-md-2 form-group">
                         <label>UPI Amount</label>
-                        <input type="text" ng-readonly="c_service.service_id != 7" ng-model="c_service.upi_amount" class="form-control">
+                        <input type="text" ng-readonly="c_service.service_id != 7" ng-model="c_service.upi_amount" ng-change="calAllSum()" class="form-control">
                         
                     </div>
                     <div class="col-md-2 form-group">
                         <label>Total Amount</label>
-                        <input type="text" ng-readonly="c_service.service_id != 7" ng-model="c_service.total_amount" class="form-control">
+                        <input type="text" readonly ng-model="c_service.total_amount" class="form-control">
                         
                     </div>
                     <div class="col-md-3 form-group">

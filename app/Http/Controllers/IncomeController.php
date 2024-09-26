@@ -164,7 +164,7 @@ class IncomeController extends Controller {
         $formData->date = date('d-m-Y',strtotime($date));
         $formData->client_id = $client_id;
         $formData->c_services = $c_services;
-        $formData->total_amount = $total_amount;
+        // $formDa ta->total_amount = $total_amount;
         
 
         $data['success'] = true;

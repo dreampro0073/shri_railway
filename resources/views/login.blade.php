@@ -14,7 +14,7 @@
 
             <div class="col-md-6 col-md-offset-3 login-box">
                 <div>
-                    <span style="font-size: 18px;font-weight: bold;font-style: italic;margin-bottom: 2px;text-align: center;display: block;">Aadhyasri Web Solutions</span> 
+                    <span style="font-size: 32px;font-weight: bold;margin-bottom: 2px;text-align: center;display: block;">Aadhyasri Web Solutions</span> 
                     
                     <div class="panel panel-default">
                         <div class="panel-body" style="box-shadow:0 1px 6px 0 rgba(0, 0, 0, 0.3);padding: 28px;width: 500px;">

@@ -25,7 +25,7 @@
         @if(in_array(1, $service_ids) || Auth::user()->priv == 1)
             <div class="col-md-3">
                 <a class="no-dec" href="{{url('/admin/sitting')}}">
-                    <div class="card p-3 shadow mb-4" style="background:#8AFF33; padding: 10px;">
+                    <div class="card p-3 shadow mb-4" style="background:#d3d3d396;; padding: 10px;">
                         <p style="font-size: 30px;">Sitting</p>
                         <i>
                             Sitting
@@ -37,7 +37,7 @@
         @if(in_array(2, $service_ids) || Auth::user()->priv == 1)
             <div class="col-md-3">
                 <a class="no-dec" href="{{url('/admin/cloak-rooms')}}">
-                    <div class="card p-3 shadow mb-4" style="background:#6833FF;padding: 10px;">
+                    <div class="card p-3 shadow mb-4" style="background:#d3d3d396;;padding: 10px;">
                         <p style="font-size: 30px;">Cloakrooms</p>
                         <i>
                             Cloakrooms
@@ -48,7 +48,7 @@
             @if(Auth::user()->priv == 1 || Auth::user()->priv == 2)
                 <div class="col-md-3">
                     <a class="no-dec" href="{{url('/admin/cloak-rooms/all')}}">
-                        <div class="card p-3 shadow mb-4" style="background:#BE33FF;padding: 10px;">
+                        <div class="card p-3 shadow mb-4" style="background:#d3d3d396;;padding: 10px;">
                             <p style="font-size: 30px;">Cloakrooms All</p>
                             <i>
                                 Cloakrooms All
@@ -62,7 +62,7 @@
             @if(Auth::user()->priv == 1 || Auth::user()->priv == 2)
                 <div class="col-md-3">
                     <a class="no-dec" href="{{url('/admin/canteens/items')}}">
-                        <div class="card p-3 shadow mb-4" style="background:#FF33C1;padding: 10px;">
+                        <div class="card p-3 shadow mb-4" style="background:#d3d3d396;;padding: 10px;">
                             <p style="font-size: 30px;">Canteen Items</p>
                             <i>
                                 Canteen Items
@@ -73,7 +73,7 @@
             @endif
             <div class="col-md-3">
                 <a class="no-dec" href="{{url('/admin/daily-entries')}}">
-                    <div class="card p-3 shadow mb-4" style="background:#ffff33;padding: 10px;">
+                    <div class="card p-3 shadow mb-4" style="background:#d3d3d396;;padding: 10px;">
                         <p style="font-size: 30px;">Daily Entries</p>
                         <i>
                             Daily Entries
@@ -85,7 +85,7 @@
         @endif
         <div class="col-md-3">
             <a class="no-dec" href="{{url('/admin/shift/current')}}">
-                <div class="card p-3 shadow mb-4" style="background:#0467B9;padding: 10px;">
+                <div class="card p-3 shadow mb-4" style="background:#d3d3d396;;padding: 10px;">
                     <p style="font-size: 30px;">Shift Status</p>
                     <i>
                         Shift Status

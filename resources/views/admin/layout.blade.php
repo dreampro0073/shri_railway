@@ -157,7 +157,7 @@
         </div>
 
         <span style="position: absolute;bottom: 16px;left: 10px;">
-            2024 &copy; Powered by Aadhyasri Web Solutions <br><a href="mailto:aadhyasriwebsolutions@gmail.com">aadhyasriwebsolutions@gmail.com</a>
+            2024 &copy; Powered by<br>Aadhyasri Web Solutions <br><a href="mailto:aadhyasriwebsolutions@gmail.com">aadhyasriwebsolutions@gmail.com</a>
         </span>
 		
     </div>

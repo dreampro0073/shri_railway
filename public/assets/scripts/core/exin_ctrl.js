@@ -12,11 +12,12 @@ app.controller('ExpenseCtrl', function($scope , $http, $timeout , DBService, Upl
         date:'',
         client_id:'',
         multiple_expense:[{
-            expense_account: 1
+            expense_account: 1,
+            gst:0,
         }]};
 
     $scope.single_expense = {
-        
+        gst:0,
     };    
 
     $scope.expense_accounts =[];
@@ -91,6 +92,7 @@ app.controller('ExpenseCtrl', function($scope , $http, $timeout , DBService, Upl
         $scope.calAllSum();
     }
 
+
     $scope.uploadFile = function (file,name,obj) {
         if(file){
 
@@ -145,6 +147,8 @@ app.controller('ExpenseCtrl', function($scope , $http, $timeout , DBService, Upl
     $scope.calAllSum = () => {
         const totalAmount = $scope.formData.multiple_expense.reduce((sum, item) => sum + item.amount, 0);
         const total_amount_gst = $scope.formData.multiple_expense.reduce((sum, item) => sum + item.gst, 0);
+
+        console.log(totalAmount+'tt some',total_amount_gst+'gst some');
         console.log(totalAmount,total_amount_gst);
         $scope.formData.total_amount = totalAmount+total_amount_gst;
     }

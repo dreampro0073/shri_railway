@@ -12,12 +12,8 @@
         <div class="mb-3 mt-3" style="border-bottom:  1px solid #555;padding: 20px 0;">
             <div class="row">
                 <div class="col-md-2 form-group">
-                    <label>From Date</label>
-                    <input type="text" placeholder="DD-MM-YYYY" class="form-control datepicker" ng-model="searchData.from_date">
-                </div>
-                <div class="col-md-2 form-group">
-                    <label>To Date</label>
-                    <input type="text" placeholder="DD-MM-YYYY" class="form-control datepicker" ng-model="searchData.to_date">
+                    <label>Date</label>
+                    <input type="text" placeholder="DD-MM-YYYY" class="form-control datepicker" ng-model="searchData.date">
                 </div>
                 <div class="col-md-3 form-group">
                     <label>Branch</label>
@@ -38,9 +34,12 @@
         <div ng-if="loading" class="alert alert-warning">
             Loading
         </div>
-        <div class="row mt-3 mb-3">
+        <div ng-if="!loading" class="row mt-3 mb-3">
             <div class="col-md-6">
                 <h2 class="page-title">Income</h2>
+            </div>            
+            <div class="col-md-6">
+                <h2 class="page-title text-right">Total Income : @{{income.total_income}} </h2>
             </div>
         </div>
         <table ng-if="!loading" class="table table-condensed table-bordered table-striped" >
@@ -50,7 +49,8 @@
                     <th>Sn</th>
                     <th>Date</th>
                     <th>Branch</th>
-                    <th>All Amount</th>
+                    <th>Total Cash</th>
+                    <th>Total UPI</th>
                     <th>Total Amount</th>
                     <th>Back Balance</th>
                 </tr>
@@ -60,9 +60,8 @@
                     <td>@{{$index+1}}</td>
                     <td >@{{income.date|date:'dd-MM-yyyy'}}</td>
                     <td >@{{income.client_name}}</td>
-                    <td>
-                        <span>@{{income.all_total}}</span>
-                    </td>
+                    <td>@{{income.total_cash}}</td>
+                    <td>@{{income.total_upi}}</td>
                     <td>@{{income.total_amount}}</td>
                     <td>@{{income.back_balance}}</td>
                 </tr>
@@ -72,7 +71,10 @@
         <span ng-if="!loading">
             <div class="row mt-3 mb-3">
                 <div class="col-md-6">
-                    <h2 class="page-title">Expense</h2>
+                    <h2 class="page-title">Expense </h2>
+                </div>
+                <div class="col-md-6">
+                    <h2 class="page-title text-right">Total Expense : @{{total_expenses}} </h2>
                 </div>
             </div>
 

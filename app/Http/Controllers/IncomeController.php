@@ -290,7 +290,7 @@ class IncomeController extends Controller {
             $incomes_sql = $incomes_sql->where('incomes.income_type','=',$request->income_type);
         }
         $total_incomes = $incomes_sql;
-        $total_incomes = $total_incomes->sum("all_total");
+        $total_incomes = $total_incomes->sum("total_amount");
         $incomes = $incomes_sql->orderBy('incomes.date','DESC')->get();
         $total_cash = 0;
         $total_upi = 0;

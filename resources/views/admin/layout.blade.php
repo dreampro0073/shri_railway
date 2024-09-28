@@ -158,7 +158,7 @@
             </div>
         </div>
 
-        <span style="position: absolute;bottom: 16px;left: 10px;">
+        <span style="position: fixed;bottom: 16px;left: 10px;">
             2024 &copy; Powered by<br>Aadhyasri Web Solutions <br><a href="mailto:aadhyasriwebsolutions@gmail.com">aadhyasriwebsolutions@gmail.com</a>
         </span>
 		

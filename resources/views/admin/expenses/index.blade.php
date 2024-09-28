@@ -37,10 +37,6 @@
                         <option ng-value="@{{item.id}}" ng-repeat="(key, item) in clients">@{{item.client_name}}</option>
                     </select>
                 </div>
-                <div class="col-md-3 " style="padding-top:23px;">
-                    <button type="submit" ng-click="onSearch()" class="btn btn-primary">Search</button>
-                    <button type="submit" ng-click="clearFilter()" class="btn btn-warning">Clear</button>
-                </div>
                 <!-- <div class="col-md-3 form-group">
                     <label>Expense Account</label>
                     <select class="form-control" convert-to-number ng-model="searchData.expense_account">
@@ -68,7 +64,6 @@
                     <th>Sn</th>
                     <th>Date</th>
                     <th>Branch</th>
-                    <!-- <th>Type</th> -->
                     <th>Total Amount</th>
                     <th>Remarks</th>
 
@@ -82,10 +77,8 @@
                     <td>@{{$index+1}}</td>
                     <td >@{{expense.date|date:'dd-MM-yyyy'}}</td>
                     <td>@{{expense.client_name}}</td>
-
                     <td>@{{expense.total_amount}}</td>
-                   
-                    <td style="font-size: 11px">@{{expense.remarks}}</td>
+                    <td style="font-size: 11px">@{{expense.remark}}</td>
 
                  
                     <td style="text-align: center;">

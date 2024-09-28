@@ -41,6 +41,68 @@ Route::get('/logout',function(){
 	Auth::logout();
 	return Redirect::to('/');
 });
+Route::get('/getHideAmount',function(){
+	$user_id = 19;
+	$zero_entries = DB::table("e_entries")->where("date", '>', "2024-09-01")->where("added_by", $user_id)->where("paid_amount", 0)->pluck("entry_id")->toArray();
+
+    $sitting_list = DB::table("sitting_entries")->whereIn("id", $zero_entries)->get();
+    $all_amount = 0;
+    $collect_amount = 0;
+    foreach ($sitting_list as $entry) {
+        $entry->wh_total_hours = (strtotime($entry->checkout_time) - strtotime($entry->checkin_date)) / 3600;
+
+        dd(strtotime($entry->wh_total_hours));
+        $entry->wh_ad_hours = $entry->wh_total_hours * $entry->no_of_adults;
+        $entry->wh_ad_amount = $entry->wh_total_hours * 30;
+        $entry->wh_ch_hours = $entry->wh_total_hours * $entry->no_of_children;
+        $entry->wh_ch_amount = $entry->wh_total_hours * 20;
+        $collect_amount = $collect_amount+$entry->paid_amount; 
+        $all_amount = $entry->wh_ch_amount+$entry->wh_ad_amount+$all_amount; 
+    }
+
+    dd($all_amount, $collect_amount);
+    return;
+});
+
+Route::get('/getHideAmount', function () {
+    $user_id = 19;
+    $zero_entries = DB::table("e_entries")
+                      ->where("date", '>', "2024-09-01")
+                      ->where("added_by", $user_id)
+                      ->where("paid_amount", 0)
+                      ->pluck("entry_id")
+                      ->toArray();
+
+    $sitting_list = DB::table("sitting_entries")->whereIn("id", $zero_entries)->get();
+    $all_amount = 0;
+    $collect_amount = 0;
+
+    foreach ($sitting_list as $entry) {
+        if ($entry->checkout_time && $entry->checkin_date) {
+            $time_difference_in_seconds = strtotime($entry->checkout_time) - strtotime($entry->checkin_date);
+
+            $hours = floor($time_difference_in_seconds / 3600);  // Get total hours
+            $minutes = floor(($time_difference_in_seconds % 3600) / 60);  // Get remaining minutes
+
+            if ($minutes > 10) {
+                $hours += 1;
+            }
+            $entry->wh_total_hours = $hours;
+	        $entry->wh_ad_hours = $entry->wh_total_hours * $entry->no_of_adults;
+	        $entry->wh_ad_amount = $entry->wh_total_hours * 30;
+	        $entry->wh_ch_hours = $entry->wh_total_hours * $entry->no_of_children;
+	        $entry->wh_ch_amount = $entry->wh_total_hours * 20;
+
+	        $collect_amount += $entry->paid_amount;
+	        $all_amount += $entry->wh_ch_amount + $entry->wh_ad_amount;
+	    }
+    }
+
+    dd($all_amount, $collect_amount);
+
+    return;
+});
+
 
 Route::group(['middleware'=>'auth'],function(){
 	Route::group(['prefix'=>"admin"], function(){

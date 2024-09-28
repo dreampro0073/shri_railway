@@ -34,7 +34,7 @@
 			
 		</tr>
 		<tr>
-			<td>Back Balance</td>
+			<td>Previous Balance</td>
 			<td>{{$income->back_balance}}</td>
 			
 		</tr>

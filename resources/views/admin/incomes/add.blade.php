@@ -38,7 +38,7 @@
                     <input type="text" readonly ng-model="formData.total_amount" class="form-control">
                 </div>
                 <div class="form-group col-md-3">
-                    <label>Back Balance</label>
+                    <label>Previous Balance</label>
                     
                     <input type="text" ng-model="formData.back_balance" class="form-control" ng-change="calAllSum()">
                 </div>

@@ -126,8 +126,6 @@ class ExpenseController extends Controller {
                             $expense_entry = new ExpenseEntry;
                         }
 
-                        // dd($expense_entry);
-
                         $expense_entry->date = $expense->date;
                         $expense_entry->expense_id = $expense->id;
                         
@@ -150,8 +148,6 @@ class ExpenseController extends Controller {
                         $expense_entry->save();
 
                         $data['success'] =true;
-                            
-                       
                     }
 
                 }else{

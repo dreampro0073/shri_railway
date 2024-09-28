@@ -34,7 +34,7 @@
 			<td>{{$check->total_amount}}</td>	
 		</tr>
 		<tr>
-			<td>Back Balance</td>
+			<td>Previous Balance</td>
 			<td>{{$check->back_balance}}</td>	
 		</tr>
 		<tr>

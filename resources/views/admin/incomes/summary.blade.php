@@ -34,40 +34,80 @@
         <div ng-if="loading" class="alert alert-warning">
             Loading
         </div>
+
+        <div ng-if="!loading" class="row mt-3 mb-3">
+            <div class="col-md-4">
+                <h2 class="page-title">Summary</h2>
+            </div>
+        </div>
+        <div class="text-right">
+            <small style="color: red">*Note: Expenses and previous balance are subtracted from onlys "Income Cash Amount"!*</small>
+        </div>
+
+        <table ng-if="!loading" class="table table-striped table-bordered">
+            <thead>
+            <tr>
+                <th rowspan="2">Previous Balance</th>
+                <th rowspan="2">Total Expense</th>
+                <th colspan="3">Income</th>
+                <th colspan="3">Balance</th>
+            </tr>
+            <tr>
+                <td>Cash Amount</td>
+                <td>UPI Amount</td>
+                <td>Total Amount</td>
+                <td>Cash</td>
+                <td>UPI</td>
+                <td>Total</td>
+            </tr>
+                <tr>
+                    <th>@{{income.back_balance}}</th>
+                    <th>@{{total_expenses}}</th>
+                    <th>@{{income.cash_amount}}</th>
+                    <th>@{{income.upi_amount}}</th>
+                    <th>@{{income.total_amount}}</th>
+                    <th style="color: red;">@{{income.cash_amount - income.back_balance - total_expenses}}</th>
+                    <th style="color: red;">@{{income.upi_amount}}</th>
+                    <th style="color: red;"><b>@{{income.upi_amount + income.cash_amount - income.back_balance - total_expenses}}</b></th>
+                </tr>
+            </thead>
+        </table>
+        <hr>
+
         <div ng-if="!loading" class="row mt-3 mb-3">
             <div class="col-md-6">
                 <h2 class="page-title">Income</h2>
-            </div>            
+            </div>  
             <div class="col-md-6">
-                <h2 class="page-title text-right">Total Income : @{{income.total_income}} </h2>
-            </div>
+                <h2 class="page-title text-right">Total Income : @{{income.total_amount}} </h2>
+            </div>          
         </div>
+
         <table ng-if="!loading" class="table table-condensed table-bordered table-striped" >
 
             <thead>
                 <tr>
                     <th>Sn</th>
-                    <th>Date</th>
-                    <th>Branch</th>
+                    <th>Source</th>
                     <th>Total Cash</th>
                     <th>Total UPI</th>
                     <th>Total Amount</th>
-                    <th>Back Balance</th>
+                    <th>Remarks</th>
                 </tr>
             </thead>
             <tbody>
-                <tr ng-if="incomes.length>0" ng-repeat="income in incomes" >
+                <tr ng-if="income.multiple_income.length > 0" ng-repeat="item in income.multiple_income" >
                     <td>@{{$index+1}}</td>
-                    <td >@{{income.date|date:'dd-MM-yyyy'}}</td>
-                    <td >@{{income.client_name}}</td>
-                    <td>@{{income.total_cash}}</td>
-                    <td>@{{income.total_upi}}</td>
-                    <td>@{{income.total_amount}}</td>
-                    <td>@{{income.back_balance}}</td>
+                    <td >@{{item.source}}</td>
+                    <td>@{{item.cash_amount}}</td>
+                    <td>@{{item.upi_amount}}</td>
+                    <td>@{{item.total_amount}}</td>
+                    <td>@{{item.remarks}}</td>
                 </tr>
             </tbody>
         </table>
-        <div ng-if="incomes.length == 0 && !loading" class="alert alert-warning">Data Not Available !</div>
+        <hr>
+        <div ng-if="!income.multiple_income && !loading" class="alert alert-warning">Data Not Available !</div>
         <span ng-if="!loading">
             <div class="row mt-3 mb-3">
                 <div class="col-md-6">
@@ -89,35 +129,43 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-if="expenses.length>0" ng-repeat="expense in expenses" ng-class="{'bg-green1': expense.check_status == 1 }" >
+                    <tr ng-if="expenses.length > 0" ng-repeat-start="expense in expenses" ng-class="{'bg-green1': expense.check_status == 1}">
                         <td>@{{$index+1}}</td>
-                        <td >@{{expense.date|date:'dd-MM-yyyy'}}</td>
+                        <td>@{{expense.date | date:'dd-MM-yyyy'}}</td>
                         <td>@{{expense.client_name}}</td>
                         <td>@{{expense.total_amount}}</td>
                         <td style="font-size: 11px">@{{expense.remarks}}</td>
                     </tr>
+                    <tr ng-if="expense.multiple_expense.length > 0">
+                        <td colspan="5">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Give To</th>
+                                        <th>Remarks</th>
+                                        <th>Type</th>
+                                        <th>Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="item in expense.multiple_expense">
+                                        <td>@{{item.expense_type}}</td>
+                                        <td>@{{item.remarks}}</td>
+                                        <td>
+                                            <span ng-if="item.expense_account == 1">Cash</span>
+                                            <span ng-if="item.expense_account == 2">UPI</span>
+                                        </td>
+                                        <td>@{{item.total_amount}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr ng-repeat-end></tr>
                 </tbody>
+
             </table>
             <div ng-if="expenses.length == 0 && !loading" class="alert alert-warning">Data Not Available !</div>
-
-            <div class="row mt-3 mb-3">
-                <div class="col-md-6">
-                    <h2 class="page-title">Summary</h2>
-                </div>
-            </div>
-
-            <table class="table table-striped table-bordered">
-                <tr>
-                    <th>Total Incomes</th>
-                    <th>Total Expenses</th>
-                    <th>Balance</th>
-                </tr>            
-                <tr>
-                    <th>@{{total_incomes}}</th>
-                    <th>@{{total_expenses}}</th>
-                    <th>@{{total_incomes - total_expenses}}</th>
-                </tr>
-            </table>
         </span>
         
     </div>

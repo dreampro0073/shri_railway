@@ -12,101 +12,134 @@
 		table tr th,td{
 			border: 1px solid #000;
 		}
+		.table {
+	        width: 100%;
+	        border-collapse: collapse;
+	        margin-bottom: 20px;
+	    }
 	</style>
 </head>
 <body>
-	<table style="width:100%;" cellpadding="4" cellspacing="0">
-		<tr>
-			<th>Branch</th>
-			<th>From</th>
-			<th>To</th>
-		</tr>
-		<tr>
-			<th>{{$data["branch"]->client_name}}</th>
-			<th>{{date("d M Y", strtotime($data["from_date"]))}}</th>
-			<th>{{date("d M Y", strtotime($data["to_date"]))}}</th>
-		</tr>
-	</table>
-	<h3 class="page-title">Incomes</h3>
-	<table style="width:100%;" cellpadding="4" cellspacing="0">
-		<thead>
+	<?php $income = $data["income"]; $expenses = $data["expenses"]?>
+
+<div class="row mt-3 mb-3">
+    <div class="col-md-4">
+        <h2 class="page-title">Summary (Date : {{$data["date"]}}, Branch : {{$income->client_name}})</h2>
+    </div>
+    <div class="col-md-8">
+        <small style="color: red">*Note: Expenses and previous balance are subtracted from only "Income Cash Amount"!*</small>
+    </div>
+</div>
+
+    <table class="table table-striped table-bordered">
+        <thead>
+        	<tr>
+        		<th rowspan="2">Previous Balance</th>
+        		<th rowspan="2">Total Expense</th>
+        		<th colspan="3">Income</th>
+        		<th colspan="3">Balance</th>
+        	</tr>
             <tr>
-                <th>Sn</th>
-                <th>Date</th>
-                <th>Back Balance</th>
-                <th>Collected Amount</th>
-                <th>Total Amount</th>
+                <td>Cash Amount</td>
+                <td>UPI Amount</td>
+                <td>Total Amount</td>
+                <td>Cash</td>
+                <td>UPI</td>
+                <td>Total</td>
+            </tr>
+            <tr>
+                <th>{{$income->back_balance }}</th>
+                <th>{{$data['total_expenses'] }}</th>
+                <th>{{$income->cash_amount }}</th>
+                <th>{{$income->upi_amount }}</th>
+                <th>{{$income->total_amount }}</th>
+                <th style="color: red;">{{$income->cash_amount - $income->back_balance - $data['total_expenses'] }}</th>
+                <th style="color: red;">{{$income->upi_amount }}</th>
+                <th style="color: red;"><b>{{$income->upi_amount + $income->cash_amount - $income->back_balance - $data['total_expenses'] }}</b></th>
             </tr>
         </thead>
-        <tbody>
-	        @if(sizeof($data['incomes']) > 0)
-	        	@foreach($data["incomes"] as $index => $income){
-		            <tr>
-		                <td>{{$index+1}}</td>
-		                <td>{{date("d M Y", strtotime($income->date))}}</td>
-		                <td>{{$income->back_balance}}</td>
-		                <td>{{$income->total_amount}}</td>
-		                <td>
-		                    <span>{{$income->all_total}}</span>
-		                </td>
-		            </tr>
-		            @if(sizeof($income->multiple_income) > 0)
-		            	<tr>
-		            		<td colspan="5">
-								@include("admin/incomes/multi_income_table")
-							</td>
-						</tr>
-					@endif
-		        @endforeach
-		    @endif
-        </tbody>
     </table>
-    <table style="width:100%;" cellpadding="4" cellspacing="0">
-    	<tr>
-			<td>Total Cash</td>
-			<td>{{$data['total_cash']}}</td>
-		</tr>
-		<tr>
-			<td>Total UPI</td>
-			<td>{{$data['total_upi']}}</td>
-		</tr>
-    </table>
-    <table style="width:100%;" cellpadding="4" cellspacing="0">
-    	<tbody>
-		   	<tr>
-	        	<th colspan="5"><h3 class="page-title">Expenses</h3></th>
-	        </tr>
-            <tr>
-                <th>Sn</th>
-                <th>Date</th>
-                <th>Total Amount</th>
-                <th colspan="2">Remarks</th>
-            </tr>
-        	@if(sizeof($data['expenses']) > 0)
-	        	@foreach($data["expenses"] as $index => $expense)
-			        <tr>
-			            <td>{{$index+1}}</td>
-			            <td>{{date("d M Y", strtotime($expense->date))}}</td>
-			            <td>{{$expense->total_amount}}</td>
-			            <td colspan="2" style="font-size: 11px">{{$expense->remarks}}</td>
-			        </tr>
-	            @endforeach
-	        @endif
-	        <tr>
-	        	<th colspan="5"><h3 class="page-title">Summary</h3></th>
-	        </tr>
-			<tr>
-				<th>Total Income</th>
-				<th>Total Expenses</th>
-				<th colspan="3">Balance</th>
-			</tr>
-			<tr>
-				<th>{{$data["total_incomes"]}}</th>
-				<th>{{$data["total_expenses"]}}</th>
-				<th colspan="3">{{$data["total_incomes"] - $data["total_expenses"] }}</th>
-			</tr>
-		</tbody>
-	</table>
+<hr>
+
+<div class=>
+    <h2 class="page-title">Income</h2>
+    <h4>Total Income: {{$income->total_amount}}</h4>          
+</div>
+<table class="table table-condensed table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Sn</th>
+            <th>Source</th>
+            <th>Total Cash</th>
+            <th>Total UPI</th>
+            <th>Total Amount</th>
+            <th>Remarks</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php if (count($income->multiple_income) > 0): ?>
+            <?php foreach ($income->multiple_income as $index => $item): ?>
+                <tr>
+                    <td>{{$index + 1}}</td>
+                    <td>{{$item->source}}</td>
+                    <td>{{$item->cash_amount}}</td>
+                    <td>{{$item->upi_amount}}</td>
+                    <td>{{$item->total_amount}}</td>
+                    <td>{{$item->remarks}}</td>
+                </tr>
+            <?php endforeach; ?>
+        <?php endif; ?>
+    </tbody>
+</table>
+<hr>
+
+<div>
+    <h2 class="page-title">Expense</h2>
+    <h4>Total Expense: {{$data["total_expenses"]}}</h4>
+    </div>
+</div>
+
+
+<?php if (count($expenses) > 0): ?>
+    <?php foreach ($expenses as $index => $expense): ?>
+        
+        {{$index + 1}} . (Expenses Amount : {{$expense['total_amount']}})<br>
+        @if(sizeof($expense->multiple_expense) > 0)
+            <table style="width:100%;" cellpadding="4" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Give To</th>
+                        <th>Remarks</th>
+                        <th>Type</th>
+                        <th>Amount</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach($expense->multiple_expense as $item)
+                    <tr>
+                        <td>{{$item->expense_type}}</td>
+                        <td>{{$item->remarks}}</td>
+                        <td>
+                            @if($item->expense_account == 1)
+                                Cash
+                            @elseif($item->expense_account == 2)
+                                UPI
+                            @else
+                                
+                            @endif
+                        </td>
+                        <td>{{$item->total_amount}}</td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        @endif
+
+
+    <?php endforeach; ?>
+<?php endif; ?>
+
 
 	<h4 style="text-align:right;">
 		{{Auth::user()->name}}

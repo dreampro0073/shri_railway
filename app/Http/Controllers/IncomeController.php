@@ -270,7 +270,7 @@ class IncomeController extends Controller {
     }
 
     public function summaryInit(Request $request){
-        $date = $request->date ? date("Y-m-d", strtotime($request->date)) : date("Y-m-d");
+        $date = $request->date ? date("Y-m-d", strtotime($request->date)) : date("2024-09-25");
         $client_id = $request->client_id ? $request->client_id : Auth::user()->client_id;
 
         $income_sql = DB::table('incomes')->select('incomes.*','clients.client_name')->leftJoin('clients','clients.id','=','incomes.client_id');
@@ -287,17 +287,19 @@ class IncomeController extends Controller {
         $income = $income_sql->orderBy('incomes.date','DESC')->first();
         $total_cash = 0;
         $total_upi = 0;
+        if($income){
 
-        $income->multiple_income = Income::getMultiIncomes($income);
-        $income->date = date('d-m-Y',strtotime($income->date));
-        $income->total_cash = DB::table('income_entries')->where('income_id',$income->id)->sum('cash_amount');
-        $total_cash  = $total_cash + $income->total_cash;
-        $income->total_upi = DB::table('income_entries')->where('income_id',$income->id)->sum('upi_amount');
-        $total_upi  = $total_upi + $income->total_upi;
+            $income->multiple_income = Income::getMultiIncomes($income);
+            $income->date = date('d-m-Y',strtotime($income->date));
+            $income->total_cash = DB::table('income_entries')->where('income_id',$income->id)->sum('cash_amount');
+            $total_cash  = $total_cash + $income->total_cash;
+            $income->total_upi = DB::table('income_entries')->where('income_id',$income->id)->sum('upi_amount');
+            $total_upi  = $total_upi + $income->total_upi;
+        }
 
         $expenses_sql = Expense::select('expenses.*','clients.client_name')->leftJoin('clients','clients.id','=','expenses.client_id');
         
-        if($from_date && $to_date){
+        if($date){
             $expenses_sql = $expenses_sql->where('expenses.date',date("Y-m-d",strtotime($date)));
         } 
         
@@ -307,6 +309,15 @@ class IncomeController extends Controller {
         $total_expenses = $expenses_sql;
         $total_expenses = $total_expenses->sum("total_amount");
         $expenses = $expenses_sql->orderBy('expenses.date','DESC')->get();
+        foreach ($expenses as $expense) {
+
+            $expense->date = date('d-m-Y',strtotime($expense->date));
+            
+            $multiple_expense = DB::table('expense_entries')->where('expense_id',$expense->id)->get();
+
+            $expense->multiple_expense = $multiple_expense;
+        }
+
 
         $data['success'] = true;
         $data['clients'] = Sitting::getBranches();
@@ -316,6 +327,8 @@ class IncomeController extends Controller {
 
         $data['total_cash'] = $total_cash;
         $data['total_upi'] = $total_upi;
+        $data['date'] = date("d-m-Y", strtotime($date));
+        $data['client_id'] = $client_id;
 
         if($request->export == 1){
 
@@ -327,7 +340,7 @@ class IncomeController extends Controller {
             $dompdf->render();
             $pdfContent = $dompdf->output();
 
-            $filename = strtotime("now").".pdf";
+            $filename = "summary_".date("dMy").".pdf";
 
             $pdfPath = public_path('temp/'.$filename);
             File::ensureDirectoryExists(public_path('temp'));

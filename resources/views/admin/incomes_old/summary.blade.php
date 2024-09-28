@@ -52,7 +52,7 @@
                     <th>Branch</th>
                     <th>All Amount</th>
                     <th>Total Amount</th>
-                    <th>Back Balance</th>
+                    <th>Previous Balance</th>
                 </tr>
             </thead>
             <tbody>

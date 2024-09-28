@@ -505,9 +505,10 @@ app.controller('SummaryCtrl', function($scope , $http, $timeout , DBService, Upl
 
     $scope.loading = false;
     $scope.searchData = { };
-    $scope.incomes = [];
+    $scope.income = { 
+        multiple_income: [],
+    };
     $scope.expenses = [];
-    $scope.total_incomes = 0;
     $scope.total_expenses = 0;
     $scope.export_link = "";
     $scope.searchData.export = false;
@@ -517,9 +518,10 @@ app.controller('SummaryCtrl', function($scope , $http, $timeout , DBService, Upl
         DBService.postCall($scope.searchData,'/api/summary/init').then(function(data){
             if(data.success){
                 $scope.clients = data.clients;
-                $scope.incomes = data.incomes;
                 $scope.expenses = data.expenses;
-                $scope.total_incomes = data.total_incomes;
+                $scope.income = data.income;
+                $scope.searchData.date = data.date;
+                $scope.searchData.client_id = data.client_id;
                 $scope.total_expenses = data.total_expenses;
                 $scope.searchData.export = false;
                 if(data.export_link){

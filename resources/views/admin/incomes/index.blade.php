@@ -51,7 +51,7 @@
                     <th>Sn</th>
                     <th>Date</th>
                     <th>Branch</th>
-                    <th>Back Balance</th>
+                    <th>Previous Balance</th>
                     <th>Total Amount</th>
                     <th>All Amount</th>
                     

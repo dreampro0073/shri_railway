@@ -33,7 +33,7 @@
             <tr>
                 <th>Sn</th>
                 <th>Date</th>
-                <th>Back Balance</th>
+                <th>Previous Balance</th>
                 <th>Collected Amount</th>
                 <th>Total Amount</th>
             </tr>

@@ -32,7 +32,7 @@
                        
                 </div>
                  <div class="form-group col-md-2">
-                    <label>Total Amount</label>
+                    <label>Day Amount</label>
                     
                     <input type="text" readonly ng-model="formData.total_amount" class="form-control">
                 </div>

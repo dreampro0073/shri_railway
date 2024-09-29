@@ -218,6 +218,7 @@ class IncomeController extends Controller {
             $income->day_total = $request->all_total;
             $income->cash_amount = $request->cash_amount;
             $income->upi_amount = $request->upi_amount;
+            $income->added_by = Auth::id();
             
             $income->save();
 
@@ -332,21 +333,30 @@ class IncomeController extends Controller {
 
         if($request->export == 1){
 
-            $data["branch"] = DB::table('clients')->where('id', $client_id)->first();
-            $dompdf = new Dompdf();
-            $html = view('admin.incomes.summary_pdf',['data'=>$data]);
-            $dompdf->loadHtml($html);
-            $dompdf->setPaper('A4', 'portrait');
-            $dompdf->render();
-            $pdfContent = $dompdf->output();
+            $branch = DB::table('clients')->where('id', $client_id)->first();
+            $data['branch'] = $branch;
 
-            $filename = "summary_".date("dMy").".pdf";
+            if($branch){
+                $dompdf = new Dompdf();
+                $html = view('admin.incomes.summary_pdf',['data'=>$data]);
+                $dompdf->loadHtml($html);
+                $dompdf->setPaper('A4', 'portrait');
+                $dompdf->render();
+                $pdfContent = $dompdf->output();
 
-            $pdfPath = public_path('temp/'.$filename);
-            File::ensureDirectoryExists(public_path('temp'));
-            File::put($pdfPath, $pdfContent);
+                $filename = "summary_".date("dMy").".pdf";
 
-            $data['export_link'] = $filename;
+                $pdfPath = public_path('temp/'.$filename);
+                File::ensureDirectoryExists(public_path('temp'));
+                File::put($pdfPath, $pdfContent);
+
+                $data['export_link'] = $filename;
+            }else{
+                $data['success'] = false;
+                $data['message'] = "No data found";
+            }
+
+           
         }
         
         return Response::json($data,200,[]);

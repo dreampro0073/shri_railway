@@ -24,7 +24,7 @@
 	<div id="wrapper">
         <div class="container-fluid">
             <div id="content" style="display: flex;">
-                <div class="ul" style="width:250px;background-color: #ececec59;position: fixed;top: 0;left: 0;height: 100vh;overflow-y: scroll;padding:0;">
+                <div class="ul" style="width:250px;background-color: #ececec59;position: fixed;top: 0;left: 0;height: calc(100vh - 67px);overflow-y: scroll;padding:0;">
                     <div style="padding:16px;">
                         <span style="font-size: 18px;font-weight: bold">
                             {{Session::get('client_name')}}
@@ -149,7 +149,7 @@
                     
                 </div>
                 <div class="" style="padding-left:250px;width: 100%;">
-                    <div style="text-align:right;padding-top:8px;padding-bottom: 8px;padding-right:24px;margin: 0 -15px;background: #fff;box-shadow:0 0 2px rgba(0,0,0,0.5);"><strong> {{Auth::user()->name}}</strong></div>
+                    <div style="text-align:right;padding-top:8px;padding-bottom: 8px;padding-right:24px;margin: 0 -15px;background: #fff;box-shadow:0 0 2px rgba(0,0,0,0.5);"><strong> {{Auth::user()->name}}</strong> <a href="{{url('logout')}}"><b>Logout</b></a> </div>
                     <div style="padding:0 20px;"> 
                         @yield('main')
                     </div>
@@ -158,8 +158,10 @@
             </div>
         </div>
 
-        <span style="position: fixed;bottom: 16px;left: 10px;">
-            2024 &copy; Powered by<br>Aadhyasri Web Solutions <br><a href="mailto:aadhyasriwebsolutions@gmail.com">aadhyasriwebsolutions@gmail.com</a>
+        <span style="position: fixed;bottom:0;left:0;width: 100%;padding:8px;display: block;text-align: center;background: #fff;border-top: 1px solid #a6a6a67d;">
+            <img src="{{url('assets/img/aadh1.png')}}" style="height:50px;width: auto;">
+            <!-- <a href="mailto:aadhyasriwebsolutions@gmail.com">aadhyasriwebsolutions@gmail.com</a> -->
+
         </span>
 		
     </div>

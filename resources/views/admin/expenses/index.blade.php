@@ -65,10 +65,7 @@
                     <th>Date</th>
                     <th>Branch</th>
                     <th>Total Amount</th>
-                    <th>Remarks</th>
-
-                    
-                    <!-- <th>Account</th> -->
+                   
                     <th>#</th>
                 </tr>
             </thead>
@@ -78,9 +75,6 @@
                     <td >@{{expense.date|date:'dd-MM-yyyy'}}</td>
                     <td>@{{expense.client_name}}</td>
                     <td>@{{expense.total_amount}}</td>
-                    <td style="font-size: 11px">@{{expense.remark}}</td>
-
-                 
                     <td style="text-align: center;">
                         
                         <a href="{{url('/admin/expenses/edit')}}/@{{expense.id}}" class="btn btn-sm btn-warning">Edit</a>

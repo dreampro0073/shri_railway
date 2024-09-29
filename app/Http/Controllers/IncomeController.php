@@ -271,7 +271,7 @@ class IncomeController extends Controller {
     }
 
     public function summaryInit(Request $request){
-        $date = $request->date ? date("Y-m-d", strtotime($request->date)) : date("2024-09-25");
+        $date = $request->date ? date("Y-m-d", strtotime($request->date)) : date("Y-m-d");
         $client_id = $request->client_id ? $request->client_id : Auth::user()->client_id;
 
         $income_sql = DB::table('incomes')->select('incomes.*','clients.client_name')->leftJoin('clients','clients.id','=','incomes.client_id');

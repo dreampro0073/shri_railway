@@ -150,7 +150,7 @@
                 </div>
                 <div class="" style="padding-left:250px;width: 100%;">
                     <div style="text-align:right;padding-top:8px;padding-bottom: 8px;padding-right:24px;margin: 0 -15px;background: #fff;box-shadow:0 0 2px rgba(0,0,0,0.5);"><strong> {{Auth::user()->name}}</strong> <a href="{{url('logout')}}"><b>Logout</b></a> </div>
-                    <div style="padding:0 20px;"> 
+                    <div style="padding:0 20px;padding-bottom: 80px;"> 
                         @yield('main')
                     </div>
                 </div>

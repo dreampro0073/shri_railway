@@ -48,7 +48,7 @@
 		}
 	</style>
 </head>
-<body oncontextmenu="return false;">
+<body>
 	<div class="main" id="printableArea">
 		<h4>
 			{{Session::get('client_name')}}
@@ -57,9 +57,9 @@
 			</span>
 		</h4>
 		<h5>
-			<span class="text">Slip Id: <b style="font-size:18px;">{{ $print_data->slip_id }}</b></span>
+			<span class="text">Sl. No: <b style="font-size:18px;">{{ $print_data->id }}</b></span>
 		</h5>
-		@if($type == 1 && Auth::user()->priv == 3 && $print_data->print_count < 1)
+		<!-- @if($type == 1 && Auth::user()->priv == 3 && $print_data->print_count < 1) -->
     		<div class="table-div">
     			<div class="w-50">
     
@@ -75,7 +75,9 @@
 			</div>
 
 		</div>
-		@endif
+		<!-- @endif -->
+		
+
 		
 		<div class="table-div">
 			<div class="w-50">
@@ -157,9 +159,6 @@
 			<p style="margin-top:10px;font-size: 16px;">
 				<strong>Thanks Visit Again</strong>
 			</p>
-			<span style="font-size:12px;line-height:1.2;display: inline-block;margin-top:10px;">
-		        2024 &copy; Aadhyasri Web Solutions, aadhyasriwebsolutions@gmail.com
-		    </span>
 		</div>
 	</div>
 	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
@@ -183,7 +182,6 @@
 		});
 	</script>
 	<script type="text/javascript">
-	    var print_count = "{{$print_data->print_count}}";
 		
 		window.onload = function(e){ 
 		    var printContents = document.getElementById("printableArea").innerHTML;
@@ -193,17 +191,14 @@
 			document.body.innerHTML = originalContents; 
 			// window.close();
 		}
-		if(print_count < 1){
-		    document.addEventListener('keydown', function(event) {
-                if (event.ctrlKey && event.key === 'p') {
-                    location.reload();
-                }else{
-                	console.log('no');
-    
-                }
-            });
-		}
-		
+		document.addEventListener('keydown', function(event) {
+            if (event.ctrlKey && event.key === 'p') {
+                location.reload();
+            }else{
+            	console.log('no');
+
+            }
+        });
 	</script>
 </body>
 </html>

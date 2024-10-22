@@ -76,9 +76,14 @@
                         @endif                     
                         @if(in_array(3, $service_ids) || Auth::user()->priv == 1)
                             @if(Auth::user()->priv == 2 || Auth::user()->priv == 1)
+                                <li class="@if(isset($sidebar)) @if($sidebar == 'godowns') active @endif @endif">
+                                    <a href="{{url('/admin/godowns')}}"><i class="fa fa-cutlery" aria-hidden="true"></i>Godowns</a>
+                                </li>
+                                
                                 <li class="@if(isset($sidebar)) @if($sidebar == 'cant_items') active @endif @endif">
                                     <a href="{{url('/admin/canteens/items')}}"><i class="fa fa-cutlery" aria-hidden="true"></i>Canteen Items</a>
                                 </li>
+                                
                             @endif
                             <li class="@if(isset($sidebar)) @if($sidebar == 'daily_entries') active @endif @endif">
                                 <a href="{{url('/admin/daily-entries')}}">

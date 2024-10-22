@@ -27,7 +27,7 @@ app.controller('cloackCtrl', function($scope , $http, $timeout , DBService) {
     $scope.cloak_second_rate = 0;
     $scope.excel_loading = '';
     $scope.d_count = 0;
-
+    $scope.productName = "";
     $scope.init = function () {
         DBService.postCall($scope.filter, '/api/cloak-rooms/init/'+$scope.type).then((data) => {
             if (data.success) {
@@ -43,6 +43,8 @@ app.controller('cloackCtrl', function($scope , $http, $timeout , DBService) {
                 }
             }
         });
+        $scope.productName = '';
+        $("#productName").focus();
     }
     $scope.getData = (page) => {
         $scope.filter.page_no = $scope.filter.page_no + page;
@@ -80,14 +82,14 @@ app.controller('cloackCtrl', function($scope , $http, $timeout , DBService) {
     $scope.checkoutCloak = function(entry_id){
         $scope.entry_id = entry_id;
         if(confirm("Are you sure?") == true){
-             DBService.postCall({entry_id : $scope.entry_id}, '/api/cloak-rooms/checkout-init').then((data) => {
+             DBService.postCall({entry_id : $scope.entry_id}, '/api/cloak-rooms/checkout-init/1').then((data) => {
                 if (data.timeOut) {
                     $scope.formData = data.l_entry;      
                     $("#checkoutCloakModel").modal("show");
                 }else{
                     $scope.init(); 
-                    alert(data.message);
                     $scope.filter.id = '';
+                    alert(data.message);
 
                 }
                 
@@ -96,32 +98,35 @@ app.controller('cloackCtrl', function($scope , $http, $timeout , DBService) {
     }
 
     $scope.checkoutCloak1 = function(){
-        DBService.postCall({productName : $scope.productName}, '/api/cloak-rooms/checkout-init1').then((data) => {
+        DBService.postCall({productName : $scope.productName}, '/api/cloak-rooms/checkout-init/2').then((data) => {
             $scope.productName = '';
-            if (data.timeOut) {
-                $scope.formData = data.l_entry;
-                $scope.entry_id = data.l_entry.id;
-                $("#checkoutCloakModel").modal("show");
+            if($data.success){
+                if (data.timeOut) {
+                    $scope.formData = data.l_entry;
+                    $scope.entry_id = data.l_entry.id;
+                    $("#checkoutCloakModel").modal("show");
+                }else{
+                    $scope.init(); 
+                    alert(data.message);
+                    $scope.filter.id = '';
+                }    
             }else{
                 $scope.init(); 
                 alert(data.message);
-
                 $scope.filter.id = '';
-                
-
-            }
-            
+            }     
         });
     }
 
     $scope.handleKeyPress = function(event) {
+       
         if (event.which === 13) {
             $scope.checkoutCloak1();
-            if ($scope.scannedValue.trim()) {
-                $scope.scannedValue = '';
+            if ($scope.productName.trim()) {
+                $scope.productName = '';
             }
         } else {
-            $scope.scannedValue = ($scope.scannedValue || '') + event.key;
+            $scope.productName = ($scope.productName || '') + event.key;
         }
     };
 
@@ -200,7 +205,7 @@ app.controller('cloackCtrl', function($scope , $http, $timeout , DBService) {
                 };
                 $scope.init();
                 setTimeout(function(){
-                    window.open(base_url+'/admin/cloak-rooms/print-unq/2/'+data.print_id,'_blank');
+                    window.open(base_url+'/admin/cloak-rooms/print/'+data.id,'_blank');
                 }, 800);
             }
             $scope.loading = false;
@@ -228,6 +233,7 @@ app.controller('cloackCtrl', function($scope , $http, $timeout , DBService) {
         }
     }
 });
+
 
 app.controller('lockerCtrl', function($scope , $http, $timeout , DBService) {
     $scope.loading = false;
@@ -1197,7 +1203,7 @@ app.controller('dailyEntryCtrl', function($scope , $http, $timeout , DBService) 
     $scope.canteen_items = [];
 
     $scope.selectConfig = {
-        valueField: 'canteen_item_id',
+        valueField: 'barcodevalue',
         labelField: 'item_name',
         maxItems:1,
         searchField: 'item_name',

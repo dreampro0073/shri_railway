@@ -14,6 +14,7 @@ use App\Http\Controllers\SittingCollectController;
 
 use App\Http\Controllers\IncomeController;
 use App\Http\Controllers\ExpenseController;
+use App\Http\Controllers\GodownsController;
 
 
 
@@ -134,13 +135,12 @@ Route::group(['middleware'=>'auth'],function(){
 			Route::get('/',[CloakRoomController::class,'index']);
 			Route::get('/all',[CloakRoomController::class,'allRooms']);
 			Route::get('/print-unq/{type}/{print_id?}', [CloakRoomController::class,'printPostUnq']);
-
+			Route::get('/print/{id?}', [CloakRoomController::class,'printPost']);
 			Route::get('/export', [CloakRoomController::class,'export']);
-			
-			Route::get('/checkout',[AdminController::class,'checkout']);
-
-		});
+		});	
 	
+		
+
 		Route::get('collect-cloak', [CloakRoomCollectController::class,'collectCloak']);
 		Route::get('/collect-sitting',[SittingCollectController::class,'collectSitting']);
 
@@ -195,6 +195,12 @@ Route::group(['middleware'=>'auth'],function(){
 		Route::group(["prefix"=>"summary"],function(){
 			Route::get('/',[IncomeController::class,'summary']);
 		});
+
+		Route::group(["prefix"=>"godowns"],function(){
+			Route::get('/',[GodownsController::class,'index']);
+			Route::get('/history/{g_stock_id}',[GodownsController::class,'history']);
+			Route::get('/set-gid',[GodownsController::class,'setGid']);
+		});
 	});
 });
 
@@ -223,10 +229,8 @@ Route::group(['prefix'=>"api"], function(){
 		Route::post('/edit-init',[CloakRoomController::class,'editRoom']);
 		Route::post('/store',[CloakRoomController::class,'store']);
 		Route::post('/cal-check',[CloakRoomController::class,'calCheck']);
-		Route::post('/checkout-init',[CloakRoomController::class,'checkoutInit']);
+		Route::post('/checkout-init/{type}',[CloakRoomController::class,'checkoutInit']);
 		Route::post('/checkout-store',[CloakRoomController::class,'checkoutStore']);
-		Route::post('/checkout-init1',[CloakRoomController::class,'checkoutInit1']);
-		Route::post('/checkout-store1',[CloakRoomController::class,'checkoutStore1']);
 		Route::get('/delete/{id}',[CloakRoomController::class,'delete']);
 	});
 	Route::group(['prefix'=>"collect-cloak"], function(){
@@ -259,6 +263,12 @@ Route::group(['prefix'=>"api"], function(){
 		});
 	});
 
+	Route::group(['prefix'=>"godowns"], function(){
+		Route::post('/init',[GodownsController::class,'init']);
+		Route::post('/edit',[GodownsController::class,'edit']);
+		Route::post('/store',[GodownsController::class,'store']);
+		Route::post('/init-history/{g_stock_id}',[GodownsController::class,'initHistory']);
+	});
 
 	Route::group(['prefix'=>"massage"], function(){
 		Route::post('/init',[MassageController::class,'initMassage']);

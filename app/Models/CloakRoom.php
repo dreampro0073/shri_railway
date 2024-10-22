@@ -12,17 +12,7 @@ class CloakRoom extends Model
 
     protected $table = 'cloakroom_entries';
 
-    public static function getSlipId(){
-
-        $entry = CloakRoom::select('slip_id')->where('client_id',Auth::user()->client_id)->orderBy('id','DESC')->first();
-        $slip_id = 1;
-        if($entry){
-            $slip_id = $entry->slip_id+1;
-        }
-        return $slip_id;
-    }
-
-    public static function totalShiftData($input_date= "", $user_id=0,$client_id){
+    public static function totalShiftData($input_date= "", $user_id=0){
         $check_shift = Entry::checkShift();
         
         $total_shift_cash = 0;
@@ -44,8 +34,8 @@ class CloakRoom extends Model
             $input_date = date("Y-m-d",strtotime($input_date));
         }
         
-        // $client_id = Auth::user()->client_id;
-        if(Auth::user()->priv != 2 && Auth::user()->priv != 4){
+        $client_id = Auth::user()->client_id;
+        if(Auth::user()->priv != 2){
             $user_id = Auth::id();
         }
 

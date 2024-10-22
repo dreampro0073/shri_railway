@@ -15,3 +15,13 @@ $(document).on("click",".datepicker1",function(){
 	$(this).datepicker("show");
 });
 
+var category = null;
+
+for (var i = 0; i < catgories.length; i++) {
+	var categ = catgories[i];
+
+	if(categ.canteen_item_id == canteen_item_id){
+		var category = categ;
+	}
+}
+

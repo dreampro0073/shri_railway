@@ -140,5 +140,14 @@ ALTER TABLE `income_entries` ADD `remarks` VARCHAR(255) NULL DEFAULT NULL AFTER 
 
 ALTER TABLE `income_entries` ADD `source` VARCHAR(255) NULL DEFAULT NULL AFTER `service_id`;
 
+//DIpanshu 29th Sep 2024
+
+CREATE TABLE `nnhp`.`godowns` ( `id` INT NOT NULL , `org_id` INT NOT NULL DEFAULT '0' , `date` DATE NULL DEFAULT NULL , `client_item_id` INT NOT NULL DEFAULT '0' , `stock` INT NOT NULL , `status` TINYINT NOT NULL DEFAULT '0' , `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , `created_at` TIMESTAMP NULL DEFAULT NULL ) ENGINE = InnoDB;
+
+CREATE TABLE `nnhp`.`transfer_godown_stocks` ( `id` INT NOT NULL , `org_id` INT NOT NULL DEFAULT '0' , `client_id` INT NOT NULL DEFAULT '0' , `canteen_item_id` INT NOT NULL DEFAULT '0' , `date` DATE NULL DEFAULT NULL , `stock` INT NOT NULL DEFAULT '0' , `updated_at` TIMESTAMP NOT 
+  
+ALTER TABLE `users` ADD `godown_id` INT NOT NULL DEFAULT '0' AFTER `org_id`;
+ALTER TABLE `canteen_items` ADD `godown_id` INT NOT NULL DEFAULT '0' AFTER `client_id`;
+
 
 ?>

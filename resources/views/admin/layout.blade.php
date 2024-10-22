@@ -40,6 +40,12 @@
                             </li>
                         @endif
 
+                        @if(in_array(7, $service_ids) || Auth::user()->priv == 1)
+                            <li class="@if(isset($sidebar)) @if($sidebar == 'rec') active @endif @endif">
+                                <a href="{{url('/admin/recliners')}}"><i class="fa fa-sitemap"></i>Recliners</a>
+                            </li>
+                        @endif
+
                         @if(in_array(4, $service_ids) || Auth::user()->priv == 1)
                             <li class="@if(isset($sidebar)) @if($sidebar == 'massage') active @endif @endif">
                                 <a href="{{url('/admin/massage')}}"><i class="fa fa-medkit" aria-hidden="true"></i>Massage</a>
@@ -76,9 +82,9 @@
                         @endif                     
                         @if(in_array(3, $service_ids) || Auth::user()->priv == 1)
                             @if(Auth::user()->priv == 2 || Auth::user()->priv == 1)
-                                <li class="@if(isset($sidebar)) @if($sidebar == 'godowns') active @endif @endif">
+                               <!--  <li class="@if(isset($sidebar)) @if($sidebar == 'godowns') active @endif @endif">
                                     <a href="{{url('/admin/godowns')}}"><i class="fa fa-cutlery" aria-hidden="true"></i>Godowns</a>
-                                </li>
+                                </li> -->
                                 
                                 <li class="@if(isset($sidebar)) @if($sidebar == 'cant_items') active @endif @endif">
                                     <a href="{{url('/admin/canteens/items')}}"><i class="fa fa-cutlery" aria-hidden="true"></i>Canteen Items</a>

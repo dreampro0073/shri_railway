@@ -883,6 +883,282 @@ app.controller('sittingCtrl', function($scope , $http, $timeout , DBService, $in
     // }
 });
 
+
+app.controller('reclinerCtrl', function($scope , $http, $timeout , DBService, $interval) {
+    $scope.loading = false;
+    $scope.formData = {
+        id:'',
+        no_of_adults:0,
+        no_of_baby_staff:0,
+        no_of_children:0,
+        name:'',
+        mobile:"",
+        total_amount:0,
+        paid_amount:0,
+        balance_amount:0,
+        hours_occ:'',
+    }; 
+    $scope.last_hour = 1;
+    $scope.filter = {};
+    $scope.checkout_number = '';
+
+    $scope.entry_id = 0;
+    $scope.pay_types = [];
+    $scope.hours = [];
+    $scope.rate_list = {};
+    $scope.checkout_process = false;
+    $scope.productName= '';
+    $scope.old_hr = 0;
+    $scope.checkout_th = 0;
+    $scope.avail_recliners =[];
+    $scope.sl_recliners =[];
+
+    $scope.setNullFormData = function(){
+        $scope.formData = {
+            id:'',
+            no_of_adults:0,
+            no_of_baby_staff:0,
+            no_of_children:0,
+            name:'',
+            mobile:"",
+            total_amount:0,
+            paid_amount:0,
+            balance_amount:0,
+            hours_occ:'',
+        }; 
+        $scope.last_hour = 1;
+        $scope.old_hr = 0;
+        $scope.sl_recliners =[];
+
+    }
+
+    $scope.init = function () {
+        $scope.setNullFormData();
+        DBService.postCall($scope.filter, '/api/recliners/init').then((data) => {
+            if (data.success) {
+                $scope.pay_types = data.pay_types;
+                $scope.hours = data.hours;
+                $scope.entries = data.entries;
+                $scope.rate_list = data.rate_list;
+                $scope.avail_recliners = data.avail_recliners;
+                $scope.updateCheckoutClass();
+            }
+            $("#productName").focus();
+        });
+    }
+    $scope.filterClear = function(){
+        $scope.filter = {};
+        $scope.init();
+    }
+
+    $scope.edit = function(entry_id){
+        $scope.checkout_process = false;
+        $scope.entry_id = entry_id;
+        $scope.setNullFormData();
+        DBService.postCall({entry_id : $scope.entry_id}, '/api/recliners/edit-init').then((data) => {
+            if (data.success) {
+                $scope.last_hour = data.rec_entry.hours_occ;
+                $scope.formData = data.rec_entry;
+                $scope.old_hr = data.rec_entry.hours_occ;
+                $scope.sl_recliners = data.sl_recliners;
+                $("#exampleModalCenter").modal("show");
+            }
+            
+        });
+    }    
+    $scope.newEditCheckout = function(new_checkout_id){
+        $scope.checkout_th = 1;
+        $scope.entry_id = new_checkout_id;
+
+        if(confirm("Are you sure?") == true){
+            $scope.setNullFormData();
+            DBService.postCall({checkout_id : new_checkout_id,checkout_th:$scope.checkout_th}, '/api/recliners/checkout-new/1').then((data) => {
+                if (data.success) {
+                    alert(data.message);
+                    $scope.init();
+                    $scope.checkout_th =0;
+                }else{
+                    $scope.formData = data.entry;
+                    $scope.checkout_process = true;
+
+                    setTimeout(function(){
+                       $("#checkoutModal").modal("show");
+                    }, 800);
+                }
+            });
+        };
+    }
+
+    $scope.newEditCheckout1 = function(){
+        $scope.checkout_th = 2;
+        $scope.setNullFormData();
+        DBService.postCall({productName : $scope.productName,checkout_th:$scope.checkout_th}, '/api/recliners/checkout-new/2').then((data) => {
+            $scope.productName = '';
+            $checkout_loading = false;
+            if (data.success) {
+                alert(data.message);
+                $scope.init();
+                $scope.checkout_th =0;
+
+            }else{
+                $scope.entry_id = data.entry.id;
+
+                $scope.formData = data.entry;
+                $scope.checkout_process = true;
+
+                setTimeout(function(){
+                   $("#checkoutModal").modal("show");
+                }, 800);
+            }
+           
+        });
+    }
+
+    $scope.handleKeyPress = function(event) {
+
+        if (event.which === 13) {
+            $scope.newEditCheckout1();
+            if ($scope.scannedValue.trim()) {
+                $scope.scannedValue = '';
+            }
+        } else {
+            $scope.scannedValue = ($scope.scannedValue || '') + event.key;
+        }
+    };
+
+    $scope.add = function(){
+        $scope.entry_id = 0;
+
+        $scope.setNullFormData();
+        $scope.checkout_process = false;
+        $("#exampleModalCenter").modal("show");    
+    }
+
+    $scope.hideModal = () => {
+        $scope.entry_id = 0;
+        $scope.checkout_process = false;
+        $scope.setNullFormData();
+        $("#exampleModalCenter").modal("hide");
+        $("#checkoutModal").modal("hide");
+    }
+
+    $scope.onSubmit = function () {
+        if($scope.sl_recliners.length == 0){
+            alert('Please select at least one Recliner');
+            return;
+        }
+
+        $scope.formData.sl_recliners = $scope.sl_recliners;
+        $scope.loading = true;
+        DBService.postCall($scope.formData, '/api/recliners/store').then((data) => {
+            if (data.success) {
+                $("#exampleModalCenter").modal("hide");
+                $("#checkoutModal").modal("hide");
+                $scope.entry_id = 0;
+                $scope.setNullFormData();
+                $scope.last_hour = 1;
+                $scope.init();
+                setTimeout(function(){
+                    window.open(base_url+'/admin/recliners/print-unq/1/'+data.print_id, '_blank');
+
+                }, 800);
+                $scope.checkout_process = false;
+
+            } else {
+                alert(data.message);
+            }
+            $scope.loading = false;
+        });
+    }
+
+    $scope.onSubmitCheckout = function () {
+        $scope.loading = true;
+        $scope.formData.checkout_th = $scope.checkout_th;
+        DBService.postCall($scope.formData, '/api/recliners/checkout-store').then((data) => {
+            if (data.success) {
+                $("#exampleModalCenter").modal("hide");
+                $("#checkoutModal").modal("hide");
+                $scope.entry_id = 0;
+                $scope.new_checkout_id = 0;
+                $scope.productName = '';
+                $scope.setNullFormData();
+                $scope.last_hour = 1;
+                $scope.checkout_th = 0;
+                $scope.init();
+                setTimeout(function(){
+                    window.open(base_url+'/admin/recliners/print-unq/2/'+data.print_id, '_blank');
+                }, 800);
+                $scope.checkout_process = false;
+
+            } else {
+                alert(data.message);
+            }
+            $scope.loading = false;
+        });
+    }
+    $scope.changeAmount = function () {
+        $scope.formData.total_amount = 0;
+        if($scope.formData.hours_occ > 0){
+            var hours = $scope.formData.hours_occ - 1; 
+            $scope.formData.total_amount += $scope.rate_list.second_rate * $scope.sl_recliners.length;     
+            $scope.formData.total_amount += hours * $scope.rate_list.second_rate * $scope.sl_recliners.length;
+               
+        }
+        $scope.formData.balance_amount = $scope.formData.total_amount - $scope.formData.paid_amount;
+        $scope.geValTime();
+
+    }
+
+    $scope.geValTime = function(){
+          DBService.postCall({entry_id:$scope.entry_id,hours_occ:$scope.formData.hours_occ}, '/api/recliners/cal-check').then((data) => {
+            if (data.success) { 
+                $scope.formData.show_valid_up = data.show_valid_up;
+                
+            }else{
+
+            }
+        });  
+    }
+
+    $scope.updateCheckoutClass = function(){
+        const milliseconds = new Date().getTime();
+        const unixTimestamp = Math.floor(milliseconds / 1000);
+        for (var i = 0; i < $scope.entries.length; i++) {
+            $scope.entries[i].check_class = "";
+            if($scope.entries[i].checkout_status == 0){
+                if(unixTimestamp > $scope.entries[i].str_checkout_time){
+                    $scope.entries[i].check_class = "t-danger";
+                } else {
+                    if((unixTimestamp+600) > $scope.entries[i].str_checkout_time){
+                        $scope.entries[i].check_class = "t-warning";
+                    } else {
+                        $scope.entries[i].check_class = "t-info";
+                    }
+                }
+            }
+
+        }
+    }
+
+    var intervalPromise = $interval($scope.updateCheckoutClass, 12000);
+    $scope.$on('$destroy', function() {
+        if (intervalPromise) {
+            $interval.cancel(intervalPromise);
+        }
+    });
+
+     $scope.insRec = (locker_id) => {
+        console.log(locker_id);
+        let idx = $scope.sl_recliners.indexOf(locker_id);
+        if(idx == -1){
+            $scope.sl_recliners.push(locker_id);
+        }else{
+            $scope.sl_recliners.splice(idx,1);
+        }
+        $scope.changeAmount();
+    }
+});
+
 app.controller('shiftCtrl', function($scope , $http, $timeout , DBService) {
     $scope.loading= false;
     $scope.sitting_data = [];

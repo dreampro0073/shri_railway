@@ -15,6 +15,7 @@ use App\Http\Controllers\SittingCollectController;
 use App\Http\Controllers\IncomeController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\GodownsController;
+use App\Http\Controllers\ReclinerController;
 
 
 
@@ -125,6 +126,16 @@ Route::group(['middleware'=>'auth'],function(){
 			Route::get('/change-pay-type/{id?}', [SittingController::class,'changePayType']);
 
 		});
+
+		Route::group(['prefix'=>"recliners"], function(){
+			Route::get('/',[ReclinerController::class,'recliners']);
+			Route::get('/update-print/{slip_id}',[ReclinerController::class,'updatePrint']);
+			Route::get('/print-unq/{type}/{print_id?}', [ReclinerController::class,'printPostUnq']);
+			Route::get('/print/{id?}', [ReclinerController::class,'printPost']);
+			Route::get('/checkout-without-penalty/{id?}', [ReclinerController::class,'checkoutWithoutPenalty']);
+			Route::get('/change-pay-type/{id?}', [ReclinerController::class,'changePayType']);
+
+		});
 		
 
 		Route::group(['prefix'=>"shift"], function(){
@@ -219,11 +230,21 @@ Route::group(['prefix'=>"api"], function(){
 		Route::post('/cal-check',[SittingController::class,'calCheck']);
 		Route::post('/checkout-init/{type}',[SittingController::class,'checkoutInit']);	
 		Route::post('/checkout-store',[SittingController::class,'checkoutStore']);
-		// Route::get('/delete/{id}',[SittingController::class,'delete']);
 		Route::post('/checkout-new/{type}',[SittingController::class,'newCheckout']);
 		Route::post('/checkout-alert',[SittingController::class,'checkoutAlert']);
 			
 	});
+
+	Route::group(['prefix'=>"recliners"], function(){
+		Route::post('/init',[ReclinerController::class,'initEntries']);
+		Route::post('/edit-init',[ReclinerController::class,'editEntry']);
+		Route::post('/store',[ReclinerController::class,'store']);
+		Route::post('/cal-check',[ReclinerController::class,'calCheck']);
+		Route::post('/checkout-init/{type}',[ReclinerController::class,'checkoutInit']);	
+		Route::post('/checkout-store',[ReclinerController::class,'checkoutStore']);
+		Route::post('/checkout-new/{type}',[ReclinerController::class,'newCheckout']);
+	});
+
 	Route::group(['prefix'=>"cloak-rooms"], function(){
 		Route::post('/init/{type}',[CloakRoomController::class,'initRoom']);
 		Route::post('/edit-init',[CloakRoomController::class,'editRoom']);

@@ -119,6 +119,15 @@
                         <td>@{{locker_data.total_shift_cash}}</td>
                         <td>@{{locker_data.total_collection}}</td>
                     </tr>
+                    <tr ng-if="service_ids.includes(7)">
+                        <td>Recliner</td> 
+                        <td>@{{recliner_data.last_hour_upi_total}}</td>
+                        <td>@{{recliner_data.last_hour_cash_total}}</td>
+                        <td>@{{recliner_data.last_hour_total}}</td>
+                        <td>@{{recliner_data.total_shift_upi}}</td>
+                        <td>@{{recliner_data.total_shift_cash}}</td>
+                        <td>@{{recliner_data.total_collection}}</td>
+                    </tr>
                     <tr>
                         <td><b>Grand Total</b></td> 
                         <td><b>@{{last_hour_upi_total}}</b></td>

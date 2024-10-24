@@ -83,6 +83,21 @@
             </div>
 
         @endif
+
+        @if(in_array(7, $service_ids) || Auth::user()->priv == 1)
+            <div class="col-md-3">
+                <a class="no-dec" href="{{url('/admin/recliners')}}">
+                    <div class="card p-3 shadow mb-4" style="background:#d3d3d396;; padding: 10px;">
+                        <p style="font-size: 30px;">Recliners</p>
+                        <i>
+                            Recliners
+                        </i>
+                    </div>
+                </a>    
+            </div>
+        @endif
+    </div>
+    <div class="row" style="margin-top:30px;">
         <div class="col-md-3">
             <a class="no-dec" href="{{url('/admin/shift/current')}}">
                 <div class="card p-3 shadow mb-4" style="background:#d3d3d396;;padding: 10px;">

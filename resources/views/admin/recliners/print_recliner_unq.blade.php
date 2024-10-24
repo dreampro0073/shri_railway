@@ -59,7 +59,7 @@
 			{{Session::get('gst_no')}}
 		</h5>
 		<h5>
-			SITTING
+			Recliners
 		</h5>
 		<div style="text-align: center;">
 			<b style="font-size: 18px;">
@@ -67,8 +67,13 @@
 			</b>
 		</div>
 		@if($type == 1)
-		<div style="text-align:center;">
-			<svg id="barcode"></svg>
+		<div class="table-div">
+			<div style="text-align:center;">
+				<svg id="barcode"></svg>
+			</div>			
+			<div style="text-align:center;">
+				<svg id="barcode"></svg>
+			</div>
 		</div>
 		@endif
 		<div class="table-div">

@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Redirect, Validator, Hash, Response, Session, DB;
 use App\Models\User;
 use App\Models\Entry;
-use App\Models\CloakRoom, App\Models\Sitting, App\Models\Canteen, App\Models\Massage, App\Models\Locker;
+use App\Models\CloakRoom, App\Models\Sitting, App\Models\Canteen, App\Models\Massage, App\Models\Locker,App\Models\Recliner;
 
 
 class ShiftController extends Controller {
@@ -112,6 +112,17 @@ class ShiftController extends Controller {
 			$last_hour_total += $locker_data['last_hour_total'];
 			$data['locker_data'] = $locker_data;
 		}
+
+		if(in_array(7, $service_ids)){
+			$recliner_data = Recliner::totalShiftData($input_date,$user_id,$client_id);
+			$total_shift_upi += $recliner_data['total_shift_upi'];
+			$total_shift_cash += $recliner_data['total_shift_cash'];
+			$total_collection += $recliner_data['total_collection'];
+			$last_hour_upi_total += $recliner_data['last_hour_upi_total'];
+			$last_hour_cash_total += $recliner_data['last_hour_cash_total'];
+			$last_hour_total += $recliner_data['last_hour_total'];
+			$data['recliner_data'] = $recliner_data;
+		}
 	
         $data['total_shift_upi'] = $total_shift_upi;
 		$data['total_shift_cash'] = $total_shift_cash;
@@ -191,6 +202,13 @@ class ShiftController extends Controller {
 			$total_shift_cash += $locker_data['total_shift_cash'];
 			$total_collection += $locker_data['total_collection'];
 		}
+
+		if(in_array(7, $service_ids)){
+			$recliner_data = Recliner::totalShiftData($input_date,$user_id,$client_id);
+			$total_shift_upi += $recliner_data['total_shift_upi'];
+			$total_shift_cash += $recliner_data['total_shift_cash'];
+			$total_collection += $recliner_data['total_collection'];
+		}
 		
 
         return view('admin.print_shift',[
@@ -202,6 +220,7 @@ class ShiftController extends Controller {
 			'canteen_data'=>$canteen_data,
 			'massage_data'=>$massage_data,
 			'locker_data'=>$locker_data,
+			'recliner_data'=>$recliner_data,
         ]);
 	}
 

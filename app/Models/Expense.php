@@ -21,7 +21,7 @@ class Expense extends Model {
     }
 
     public static function incomeTypes(){
-        $expense_accounts = [1=>'Sitting Cash',2=>'Sitting UPI',3=>'Massage Cash',4=>'Massage UPI',5=>'Locker Cash',6=>'Locker UPI',7=>'Canteen Cash',8=>'Canteen UPI',];
+        $expense_accounts = [1=>'Sitting Cash',2=>'Sitting UPI',3=>'Massage Cash',4=>'Massage UPI',5=>'Locker Cash',6=>'Locker UPI',7=>'Canteen Cash',8=>'Canteen UPI',9=>'Recliner Cash',10=>'Recliner UPI',];
         return $expense_accounts;
     }
         

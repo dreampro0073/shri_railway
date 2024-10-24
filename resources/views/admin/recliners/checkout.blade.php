@@ -19,15 +19,15 @@
                     <div class="row">
                         <div class="col-md-4 form-group">
                             <label>Name</label>
-                            <input type="text" ng-model="formData.name" class="form-control" required />
+                            <input type="text" ng-model="formData.name" class="form-control" readonly required />
                         </div>
                         <div class="col-md-4 form-group">
                             <label>Mobile No.</label>
-                            <input type="number" ng-model="formData.mobile_no" class="form-control" required />
+                            <input type="number" ng-model="formData.mobile_no" class="form-control" readonly required />
                         </div>
                         <div class="col-md-4 form-group">
                             <label>PNR/UID</label>
-                            <input type="text" ng-model="formData.pnr_uid" class="form-control"  />
+                            <input type="text" ng-model="formData.pnr_uid" readonly class="form-control"  />
                         </div>
                     </div>
                    
@@ -50,7 +50,7 @@
                     <div class="row">
                         <div class="col-md-3 form-group">
                             <label>Recliner</label>
-                            <input type="text" name="">
+                            <input type="text" ng-model="formData.show_e_ids" class="form-control" readonly>
                         </div>
                         <div class="col-md-3 form-group">
                             <label>Hour Occ</label>

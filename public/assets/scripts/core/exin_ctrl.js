@@ -322,9 +322,9 @@ app.controller('IncomeCtrl', function($scope , $http, $timeout , DBService, Uplo
 
     $scope.calAllSumOther = (index) => {
 
-        const cash_amount = $scope.formData.c_services.reduce((sum, item) => (item.service_id == 7 && item.cash_amount !='') ? sum + parseInt(item.cash_amount) : 0 , 0);
-        const upi_amount = $scope.formData.c_services.reduce((sum, item) => (item.service_id == 7 && item.upi_amount !='') ? sum + parseInt(item.upi_amount) : 0 , 0);
-        const total_amount = $scope.formData.c_services.reduce((sum, item) => item.service_id == 7 ? parseInt(upi_amount)+parseInt(cash_amount) :0 , 0); 
+        const cash_amount = $scope.formData.c_services.reduce((sum, item) => (item.service_id == 6 && item.cash_amount !='') ? sum + parseInt(item.cash_amount) : 0 , 0);
+        const upi_amount = $scope.formData.c_services.reduce((sum, item) => (item.service_id == 6 && item.upi_amount !='') ? sum + parseInt(item.upi_amount) : 0 , 0);
+        const total_amount = $scope.formData.c_services.reduce((sum, item) => item.service_id == 6 ? parseInt(upi_amount)+parseInt(cash_amount) :0 , 0); 
 
         $scope.formData.c_services[index].total_amount = total_amount;
 

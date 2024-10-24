@@ -1166,6 +1166,7 @@ app.controller('shiftCtrl', function($scope , $http, $timeout , DBService) {
     $scope.canteen_data = [];
     $scope.massage_data = [];
     $scope.locker_data = [];
+    $scope.recliner_data = [];
     $scope.service_ids = [];
     $scope.clients = [];
     $scope.filter = {
@@ -1207,6 +1208,7 @@ app.controller('shiftCtrl', function($scope , $http, $timeout , DBService) {
                 $scope.canteen_data = data.canteen_data; 
                 $scope.massage_data = data.massage_data;
                 $scope.locker_data = data.locker_data;
+                $scope.recliner_data = data.recliner_data;
                
                 $scope.total_shift_upi = data.total_shift_upi ; 
                 $scope.total_shift_cash = data.total_shift_cash ; 

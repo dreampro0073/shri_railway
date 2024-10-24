@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Auth;
 
 use Redirect, Validator, Hash, Response, Session, DB;
 
-use App\Models\Income;
+use App\Models\Income, App\Models\Recliner;
 use App\Models\Expense;
 use App\Models\IncomeEntry;
 use App\Models\Sitting,App\Models\CloakRoom, App\Models\Canteen,App\Models\Massage,App\Models\Locker,App\Models\Entry;
@@ -31,7 +31,6 @@ class IncomeController extends Controller {
 
     public function init(Request $request){
         $incomes = Income::getIncomes($request);
-        $income_types = Expense::incomeTypes();
         $data['success'] = true;
         $data['income_types']= Expense::incomeTypes();
         $data['clients'] = Sitting::getBranches();
@@ -156,22 +155,34 @@ class IncomeController extends Controller {
                 "remarks" => isset($income_entries[5]) ? $income_entries[5] : "",
             ];
             $total_amount += $locker_data['total_collection'];
-        }
+        }        
         if(in_array(7,$service_ids)){
+            $recliner_data = Recliner::totalShiftData($date,0,$client_id);
+            $c_services[] = [
+                "service_id" =>7,
+                "source" => "Recliners",
+                "upi_amount"=>$recliner_data['total_shift_upi'],
+                "cash_amount"=>$recliner_data['total_shift_cash'],
+                "total_amount"=>$recliner_data['total_collection'],
+                "remarks" => isset($income_entries[7]) ? $income_entries[7] : "",
+            ];
+            $total_amount += $recliner_data['total_collection'];
+        }
+        if(in_array(6,$service_ids)){
             if($check){
-                $other_data = DB::table("income_entries")->where("income_id", $check->id)->where("service_id", 7)->first();
+                $other_data = DB::table("income_entries")->where("income_id", $check->id)->where("service_id", 6)->first();
 
                 $c_services[] = [
-                    "service_id" =>7,
+                    "service_id" =>6,
                     "source" => "Others",
                     "cash_amount"=>$other_data->cash_amount ? $other_data->cash_amount : 0,
                     "upi_amount"=>$other_data->upi_amount ? $other_data->upi_amount : 0,
                     "total_amount"=>$other_data->total_amount ? $other_data->total_amount : 0,
-                    "remarks" => isset($income_entries[7]) ? $income_entries[7] : "",
+                    "remarks" => isset($income_entries[6]) ? $income_entries[6] : "",
                 ];
             }else{
                 $c_services[] = [
-                    "service_id" =>7,
+                    "service_id" =>6,
                     "source" => "Others",
                     "cash_amount"=>0,
                     "upi_amount"=>0,

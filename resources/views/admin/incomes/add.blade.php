@@ -77,12 +77,12 @@
                         </th>
                         <td>
                             <div class="form-group">
-                                <input min="0" type="text" ng-readonly="c_service.service_id != 7" ng-model="c_service.cash_amount" ng-change="calAllSumOther($index)" class="form-control">
+                                <input min="0" type="text" ng-readonly="c_service.service_id != 6" ng-model="c_service.cash_amount" ng-change="calAllSumOther($index)" class="form-control">
                             </div>
                         </td>
                         <td>
                             <div class="form-group">
-                                <input min="0" type="text" ng-readonly="c_service.service_id != 7" ng-model="c_service.upi_amount" ng-change="calAllSumOther($index)" class="form-control">
+                                <input min="0" type="text" ng-readonly="c_service.service_id != 6" ng-model="c_service.upi_amount" ng-change="calAllSumOther($index)" class="form-control">
                             </div>
                         </td>
                         <th>

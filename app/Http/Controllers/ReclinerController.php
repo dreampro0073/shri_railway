@@ -321,12 +321,12 @@ class ReclinerController extends Controller {
 
 		if($validator->passes()){
 			$entry = Recliner::find($request->id);
-			DB::table('e_entries')->insert([
+			DB::table('recliner_e_entries')->insert([
 				'entry_id' => $entry->id,
 				'added_by' => Auth::id(),
 				'date' => $date,
 				'pay_type' => $request->pay_type,
-				'shift' => $check_shift,
+				// 'shift' => $check_shift,
 				'paid_amount' => $request->balance_amount,
 				'created_at' => date("Y-m-d H:i:s"),
 				'current_time' => date("H:i:s"),

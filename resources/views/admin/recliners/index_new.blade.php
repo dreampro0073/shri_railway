@@ -98,9 +98,9 @@
                             @endif
                             
                             <td>
-                                <a href="javascript:;" ng-if="item.checkout_status != 1 " ng-click="newEditCheckout(item.id)" class="btn btn-danger btn-sm">Checkout</a>
+                                
                                 <!-- @if(Auth::user()->client_id != 1 && (Auth::user()->priv == 2 || Auth::user()->priv == 1)) -->
-                                   <a href="javascript:;" ng-if="item.checkout_status != 1 " ng-click="newEditCheckout(item.id)" class="btn btn-danger btn-sm">Checkout</a>
+                                   <!-- <a href="javascript:;" ng-if="item.checkout_status != 1 " ng-click="newEditCheckout(item.id)" class="btn btn-danger btn-sm">Checkout</a> -->
                                 <!-- @endif  -->
 
                                 @if(Auth::user()->priv == 2)

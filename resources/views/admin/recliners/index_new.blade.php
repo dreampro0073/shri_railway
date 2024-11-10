@@ -61,9 +61,7 @@
                             <th>Validity</th>
                             <th>Paid Amount</th>
                             <th>Pay Type</th>
-                            @if(Auth::user()->priv == 1)
-                                <th>#</th>
-                            @endif
+                            
                             <th>#</th>
                         </tr>
                     </thead>
@@ -87,28 +85,23 @@
                                     <a onclick="return confirm('Are you sure?')" ng-if="item.checkout_status != 1" href="{{url('/admin/recliners/change-pay-type')}}/@{{item.id}}" style="font-size: 15px;"><i class="fa fa-edit"> </i></a>
                                 </span>
                             </td>
-                            @if(Auth::user()->priv == 1)
-
-                            <td>
-                                <div ng-if="item.deleted == 1">
-                                    <span >@{{item.username}},</span>
-                                    <span >@{{item.delete_time}}</span>
-                                </div>
-                            </td>
-                            @endif
+                            
                             
                             <td>
                                 
-                                <!-- @if(Auth::user()->client_id != 1 && (Auth::user()->priv == 2 || Auth::user()->priv == 1)) -->
-                                   <!-- <a href="javascript:;" ng-if="item.checkout_status != 1 " ng-click="newEditCheckout(item.id)" class="btn btn-danger btn-sm">Checkout</a> -->
-                                <!-- @endif  -->
+                                <!-- @if(Auth::user()->client_id != 1 && (Auth::user()->priv == 2 || Auth::user()->priv == 1))
+                                   <a href="javascript:;" ng-if="item.checkout_status != 1 " ng-click="newEditCheckout(item.id)" class="btn btn-danger btn-sm">Checkout</a>
+                                @endif -->
 
-                                @if(Auth::user()->priv == 2)
+                                @if(Auth::user()->priv ==  2 )
                                    <a onclick="return confirm('Are you sure?')" href="{{url('/admin/recliners/checkout-without-penalty')}}/@{{item.id}}" ng-if="item.checkout_status != 1 && item.check_class == 't-danger'" class="btn btn-warning btn-sm">Checkout without penalty</a>
                                 @endif
+
                                 <a ng-if="item.checkout_status != 1" href="javascript:;" ng-click="edit(item.id)" class="btn btn-warning btn-sm">Edit</a>
                                 
                                 <a ng-if="item.checkout_status != 1" href="{{url('/admin/recliners/print-unq/2/')}}/@{{item.barcodevalue}}" class="btn btn-success btn-sm" target="_blank">Print</a>
+                            </td>
+                       
                         </tr>
                     </tbody>
                 </table>

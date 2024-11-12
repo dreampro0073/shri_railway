@@ -15,7 +15,7 @@ app.controller('cloackCtrl', function($scope , $http, $timeout , DBService) {
         check_in:'',
         check_out:'',
         no_of_bag:0,
-        no_of_day:1,
+        no_of_day:'',
     };
     
     $scope.type = 0;
@@ -148,7 +148,7 @@ app.controller('cloackCtrl', function($scope , $http, $timeout , DBService) {
             check_in:'',
             check_out:'',
             no_of_bag:0,
-            no_of_day:1,
+            no_of_day:'',
 
         };
         $("#exampleModalCenter").modal("hide");
@@ -174,7 +174,7 @@ app.controller('cloackCtrl', function($scope , $http, $timeout , DBService) {
                     check_in:'',
                     check_out:'',
                     no_of_bag:0,
-                    no_of_day:1,
+                    no_of_day:'',
                 };
                 $scope.init();
                 setTimeout(function(){
@@ -201,7 +201,7 @@ app.controller('cloackCtrl', function($scope , $http, $timeout , DBService) {
                     check_in:'',
                     check_out:'',
                     no_of_bag:0,
-                    no_of_day:1,
+                    no_of_day:'',
                 };
                 $scope.init();
                 setTimeout(function(){
@@ -214,10 +214,15 @@ app.controller('cloackCtrl', function($scope , $http, $timeout , DBService) {
 
     $scope.changeAmount = function(){
         var amount = $scope.cloak_first_rate;
+        
+
         if($scope.formData.no_of_day > 1){
             amount  = (amount + (($scope.formData.no_of_day-1)*$scope.cloak_second_rate));
+            amount = amount*$scope.formData.no_of_bag;
+        } else {
+            amount = amount*$scope.formData.no_of_day*$scope.formData.no_of_bag;
         }
-        amount = amount*$scope.formData.no_of_bag;
+
         if($scope.entry_id == 0){
             $scope.formData.paid_amount = amount;
         }else{

@@ -84,7 +84,9 @@ class CloakRoomController extends Controller {
         }
 		$rate_list = DB::table("cloakroom_rate_list")->where("client_id", Auth::user()->client_id)->first();
 		$pay_types = Entry::payTypes();
+
 		$days = Entry::days();
+
 		$show_pay_types = Entry::showPayTypes();
         
 		$data['success'] = true;
@@ -272,8 +274,11 @@ class CloakRoomController extends Controller {
         
 
         // return 'di';
-              
-		return view('admin.cloakrooms.print_page_cloack_unq',compact('print_data','total_amount','rate_list','type'));
+        if(User::checkHrType()){
+			return view('admin.cloakrooms.print_page_cloack_unq_1',compact('print_data','total_amount','rate_list','type'));
+		}else{
+			return view('admin.cloakrooms.print_page_cloack_unq',compact('print_data','total_amount','rate_list','type'));
+		}
 	}
 
    public function checkoutInit(Request $request,$type=0){

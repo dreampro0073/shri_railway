@@ -149,5 +149,7 @@ CREATE TABLE `nnhp`.`transfer_godown_stocks` ( `id` INT NOT NULL , `org_id` INT 
 ALTER TABLE `users` ADD `godown_id` INT NOT NULL DEFAULT '0' AFTER `org_id`;
 ALTER TABLE `canteen_items` ADD `godown_id` INT NOT NULL DEFAULT '0' AFTER `client_id`;
 
+ALTER TABLE `cloakroom_rate_list` ADD `type` FLOAT NOT NULL DEFAULT '1' AFTER `second_rate`;
+ALTER TABLE `clients` ADD `rate_type` INT NOT NULL DEFAULT '1' AFTER `org_id`;
 
 ?>

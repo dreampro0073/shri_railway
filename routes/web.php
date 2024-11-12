@@ -142,6 +142,7 @@ Route::group(['middleware'=>'auth'],function(){
 			Route::get('/current',[ShiftController::class,'index']);
 			Route::get('/print/{type}',[ShiftController::class,'print']);
 		});
+		
 		Route::group(['prefix'=>"cloak-rooms"], function(){
 			Route::get('/',[CloakRoomController::class,'index']);
 			Route::get('/all',[CloakRoomController::class,'allRooms']);

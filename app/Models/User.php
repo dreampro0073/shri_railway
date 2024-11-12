@@ -42,5 +42,15 @@ class User extends Authenticatable {
         );
     }
 
+    public static function checkHrType(){
+        $check = DB::table("clients")->where("id", Auth::user()->client_id)->first();
+        if($check->rate_type == 2){
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+
         
 }

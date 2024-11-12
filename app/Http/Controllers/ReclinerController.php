@@ -529,6 +529,11 @@ class ReclinerController extends Controller {
 			$entry->checkout_by = Auth::id();
 			$entry->checkout_time = date("Y-m-d H:i:s");
 			$entry->save();
+
+			$rec_ids = explode(",", $entry->rec_ids);
+
+					DB::table("recliners")->whereIn("id", $rec_ids)->where("client_id", Auth::user()->client_id)->update(['status' => 0]);
+
 		} 
 
 		return Redirect::back();

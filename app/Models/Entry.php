@@ -52,11 +52,20 @@ class Entry extends Model
 
     public static function days(){
         $ar = [];
-        for ($i=1; $i <= 15; $i++) { 
-           $ar[] = ['value'=>$i,'label'=>$i];
+        if(User::checkHrType()){
+            for ($i=1; $i <= 14; $i++) { 
+                $hours = $i*12;
+                $days = $i/2;
+                $ar[] = ['value'=>$days,'label'=>$hours.' hours' ];
+            }
+        }else{
+            for ($i=1; $i <= 15; $i++) { 
+               $ar[] = ['value'=>$i,'label'=>$i.'Days'];
+            }
         }
+
         return $ar;
-    }
+    }    
 
     // public static function checkShift($type = 1){
     //     $a_shift = strtotime("06:00:00");

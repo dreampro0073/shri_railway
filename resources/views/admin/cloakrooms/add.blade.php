@@ -43,8 +43,8 @@
                             <input type="number" ng-model="formData.pnr_uid" class="form-control" />
                         </div>                        
                         <div class="col-md-3 form-group">
-                            <label>No Of Days</label>
-                            <select ng-model="formData.no_of_day" class="form-control" ng-change="changeAmount()" required convert-to-number >
+                            <label>Time Duration</label>
+                            <select ng-model="formData.no_of_day" class="form-control" ng-change="changeAmount()" required >
                                 <option value="">--select--</option>
                                 <option ng-repeat="item in days" value="@{{item.value}}">@{{ item.label}}</option>
                             </select>

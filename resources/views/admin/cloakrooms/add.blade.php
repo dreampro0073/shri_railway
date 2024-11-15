@@ -145,10 +145,13 @@
                             <input type="text"  ng-model="formData.no_of_day" class="form-control" readonly>
                            
                         </div>
+                        <div class="col-md-3 form-group" style="color:red;">
+                            <label>Late Days</label>
+                            <input type="text" ng-model="formData.day" class="form-control" style="color:red;" readonly>
+                        </div>                       
                         <div class="col-md-3 form-group">
-                            <label>Late Day</label>
-                            <input type="text"  ng-model="formData.day" class="form-control" readonly>
-                           
+                            <label>Total Days</label>
+                            <input type="text" class="form-control" ng-model="formData.final_days" readonly>
                         </div>
                         <div class="col-md-3 form-group" ng-if="entry_id != 0">
 

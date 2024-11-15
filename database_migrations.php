@@ -152,4 +152,7 @@ ALTER TABLE `canteen_items` ADD `godown_id` INT NOT NULL DEFAULT '0' AFTER `clie
 ALTER TABLE `cloakroom_rate_list` ADD `type` FLOAT NOT NULL DEFAULT '1' AFTER `second_rate`;
 ALTER TABLE `clients` ADD `rate_type` INT NOT NULL DEFAULT '1' AFTER `org_id`;
 
+// Devendra 15Nov2024
+
+ALTER TABLE `cloakroom_entries` CHANGE `total_day` `total_day` FLOAT NOT NULL DEFAULT '0';
 ?>

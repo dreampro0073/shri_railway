@@ -67,6 +67,7 @@
                     <thead style="background-color: rgba(0,0,0,.075);">
                         <tr class="table-primary">
                             <th>S.no</th>
+                            <th>Id</th>
                             
                             <th>Name</th>
                             <th>Mobile No</th>
@@ -86,6 +87,7 @@
                     </thead>
                     <tbody ng-if="l_entries.length > 0" >
                         <tr ng-repeat="item in l_entries " ng-class="{'my_class': item.deleted == 1}">
+                            <td>@{{ $index+1 }}</td>
                             <td>@{{ item.id }}</td>
                            
                             <td>@{{ item.name }}</td>

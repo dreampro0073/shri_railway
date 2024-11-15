@@ -60,7 +60,7 @@
 		</h5>
 		<div style="text-align: center;">
 			<b style="font-size: 18px;">
-				Slip ID : {{ $print_data->slip_id }}
+				Slip No : {{ $print_data->slip_id }}
 			</b>
 		</div>
 		<div class="table-div">

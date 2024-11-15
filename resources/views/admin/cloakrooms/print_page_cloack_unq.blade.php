@@ -53,11 +53,11 @@
 		<h4>
 			{{Session::get('client_name')}}
 			<span style="display: block;text-align: center;font-size: 14px;">
-				GST No. 10AABAK5354K1ZU
+				{{Session::get('gst_no')}}
 			</span>
 		</h4>
 		<h5>
-			<span class="text">Sl. No: <b style="font-size:18px;">{{ $print_data->id }}</b></span>
+			<span class="text">Slip No: <b style="font-size:18px;">{{ $print_data->slip_id }}</b></span>
 		</h5>
 		<!-- @if($type == 1 && Auth::user()->priv == 3 && $print_data->print_count < 1) -->
     		<div class="table-div">

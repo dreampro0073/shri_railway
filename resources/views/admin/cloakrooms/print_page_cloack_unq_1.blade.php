@@ -52,14 +52,17 @@
 	<div class="main" id="printableArea">
 		<h4>
 			{{Session::get('client_name')}}
-			<span style="display: block;text-align: center;font-size: 14px;">
-				GST No. 10AABAK5354K1ZU
-			</span>
 		</h4>
 		<h5>
-			<span class="text">Sl. No: <b style="font-size:18px;">{{ $print_data->id }}</b></span>
+			GST : {{Session::get('gst_no')}}
 		</h5>
-		<!-- @if($type == 1 && Auth::user()->priv == 3 && $print_data->print_count < 1) -->
+		<h5>
+			Cloakroom
+		</h5>
+		<h5>
+			<span class="text">Slip No: <b style="font-size:18px;">{{ $print_data->slip_id }}</b></span>
+		</h5>
+		@if($type == 1 && Auth::user()->priv == 3 && $print_data->print_count < 1)
     		<div class="table-div">
     			<div class="w-50">
     
@@ -75,7 +78,7 @@
 			</div>
 
 		</div>
-		<!-- @endif -->
+		@endif
 		
 
 		
@@ -126,7 +129,7 @@
 					<td class="w-46">For 12 hours or part there of</td>
 					<td class="w-20">{{$rate_list->first_rate / 2}}/- Per Package</td>
 					<td class="w-16"><strong>{{$print_data->no_of_bag}}</strong></td>
-					<td class="w-16"><strong>{{$print_data->total_day }} Hours</strong></td>
+					<td class="w-16"><strong>{{$print_data->total_day * 24 }} Hours</strong></td>
 					<td class="w-16">{{$print_data->total_amount}}</td>
 				</tr>
 			</tbody>

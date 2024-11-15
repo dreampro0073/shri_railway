@@ -159,9 +159,10 @@ class ShiftController extends Controller {
             $user_id = Auth::id();
         }
 
-        if(Auth::user()->priv ==4 && Auth::id() == 23){
-        	$user_id = 19;
-        }
+        // if(Auth::user()->priv == 4 && Auth::id() == 23){
+        // 	$user_id = 19;
+        // }
+
         $input_date = date("Y-m-d");
 
 		if(in_array(1, $service_ids)){

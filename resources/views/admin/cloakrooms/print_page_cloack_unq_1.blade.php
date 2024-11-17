@@ -62,23 +62,9 @@
 		<h5>
 			<span class="text">Slip No: <b style="font-size:18px;">{{ $print_data->slip_id }}</b></span>
 		</h5>
-		@if($type == 1 && Auth::user()->priv == 3 && $print_data->print_count < 1)
-    		<div class="table-div">
-    			<div class="w-50">
-    
-            		<div style="text-align:left;">
-            			<svg id="barcode"></svg>
-            		</div>
-    
-    			</div>
-			<div class="w-50">
-				<div style="text-align:left;">
-        			<svg id="barcode1"></svg>
-        		</div>
-			</div>
-
+		<div style="text-align:center;">
+			<svg id="barcode"></svg>
 		</div>
-		@endif
 		
 
 		
@@ -161,13 +147,6 @@
 			displayValue: false
 		});
 		
-		JsBarcode("#barcode1", bill_no, {
-			// format: "pharmacode",
-			lineColor: "#000",
-			width: 1,
-			height: 40,
-			displayValue: false
-		});
 	</script>
 	<script type="text/javascript">
 		

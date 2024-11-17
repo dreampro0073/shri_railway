@@ -154,5 +154,6 @@ ALTER TABLE `clients` ADD `rate_type` INT NOT NULL DEFAULT '1' AFTER `org_id`;
 
 // Devendra 15Nov2024
 
+ALTER TABLE `clients` ADD `rate_type` TINYINT NOT NULL DEFAULT '1' AFTER `org_id`;
 ALTER TABLE `cloakroom_entries` CHANGE `total_day` `total_day` FLOAT NOT NULL DEFAULT '0';
 ?>

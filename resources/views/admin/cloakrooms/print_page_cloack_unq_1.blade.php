@@ -112,8 +112,8 @@
 					<td class="w-16">Amount</td>
 				</tr>
 				<tr>
-					<td class="w-46">For 12 hours or part there of</td>
-					<td class="w-20">{{$rate_list->first_rate / 2}}/- Per Package</td>
+					<td class="w-46">For 24 hours or part there of</td>
+					<td class="w-20">{{$rate_list->first_rate}}/- Per Package</td>
 					<td class="w-16"><strong>{{$print_data->no_of_bag}}</strong></td>
 					<td class="w-16"><strong>{{$print_data->total_day * 24 }} Hours</strong></td>
 					<td class="w-16">{{$print_data->total_amount}}</td>

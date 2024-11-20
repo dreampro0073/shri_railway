@@ -369,7 +369,7 @@ class ApiController extends Controller {
             $canteen_item->price = $request->price; 
             $canteen_item->added_by = $user->id; 
             $canteen_item->client_id = $user->client_id; 
-            $canteen_item->godwon_id = $user->godwon_id; 
+            // $canteen_item->godwon_id = $user->godwon_id; 
             $canteen_item->barcodevalue = $request->barcodevalue; 
 
             $canteen_item->save();

@@ -313,22 +313,25 @@ class CloakRoomController extends Controller {
     		$data['success'] = true;
     		$data['message'] = "Successfully Checkout";
     	} else {
-    		$extra_time = round($now_time - $checkout_time)/(60 * 60 * 24);
-			$extra_days = explode(".",$extra_time);
-			$day = 0;
-			$day = $extra_days[0]*1;
-			if($extra_days[1] > 10){
-				if(User::checkHrType()){
-					if($extra_days[1] > 43210){
-						$day += 1;
-					} else {
-						$day += 0.5;
-					}
-				} else {
-					$day += 1;
-				}
+    		$current_time = strtotime(date("Y-m-d H:i:s",strtotime("now")));
+    		$time_difference = $current_time - $checkout_time;
+    		$day = floor($time_difference / 86400);
+    		$hours = floor(($time_difference % 86400) / 3600);
+			$minutes = floor(($time_difference % 3600) / 60);
+
+			if (User::checkHrType()) {
+			    if ($hours > 12 || ($hours == 12 && $minutes >= 15)) {
+			        $day += 1; 
+			    } elseif ($hours <= 12 && ($hours > 0 || $minutes >= 15)) {
+			        $day += 0.5; 
+
+			    }
+			} else {
+			    if ($hours > 0 || $minutes > 15) {
+			        $day += 1; 
+			    }
 			}
-			
+
 			$l_entry->mobile_no = $l_entry->mobile_no*1;
 			$l_entry->train_no = $l_entry->train_no*1;
 			$l_entry->pnr_uid = $l_entry->pnr_uid*1;

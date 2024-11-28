@@ -98,6 +98,7 @@ app.controller('cloackCtrl', function($scope , $http, $timeout , DBService) {
     }
 
     $scope.checkoutCloak1 = function(){
+        console.log($scope.productName);return;
         DBService.postCall({productName : $scope.productName}, '/api/cloak-rooms/checkout-init/2').then((data) => {
             $scope.productName = '';
             if($data.success){

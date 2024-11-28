@@ -307,12 +307,12 @@ class CloakRoomController extends Controller {
 
     	if($checkout_time > $now_time){
     		$data['timeOut'] = false;
-    		$entry = CloakRoom::find($request->entry_id);
-    		$entry->status = 1; 
-			$entry->checkout_status = 1;
-    		$entry->checkout_by = Auth::id();
-    		$entry->checkout_time = date("Y-m-d H:i:s"); 
-    		$entry->save();
+    		$l_entry = CloakRoom::find($request->entry_id);
+    		$l_entry->status = 1; 
+			$l_entry->checkout_status = 1;
+    		$l_entry->checkout_by = Auth::id();
+    		$l_entry->checkout_time = date("Y-m-d H:i:s"); 
+    		$l_entry->save();
     		$data['success'] = true;
     		$data['message'] = "Successfully Checkout";
     	} else {

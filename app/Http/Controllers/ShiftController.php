@@ -152,6 +152,7 @@ class ShiftController extends Controller {
 		$canteen_data = [];
 		$massage_data = [];
 		$locker_data = [];
+		$recliner_data = [];
 
 		// dd($service_ids);
 

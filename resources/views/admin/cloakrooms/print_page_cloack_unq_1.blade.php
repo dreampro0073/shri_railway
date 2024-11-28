@@ -143,7 +143,7 @@
 			lineColor: "#000",
 			width: 1,
 			height: 40,
-			displayValue: false
+			displayValue: true,
 		});
 		
 	</script>

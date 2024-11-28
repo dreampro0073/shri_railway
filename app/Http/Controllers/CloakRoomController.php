@@ -307,7 +307,7 @@ class CloakRoomController extends Controller {
 
     	if($checkout_time > $now_time){
     		$data['timeOut'] = false;
-    		$l_entry = CloakRoom::find($request->entry_id);
+    		$l_entry = CloakRoom::find($entry_id);
     		$l_entry->status = 1; 
 			$l_entry->checkout_status = 1;
     		$l_entry->checkout_by = Auth::id();

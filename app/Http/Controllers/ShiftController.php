@@ -153,7 +153,7 @@ class ShiftController extends Controller {
 		$massage_data = [];
 		$locker_data = [];
 
-		dd($service_ids);
+		// dd($service_ids);
 
 		$client_id = Auth::user()->client_id;
        

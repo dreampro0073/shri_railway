@@ -296,6 +296,8 @@ class CloakRoomController extends Controller {
     		$productName =$request->productName;
 	    	$l_entry = CloakRoom::where('unique_id', $productName)->first();
     	}
+
+    	dd($type);
     	
     	$entry_id = $l_entry->id;
 

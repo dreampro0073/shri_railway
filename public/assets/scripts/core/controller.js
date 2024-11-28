@@ -111,15 +111,13 @@ app.controller('cloackCtrl', function($scope , $http, $timeout , DBService) {
                     $scope.filter.id = '';
                 }    
             }else{
-                $scope.init(); 
-                alert(data.message);
+                $scope.init();
                 $scope.filter.id = '';
             }     
         });
     }
 
     $scope.handleKeyPress = function(event) {
-       
         if (event.which === 13) {
             $scope.checkoutCloak1();
             if ($scope.productName.trim()) {

@@ -114,13 +114,13 @@
 
                             <td>
                                 
-                                <a ng-if="type == 0" href="javascript:;" ng-click="checkoutCloak(item.id)" class="btn btn-danger btn-sm">Checkout</a> 
+                                <!-- <a ng-if="type == 0" href="javascript:;" ng-click="checkoutCloak(item.id)" class="btn btn-danger btn-sm">Checkout</a>  -->
 
                                 @if(Auth::user()->priv == 1 || Auth::user()->priv == 2)
                                    
                                 
-                                    <div style="margin-top:4px;"></div>
-                                    <a ng-if="item.barcodevalue" href="{{url('/admin/cloak-rooms/print-unq/1')}}/@{{item.barcodevalue}}" class="btn btn-success btn-sm" target="_blank">Print Slip</a>
+                                    <!-- <div style="margin-top:4px;"></div>
+                                    <a ng-if="item.barcodevalue" href="{{url('/admin/cloak-rooms/print-unq/1')}}/@{{item.barcodevalue}}" class="btn btn-success btn-sm" target="_blank">Print Slip</a> -->
                                 @endif
                                 
                                 <div style="margin-top:4px;"></div>

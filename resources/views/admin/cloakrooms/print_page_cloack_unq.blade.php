@@ -159,6 +159,9 @@
 			<p style="margin-top:10px;font-size: 16px;">
 				<strong>Thanks Visit Again</strong>
 			</p>
+			<span style="font-size:12px;line-height:1.2;display: inline-block;margin-top:10px;">
+		        2024 &copy; Aadhyasri Web Solutions, aadhyasriwebsolutions@gmail.com
+		    </span>
 		</div>
 	</div>
 	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>

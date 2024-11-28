@@ -138,12 +138,13 @@
 	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
 	<script type="text/javascript">
 		var bill_no = "{{$print_data->unique_id}}";
+		console.log(bill_no);
 		JsBarcode("#barcode", bill_no, {
 			// format: "pharmacode",
 			lineColor: "#000",
 			width: 1,
 			height: 40,
-			displayValue: true,
+			displayValue: false
 		});
 		
 	</script>

@@ -98,34 +98,32 @@ app.controller('cloackCtrl', function($scope , $http, $timeout , DBService) {
     }
 
     $scope.checkoutCloak1 = function(){
-        console.log($scope.productName);return;
-        DBService.postCall({productName : $scope.productName}, '/api/cloak-rooms/checkout-init/2').then((data) => {
+        DBService.postCall({productName : $scope.productName}, '/api/cloak-rooms/checkout-init1').then((data) => {
             $scope.productName = '';
-            if($data.success){
-                if (data.timeOut) {
-                    $scope.formData = data.l_entry;
-                    $scope.entry_id = data.l_entry.id;
-                    $("#checkoutCloakModel").modal("show");
-                }else{
-                    $scope.init(); 
-                    alert(data.message);
-                    $scope.filter.id = '';
-                }    
+            if (data.timeOut) {
+                $scope.formData = data.l_entry;
+                $scope.entry_id = data.l_entry.id;
+                $("#checkoutCloakModel").modal("show");
             }else{
-                $scope.init();
+                $scope.init(); 
+                alert(data.message);
+
                 $scope.filter.id = '';
-            }     
+                
+
+            }
+            
         });
     }
 
     $scope.handleKeyPress = function(event) {
         if (event.which === 13) {
             $scope.checkoutCloak1();
-            if ($scope.productName.trim()) {
-                $scope.productName = '';
+            if ($scope.scannedValue.trim()) {
+                $scope.scannedValue = '';
             }
         } else {
-            $scope.productName = ($scope.productName || '') + event.key;
+            $scope.scannedValue = ($scope.scannedValue || '') + event.key;
         }
     };
 

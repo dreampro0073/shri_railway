@@ -343,21 +343,21 @@ Route::group(['prefix'=>"api"], function(){
 
 Route::group(['prefix'=>"app-api"], function(){
 	
-	Route::post('/login',[AppApiController::class,'login']);
-    Route::post('/m-login',[AppApiController::class,'mLogin']);
-    Route::post('/change_password',[AppApiController::class,'changePassword']);
-    Route::post('/reasons',[AppApiController::class,'reasons']);
-	Route::post('/delete',[AppApiController::class,'deleteMyAccount']);
+	// Route::post('/get',[AppApiController::class,'login']);
+    // Route::post('/m-login',[AppApiController::class,'mLogin']);
+    // Route::post('/change_password',[AppApiController::class,'changePassword']);
+    // Route::post('/reasons',[AppApiController::class,'reasons']);
+	// Route::post('/delete',[AppApiController::class,'deleteMyAccount']);
 
-	// Route::group(["prefix"=>"app-login"],function(){
-	//     Route::post('/login',[AppApiController::class,'login']);
-	//     Route::post('/m-login',[AppApiController::class,'mLogin']);
-	//     Route::post('/change_password',[AppApiController::class,'changePassword']);
-	// });
-	// Route::group(["prefix" => 'delete-account'],function(){
-	//     Route::post('/reasons',[AppApiController::class,'reasons']);
-	//     Route::post('/delete',[AppApiController::class,'deleteMyAccount']);
-	// });
+	Route::group(["prefix"=>"app-login"],function(){
+	    Route::post('/login',[AppApiController::class,'login']);
+	    Route::post('/m-login',[AppApiController::class,'mLogin']);
+	    Route::post('/change_password',[AppApiController::class,'changePassword']);
+	});
+	Route::group(["prefix" => 'delete-account'],function(){
+	    Route::post('/reasons',[AppApiController::class,'reasons']);
+	    Route::post('/delete',[AppApiController::class,'deleteMyAccount']);
+	});
 
 	Route::group(['prefix'=>"daily-entries"], function(){
 		Route::post('/init',[AppDailyEntryContoller::class,'initEntries']);

@@ -165,6 +165,13 @@
 			height: 40,
 			displayValue: false
 		});
+		JsBarcode("#barcode1", bill_no, {
+			// format: "pharmacode",
+			lineColor: "#000",
+			width: 1,
+			height: 40,
+			displayValue: false
+		});
 		
 	</script>
 	<script type="text/javascript">

@@ -59,7 +59,7 @@
 		<h5>
 			<span class="text">Slip No: <b style="font-size:18px;">{{ $print_data->slip_id }}</b></span>
 		</h5>
-		<!-- @if($type == 1 && Auth::user()->priv == 3 && $print_data->print_count < 1) -->
+		@if($type == 1 && Auth::user()->priv == 3 && $print_data->print_count < 1)
     		<div class="table-div">
     			<div class="w-50">
     
@@ -75,7 +75,7 @@
 			</div>
 
 		</div>
-		<!-- @endif -->
+		@endif
 		
 
 		

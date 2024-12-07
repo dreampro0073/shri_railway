@@ -124,7 +124,7 @@
                                 @endif
                                 
                                 <div style="margin-top:4px;"></div>
-                                <a href="{{url('/admin/cloak-rooms/print')}}/@{{item.id}}" class="btn btn-success btn-sm" target="_blank">Print</a>
+                                <a href="{{url('/admin/cloak-rooms/print-unq/2')}}/@{{item.barcodevalue}}" class="btn btn-success btn-sm" target="_blank">Print</a>
                                 
                             </td>
                         </tr>

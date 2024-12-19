@@ -140,5 +140,24 @@
         </div>
     </div>
 @endsection
+
+@section('footer_scripts')
+   <!--  <script src=
+        "https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js">
+    </script>  -->
+    <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+    <script>
+    const qrCodeText = "https://example.com"; // Text or URL to encode
+    const qrcode = new QRCode("qrcode", {
+      text: qrCodeText,
+      width: 128, // Width of the QR code
+      height: 128, // Height of the QR code
+      colorDark: "#000000", // Dark color
+      colorLight: "#ffffff", // Light color
+      correctLevel: QRCode.CorrectLevel.H, // Error correction level
+    });
+  </script>
+
+@endsection
     
     

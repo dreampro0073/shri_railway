@@ -156,4 +156,14 @@ ALTER TABLE `clients` ADD `rate_type` INT NOT NULL DEFAULT '1' AFTER `org_id`;
 
 ALTER TABLE `clients` ADD `rate_type` TINYINT NOT NULL DEFAULT '1' AFTER `org_id`;
 ALTER TABLE `cloakroom_entries` CHANGE `total_day` `total_day` FLOAT NOT NULL DEFAULT '0';
+
+// Devendra 17Dec2024
+
+CREATE TABLE `aadhar_details` ( `id` INT NOT NULL AUTO_INCREMENT , `aadhar_no` INT NULL , `name` VARCHAR(255) NULL DEFAULT NULL , `mobile` VARCHAR(20) NULL DEFAULT NULL , `front` VARCHAR(255) NULL DEFAULT NULL , `back` VARCHAR(255) NULL DEFAULT NULL , `father_name` VARCHAR(255) NULL DEFAULT NULL , `address` VARCHAR(255) NULL DEFAULT NULL , `created_at` TIMESTAMP NULL DEFAULT NULL , `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+
+ALTER TABLE `aadhar_details` CHANGE `aadhar_no` `aadhar_no` BIGINT NULL DEFAULT NULL;
+ALTER TABLE `cloakroom_entries` ADD `aadhar_no` BIGINT NULL DEFAULT NULL AFTER `pnr_uid`;
+ALTER TABLE `aadhar_details` ADD `upload_status` TINYINT NOT NULL DEFAULT '0' AFTER `address`;
+
+
 ?>

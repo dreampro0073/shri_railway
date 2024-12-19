@@ -42,6 +42,10 @@ class User extends Authenticatable {
         );
     }
 
+    public static function onlyImages(){
+        return array("jpg","JPG","jpeg","jpeg","png","PNG");
+    }
+
     public static function checkHrType(){
         $check = DB::table("clients")->where("id", Auth::user()->client_id)->first();
         if($check->rate_type == 2){

@@ -38,7 +38,7 @@ class CloakRoomController extends Controller {
 			CollectedPenalities::setCheckStatus();
 		}
 
-		$l_entries = DB::table('cloakroom_entries')->select('cloakroom_entries.*','users.name as username')->leftJoin('users','users.id','=','cloakroom_entries.delete_by')->where("cloakroom_entries.client_id", Auth::user()->client_id);
+		$l_entries = DB::table('cloakroom_entries')->select('cloakroom_entries.*','users.name as username','aadhar_details.front as aadhar_front','aadhar_details.back as aadhar_back')->leftJoin('users','users.id','=','cloakroom_entries.delete_by')->leftJoin("aadhar_details","aadhar_details.aadhar_no", "=" ,"cloakroom_entries.aadhar_no")->where("cloakroom_entries.client_id", Auth::user()->client_id);
 		if($request->id){
 			$l_entries = $l_entries->where('cloakroom_entries.id', $request->id);
 		}
@@ -173,9 +173,17 @@ class CloakRoomController extends Controller {
 				$entry->shift = $check_shift;
 				$entry->added_by = Auth::id();
 				$entry->paid_amount = $request->paid_amount;
+				$entry->aadhar_no = $request->aadhar_no;
 
 				$entry->slip_id = CloakRoom::getSlipId();
-
+				
+				DB::table("aadhar_details")->where("aadhar_no", $request->aadhar_no)->update([
+					"name"=>$request->name,
+					"front"=>$request->aadhar_front,
+					"back"=>$request->aadhar_back,
+					"mobile"=>$request->mobile_no,
+					"upload_status"=>2,
+				]);
 			}
 
 			$entry->name = $request->name;

@@ -18,7 +18,8 @@
         "laravelcollective/html": "^6.3",
         "mews/captcha": "^3.2",
         "phpoffice/phpspreadsheet": "^1.23",
-        "picqer/php-barcode-generator": "^2.2"
+        "picqer/php-barcode-generator": "^2.2",
+        "simplesoftwareio/simple-qrcode": "^1.5"
     },
     "require-dev": {
         "facade/ignition": "^2.5",

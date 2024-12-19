@@ -18,6 +18,7 @@ use App\Http\Controllers\GodownsController;
 use App\Http\Controllers\ReclinerController;
 use App\Http\Controllers\AppApiController;
 use App\Http\Controllers\AppDailyEntryContoller;
+use App\Http\Controllers\AadharDetailsController;
 
 
 
@@ -39,6 +40,9 @@ Route::get('/backup-data', [SittingController::class,'dumpSittingData']);
 Route::get('/barcode-gen', [AdminController::class,'barcodeGen']);
 Route::get('/print', [SittingController::class,'print']);
 Route::get('/print1', [SittingController::class,'print1']);
+
+Route::get('/aadhar/upload-by-mobile/{id}', [AadharDetailsController::class, 'uploadByMobileFile']);
+Route::post('/aadhar/upload-by-mobile/{id}', [AadharDetailsController::class, 'postUploadByMobileFile']);
 
 
 Route::get('/logout',function(){
@@ -226,6 +230,13 @@ Route::group(['prefix'=>"api"], function(){
 		Route::post('/init',[ShiftController::class,'init']);
 		Route::post('/prev-init',[ShiftController::class,'prevInit']);
 	});
+
+	Route::group(["prefix"=>"aadhar"],function(){
+	    Route::post('/fetch',[AadharDetailsController::class,'fetchData']);
+	    Route::post('/update_details',[AadharDetailsController::class,'updateDetails']);
+	    Route::post('/file-upload', [AadharDetailsController::class, 'uploadFile']);
+	});
+
 	Route::group(['prefix'=>"sitting"], function(){
 		Route::post('/init',[SittingController::class,'initEntries']);
 		Route::post('/edit-init',[SittingController::class,'editEntry']);
@@ -353,7 +364,8 @@ Route::group(['prefix'=>"app-api"], function(){
 	    Route::post('/login',[AppApiController::class,'login']);
 	    Route::post('/m-login',[AppApiController::class,'mLogin']);
 	    Route::post('/change_password',[AppApiController::class,'changePassword']);
-	});
+	});	
+
 	Route::group(["prefix" => 'delete-account'],function(){
 	    Route::post('/reasons',[AppApiController::class,'reasons']);
 	    Route::post('/delete',[AppApiController::class,'deleteMyAccount']);

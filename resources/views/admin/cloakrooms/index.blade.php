@@ -81,7 +81,7 @@
                                 Checkout Status
                             </th>
                             @endif
-                            
+                            <th>Aadhar</th>
                             <th>#</th>
                         </tr>
                     </thead>
@@ -110,7 +110,12 @@
                                 <span ng-if="item.checkout_status == 0">No</span>
                                 <span ng-if="item.checkout_status == 1">Yes</span>
                             </td>
-                            @endif  
+                            @endif
+                            <td>
+                                <a ng-if="item.aadhar_front" href="{{url('/')}}/@{{item.aadhar_front}}" class="btn mt-2 btn-primary btn-sm" target="_blank">Front</a>
+                                <a ng-if="item.aadhar_back" href="{{url('/')}}/@{{item.aadhar_back}}" class="btn mt-2 btn-primary btn-sm" target="_blank">Back</a>
+                                
+                            </td>  
 
                             <td>
                                 
@@ -123,8 +128,8 @@
                                     <a ng-if="item.barcodevalue" href="{{url('/admin/cloak-rooms/print-unq/1')}}/@{{item.barcodevalue}}" class="btn btn-success btn-sm" target="_blank">Print Slip</a> -->
                                 @endif
                                 
-                                <div style="margin-top:4px;"></div>
-                                <a href="{{url('/admin/cloak-rooms/print-unq/2')}}/@{{item.barcodevalue}}" class="btn btn-success btn-sm" target="_blank">Print</a>
+                                <div></div>
+                                <a  href="{{url('/admin/cloak-rooms/print-unq/2')}}/@{{item.barcodevalue}}" class="btn mt-2 btn-success btn-sm" target="_blank">Print</a>
                                 
                             </td>
                         </tr>

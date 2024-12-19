@@ -1,10 +1,16 @@
-app.controller('cloackCtrl', function($scope , $http, $timeout , DBService) {
+app.controller('cloackCtrl', function($scope , $http, $timeout , DBService, Upload) {
     $scope.loading = false;
+    $scope.aadhar_flag = false;
+    $scope.aadhar_fetch = false;
+    $scope.aadhar_upload_flag = false;
+    $scope.newAadharFlag = false;
+
     $scope.filter = {
         page_no:1,
         export:0,
     };
 
+    $scope.aadhar_details = {};
     $scope.formData = {
         name:'',
         mobile:"",
@@ -29,6 +35,9 @@ app.controller('cloackCtrl', function($scope , $http, $timeout , DBService) {
     $scope.d_count = 0;
     $scope.productName = "";
     $scope.init = function () {
+        $scope.aadhar_fetch = false;
+        $scope.aadhar_flag = false;
+        $scope.newAadharFlag = false;
         DBService.postCall($scope.filter, '/api/cloak-rooms/init/'+$scope.type).then((data) => {
             if (data.success) {
                 $scope.pay_types = data.pay_types;
@@ -154,6 +163,10 @@ app.controller('cloackCtrl', function($scope , $http, $timeout , DBService) {
 
     $scope.onSubmit = function () {
         $scope.loading = true;
+        $scope.aadhar_fetch = false;
+        $scope.aadhar_flag = false;
+        $scope.newAadharFlag = false;
+
         DBService.postCall($scope.formData, '/api/cloak-rooms/store').then((data) => {
 
             if (data.success) {
@@ -234,6 +247,66 @@ app.controller('cloackCtrl', function($scope , $http, $timeout , DBService) {
             });
         }
     }
+
+    $scope.fetchAadhar = function(){
+        if($scope.formData.aadhar_no){
+            $scope.aadhar_fetch = true;
+            DBService.postCall($scope.formData, '/api/aadhar/fetch').then((data) => {
+                if(data.success){
+                    $scope.newAadharFlag = data.newAadharFlag;
+                    if(!$scope.newAadharFlag){
+                        $scope.aadhar_details = data.details;
+                        $scope.formData.aadhar_no = $scope.aadhar_details.aadhar_no;
+                        $scope.formData.name = $scope.aadhar_details.name;
+                        $scope.formData.mobile_no = $scope.aadhar_details.mobile * 1;
+                        if($scope.aadhar_details.front){
+                            $scope.formData.aadhar_front = $scope.aadhar_details.front;
+                            $scope.formData.aadhar_front_url = base_url+'/'+$scope.aadhar_details.front;
+                            $scope.formData.aadhar_back = $scope.aadhar_details.back;
+                            $scope.formData.aadhar_back_url = base_url+'/'+$scope.aadhar_details.back;
+                        } else {
+                           $scope.newAadharFlag = true; 
+                        }
+                    } 
+                    $scope.aadhar_flag = true;
+                } else {
+                    $scope.aadhar_fetch = false;
+                }
+            });
+        }
+    }
+
+    $scope.uploadFile = function (file, name, formData) {
+        formData.pic_upload = true;
+        var url = base_url + "/api/aadhar/file-upload";
+        Upload.upload({
+            url: url,
+            data: {
+                media: file,
+                name:name,
+            },
+        }).then(
+            function (resp) {
+                if (resp.data.success) {
+                    formData[name] = resp.data.path;
+                    formData[name+'_url'] = resp.data.url;
+                }
+                formData.pic_upload = false;
+            },
+            function (resp) {
+                console.log("Error status: " + resp.status);
+                formData.pic_upload = false;
+            },
+            function (evt) {
+                $scope.uploading_percentage =
+                    parseInt((100.0 * evt.loaded) / evt.total) + "%";
+            }
+        );
+    };
+
+    $scope.removeFile = function (formData, name) {
+        formData[name] = "";
+    };     
 });
 
 

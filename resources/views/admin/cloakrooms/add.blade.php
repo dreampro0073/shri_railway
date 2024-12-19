@@ -15,6 +15,8 @@
                 
             </div>
             <div class="modal-body">
+                 <!-- <a href="https://quickchart.io/chart?cht=qr&chs=150x150&chl=Testing123" style="width:100px;height:100px"></a> -->
+                <img src="https://quickchart.io/chart?cht=qr&chs=150x150&chl=Testing123" style="width:100px;height: 100px;">
                 <form name="myForm1" novalidate="novalidate" ng-submit="onSubmit(myForm1.$valid)">
                     <div class="row">
                         <div class="col-md-4 form-group">

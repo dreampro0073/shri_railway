@@ -1,4 +1,4 @@
-@include('header');
+@include('header')
 
     <div class="container">
         <div class="row justify-content-center" >
@@ -43,4 +43,4 @@
     </div>
 
 
-@include('footer');
+@include('footer')

@@ -1,3 +1,3 @@
-@include('header');
+@include('header')
     Thanks you for visiting! 
-@include('footer');
+@include('footer')

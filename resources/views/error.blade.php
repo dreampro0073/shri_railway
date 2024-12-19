@@ -1,3 +1,3 @@
-@include('header');
+@include('header')
     Not Authorised!
-@include('footer');
+@include('footer')

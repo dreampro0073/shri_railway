@@ -268,9 +268,9 @@ app.controller('cloackCtrl', function($scope , $http, $timeout , DBService, Uplo
                         $scope.formData.mobile_no = $scope.aadhar_details.mobile * 1;
                         if($scope.aadhar_details.front){
                             $scope.formData.aadhar_front = $scope.aadhar_details.front;
-                            $scope.formData.aadhar_front_url = base_url+'/'+$scope.aadhar_details.front;
+                            $scope.formData.aadhar_front_url = base_url+'/public/'+$scope.aadhar_details.front;
                             $scope.formData.aadhar_back = $scope.aadhar_details.back;
-                            $scope.formData.aadhar_back_url = base_url+'/'+$scope.aadhar_details.back;
+                            $scope.formData.aadhar_back_url = base_url+'/public/'+$scope.aadhar_details.back;
                         } else {
                            $scope.newAadharFlag = true; 
                         }

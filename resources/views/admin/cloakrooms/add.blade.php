@@ -19,7 +19,7 @@
                     <div class="row">
                         <div class="col-md-4 form-group">
                             <label>Aadhar Number</label>
-                            <input type="number" pattern="\d{12}" title="Aadhar number must be exactly 12 digits" ng-model="formData.aadhar_no" class="form-control" required />
+                            <input type="number" pattern="\d{12}" title="Aadhar number must be exactly 12 digits" ng-model="formData.aadhar_no" class="form-control" ng-disabled="aadhar_fetch" required />
                         </div>
                     </div>
                     <div class="row" ng-if="!aadhar_fetch">
@@ -52,7 +52,6 @@
                                 <a  ng-if="newAadharFlag" class="btn mt-3 btn-sm btn-danger" type="button" ng-click="removeFile(formData,'aadhar_back')" >Delete</a>
                             </div>
                         </div>
-
                         <div class="col-md-3" ng-if="aadhar_details.upload_status == 0"> 
                             <label>Upload by Client</label>
                             <a class="btn btn-sm btn-primary" href="{{url('/aadhar/upload-by-mobile')}}/@{{aadhar_details.id}}" target="_blank">Upload by Client</a>

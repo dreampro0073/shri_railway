@@ -157,6 +157,9 @@ app.controller('cloackCtrl', function($scope , $http, $timeout , DBService, Uplo
             no_of_day:'',
 
         };
+        $scope.aadhar_fetch = false;
+        $scope.newAadharFlag = false;
+        $scope.aadhar_flag = false;
         $("#exampleModalCenter").modal("hide");
         $("#checkoutCloakModel").modal("hide");
     }
@@ -219,6 +222,9 @@ app.controller('cloackCtrl', function($scope , $http, $timeout , DBService, Uplo
                 }, 800);
             }
             $scope.loading = false;
+            $scope.aadhar_fetch = false;
+            $scope.newAadharFlag = false; 
+            $scope.aadhar_flag = false;
         });
     }
 
@@ -254,8 +260,9 @@ app.controller('cloackCtrl', function($scope , $http, $timeout , DBService, Uplo
             DBService.postCall($scope.formData, '/api/aadhar/fetch').then((data) => {
                 if(data.success){
                     $scope.newAadharFlag = data.newAadharFlag;
+                    $scope.aadhar_details = data.details;
+                    console.log(data.details);
                     if(!$scope.newAadharFlag){
-                        $scope.aadhar_details = data.details;
                         $scope.formData.aadhar_no = $scope.aadhar_details.aadhar_no;
                         $scope.formData.name = $scope.aadhar_details.name;
                         $scope.formData.mobile_no = $scope.aadhar_details.mobile * 1;

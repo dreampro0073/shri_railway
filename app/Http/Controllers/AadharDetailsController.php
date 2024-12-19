@@ -24,7 +24,7 @@ class AadharDetailsController extends Controller {
                 "upload_status"=>0,
 			]);
 			$data['newAadharFlag'] = true;
-			$details = DB::table("aadhar_details")->where("id", $request->get_id)->first();
+			$details = DB::table("aadhar_details")->where("id", $get_id)->first();
 		}
 
 		$data["success"] = true;

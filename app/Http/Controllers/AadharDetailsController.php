@@ -95,7 +95,7 @@ class AadharDetailsController extends Controller {
 
             }
             $file = str_replace(' ','-','front_'.strtotime("now").'.'.$extension);
-            if($request->aadhar_front->move('../'.$destinationPath,$file)){  
+            if($request->aadhar_front->move($destinationPath,$file)){  
                 $front = $destinationPath.$file;
                 $count++;
             }
@@ -109,7 +109,7 @@ class AadharDetailsController extends Controller {
 
             }
             $file = str_replace(' ','-','back_'.strtotime("now").'.'.$extension);
-            if($request->aadhar_back->move('../'.$destinationPath,$file)){  
+            if($request->aadhar_back->move($destinationPath,$file)){  
                 $back = $destinationPath.$file;
                 $count++;
             }

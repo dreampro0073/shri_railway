@@ -83,39 +83,40 @@ class AadharDetailsController extends Controller {
 
     public function postUploadByMobileFile(Request $request, $id){
         $aadhar = DB::table("aadhar_details")->where("upload_status", "<", 2)->where("id", $id)->first();
-        $count = $aadhar->upload_status;
-        $front = $aadhar->front;
-        $back = $aadhar->back;
-
-        if($request->aadhar_front){
-            $destinationPath = "aadhar_uploads/";
-            $extension = $request->file('aadhar_front')->getClientOriginalExtension();
-            if(!in_array($extension, User::onlyImages())){
-                return Redirect::back()->withInput()->with('failure','Please upload valid file , valid extensions are jpg,jpeg,png');
-
-            }
-            $file = str_replace(' ','-','front_'.strtotime("now").'.'.$extension);
-            if($request->aadhar_front->move($destinationPath,$file)){  
-                $front = $destinationPath.$file;
-                $count++;
-            }
-        }
-
-        if($request->aadhar_back){
-            $destinationPath = "aadhar_uploads/";
-            $extension = $request->file('aadhar_back')->getClientOriginalExtension();
-            if(!in_array($extension, User::onlyImages())){
-                return Redirect::back()->withInput()->with('failure','Please upload valid file , valid extensions are jpg,jpeg,png');
-
-            }
-            $file = str_replace(' ','-','back_'.strtotime("now").'.'.$extension);
-            if($request->aadhar_back->move($destinationPath,$file)){  
-                $back = $destinationPath.$file;
-                $count++;
-            }
-        }
-
         if($aadhar){
+            $count = $aadhar ? $aadhar->upload_status : 0;
+            $front = $aadhar ? $aadhar->front : "";
+            $back = $aadhar ? $aadhar->back : "";
+
+            if($request->aadhar_front){
+                $destinationPath = "aadhar_uploads/";
+                $extension = $request->file('aadhar_front')->getClientOriginalExtension();
+                if(!in_array($extension, User::onlyImages())){
+                    return Redirect::back()->withInput()->with('failure','Please upload valid file , valid extensions are jpg,jpeg,png');
+
+                }
+                $file = str_replace(' ','-','front_'.strtotime("now").'.'.$extension);
+                if($request->aadhar_front->move($destinationPath,$file)){  
+                    $front = $destinationPath.$file;
+                    $count++;
+                }
+            }
+
+            if($request->aadhar_back){
+                $destinationPath = "aadhar_uploads/";
+                $extension = $request->file('aadhar_back')->getClientOriginalExtension();
+                if(!in_array($extension, User::onlyImages())){
+                    return Redirect::back()->withInput()->with('failure','Please upload valid file , valid extensions are jpg,jpeg,png');
+
+                }
+                $file = str_replace(' ','-','back_'.strtotime("now").'.'.$extension);
+                if($request->aadhar_back->move($destinationPath,$file)){  
+                    $back = $destinationPath.$file;
+                    $count++;
+                }
+            }
+
+        
             DB::table("aadhar_details")->where("id", $id)->update([
                 "upload_status"=> $count,
                 "front"=>$front,

@@ -57,7 +57,7 @@
                             <br>
                             <img src="https://quickchart.io/chart?cht=qr&chs=150x150&chl={{url('/aadhar/upload-by-mobile')}}/@{{aadhar_details.id}}" style="width:200px;height: 200px;">
                             <br>
-                            <button  ng-if="!aadhar_fetch" type="button" ng-click="fetchAadhar()" class="btn btn-primary">Done</button>
+                            <button type="button" ng-click="fetchAadhar()" class="btn btn-primary">Done</button>
                         </div>
 
                     </div>

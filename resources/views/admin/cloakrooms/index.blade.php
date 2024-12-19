@@ -2,7 +2,11 @@
 
 @section('main')
     <div class="main" ng-controller="cloackCtrl" ng-init="type = {{$type}};init();"> 
-        @include('admin.cloakrooms.add')
+        @if(Auth::user()->client_id == 4)
+            @include('admin.cloakrooms.add_aadhar')
+        @else
+            @include('admin.cloakrooms.add')
+        @endif
         <div class="card shadow mb-4 p-4">    
             <div class="filters" style="margin:24px 0;">
                 <div class="form-group">

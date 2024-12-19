@@ -173,7 +173,7 @@ class CloakRoomController extends Controller {
 				$entry->shift = $check_shift;
 				$entry->added_by = Auth::id();
 				$entry->paid_amount = $request->paid_amount;
-				$entry->aadhar_no = $request->aadhar_no;
+				$entry->aadhar_no = $request->has('aadhar_no')?$request->aadhar_no:null;
 
 				$entry->slip_id = CloakRoom::getSlipId();
 				

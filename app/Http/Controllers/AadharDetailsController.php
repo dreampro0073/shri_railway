@@ -77,7 +77,7 @@ class AadharDetailsController extends Controller {
         if($aadhar){
             return view('aadhar_uploads', ['aadhar'=>$aadhar]);
         } else {
-            die("Not authorized!");
+            return view('error');
         }
     }
 
@@ -121,9 +121,9 @@ class AadharDetailsController extends Controller {
                 "front"=>$front,
                 "back"=>$back,
             ]);
-            die("Uploded Successfully, Thank you for Visiting!");
+            return view('thanku');
         } else {
-            die("Not authorized!");
+            return view('error');
         }
     }
 

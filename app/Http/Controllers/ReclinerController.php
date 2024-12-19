@@ -20,7 +20,7 @@ class ReclinerController extends Controller {
 	            "subsidebar" => "rec",
 	        ]);
 		} else {
-			die("Not authorized!");
+			return view('error');
 		}
 	}
 	public function initEntries(Request $request){

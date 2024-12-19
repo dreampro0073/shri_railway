@@ -15,8 +15,6 @@
                 
             </div>
             <div class="modal-body">
-                 <!-- <a href="https://quickchart.io/chart?cht=qr&chs=150x150&chl=Testing123" style="width:100px;height:100px"></a> -->
-                <!-- <img src="https://quickchart.io/chart?cht=qr&chs=150x150&chl=Testing123" style="width:100px;height: 100px;"> -->
                 <form name="myForm1" novalidate="novalidate" ng-submit="onSubmit(myForm1.$valid)">
                     <div class="row">
                         <div class="col-md-6">
@@ -57,9 +55,9 @@
                         <div class="col-md-6" ng-if="aadhar_details.upload_status == 0" style="text-align: center;"> 
                             <label>Upload By Other Devices</label>
                             <br>
-                            <!-- <a class="btn btn-sm btn-primary" href="{{url('/aadhar/upload-by-mobile')}}/@{{aadhar_details.id}}" target="_blank">Upload by Client</a> -->
-
                             <img src="https://quickchart.io/chart?cht=qr&chs=150x150&chl={{url('/aadhar/upload-by-mobile')}}/@{{aadhar_details.id}}" style="width:200px;height: 200px;">
+                            <br>
+                            <button  ng-if="!aadhar_fetch" type="button" ng-click="fetchAadhar()" class="btn btn-primary">Done</button>
                         </div>
 
                     </div>

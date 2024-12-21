@@ -39,8 +39,8 @@ class CloakRoomController extends Controller {
 		}
 
 		$l_entries = DB::table('cloakroom_entries')->select('cloakroom_entries.*','users.name as username','aadhar_details.front as aadhar_front','aadhar_details.back as aadhar_back')->leftJoin('users','users.id','=','cloakroom_entries.delete_by')->leftJoin("aadhar_details","aadhar_details.aadhar_no", "=" ,"cloakroom_entries.aadhar_no")->where("cloakroom_entries.client_id", Auth::user()->client_id);
-		if($request->id){
-			$l_entries = $l_entries->where('cloakroom_entries.id', $request->id);
+		if($request->slip_id){
+			$l_entries = $l_entries->where('cloakroom_entries.slip_id', $request->slip_id);
 		}
 
 		if($request->unique_id){

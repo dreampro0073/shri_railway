@@ -21,7 +21,7 @@
                             <div class="row">
                                 <div class="col-md-2 form-group">
                                     <label class="label-control">Slip ID</label>
-                                    <input type="text" class="form-control" ng-model="filter.id" />
+                                    <input type="text" class="form-control" ng-model="filter.slip_id" />
                                 </div>                    
                                 <!-- <div class="col-md-2 form-group">
                                     <label class="label-control">Bill Number</label>
@@ -71,7 +71,7 @@
                     <thead style="background-color: rgba(0,0,0,.075);">
                         <tr class="table-primary">
                             <th>S.no</th>
-                            <th>Id</th>
+                            <th>Slip Id</th>
                             
                             <th>Name</th>
                             <th>Mobile No</th>
@@ -92,7 +92,7 @@
                     <tbody ng-if="l_entries.length > 0" >
                         <tr ng-repeat="item in l_entries " ng-class="{'my_class': item.deleted == 1}">
                             <td>@{{ $index+1 }}</td>
-                            <td>@{{ item.id }}</td>
+                            <td>@{{ item.slip_id }}</td>
                            
                             <td>@{{ item.name }}</td>
                             <td>@{{ item.mobile_no }}</td>

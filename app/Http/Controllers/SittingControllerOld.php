@@ -18,7 +18,7 @@ class SittingControllerOld extends Controller {
 	            "subsidebar" => "sitting",
 	        ]);
 		} else {
-			die("Not authorized!");
+			return view('error');
 		}
 	}
 	public function initEntries(Request $request){

@@ -1,7 +1,7 @@
 @include('header')
 
     <div class="container">
-        <div class="row justify-content-center" >
+        <div class="row justify-content-center up-file">
 
             <div class="col-md-6 ">
                 <div class="">
@@ -10,7 +10,7 @@
                     @csrf
                         <div class="row">
                             <div class="col-md-3 form-group">
-                                <label>Aadhar Front<span id="aadhar-span" class="error">*</span> <small>(jpg, png only)</small></label>
+                                <label>Upload Aadhar Front Side<span id="aadhar-span" class="error">*</span> <small>(jpg, png only)</small></label>
                                 {{Form::file('aadhar_front',["class"=>"form-control",(!isset($aadhar->aadhar_front))?'required':''])}}
                                 <span class="error">{{$errors->first('aadhar_front')}}</span>
                                 @if(isset($aadhar->aadhar_front))
@@ -19,8 +19,8 @@
                                     @endif
                                 @endif
                             </div>
-                            <div class="col-md-3 form-group">
-                                <label>Aadhar Back<span id="aadhar-span" class="error">*</span> <small>(jpg, png only)</small></label>
+                            <div class="col-md-3 form-group" style="margin-top:32px;"> 
+                                <label>Upload Aadhar Back Side<span id="aadhar-span" class="error">*</span> <small>(jpg, png only)</small></label>
                                 {{Form::file('aadhar_back',["class"=>"form-control",(!isset($aadhar->aadhar_back))?'required':''])}}
                                 <span class="error">{{$errors->first('aadhar_back')}}</span>
                                 @if(isset($aadhar->aadhar_back))
@@ -31,8 +31,8 @@
                             </div>
                         </div>
 
-                        <div>
-                            <button class="btn btn-primary">Submit</button>
+                        <div style="text-align:center;">
+                            <button type="submit" class="btn btn-primary t-btn"  id="upload_btn">Submit</button>
                         </div>
                     {{Form::close()}}
                 </div>

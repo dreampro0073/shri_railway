@@ -5,7 +5,7 @@
         @if(Auth::user()->client_id == 4)
             @include('admin.cloakrooms.add_aadhar')
         @else
-            @include('admin.cloakrooms.add')
+            @include('admin.cloakrooms.add_aadhar')
         @endif
         <div class="card shadow mb-4 p-4">    
             <div class="filters" style="margin:24px 0;">

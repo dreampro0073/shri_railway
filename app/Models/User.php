@@ -43,7 +43,7 @@ class User extends Authenticatable {
     }
 
     public static function onlyImages(){
-        return array("jpg","JPG","jpeg","jpeg","png","PNG");
+        return array("jpg","JPG","JPEG","jpeg","png","PNG");
     }
 
     public static function checkHrType(){

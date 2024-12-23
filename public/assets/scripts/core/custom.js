@@ -24,4 +24,7 @@ for (var i = 0; i < catgories.length; i++) {
 		var category = categ;
 	}
 }
+// $(document).on("click","#upload_btn",function(){
+// 	$(this).removeAttribute("disabled");
+// });
 

@@ -296,3 +296,29 @@ tr.not_checkout{
 		
 	}
 }
+.up-file{
+	padding-top: 100px;
+	text-align: center;
+}
+input[type="file"] {
+	margin: auto;
+	padding:5px 10px;
+	border: 2px dashed #99c793;
+	background-color: #fff;
+	transition: border-color .25s ease-in-out;
+  	&::file-selector-button{
+		padding: 1em 1.5em;
+		border-width: 0;
+		border-radius: 2em;
+		background-color: #99c793;
+		color: #fff;
+		transition: all .25s ease-in-out;
+		cursor: pointer;
+		margin-right: 1em;
+	}
+}
+.t-btn{
+	border-radius:30px;
+	padding: 10px 40px;
+	width: 180px !important;
+}

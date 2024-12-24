@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Auth;
 use Redirect, Validator, Hash, Response, Session, DB;
 use App\Models\CloakRoom;
+use App\Models\User;
 
 class BackupController extends Controller {
 

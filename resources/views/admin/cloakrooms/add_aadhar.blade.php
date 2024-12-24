@@ -19,7 +19,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label>Identity No.</label>
+                                <label>Id No.</label>
                                 <!-- <input type="number" pattern="\d{12}" title="Aadhar number must be exactly 12 digits" ng-model="formData.aadhar_no" class="form-control" ng-disabled="aadhar_fetch" required /> -->
                                 <input type="text" ng-model="formData.aadhar_no" class="form-control" ng-disabled="aadhar_fetch" required />
                             </div>
@@ -28,7 +28,7 @@
 
                             <div class="row" ng-if="aadhar_flag">
                                 <div class="col-md-6 form-group">
-                                    <label>Fornt Aadhar</label>
+                                    <label>Fornt ID</label>
                                     <br>
                                     <button type="button" ng-show="formData.aadhar_front == '' || formData.aadhar_front == null " class="btn btn-primary btn-sm" ngf-select="uploadFile($file,'aadhar_front',formData)">Select File</button>
 
@@ -40,7 +40,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-6 form-group">
-                                    <label>Back Aadhar</label>
+                                    <label>Back Id</label>
                                     <br>
                                     <button type="button" ng-show="formData.aadhar_back == '' || formData.aadhar_back == null " class="btn btn-primary btn-sm" ngf-select="uploadFile($file,'aadhar_back',formData)">Select File</button>
 
@@ -57,6 +57,7 @@
                             <label>Upload By Other Devices</label>
                             <br>
                             <img src="https://quickchart.io/chart?cht=qr&chs=150x150&chl={{url('/aadhar/upload-by-mobile')}}/@{{aadhar_details.id}}" style="width:200px;height: 200px;">
+                            <br>
                             <br>
                             <button type="button" ng-click="fetchAadhar()" class="btn btn-primary">Done</button>
                         </div>

@@ -15,7 +15,7 @@ class BackupController extends Controller {
 
 	public function dumpData(Request $request){
 
-		$old_entry_ids = DB::table('cloakroom_entries_backup')->where('is_backup',0)->take(500)->pluck('id')->toArray();
+		$old_entry_ids = DB::table('cloakroom_entries_backup')->where('is_backup',0)->take(1000)->pluck('id')->toArray();
 
 		if(sizeof($old_entry_ids) == 0){
 			dd("Conratulations");

@@ -60,6 +60,8 @@ class BackupController extends Controller {
 
 					DB::table('cloakroom_penalities')->insert($ins_data);
 				}
+			} else {
+				dd("Conratulations");
 			}
 			
 

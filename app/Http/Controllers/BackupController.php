@@ -17,6 +17,10 @@ class BackupController extends Controller {
 
 		$old_entry_ids = DB::table('cloakroom_entries_backup')->where('is_backup',0)->take(500)->pluck('id')->toArray();
 
+		if(sizeof($old_entry_ids) == 0){
+			dd("Conratulations");
+		}
+
 		$clients = User::where("client_id", 6)->pluck("id","old_id")->toArray();
 		foreach ($old_entry_ids as $key => $old_id) {
 			$newTask = (new CloakRoom)
@@ -60,19 +64,19 @@ class BackupController extends Controller {
 
 					DB::table('cloakroom_penalities')->insert($ins_data);
 				}
-			} else {
-				dd("Conratulations");
-			}
+			} 
 			
 
 			DB::table('cloakroom_entries_backup')->where('is_backup',0)->where('id',$old_id)->update([
 				'is_backup' => 1,
 			]);
 
-			// dd($new_entry);
+			
 
 		}
+
 		dd("Done");
+		
 
 	    // return "Wow";
 		// $old_entry_ids = DB::table('users_backup')->pluck('id')->toArray();

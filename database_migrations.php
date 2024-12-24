@@ -165,5 +165,8 @@ ALTER TABLE `aadhar_details` CHANGE `aadhar_no` `aadhar_no` BIGINT NULL DEFAULT 
 ALTER TABLE `cloakroom_entries` ADD `aadhar_no` BIGINT NULL DEFAULT NULL AFTER `pnr_uid`;
 ALTER TABLE `aadhar_details` ADD `upload_status` TINYINT NOT NULL DEFAULT '0' AFTER `address`;
 
+ALTER TABLE `cloakroom_entries_backup` ADD `is_backup` TINYINT NOT NULL DEFAULT '0' AFTER `checkout_by`;
+ALTER TABLE `cloakroom_penalities_backup` ADD `old_cloakroom_id` INT NOT NULL DEFAULT '0' AFTER `cloakroom_id`;
+
 
 ?>

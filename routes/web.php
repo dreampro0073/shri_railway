@@ -18,7 +18,7 @@ use App\Http\Controllers\GodownsController;
 use App\Http\Controllers\ReclinerController;
 use App\Http\Controllers\AppApiController;
 use App\Http\Controllers\AppDailyEntryContoller;
-use App\Http\Controllers\AadharDetailsController;
+use App\Http\Controllers\BackupController;
 
 
 
@@ -36,7 +36,7 @@ use App\Http\Controllers\AadharDetailsController;
 
 Route::get('/', [UserController::class,'login'])->name("login");
 Route::post('/login', [UserController::class,'postLogin']);
-Route::get('/backup-data', [SittingController::class,'dumpSittingData']);
+
 Route::get('/barcode-gen', [AdminController::class,'barcodeGen']);
 Route::get('/print', [SittingController::class,'print']);
 Route::get('/print1', [SittingController::class,'print1']);
@@ -114,6 +114,7 @@ Route::get('/getHideAmount', function () {
 
 Route::group(['middleware'=>'auth'],function(){
 	Route::group(['prefix'=>"admin"], function(){
+		Route::get('/backup-data', [BackupController::class,'dumpData']);
 		Route::get('/set-barcode',[AdminController::class,'setBarcode']);
 		Route::get('/print-barcode',[AdminController::class,'printItemsBarcode']);
 

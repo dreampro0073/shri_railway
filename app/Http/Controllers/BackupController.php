@@ -15,7 +15,7 @@ class BackupController extends Controller {
 
 	public function dumpData(Request $request){
 
-		$old_entry_ids = DB::table('cloakroom_entries_backup')->where('is_backup',0)->take(1)->pluck('id')->toArray();
+		$old_entry_ids = DB::table('cloakroom_entries_backup')->where('is_backup',0)->take(500)->pluck('id')->toArray();
 
 		$clients = User::where("client_id", 6)->pluck("id","old_id")->toArray();
 		foreach ($old_entry_ids as $key => $old_id) {
@@ -67,7 +67,7 @@ class BackupController extends Controller {
 				'is_backup' => 1,
 			]);
 
-			dd($new_entry);
+			// dd($new_entry);
 
 		}
 

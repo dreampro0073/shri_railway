@@ -10,7 +10,7 @@
                     @csrf
                         <div class="row">
                             <div class="col-md-3 form-group">
-                                <label>Upload Aadhar Front Side<span id="aadhar-span" class="error">*</span> <small>(jpg, png only)</small></label>
+                                <label>Front Side<span id="aadhar-span" class="error">*</span> <small>(jpg, png only)</small></label>
                                 {{Form::file('aadhar_front',["class"=>"form-control",(!isset($aadhar->aadhar_front))?'required':''])}}
                                 <span class="error">{{$errors->first('aadhar_front')}}</span>
                                 @if(isset($aadhar->aadhar_front))
@@ -20,8 +20,8 @@
                                 @endif
                             </div>
                             <div class="col-md-3 form-group" style="margin-top:32px;"> 
-                                <label>Upload Aadhar Back Side<span id="aadhar-span" class="error">*</span> <small>(jpg, png only)</small></label>
-                                {{Form::file('aadhar_back',["class"=>"form-control",(!isset($aadhar->aadhar_back))?'required':''])}}
+                                <label>Back Side<span id="aadhar-span" class="error">*</span> <small>(jpg, png only)</small></label>
+                                {{Form::file('aadhar_back',["class"=>"form-control"])}}
                                 <span class="error">{{$errors->first('aadhar_back')}}</span>
                                 @if(isset($aadhar->aadhar_back))
                                     @if($aadhar->aadhar_back)

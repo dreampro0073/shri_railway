@@ -168,5 +168,9 @@ ALTER TABLE `aadhar_details` ADD `upload_status` TINYINT NOT NULL DEFAULT '0' AF
 ALTER TABLE `cloakroom_entries_backup` ADD `is_backup` TINYINT NOT NULL DEFAULT '0' AFTER `checkout_by`;
 ALTER TABLE `cloakroom_penalities_backup` ADD `old_cloakroom_id` INT NOT NULL DEFAULT '0' AFTER `cloakroom_id`;
 
+ALTER TABLE `aadhar_details` CHANGE `aadhar_no` `aadhar_no` VARCHAR(50) NULL DEFAULT NULL;
+
+ALTER TABLE `cloakroom_entries` CHANGE `aadhar_no` `aadhar_no` VARCHAR(50) NULL DEFAULT NULL;
+
 
 ?>

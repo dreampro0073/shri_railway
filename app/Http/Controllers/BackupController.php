@@ -67,6 +67,8 @@ class BackupController extends Controller {
 				'is_backup' => 1,
 			]);
 
+			dd($new_entry);
+
 		}
 
 	    // return "Wow";

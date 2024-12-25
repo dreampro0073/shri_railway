@@ -75,6 +75,7 @@ class CloakRoomController extends Controller {
 			$item->checkin_date_show = date("d M, h:i A",strtotime($item->checkin_date));
 			$item->checkout_date_show = date("d M, h:i A",strtotime($item->checkout_date));
 		}
+		$legal_opinion_data = $l_entries;
 
 		if($request->has('export') && $request->export == 1){
             if(sizeof($l_entries) > 0){

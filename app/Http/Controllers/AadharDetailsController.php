@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Auth;
+use Intervention\Image\Facades\Image;
 use Redirect, Validator, Hash, Response, Session, DB;
 use App\Models\User;
 
@@ -33,40 +34,7 @@ class AadharDetailsController extends Controller {
 		return Response::json($data, 200, []);
 	}
 
-	public function uploadFile(Request $request){
-        $destination = 'aadhar_uploads/';
 
-
-
-        if($request->file('media')){
-            $file = $request->file('media');
-
-            $extension = $request->file('media')->getClientOriginalExtension();
-
-            if(!in_array($extension, User::onlyImages())){
-                $data['success'] = false;
-                $data['message'] ='Please upload the valid file(jpg/png/JPEG)';
-
-                return Response::json($data, 200, array());
-
-            }
-            
-            $name = $file->getClientOriginalName();
-            $name = $request->name."_".strtotime("now").".".$extension;
-
-            $file = $file->move($destination, $name);
-            $data["success"] = true;
-            $data["path"] = $destination.$name;
-            $data["url"] = url($destination.$name);
-
-        }else{
-            $data['success'] = false;
-            $data['message'] ='file not found';
-        }
-
-        return Response::json($data, 200, array());
-
-    } 
 
 	public static function getFileName($name, $extension){
         $name = str_replace(' ', '_', $name);
@@ -139,6 +107,78 @@ class AadharDetailsController extends Controller {
             return view('error');
         }
     }
+
+    public function uploadFile(Request $request){
+
+        $destination = 'aadhar_uploads/';
+        $maxSize = 512000;
+        if($request->media){
+            $file = $request->media;
+            $name = $request->media->getClientOriginalName();
+            $extension = $request->media->getClientOriginalExtension();
+            $size = $request->media->getSize(); 
+
+            $name = str_replace(".".$extension, "", $name);
+            
+            if($size > $maxSize){
+                $data['success'] = false;
+                $data['message'] = 'File size exceeds the maximum limit of 500KB';
+            } elseif(in_array($extension, User::onlyImages())) {
+
+                $name = $request->name."_".strtotime("now").".".$extension;
+
+                Image::make($file)->resize(600, null, function ($constraint) {
+                    $constraint->aspectRatio();
+                    $constraint->upsize();
+                })->fit(600,800)->save($destination.$name);
+
+                $data["path"] = $destination.$name;
+                $data["url"] = url($destination.$name);
+                $data["success"] = true;
+                
+            } else {
+                $data['success'] = false;
+                $data['message'] = 'Invalid file format';
+            }
+        } else {
+            $data['success'] = false;
+            $data['message'] = 'File not found';
+        }
+
+        return Response::json($data, 200, array());
+    }
+
+    public function uploadFileXX(Request $request){
+        $destination = 'aadhar_uploads/';
+        if($request->file('media')){
+            $file = $request->file('media');
+
+            $extension = $request->file('media')->getClientOriginalExtension();
+
+            if(!in_array($extension, User::onlyImages())){
+                $data['success'] = false;
+                $data['message'] ='Please upload the valid file(jpg/png/JPEG)';
+
+                return Response::json($data, 200, array());
+
+            }
+            
+            $name = $file->getClientOriginalName();
+            $name = $request->name."_".strtotime("now").".".$extension;
+
+            $file = $file->move($destination, $name);
+            $data["success"] = true;
+            $data["path"] = $destination.$name;
+            $data["url"] = url($destination.$name);
+
+        }else{
+            $data['success'] = false;
+            $data['message'] ='file not found';
+        }
+
+        return Response::json($data, 200, array());
+
+    } 
 
 	
 }

@@ -31,6 +31,10 @@
                                     <label>Fornt ID</label>
                                     <br>
                                     <button type="button" ng-show="formData.aadhar_front == '' || formData.aadhar_front == null " class="btn btn-primary btn-sm" ngf-select="uploadFile($file,'aadhar_front',formData)">Select File</button>
+                                    <br>
+                                    <small style="color: red" ng-show="formData.aadhar_front == '' || formData.aadhar_front == null ">
+                                        * Maximum limit of 500KB *
+                                    </small>
 
                                     <div ng-show="formData.aadhar_front != '' && formData.aadhar_front != null ">
                                         <a ng-href="@{{formData.aadhar_front_url}}" target="_blank">
@@ -38,11 +42,16 @@
                                         </a>
                                         <a  ng-if="newAadharFlag" class="btn mt-3 btn-sm btn-danger" type="button" ng-click="removeFile(formData,'aadhar_front')" >Delete</a>
                                     </div>
+
                                 </div>
                                 <div class="col-md-6 form-group">
                                     <label>Back Id</label>
                                     <br>
                                     <button type="button" ng-show="formData.aadhar_back == '' || formData.aadhar_back == null " class="btn btn-primary btn-sm" ngf-select="uploadFile($file,'aadhar_back',formData)">Select File</button>
+                                    <br>
+                                    <small style="color: red" ng-show="formData.aadhar_back == '' || formData.aadhar_back == null ">
+                                        * Maximum limit of 500KB *
+                                    </small>
 
                                     <div ng-show="formData.aadhar_back != '' && formData.aadhar_back != null ">
                                         <a ng-href="@{{formData.aadhar_back_url}}" target="_blank">

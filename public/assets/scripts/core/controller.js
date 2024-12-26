@@ -297,6 +297,8 @@ app.controller('cloackCtrl', function($scope , $http, $timeout , DBService, Uplo
                 if (resp.data.success) {
                     formData[name] = resp.data.path;
                     formData[name+'_url'] = resp.data.url;
+                } else {
+                    alert(resp.data.message);
                 }
                 formData.pic_upload = false;
             },

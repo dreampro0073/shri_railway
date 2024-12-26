@@ -279,6 +279,8 @@ Route::group(['prefix'=>"api"], function(){
 		Route::post('/init',[UserController::class,'initUsers']);
 		Route::post('/edit-init',[UserController::class,'editUser']);
 		Route::post('/store',[UserController::class,'storeUser']);
+		Route::post('/active-user',[UserController::class,'activeUser']);
+
 	});
 
 	Route::group(['prefix'=>"daily-entries"], function(){

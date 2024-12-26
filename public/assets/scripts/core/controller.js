@@ -1345,6 +1345,17 @@ app.controller('userCtrl', function($scope , $http, $timeout , DBService) {
         });
     }
 
+    $scope.activeUser = function(user,index){
+        if(confirm("Are you sure?") == true){
+             DBService.postCall({user_id : user.id}, '/api/users/active-user').then((data) => {
+                if (data.success) {
+                    $scope.users[index].active = user.active == 0 ? 1 :0; 
+                }
+                alert(data.message);
+            });
+        }
+    }
+
     $scope.hideModal = () => {
         $("#userModal").modal("hide");
         $scope.user_id = 0;

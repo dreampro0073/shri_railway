@@ -116,7 +116,7 @@ class UserController extends Controller {
 
 
     public function initUsers(Request $request){
-        $users = DB::table('users')->select('id','name','email','mobile')->where("priv", '!=', '4')->where("client_id", Auth::user()->client_id);
+        $users = DB::table('users')->select('id','name','email','mobile', 'priv', 'active')->where("priv", '!=', '4')->where("client_id", Auth::user()->client_id);
 
         if($request->name){
             $users = $users->where('name','LIKE','%'.$request->name.'%');
@@ -211,6 +211,22 @@ class UserController extends Controller {
 
         return Response::json($data, 200, []);
 
+    }
+    public function activeUser(Request $request){
+        $user = User::where('id', $request->user_id)->where("client_id", Auth::user()->client_id)->first();
+
+        if ($user) {
+            $user->active = $user->active == 0 ? 1 : 0;
+            $user->save();
+            $data['success'] = true;
+            $data['message'] ="Successfully Updated !";
+
+        } else {
+            $data['success'] = false;
+            $data['message'] ="User Not Found !";
+
+        }
+        return Response::json($data, 200 ,[]);
     }
     
 }

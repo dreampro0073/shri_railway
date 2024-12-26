@@ -49,6 +49,7 @@ class UserController extends Controller {
         $validator = Validator::make($cre,$rules);
         
         if($validator->passes()){
+            $cre["active"] = 1;
             if(Auth::attempt($cre)){
                 $client_id = Auth::user()->client_id;   
                 $client = DB::table("clients")->where("id",$client_id)->first();

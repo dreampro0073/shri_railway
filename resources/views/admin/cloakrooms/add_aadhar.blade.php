@@ -65,7 +65,7 @@
                     </div>
                    
                     
-                    <div ng-if="aadhar_flag">
+                    <div>
                         <div class="row">
                             <div class="col-md-4 form-group">
                                 <label>Name</label>

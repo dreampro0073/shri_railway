@@ -1,6 +1,6 @@
 <?php 
 
-// Devendra 02Nov2023
+ // Devendra 02Nov2023
 
 ALTER TABLE `sitting_entries` ADD `checkin_date` TIMESTAMP NULL DEFAULT NULL AFTER `check_in`;
 ALTER TABLE `sitting_entries` ADD `show_amount` INT NULL DEFAULT '0' AFTER `paid_amount`;
@@ -171,6 +171,10 @@ ALTER TABLE `cloakroom_penalities_backup` ADD `old_cloakroom_id` INT NOT NULL DE
 ALTER TABLE `aadhar_details` CHANGE `aadhar_no` `aadhar_no` VARCHAR(50) NULL DEFAULT NULL;
 
 ALTER TABLE `cloakroom_entries` CHANGE `aadhar_no` `aadhar_no` VARCHAR(50) NULL DEFAULT NULL;
+
+// Devendra 26Dec2024
+ALTER TABLE `users` CHANGE `active` `active` TINYINT(2) NULL DEFAULT '1';
+UPDATE users SET users.active = 1
 
 
 ?>

@@ -2,7 +2,7 @@
 
 @section('main')
     <div class="main" ng-controller="cloackCtrl" ng-init="type = {{$type}};init();"> 
-        @if(false)
+        @if(true)
             @include('admin.cloakrooms.add_aadhar')
 
         @else
@@ -127,8 +127,8 @@
                             <td>
                                 
 
-                                @if(Auth::user()->priv == 1 || Auth::user()->priv == 2)
                                 <a ng-if="type == 0" href="javascript:;" ng-click="checkoutCloak(item.id)" class="btn btn-danger btn-sm">Checkout</a> 
+                                @if(Auth::user()->priv == 1 || Auth::user()->priv == 2)
                                    
                                 
                                     <!-- <div style="margin-top:4px;"></div>

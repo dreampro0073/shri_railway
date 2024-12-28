@@ -12,8 +12,8 @@
                         </button>
                     </div>
                 </div>
-                
             </div>
+
             <div class="modal-body">
                 <form name="myForm1" novalidate="novalidate" ng-submit="onSubmit(myForm1.$valid)">
 
@@ -30,8 +30,8 @@
                             <label>No Of Bag</label>
                             <input type="number" min="1" ng-model="formData.no_of_bag" class="form-control" required ng-keyup="changeAmount()" />
                         </div>    
-
                     </div>
+
                     <div class="row">
                         <div class="col-md-3 form-group" ng-if="formData.id > 0">
                             <label>Check In</label>
@@ -57,8 +57,6 @@
                                 <option ng-repeat="item in pay_types" value="@{{item.value}}">@{{ item.label}}</option>
                             </select>
                         </div>
-                        
-                        
                         <div class="col-md-3 form-group">
                             <label>Paid Amount</label>
                             <input type="number" ng-model="formData.paid_amount" class="form-control" readonly />
@@ -79,7 +77,6 @@
                             <span ng-if="loading">Loading...</span>
                         </button> 
                     </div>  
-                    
                </form>
             </div>
            
@@ -94,7 +91,7 @@
             <div class="modal-header">
                 <div class="row">
                     <div class="col-md-6">
-                        <h5 class="modal-title" id="exampleModalLongTitle">Checkout Locker</h5>
+                        <h5 class="modal-title" id="exampleModalLongTitle">Checkout Cloakroom</h5>
                     </div>
                     <div class="col-md-6" style="text-align:right;">
                         <button type="button" class="close" ng-click="hideModal();" aria-label="Close">
@@ -107,6 +104,15 @@
             <div class="modal-body">
                 <form name="myForm" novalidate="novalidate" ng-submit="onCheckOut(myForm.$valid)">
                     <div class="row">
+                        @if(Auth::user()->priv == 2)
+                            <div class="col-md-3 form-group">
+                                <label>Checkout By</label>
+                                <select ng-model="formData.checkout_by" class="form-control">
+                                    <option value="">--select--</option>
+                                    <option ng-repeat="(key, value) in users" value="@{{key}}">@{{value}}</option>
+                                </select>
+                            </div>
+                        @endif
                         <div class="col-md-3 form-group">
                             <label>Name</label>
                             <input type="text" ng-model="formData.name" class="form-control" readonly />
@@ -129,7 +135,6 @@
                     <div class="row">
                         <div class="col-md-3 form-group">
                             <label>Check In Date</label>
-                           
                             <input type="text" class="form-control" ng-model="formData.checkin_date" readonly />
                         </div>
                          <div class="col-md-3 form-group">
@@ -137,9 +142,6 @@
                            
                             <input type="text" class="form-control" ng-model="formData.checkout_date" readonly />
                         </div>
-                       
-                        
-                        
                         <div class="col-md-3 form-group">
                             <label>No Of Days</label>
                             <input type="text"  ng-model="formData.no_of_day" class="form-control" readonly>
@@ -154,16 +156,12 @@
                             <input type="text" class="form-control" ng-model="formData.final_days" readonly>
                         </div>
                         <div class="col-md-3 form-group" ng-if="entry_id != 0">
-
                             <label>No Of Bag</label>
                             <input type="text" ng-model="formData.no_of_bag" class="form-control"  readonly />
-
                         </div>
                     </div>
                   
                     <div class="row">  
-                        
-                        
                         <div class="col-md-3 form-group">
                             <label>Pay Type</label>
                             <select ng-model="formData.pay_type" class="form-control"   convert-to-number>

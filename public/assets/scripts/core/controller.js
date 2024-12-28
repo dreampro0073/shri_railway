@@ -4,6 +4,7 @@ app.controller('cloackCtrl', function($scope , $http, $timeout , DBService, Uplo
     $scope.aadhar_fetch = false;
     $scope.aadhar_upload_flag = false;
     $scope.newAadharFlag = false;
+    $scope.users = [];
 
     $scope.filter = {
         page_no:1,
@@ -46,6 +47,7 @@ app.controller('cloackCtrl', function($scope , $http, $timeout , DBService, Uplo
                 $scope.cloak_first_rate = data.rate_list.first_rate;
                 $scope.cloak_second_rate = data.rate_list.second_rate;
                 $scope.d_count = data.d_count;
+                $scope.users = data.users;
                 if(data.excel_link){
                     $scope.excel_loading = false;
                     window.open(data.excel_link,'_blank');
@@ -93,7 +95,8 @@ app.controller('cloackCtrl', function($scope , $http, $timeout , DBService, Uplo
         if(confirm("Are you sure?") == true){
              DBService.postCall({entry_id : $scope.entry_id}, '/api/cloak-rooms/checkout-init/1').then((data) => {
                 if (data.timeOut) {
-                    $scope.formData = data.l_entry;      
+                    $scope.formData = data.l_entry;
+                    $scope.formData.checkout_by = '';      
                     $("#checkoutCloakModel").modal("show");
                 }else{
                     $scope.init(); 

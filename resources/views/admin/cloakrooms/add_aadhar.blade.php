@@ -153,7 +153,7 @@
             <div class="modal-header">
                 <div class="row">
                     <div class="col-md-6">
-                        <h5 class="modal-title" id="exampleModalLongTitle">Checkout Locker</h5>
+                        <h5 class="modal-title" id="exampleModalLongTitle">Checkout Cloakroom</h5>
                     </div>
                     <div class="col-md-6" style="text-align:right;">
                         <button type="button" class="close" ng-click="hideModal();" aria-label="Close">
@@ -166,6 +166,15 @@
             <div class="modal-body">
                 <form name="myForm" novalidate="novalidate" ng-submit="onCheckOut(myForm.$valid)">
                     <div class="row">
+                         @if(Auth::user()->priv == 2)
+                            <div class="col-md-3 form-group">
+                                <label>Checkout By</label>
+                                <select ng-model="formData.checkout_by" class="form-control">
+                                    <option value="">--select--</option>
+                                    <option ng-repeat="(key, value) in users" value="@{{key}}">@{{value}}</option>
+                                </select>
+                            </div>
+                        @endif
                         <div class="col-md-3 form-group">
                             <label>Name</label>
                             <input type="text" ng-model="formData.name" class="form-control" readonly />

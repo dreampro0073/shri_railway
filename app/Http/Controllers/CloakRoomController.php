@@ -95,6 +95,7 @@ class CloakRoomController extends Controller {
 		$data['pay_types'] = $pay_types;
 		$data['rate_list'] = $rate_list;
 		$data['days'] = $days;
+		$data["users"] = User::where("active", 1)->where("client_id", Auth::user()->client_id)->where("priv", 3)->pluck("name", 'id')->toArray();
 		
 		return Response::json($data, 200, []);
 	}
@@ -379,7 +380,7 @@ class CloakRoomController extends Controller {
 		$entry->total_day = $total_day;
 		$entry->penality = $request->balance;
 		$entry->checkout_time = date('Y-m-d H:i:s'); 
-		$entry->checkout_by = Auth::id(); 
+		$entry->checkout_by = isset($request->checkout_by) ? $request->checkout_by : Auth::id(); 
 
 		$entry->total_amount = $request->balance+$entry->paid_amount;
 
@@ -389,11 +390,12 @@ class CloakRoomController extends Controller {
 
 		DB::table('cloakroom_penalities')->insert([
 			'cloakroom_id' => $entry->id,
+			'silip_id' => $entry->slip_id,
 			'paid_amount' => $request->balance,
 			'pay_type' => $request->pay_type,
 			'shift' => $check_shift,
 			'date' =>$date,
-			'added_by' =>Auth::id(),
+			'added_by' => isset($request->checkout_by) ? $request->checkout_by : Auth::id(),
 			'client_id' =>Auth::user()->client_id,
 			'current_time' => date("H:i:s"),
 			'created_at' => date('Y-m-d H:i:s'),

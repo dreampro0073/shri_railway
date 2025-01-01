@@ -108,23 +108,94 @@ class AadharDetailsController extends Controller {
         }
     }
 
-    public function uploadFile(Request $request){
 
+    // public function uploadFile(Request $request){
+
+        
+    //     $destination = 'aadhar_uploads/';
+    //     $message = "";
+    //     $flag = true;
+    //     // $maxSize = 512000;
+    //     $maxSize = 512;
+    //     if($request->media){
+    //         $cre = [
+    //             // 'media' => $request->media,
+    //         ];
+    //         $rules = [
+            
+    //             // 'media' => 'max:512',
+    //         ];
+    //         $validator = Validator::make($cre,$rules);
+
+    //         if($validator->passes()){
+    //             $file = $request->media;
+    //             $name = $request->media->getClientOriginalName();
+    //             $extension = $request->media->getClientOriginalExtension();
+    //             $size = $request->media->getSize(); 
+
+    //             if($size > $maxSize){
+    //                 $flag = false;
+    //                 $message = "The file size exceeds the maximum limit of 500KB.";   
+    //             }
+    //             if(!in_array($extension, User::onlyImages())){
+    //                 $flag = false;
+    //                 $message ='Please upload the valid file(jpg/png/JPEG)';
+    //             }
+
+    //             if($flag){
+    //                 $name = str_replace(".".$extension, "", $name);
+    //                 $name = $request->name."_".strtotime("now").".".$extension;
+
+    //                 Image::make($file)->resize(600, null, function ($constraint) {
+    //                     $constraint->aspectRatio();
+    //                     $constraint->upsize();
+    //                 })->fit(600,800)->save($destination.$name);
+
+    //                 $data["path"] = $destination.$name;
+    //                 $data["url"] = url($destination.$name);
+    //                 $message = 'Successfully Uploaded';
+    //             }
+                
+    //         }else{
+    //             $flag['false']
+    //             $message = "The file size exceeds the maximum limit of 500KB.";
+    //         }
+    //     } else {
+    //         $flag = false;
+    //         $message = 'File not found';
+    //     }
+    //     $data['success'] = true;
+    //     $data['message'] = $message;
+    //     if($flag){
+
+    //     }
+
+    //     return Response::json($data, 200, array());
+    // }
+
+    public function uploadFile(Request $request){
         $destination = 'aadhar_uploads/';
-        $maxSize = 512000;
+        $message = "";
+        $flag = true;
+        // $maxSize = 512000;
+        $maxSize = 512;
         if($request->media){
             $file = $request->media;
             $name = $request->media->getClientOriginalName();
             $extension = $request->media->getClientOriginalExtension();
             $size = $request->media->getSize(); 
 
-            $name = str_replace(".".$extension, "", $name);
-            
             if($size > $maxSize){
-                $data['success'] = false;
-                $data['message'] = 'File size exceeds the maximum limit of 500KB';
-            } elseif(in_array($extension, User::onlyImages())) {
+                $flag = false;
+                $message = "The file size exceeds the maximum limit of 500KB.";   
+            }
+            if(!in_array($extension, User::onlyImages())){
+                $flag = false;
+                $message ='Please upload the valid file(jpg/png/JPEG)';
+            }
 
+            if($flag){
+                $name = str_replace(".".$extension, "", $name);
                 $name = $request->name."_".strtotime("now").".".$extension;
 
                 Image::make($file)->resize(600, null, function ($constraint) {
@@ -134,16 +205,15 @@ class AadharDetailsController extends Controller {
 
                 $data["path"] = $destination.$name;
                 $data["url"] = url($destination.$name);
-                $data["success"] = true;
-                
-            } else {
-                $data['success'] = false;
-                $data['message'] = 'Invalid file format';
+                $message = 'Successfully Uploaded';
             }
         } else {
-            $data['success'] = false;
-            $data['message'] = 'File not found';
+            $flag = false;
+            $message = 'File not found';
         }
+
+        $data['success'] = $flag;
+        $data['message'] = $message;
 
         return Response::json($data, 200, array());
     }

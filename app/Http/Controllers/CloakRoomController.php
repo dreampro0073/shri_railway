@@ -379,8 +379,13 @@ class CloakRoomController extends Controller {
 		$entry->is_late = 1;
 		$entry->total_day = $total_day;
 		$entry->penality = $request->balance;
-		$entry->checkout_time = date('Y-m-d H:i:s'); 
-		$entry->checkout_by = isset($request->checkout_by) ? $request->checkout_by : Auth::id(); 
+		$entry->checkout_time = date('Y-m-d H:i:s');
+		if(isset($request->checkout_by) && $request->checkout_by > 0){ 
+			$checkout_by = $request->checkout_by;
+		} else {
+			$checkout_by = Auth::id();
+		}
+		$entry->checkout_by = $checkout_by;
 
 		$entry->total_amount = $request->balance+$entry->paid_amount;
 
@@ -395,7 +400,7 @@ class CloakRoomController extends Controller {
 			'pay_type' => $request->pay_type,
 			'shift' => $check_shift,
 			'date' =>$date,
-			'added_by' => isset($request->checkout_by) ? $request->checkout_by : Auth::id(),
+			'added_by' => $checkout_by,
 			'client_id' =>Auth::user()->client_id,
 			'current_time' => date("H:i:s"),
 			'created_at' => date('Y-m-d H:i:s'),

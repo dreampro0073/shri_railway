@@ -109,116 +109,108 @@ class AadharDetailsController extends Controller {
     }
 
 
-    // public function uploadFile(Request $request){
+    public function uploadFile(Request $request){
 
         
-    //     $destination = 'aadhar_uploads/';
-    //     $message = "";
-    //     $flag = true;
-    //     // $maxSize = 512000;
-    //     $maxSize = 512;
-    //     if($request->media){
-    //         $cre = [
-    //             // 'media' => $request->media,
-    //         ];
-    //         $rules = [
-            
-    //             // 'media' => 'max:512',
-    //         ];
-    //         $validator = Validator::make($cre,$rules);
-
-    //         if($validator->passes()){
-    //             $file = $request->media;
-    //             $name = $request->media->getClientOriginalName();
-    //             $extension = $request->media->getClientOriginalExtension();
-    //             $size = $request->media->getSize(); 
-
-    //             if($size > $maxSize){
-    //                 $flag = false;
-    //                 $message = "The file size exceeds the maximum limit of 500KB.";   
-    //             }
-    //             if(!in_array($extension, User::onlyImages())){
-    //                 $flag = false;
-    //                 $message ='Please upload the valid file(jpg/png/JPEG)';
-    //             }
-
-    //             if($flag){
-    //                 $name = str_replace(".".$extension, "", $name);
-    //                 $name = $request->name."_".strtotime("now").".".$extension;
-
-    //                 Image::make($file)->resize(600, null, function ($constraint) {
-    //                     $constraint->aspectRatio();
-    //                     $constraint->upsize();
-    //                 })->fit(600,800)->save($destination.$name);
-
-    //                 $data["path"] = $destination.$name;
-    //                 $data["url"] = url($destination.$name);
-    //                 $message = 'Successfully Uploaded';
-    //             }
-                
-    //         }else{
-    //             $flag['false']
-    //             $message = "The file size exceeds the maximum limit of 500KB.";
-    //         }
-    //     } else {
-    //         $flag = false;
-    //         $message = 'File not found';
-    //     }
-    //     $data['success'] = true;
-    //     $data['message'] = $message;
-    //     if($flag){
-
-    //     }
-
-    //     return Response::json($data, 200, array());
-    // }
-
-    public function uploadFile(Request $request){
         $destination = 'aadhar_uploads/';
         $message = "";
         $flag = true;
-        // $maxSize = 512000;
-        $maxSize = 512;
+        
         if($request->media){
-            $file = $request->media;
-            $name = $request->media->getClientOriginalName();
-            $extension = $request->media->getClientOriginalExtension();
-            $size = $request->media->getSize(); 
+            $cre = [
+                'media' => $request->media,
+            ];
+            $rules = [
+            
+                'media' => 'max:512',
+            ];
+            $validator = Validator::make($cre,$rules);
 
-            dd($size);
+            if($validator->passes()){
+                $file = $request->media;
+                $name = $request->media->getClientOriginalName();
+                $extension = $request->media->getClientOriginalExtension();
+                $size = $request->media->getSize(); 
 
-            if($size > $maxSize){
+                if(!in_array($extension, User::onlyImages())){
+                    $flag = false;
+                    $message ='Please upload the valid file(jpg/png/JPEG)';
+                }
+
+                if($flag){
+                    $name = str_replace(".".$extension, "", $name);
+                    $name = $request->name."_".strtotime("now").".".$extension;
+
+                    Image::make($file)->resize(600, null, function ($constraint) {
+                        $constraint->aspectRatio();
+                        $constraint->upsize();
+                    })->fit(600,800)->save($destination.$name);
+
+                    $data["path"] = $destination.$name;
+                    $data["url"] = url($destination.$name);
+                    $message = 'Successfully Uploaded';
+                }
+                
+            }else{
                 $flag = false;
                 $message = "The file size exceeds the maximum limit of 500KB.";   
-            }
-            if(!in_array($extension, User::onlyImages())){
-                $flag = false;
-                $message ='Please upload the valid file(jpg/png/JPEG)';
-            }
-
-            if($flag){
-                $name = str_replace(".".$extension, "", $name);
-                $name = $request->name."_".strtotime("now").".".$extension;
-
-                Image::make($file)->resize(600, null, function ($constraint) {
-                    $constraint->aspectRatio();
-                    $constraint->upsize();
-                })->fit(600,800)->save($destination.$name);
-
-                $data["path"] = $destination.$name;
-                $data["url"] = url($destination.$name);
-                $message = 'Successfully Uploaded';
             }
         } else {
             $flag = false;
             $message = 'File not found';
         }
-
-        $data['success'] = $flag;
+        $data['success'] = true;
         $data['message'] = $message;
 
         return Response::json($data, 200, array());
     }
+
+    // public function uploadFile(Request $request){
+    //     $destination = 'aadhar_uploads/';
+    //     $message = "";
+    //     $flag = true;
+    //     // $maxSize = 512000;
+    //     $maxSize = 5120;
+    //     if($request->media){
+    //         $file = $request->media;
+    //         $name = $request->media->getClientOriginalName();
+    //         $extension = $request->media->getClientOriginalExtension();
+    //         $size = $request->media->getSize(); 
+
+    //         dd($size);
+
+    //         if($size > $maxSize){
+    //             $flag = false;
+    //             $message = "The file size exceeds the maximum limit of 500KB.";   
+    //         }
+    //         if(!in_array($extension, User::onlyImages())){
+    //             $flag = false;
+    //             $message ='Please upload the valid file(jpg/png/JPEG)';
+    //         }
+
+    //         if($flag){
+    //             $name = str_replace(".".$extension, "", $name);
+    //             $name = $request->name."_".strtotime("now").".".$extension;
+
+    //             Image::make($file)->resize(600, null, function ($constraint) {
+    //                 $constraint->aspectRatio();
+    //                 $constraint->upsize();
+    //             })->fit(600,800)->save($destination.$name);
+
+    //             $data["path"] = $destination.$name;
+    //             $data["url"] = url($destination.$name);
+    //             $message = 'Successfully Uploaded';
+    //         }
+    //     } else {
+    //         $flag = false;
+    //         $message = 'File not found';
+    //     }
+
+    //     $data['success'] = $flag;
+    //     $data['message'] = $message;
+
+    //     return Response::json($data, 200, array());
+    // }
 
     public function uploadFileXX(Request $request){
         $destination = 'aadhar_uploads/';

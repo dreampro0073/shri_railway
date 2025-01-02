@@ -159,7 +159,7 @@ class AadharDetailsController extends Controller {
             $flag = false;
             $message = 'File not found';
         }
-        $data['success'] = true;
+        $data['success'] = $flag;
         $data['message'] = $message;
 
         return Response::json($data, 200, array());

@@ -185,6 +185,8 @@ class AadharDetailsController extends Controller {
             $extension = $request->media->getClientOriginalExtension();
             $size = $request->media->getSize(); 
 
+            dd($size);
+
             if($size > $maxSize){
                 $flag = false;
                 $message = "The file size exceeds the maximum limit of 500KB.";   

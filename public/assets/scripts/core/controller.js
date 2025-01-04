@@ -47,6 +47,7 @@ app.controller('cloackCtrl', function($scope , $http, $timeout , DBService, Uplo
                 $scope.cloak_first_rate = data.rate_list.first_rate;
                 $scope.cloak_second_rate = data.rate_list.second_rate;
                 $scope.d_count = data.d_count;
+                $scope.updateCheckoutClass();
                 $scope.users = data.users;
                 if(data.excel_link){
                     $scope.excel_loading = false;
@@ -318,7 +319,34 @@ app.controller('cloackCtrl', function($scope , $http, $timeout , DBService, Uplo
 
     $scope.removeFile = function (formData, name) {
         formData[name] = "";
-    };     
+    };    
+
+    $scope.updateCheckoutClass = function(){
+        const milliseconds = new Date().getTime();
+        const unixTimestamp = Math.floor(milliseconds / 1000);
+        for (var i = 0; i < $scope.l_entries.length; i++) {
+            $scope.l_entries[i].check_class = "";
+            if($scope.l_entries[i].checkout_status == 0){
+                if(unixTimestamp > $scope.l_entries[i].str_checkout_time){
+                    $scope.l_entries[i].check_class = "t-danger";
+                } else {
+                    if((unixTimestamp+600) > $scope.l_entries[i].str_checkout_time){
+                        $scope.l_entries[i].check_class = "t-warning";
+                    } else {
+                        $scope.l_entries[i].check_class = "t-info";
+                    }
+                }
+            }
+    
+        }
+    }
+
+    var intervalPromise = $interval($scope.updateCheckoutClass, 12000);
+    $scope.$on('$destroy', function() {
+        if (intervalPromise) {
+            $interval.cancel(intervalPromise);
+        }
+    }); 
 });
 
 

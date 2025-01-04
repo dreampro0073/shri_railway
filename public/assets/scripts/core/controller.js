@@ -1,4 +1,4 @@
-app.controller('cloackCtrl', function($scope , $http, $timeout , DBService, Upload) {
+app.controller('cloackCtrl', function($scope , $http, $timeout , DBService, Upload,$interval) {
     $scope.loading = false;
     $scope.aadhar_flag = false;
     $scope.aadhar_fetch = false;

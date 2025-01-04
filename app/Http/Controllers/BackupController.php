@@ -17,7 +17,7 @@ class BackupController extends Controller {
 
 		$entries = DB::table('cloakroom_entries')->select('unique_id',"id")->where('date','>','2024-12-15')->where('client_id',7)->get();
 		foreach ($entries as $key => $entry) {
-			DB::table('cloakroom_entries')->where('id',$entry_id)->update([
+			DB::table('cloakroom_entries')->where('id',$entry->id)->update([
 			 	'barcodevalue' => bin2hex($entry->unique_id),
 			]);
 		}

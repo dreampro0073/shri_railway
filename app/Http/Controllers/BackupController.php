@@ -21,7 +21,7 @@ class BackupController extends Controller {
 			dd("Conratulations");
 		}
 
-		$clients = User::where("client_id", 6)->pluck("id","old_id")->toArray();
+		$clients = User::where("client_id", 7)->pluck("id","old_id")->toArray();
 		foreach ($old_entry_ids as $key => $old_id) {
 			$newTask = (new CloakRoom)
 			->setTable('cloakroom_entries_backup')
@@ -37,7 +37,7 @@ class BackupController extends Controller {
 
 			DB::table('cloakroom_entries')->where('id',$new_entry->id)->update([
 				'old_id'=>$old_id,
-				'client_id'=>6,
+				'client_id'=>7,
 				'added_by'=>$clients[$new_entry->added_by] ? $clients[$new_entry->added_by] : -1,
 			]);
 		

@@ -15,67 +15,74 @@ class BackupController extends Controller {
 
 	public function dumpData(Request $request){
 
-		$old_entry_ids = DB::table('cloakroom_entries_backup')->where('is_backup',0)->take(1000)->pluck('id')->toArray();
-
-		if(sizeof($old_entry_ids) == 0){
-			dd("Conratulations");
+		$entries = DB::table('cloakroom_entries')->select('unique_id',"id")->where('date','>','2024-12-15')->where('client_id',7)->get();
+		foreach ($entries as $key => $entry) {
+			DB::table('cloakroom_entries')->where('id',$entry_id)->update([
+			 	'barcodevalue' => bin2hex($entry->unique_id),
+			]);
 		}
 
-		$clients = User::where("client_id", 7)->pluck("id","old_id")->toArray();
-		foreach ($old_entry_ids as $key => $old_id) {
-			$newTask = (new CloakRoom)
-			->setTable('cloakroom_entries_backup')
-			->find($old_id)
-			->replicate()
-			->setTable('cloakroom_entries')
-			->save();
+		// $old_entry_ids = DB::table('cloakroom_entries_backup')->where('is_backup',0)->take(1000)->pluck('id')->toArray();
+
+		// if(sizeof($old_entry_ids) == 0){
+		// 	dd("Conratulations");
+		// }
+
+		// $clients = User::where("client_id", 7)->pluck("id","old_id")->toArray();
+		// foreach ($old_entry_ids as $key => $old_id) {
+		// 	$newTask = (new CloakRoom)
+		// 	->setTable('cloakroom_entries_backup')
+		// 	->find($old_id)
+		// 	->replicate()
+		// 	->setTable('cloakroom_entries')
+		// 	->save();
 
 
 
 
-			$new_entry = DB::table('cloakroom_entries')->orderBy('id','DESC')->first();
+		// 	$new_entry = DB::table('cloakroom_entries')->orderBy('id','DESC')->first();
 
-			DB::table('cloakroom_entries')->where('id',$new_entry->id)->update([
-				'old_id'=>$old_id,
-				'client_id'=>7,
-				'added_by'=>$clients[$new_entry->added_by] ? $clients[$new_entry->added_by] : -1,
-			]);
+		// 	DB::table('cloakroom_entries')->where('id',$new_entry->id)->update([
+		// 		'old_id'=>$old_id,
+		// 		'client_id'=>7,
+		// 		'added_by'=>$clients[$new_entry->added_by] ? $clients[$new_entry->added_by] : -1,
+		// 	]);
 		
-			$pens = DB::table('cloakroom_penalities_backup')->where('cloakroom_id',$old_id)->get();
+		// 	$pens = DB::table('cloakroom_penalities_backup')->where('cloakroom_id',$old_id)->get();
 
 
-			if(sizeof($pens) > 0){
-				foreach ($pens as $key => $item) {
-					$ins_data = [
-						'client_id' => Auth::user()->client_id,
-						'cloakroom_id' => $new_entry->id,
-						'old_cloakroom_id' => $old_id,
-						'paid_amount' => $item->paid_amount,
-						'pay_type' => $item->pay_type,
-						'shift' => $item->shift,
-						'date' => $item->date,
-						'current_time' => $item->current_time,
-						'added_by' => $item->added_by,
-						'is_checked' => $item->is_checked,
-						'is_collected' => $item->is_collected,
-						'created_at' => $item->created_at,
-						'updated_at' => $item->updated_at,
-					];
+		// 	if(sizeof($pens) > 0){
+		// 		foreach ($pens as $key => $item) {
+		// 			$ins_data = [
+		// 				'client_id' => Auth::user()->client_id,
+		// 				'cloakroom_id' => $new_entry->id,
+		// 				'old_cloakroom_id' => $old_id,
+		// 				'paid_amount' => $item->paid_amount,
+		// 				'pay_type' => $item->pay_type,
+		// 				'shift' => $item->shift,
+		// 				'date' => $item->date,
+		// 				'current_time' => $item->current_time,
+		// 				'added_by' => $item->added_by,
+		// 				'is_checked' => $item->is_checked,
+		// 				'is_collected' => $item->is_collected,
+		// 				'created_at' => $item->created_at,
+		// 				'updated_at' => $item->updated_at,
+		// 			];
 
-					DB::table('cloakroom_penalities')->insert($ins_data);
-				}
-			} 
+		// 			DB::table('cloakroom_penalities')->insert($ins_data);
+		// 		}
+		// 	} 
 			
 
-			DB::table('cloakroom_entries_backup')->where('is_backup',0)->where('id',$old_id)->update([
-				'is_backup' => 1,
-			]);
+		// 	DB::table('cloakroom_entries_backup')->where('is_backup',0)->where('id',$old_id)->update([
+		// 		'is_backup' => 1,
+		// 	]);
 
 			
 
-		}
+		// }
 
-		dd("Done");
+		// dd("Done");
 		
 
 	    // return "Wow";

@@ -74,6 +74,8 @@ class CloakRoomController extends Controller {
 			$item->sh_paid_amount = $item->paid_amount + $bm_amount;
 			$item->checkin_date_show = date("d M, h:i A",strtotime($item->checkin_date));
 			$item->checkout_date_show = date("d M, h:i A",strtotime($item->checkout_date));
+
+			$item->str_checkout_time = strtotime($item->checkout_date);
 		}
 		$legal_opinion_data = $l_entries;
 

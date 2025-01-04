@@ -19,7 +19,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label>Id No.</label>
+                                <label>Identity No.</label>
                                 <!-- <input type="number" pattern="\d{12}" title="Aadhar number must be exactly 12 digits" ng-model="formData.aadhar_no" class="form-control" ng-disabled="aadhar_fetch" required /> -->
                                 <input type="text" ng-model="formData.aadhar_no" class="form-control" ng-disabled="aadhar_fetch" required />
                             </div>

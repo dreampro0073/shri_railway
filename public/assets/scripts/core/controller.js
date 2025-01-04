@@ -353,7 +353,7 @@ app.controller('cloackCtrl', function($scope , $http, $timeout , DBService, Uplo
                     if((unixTimestamp+600) > $scope.l_entries[i].str_checkout_time){
                         $scope.l_entries[i].check_class = "text-warning";
                     } else {
-                        $scope.l_entries[i].check_class = "text-info";
+                        $scope.l_entries[i].check_class = "text-primary";
                     }
                 }
             }

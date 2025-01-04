@@ -177,4 +177,12 @@ ALTER TABLE `users` CHANGE `active` `active` TINYINT(2) NULL DEFAULT '1';
 UPDATE users SET users.active = 1
 ALTER TABLE `aadhar_details` CHANGE `aadhar_no` `aadhar_no` VARCHAR(50) NULL DEFAULT NULL;
 
+
+
+ALTER TABLE `users_backup` ADD `lounge_id` INT NOT NULL DEFAULT '0' AFTER `enc_id`, ADD `old_id` INT NOT NULL DEFAULT '0' AFTER `lounge_id`, ADD `canteen_id` INT NOT NULL DEFAULT '0' AFTER `old_id`;
+
+ALTER TABLE `users_backup` CHANGE `parent_user_id` `perent_user_id` INT(11) NOT NULL DEFAULT '0';
+
+ALTER TABLE `users_backup` ADD `org_id` INT NOT NULL DEFAULT '0' AFTER `perent_user_id`, ADD `is_auto_alert_access` TINYINT(1) NOT NULL DEFAULT '0' AFTER `org_id`;
+
 ?>

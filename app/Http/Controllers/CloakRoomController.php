@@ -257,7 +257,7 @@ class CloakRoomController extends Controller {
 	}
 
 	public function printPostUnq($type= 1,$print_id = ''){
-		$print_data = DB::table('cloakroom_entries')->where('barcodevalue','=',$print_id)->whereIn('client_id',Auth::user()->client_id)->first();
+		$print_data = DB::table('cloakroom_entries')->where('barcodevalue','=',$print_id)->where('client_id',Auth::user()->client_id)->first();
 
 		// if($type == 1 && Auth::user()->priv == 3 && $print_data->print_count > 0){
 		// 	return "Print not allowed";

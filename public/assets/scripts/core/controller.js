@@ -47,7 +47,7 @@ app.controller('cloackCtrl', function($scope , $http, $timeout , DBService, Uplo
                 $scope.cloak_first_rate = data.rate_list.first_rate;
                 $scope.cloak_second_rate = data.rate_list.second_rate;
                 $scope.d_count = data.d_count;
-                $scope.updateCheckoutLightClass();
+                $scope.updateCheckoutClass();
                 $scope.users = data.users;
                 if(data.excel_link){
                     $scope.excel_loading = false;
@@ -321,7 +321,7 @@ app.controller('cloackCtrl', function($scope , $http, $timeout , DBService, Uplo
         formData[name] = "";
     };    
 
-    $scope.updateCheckoutClass = function(){
+    $scope.updateCheckoutDarkClass = function(){
         const milliseconds = new Date().getTime();
         const unixTimestamp = Math.floor(milliseconds / 1000);
         for (var i = 0; i < $scope.l_entries.length; i++) {
@@ -341,7 +341,7 @@ app.controller('cloackCtrl', function($scope , $http, $timeout , DBService, Uplo
         }
     }    
 
-    $scope.updateCheckoutLightClass = function(){
+    $scope.updateCheckoutClass = function(){
         const milliseconds = new Date().getTime();
         const unixTimestamp = Math.floor(milliseconds / 1000);
         for (var i = 0; i < $scope.l_entries.length; i++) {
@@ -353,7 +353,7 @@ app.controller('cloackCtrl', function($scope , $http, $timeout , DBService, Uplo
                     if((unixTimestamp+600) > $scope.l_entries[i].str_checkout_time){
                         $scope.l_entries[i].check_class = "text-warning";
                     } else {
-                        $scope.l_entries[i].check_class = "text-primary";
+                        $scope.l_entries[i].check_class = "";
                     }
                 }
             }

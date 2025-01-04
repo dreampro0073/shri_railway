@@ -22,7 +22,7 @@ class CloakRoom extends Model
         return $slip_id;
     }
 
-    public static function totalShiftData($input_date= "", $user_id=0){
+    public static function totalShiftData($input_date= "", $user_id=0, $client_id){
         $check_shift = Entry::checkShift();
         
         $total_shift_cash = 0;
@@ -44,12 +44,11 @@ class CloakRoom extends Model
             $input_date = date("Y-m-d",strtotime($input_date));
         }
         
-        $client_id = Auth::user()->client_id;
+        // $client_id = Auth::user()->client_id;
         if(Auth::user()->priv != 2){
             $user_id = Auth::id();
         }
-
-        
+                
         if($user_id == 0){
             $total_shift_upi = CloakRoom::where('date',$input_date)->where("client_id", $client_id)->where('pay_type',2)->sum("paid_amount");
             $total_shift_upi += DB::table('cloakroom_penalities')->where('is_collected', '!=', 1)->where('date',$input_date)->where("client_id", $client_id)->where('pay_type',2)->sum("paid_amount");

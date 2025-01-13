@@ -321,7 +321,7 @@ app.controller('cloackCtrl', function($scope , $http, $timeout , DBService, Uplo
         formData[name] = "";
     };    
 
-    $scope.updateCheckoutClass = function(){
+    $scope.updateCheckoutDarkClass = function(){
         const milliseconds = new Date().getTime();
         const unixTimestamp = Math.floor(milliseconds / 1000);
         for (var i = 0; i < $scope.l_entries.length; i++) {
@@ -334,6 +334,26 @@ app.controller('cloackCtrl', function($scope , $http, $timeout , DBService, Uplo
                         $scope.l_entries[i].check_class = "t-warning";
                     } else {
                         $scope.l_entries[i].check_class = "t-info";
+                    }
+                }
+            }
+    
+        }
+    }    
+
+    $scope.updateCheckoutClass = function(){
+        const milliseconds = new Date().getTime();
+        const unixTimestamp = Math.floor(milliseconds / 1000);
+        for (var i = 0; i < $scope.l_entries.length; i++) {
+            $scope.l_entries[i].check_class = "";
+            if($scope.l_entries[i].checkout_status == 0){
+                if(unixTimestamp > $scope.l_entries[i].str_checkout_time){
+                    $scope.l_entries[i].check_class = "text-danger";
+                } else {
+                    if((unixTimestamp+600) > $scope.l_entries[i].str_checkout_time){
+                        $scope.l_entries[i].check_class = "text-warning";
+                    } else {
+                        $scope.l_entries[i].check_class = "";
                     }
                 }
             }

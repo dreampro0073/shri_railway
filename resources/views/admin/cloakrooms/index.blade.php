@@ -74,7 +74,6 @@
                         <tr class="table-primary">
                             <th>S.no</th>
                             <th>Slip Id</th>
-                            
                             <th>Name</th>
                             <th>Mobile No</th>
                             <th>Check In/Valid Upto</th>
@@ -87,7 +86,7 @@
                                 Checkout Status
                             </th>
                             @endif
-                            <th>Aadhar</th>
+                            <th>Identity No.</th>
                             <th>#</th>
                         </tr>
                     </thead>

@@ -302,68 +302,73 @@ class CloakRoomController extends Controller {
     	$now_time = strtotime(date("Y-m-d H:i:s",strtotime("-15 minutes")));
 
     	if($type == 1){
-    		$l_entry = CloakRoom::where('id', $request->entry_id)->first();
+    		$l_entry = CloakRoom::where('id', $request->entry_id)->where('checkout_status',0)->first();
 
     	}else{
     		$productName =$request->productName;
-	    	$l_entry = CloakRoom::where('unique_id', $productName)->first();
+	    	$l_entry = CloakRoom::where('unique_id', $productName)->where('checkout_status',0)->first();
     	}
 
     	// dd($l_entry);
+    	if($l_entry){
+    		$entry_id = $l_entry->id;
 
-    	
-    	$entry_id = $l_entry->id;
+	    	$checkout_time = strtotime($l_entry->checkout_date);
+	    	$rate_list = DB::table("cloakroom_rate_list")->where("client_id", Auth::user()->client_id)->first();
 
-    	$checkout_time = strtotime($l_entry->checkout_date);
-    	$rate_list = DB::table("cloakroom_rate_list")->where("client_id", Auth::user()->client_id)->first();
+	    	if($checkout_time > $now_time){
+    			$data['timeOut'] = false;
+	    		$l_entry = CloakRoom::find($entry_id);
+	    		$l_entry->status = 1; 
+				$l_entry->checkout_status = 1;
+	    		$l_entry->checkout_by = Auth::id();
+	    		$l_entry->checkout_time = date("Y-m-d H:i:s"); 
+	    		$l_entry->save();
+	    		$data['success'] = true;
+	    		$data['message'] = "Successfully Checkout";
+	    	} else {
+	    		$current_time = strtotime(date("Y-m-d H:i:s",strtotime("now")));
+	    		$time_difference = $current_time - $checkout_time;
+	    		$day = floor($time_difference / 86400);
+	    		$hours = floor(($time_difference % 86400) / 3600);
+				$minutes = floor(($time_difference % 3600) / 60);
 
-    	if($checkout_time > $now_time){
-    		$data['timeOut'] = false;
-    		$l_entry = CloakRoom::find($entry_id);
-    		$l_entry->status = 1; 
-			$l_entry->checkout_status = 1;
-    		$l_entry->checkout_by = Auth::id();
-    		$l_entry->checkout_time = date("Y-m-d H:i:s"); 
-    		$l_entry->save();
-    		$data['success'] = true;
-    		$data['message'] = "Successfully Checkout";
-    	} else {
-    		$current_time = strtotime(date("Y-m-d H:i:s",strtotime("now")));
-    		$time_difference = $current_time - $checkout_time;
-    		$day = floor($time_difference / 86400);
-    		$hours = floor(($time_difference % 86400) / 3600);
-			$minutes = floor(($time_difference % 3600) / 60);
+				if (User::checkHrType()) {
+				    if ($hours > 12 || ($hours == 12 && $minutes >= 15)) {
+				        $day += 1; 
+				    } elseif ($hours <= 12 && ($hours > 0 || $minutes >= 15)) {
+				        $day += 0.5; 
 
-			if (User::checkHrType()) {
-			    if ($hours > 12 || ($hours == 12 && $minutes >= 15)) {
-			        $day += 1; 
-			    } elseif ($hours <= 12 && ($hours > 0 || $minutes >= 15)) {
-			        $day += 0.5; 
+				    }
+				} else {
+				    if ($hours > 0 || $minutes > 15) {
+				        $day += 1; 
+				    }
+				}
 
-			    }
-			} else {
-			    if ($hours > 0 || $minutes > 15) {
-			        $day += 1; 
-			    }
+				$l_entry->mobile_no = $l_entry->mobile_no*1;
+				$l_entry->train_no = $l_entry->train_no*1;
+				$l_entry->pnr_uid = $l_entry->pnr_uid*1;
+
+				$l_entry->paid_amount = $l_entry->paid_amount*1;
+
+				$l_entry->balance = $day* $rate_list->second_rate *$l_entry->no_of_bag;
+
+				$l_entry->total_balance = $l_entry->paid_amount+$l_entry->balance;
+				$l_entry->day = $day;
+				$l_entry->final_days = $day + $l_entry->no_of_day;
+
+				
+				$data['l_entry'] = $l_entry;
+				$data['success'] = true;
+				$data['timeOut'] = true;
 			}
-
-			$l_entry->mobile_no = $l_entry->mobile_no*1;
-			$l_entry->train_no = $l_entry->train_no*1;
-			$l_entry->pnr_uid = $l_entry->pnr_uid*1;
-
-			$l_entry->paid_amount = $l_entry->paid_amount*1;
-
-			$l_entry->balance = $day* $rate_list->second_rate *$l_entry->no_of_bag;
-
-			$l_entry->total_balance = $l_entry->paid_amount+$l_entry->balance;
-			$l_entry->day = $day;
-			$l_entry->final_days = $day + $l_entry->no_of_day;
-
-			
-			$data['l_entry'] = $l_entry;
-			$data['success'] = true;
-			$data['timeOut'] = true;
-		}
+    	}else{
+    		$data['success'] = true;
+	    	$data['message'] = "All Ready checkout";
+    	}
+    	
+    	
 
 		return Response::json($data, 200, []);
     }

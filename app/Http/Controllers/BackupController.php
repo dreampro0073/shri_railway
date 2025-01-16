@@ -151,53 +151,98 @@ class BackupController extends Controller {
 		// 	echo 'all done';
 		// }
 
-		$clients = User::where("client_id", 8)->pluck("id","old_id")->toArray();
+		// $clients = User::where("client_id", 8)->pluck("id","old_id")->toArray();
 
 		// dd($clients);
 
 
-		$old_entry_ids = DB::table('sitting_entries_backup')->where('is_backup',0)->where('client_id',8)->take(1000)->pluck('id')->toArray();
-		if(sizeof($old_entry_ids) > 0){
-			foreach ($old_entry_ids as $key => $old_id) {
-				$newTask = (new Sitting)
-				->setTable('sitting_entries_backup')
-				->find($old_id)
-				->replicate()
-				->setTable('sitting_entries')
-				->save();
+		// $old_entry_ids = DB::table('sitting_entries_backup')->where('is_backup',0)->where('client_id',8)->take(1000)->pluck('id')->toArray();
+		// if(sizeof($old_entry_ids) > 0){
+		// 	foreach ($old_entry_ids as $key => $old_id) {
+		// 		$newTask = (new Sitting)
+		// 		->setTable('sitting_entries_backup')
+		// 		->find($old_id)
+		// 		->replicate()
+		// 		->setTable('sitting_entries')
+		// 		->save();
 
-				DB::table('sitting_entries_backup')->where('client_id',8)->where('is_backup',0)->where('id',$old_id)->update([
-					'is_backup' => 1,
-				]);
+		// 		DB::table('sitting_entries_backup')->where('client_id',8)->where('is_backup',0)->where('id',$old_id)->update([
+		// 			'is_backup' => 1,
+		// 		]);
 
-				$new_entry = DB::table('sitting_entries')->where('client_id',8)->orderBy('id','DESC')->first();
+		// 		$new_entry = DB::table('sitting_entries')->where('client_id',8)->orderBy('id','DESC')->first();
 
-				// dd($new_entry);
+		// 		// dd($new_entry);
 
-				DB::table('sitting_entries')->where('id',$new_entry->id)->update([
-					'old_id'=>$old_id,
-					'client_id'=>8,
-					'added_by'=>isset($clients[$new_entry->added_by]) ? $clients[$new_entry->added_by] : -1,
-				]);
+		// 		DB::table('sitting_entries')->where('id',$new_entry->id)->update([
+		// 			'old_id'=>$old_id,
+		// 			'client_id'=>8,
+		// 			'added_by'=>isset($clients[$new_entry->added_by]) ? $clients[$new_entry->added_by] : -1,
+		// 		]);
 
-				$pens = DB::table('e_entries_backup')->where("entry_id",$old_id)->where("client_id",8)->get();
+		// 		$pens = DB::table('e_entries_backup')->where("entry_id",$old_id)->where("client_id",8)->get();
 
-				// dd($pens);
+		// 		// dd($pens);
 
 
+		// 		if(sizeof($pens) > 0){
+		// 			foreach ($pens as $key => $item) {
+		// 				$ins_data = [
+		// 					'client_id' => $item->client_id,
+		// 					'entry_id' => $new_entry->id,
+		// 					'old_entry_id' => $old_id,
+		// 					'paid_amount' => $item->paid_amount,
+		// 					'pay_type' => $item->pay_type,
+		// 					'type' => $item->type,
+		// 					'shift' => $item->shift,
+		// 					'date' => $item->date,
+		// 					'current_time' => $item->current_time,
+		// 					'added_by' => $new_entry->added_by,
+		// 					'is_checked' => $item->is_checked,
+		// 					'is_collected' => $item->is_collected,
+		// 					'created_at' => $item->created_at,
+		// 					'updated_at' => $item->updated_at,
+		// 				];
+
+		// 				DB::table('e_entries')->insert($ins_data);
+		// 			}
+		// 		} 
+				
+
+		// 		DB::table('sitting_entries_backup')->where('is_backup',0)->where('id',$old_id)->update([
+		// 			'is_backup' => 1,
+		// 		]);
+		// 	}
+		// 	echo 'done';
+
+		// }else{
+		// 	echo 'all done';
+		// }
+
+		$e_ids = DB::table('e_entries_backup')->where('client_id',8)->where('is_backup',0)->pluck('entry_id')->toArray();
+
+
+
+		// $entry_ids = DB::table('sitting_entries')->select('id','old_id')->where('client_id',8)->get();
+
+		foreach ($e_ids as $key => $e_id) {
+			$check = DB::table('sitting_entries')->where('old_id',$e_id)->where('client_id',8)->first();
+
+			if($check){
+				$pens = DB::table('e_entries_backup')->where("entry_id",$check->old_id)->where("client_id",8)->get();
 				if(sizeof($pens) > 0){
 					foreach ($pens as $key => $item) {
 						$ins_data = [
 							'client_id' => $item->client_id,
-							'entry_id' => $new_entry->id,
-							'old_entry_id' => $old_id,
+							'entry_id' => $check->id,
+							'old_entry_id' => $check->old_id,
 							'paid_amount' => $item->paid_amount,
 							'pay_type' => $item->pay_type,
 							'type' => $item->type,
 							'shift' => $item->shift,
 							'date' => $item->date,
 							'current_time' => $item->current_time,
-							'added_by' => $new_entry->added_by,
+							'added_by' => $check->added_by,
 							'is_checked' => $item->is_checked,
 							'is_collected' => $item->is_collected,
 							'created_at' => $item->created_at,
@@ -205,18 +250,45 @@ class BackupController extends Controller {
 						];
 
 						DB::table('e_entries')->insert($ins_data);
+						DB::table('e_entries_backup')->where('id',$item->id)->update(['is_backup'=>1]);
+
 					}
 				} 
-				
-
-				DB::table('sitting_entries_backup')->where('is_backup',0)->where('id',$old_id)->update([
-					'is_backup' => 1,
-				]);
 			}
-			echo 'done';
 
-		}else{
-			echo 'all done';
-		}		
+
+			
+
+		}
+
+
+
+		// $pens = DB::table('e_entries_backup')->where("entry_id",$old_id)->where("client_id",8)->get();
+
+		// // dd($pens);
+
+
+		// if(sizeof($pens) > 0){
+		// 	foreach ($pens as $key => $item) {
+		// 		$ins_data = [
+		// 			'client_id' => $item->client_id,
+		// 			'entry_id' => $new_entry->id,
+		// 			'old_entry_id' => $old_id,
+		// 			'paid_amount' => $item->paid_amount,
+		// 			'pay_type' => $item->pay_type,
+		// 			'type' => $item->type,
+		// 			'shift' => $item->shift,
+		// 			'date' => $item->date,
+		// 			'current_time' => $item->current_time,
+		// 			'added_by' => $new_entry->added_by,
+		// 			'is_checked' => $item->is_checked,
+		// 			'is_collected' => $item->is_collected,
+		// 			'created_at' => $item->created_at,
+		// 			'updated_at' => $item->updated_at,
+		// 		];
+
+		// 		DB::table('e_entries')->insert($ins_data);
+		// 	}
+		// } 
 	}
 }

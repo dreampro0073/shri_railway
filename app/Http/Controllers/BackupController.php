@@ -219,7 +219,7 @@ class BackupController extends Controller {
 		// 	echo 'all done';
 		// }
 
-		$e_ids = DB::table('e_entries_backup')->where('client_id',8)->where('is_backup',0)->pluck('entry_id')->toArray();
+		$e_ids = DB::table('e_entries_backup')->where('client_id',8)->where('is_backup',0)->take(1)->pluck('entry_id')->toArray();
 
 
 

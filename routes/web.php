@@ -41,6 +41,7 @@ Route::post('/login', [UserController::class,'postLogin']);
 Route::get('/barcode-gen', [AdminController::class,'barcodeGen']);
 Route::get('/print', [SittingController::class,'print']);
 Route::get('/print1', [SittingController::class,'print1']);
+Route::get('/testCheck', [SittingController::class,'testCheck']);
 
 Route::get('/aadhar/upload-by-mobile/{id}', [AadharDetailsController::class, 'uploadByMobileFile']);
 Route::post('/aadhar/upload-by-mobile/{id}', [AadharDetailsController::class, 'postUploadByMobileFile']);

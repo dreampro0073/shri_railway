@@ -219,7 +219,11 @@ class BackupController extends Controller {
 		// 	echo 'all done';
 		// }
 
-		$e_ids = DB::table('e_entries_backup')->where('client_id',8)->where('is_backup',0)->take(1)->pluck('entry_id')->toArray();
+		$e_ids = DB::table('e_entries_backup')->where('client_id',8)->where('is_backup',0)->take(1000)->pluck('entry_id')->toArray();
+
+		if(sizeof($e_ids) == 0){
+			echo 'all Done';
+		}
 
 
 
@@ -256,6 +260,7 @@ class BackupController extends Controller {
 				} 
 			}
 
+			echo 'DOne';
 
 			
 

@@ -15,12 +15,12 @@ class BackupController extends Controller {
 
 	public function dumpData(Request $request){
 
-		$entries = DB::table('cloakroom_entries')->select('unique_id',"id")->where('date','>','2024-12-15')->where('client_id',7)->get();
-		foreach ($entries as $key => $entry) {
-			DB::table('cloakroom_entries')->where('id',$entry->id)->update([
-			 	'barcodevalue' => bin2hex($entry->unique_id),
-			]);
-		}
+		// $entries = DB::table('cloakroom_entries')->select('unique_id',"id")->where('date','>','2024-12-15')->where('client_id',7)->get();
+		// foreach ($entries as $key => $entry) {
+		// 	DB::table('cloakroom_entries')->where('id',$entry->id)->update([
+		// 	 	'barcodevalue' => bin2hex($entry->unique_id),
+		// 	]);
+		// }
 
 		// $old_entry_ids = DB::table('cloakroom_entries_backup')->where('is_backup',0)->take(1000)->pluck('id')->toArray();
 

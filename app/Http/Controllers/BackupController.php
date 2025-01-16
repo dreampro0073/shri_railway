@@ -151,10 +151,7 @@ class BackupController extends Controller {
 		// 	echo 'all done';
 		// }
 
-		// $clients = User::where("client_id", 8)->pluck("id","old_id")->toArray();
-
-		// dd($clients);
-
+		$clients = User::where("client_id", 8)->pluck("id","old_id")->toArray();
 
 		$old_entry_ids = DB::table('sitting_entries_backup')->where('is_backup',0)->where('client_id',8)->take(1000)->pluck('id')->toArray();
 		if(sizeof($old_entry_ids) > 0){

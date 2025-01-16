@@ -230,7 +230,7 @@ class BackupController extends Controller {
 		// $entry_ids = DB::table('sitting_entries')->select('id','old_id')->where('client_id',8)->get();
 
 		foreach ($e_ids as $key => $e_id) {
-			$check = DB::table('sitting_entries')->where('old_id',$e_id)->where('client_id',8)->first();
+			$check = DB::table('sitting_entries')->select('id','old_id','added_by')->where('old_id',$e_id)->where('client_id',8)->first();
 
 			if($check){
 				$pens = DB::table('e_entries_backup')->where("entry_id",$check->old_id)->where("client_id",8)->get();

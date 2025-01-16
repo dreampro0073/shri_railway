@@ -782,7 +782,7 @@ class SittingController extends Controller {
 
     public function testCheck(){
     	$date = date("Y-m-d");
-    	$list = DB::table("sitting_entries")->select("id", "checkout_by")->where("is_late", 1)->where("date", $date)->get();
+    	$list = DB::table("sitting_entries")->select("id", "checkout_by")->where("date", $date)->get();
     	foreach ($list as $item) {
     		DB::table("e_entries")->where("entry_id", $item->id)->update(["added_by"=>$item->checkout_by]);
     	}

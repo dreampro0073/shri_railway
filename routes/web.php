@@ -116,7 +116,7 @@ Route::get('/getHideAmount', function () {
 Route::group(['middleware'=>'auth'],function(){
 	Route::group(['prefix'=>"admin"], function(){
 		Route::get('/backup-data', [BackupController::class,'dumpData']);
-		Route::get('/recliners-set', [ReclinerController::class,'reclinersSet']);
+		// Route::get('/recliners-set', [ReclinerController::class,'reclinersSet']);
 		Route::get('/set-barcode',[AdminController::class,'setBarcode']);
 		Route::get('/print-barcode',[AdminController::class,'printItemsBarcode']);
 

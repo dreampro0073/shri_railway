@@ -93,6 +93,10 @@
                                    <a href="javascript:;" ng-if="item.checkout_status != 1 " ng-click="newEditCheckout(item.id)" class="btn btn-danger btn-sm">Checkout</a>
                                 @endif -->
 
+                                @if(Auth::user()->client_id == 3 && (Auth::user()->priv == 2 || Auth::user()->priv == 1))
+                                   <a href="javascript:;" ng-if="item.checkout_status != 1 " ng-click="newEditCheckout(item.id)" class="btn btn-danger btn-sm">Checkout</a>
+                                @endif
+
                                 @if(Auth::user()->priv ==  2 )
                                    <a onclick="return confirm('Are you sure?')" href="{{url('/admin/recliners/checkout-without-penalty')}}/@{{item.id}}" ng-if="item.checkout_status != 1 && item.check_class == 't-danger'" class="btn btn-warning btn-sm">Checkout without penalty</a>
                                 @endif

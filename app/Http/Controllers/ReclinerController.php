@@ -23,6 +23,15 @@ class ReclinerController extends Controller {
 			return view('error');
 		}
 	}
+	public function reclinersSet(){
+		for ($i=1; $i <= 20; $i++) { 
+			DB::table('recliners')->insert([
+				'client_id' => 9,
+				'sl_no' => $i,
+				'status' => 0,
+			]);
+		}
+	}
 	public function initEntries(Request $request){
 
 		if(Auth::user()->priv == 2){

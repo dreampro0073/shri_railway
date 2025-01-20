@@ -87,15 +87,15 @@ class BackupController extends Controller {
 		
 
 	    // return "Wow";
-		$old_entry_ids = DB::table('users_backup')->pluck('id')->toArray();
-		foreach ($old_entry_ids as $key => $old_id) {
-			$newTask = (new User)
-			->setTable('users_backup')
-			->find($old_id)
-			->replicate()
-			->setTable('users')
-			->save();
-		}
+		// $old_entry_ids = DB::table('users_backup')->pluck('id')->toArray();
+		// foreach ($old_entry_ids as $key => $old_id) {
+		// 	$newTask = (new User)
+		// 	->setTable('users_backup')
+		// 	->find($old_id)
+		// 	->replicate()
+		// 	->setTable('users')
+		// 	->save();
+		// }
 
 		// $old_entry_ids = DB::table('massage_entries_backup')->where('is_backup',0)->take(1000)->pluck('id')->toArray();
 		// foreach ($old_entry_ids as $key => $old_id) {

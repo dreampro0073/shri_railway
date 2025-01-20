@@ -458,9 +458,14 @@ class ReclinerController extends Controller {
 				$data["success"] = true;
 				$data["message"] = "Already Checkout!";
 			} else {
-				$checkout_time = strtotime($entry->checkout_date);
-				$current_time = strtotime("now");
-				if($current_time < ($checkout_time + 600)){
+				// $checkout_time = strtotime($entry->checkout_date);
+				// $current_time = strtotime("now");
+
+				$now_time = strtotime(date("Y-m-d H:i:s",strtotime("-10 minutes")));
+				$current_time = strtotime(date("Y-m-d H:i:s"));
+	    		$checkout_time = strtotime($entry->checkout_date);
+
+				if($checkout_time > $now_time){
 					$entry->checkout_status = 1;
 					$entry->checkout_by = Auth::id();
 					$entry->checkout_time = date("Y-m-d H:i:s");

@@ -12,15 +12,16 @@ class CollectedPenalities extends Model{
     protected $table = 'collected_penalities';
 
     public static function setCheckStatus(){
-        DB::table("cloakroom_penalities")->where('is_checked', 0)->update(['is_checked'=>1]);
-        DB::table("cloakroom_entries")->where('is_checked', 0)->update(['is_checked'=>1]);
+
+        DB::table("cloakroom_penalities")->where('client_id',Auth::user()->client_id)->where('is_checked', 0)->update(['is_checked'=>1]);
+        DB::table("cloakroom_entries")->where('client_id',Auth::user()->client_id)->where('is_checked', 0)->update(['is_checked'=>1]);
     }
 
     public static function penltyCollection($id = 0){
         $check_shift = Entry::checkShift();
         $date = Entry::getPDate();
         if($id > 0){
-            $penlty = DB::table("cloakroom_penalities")->where("id", $id)->first();
+            $penlty = DB::table("cloakroom_penalities")->where('client_id',Auth::user()->client_id)->where("id", $id)->first();
             $entry = DB::table("cloakroom_entries")->where("id", $penlty->cloakroom_id)->first();
 
             $checkout_time = date("Y-m-d H:i:s",strtotime("- 50 min",strtotime($entry->checkout_date)));

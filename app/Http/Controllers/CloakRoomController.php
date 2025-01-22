@@ -298,7 +298,7 @@ class CloakRoomController extends Controller {
 		}
 	}
 
-   public function checkoutInit(Request $request,$type=0){
+   	public function checkoutInit(Request $request,$type=0){
     	$now_time = strtotime(date("Y-m-d H:i:s",strtotime("-15 minutes")));
 
     	if($type == 1){
@@ -367,8 +367,6 @@ class CloakRoomController extends Controller {
     		$data['success'] = true;
 	    	$data['message'] = "All Ready checkout";
     	}
-    	
-    	
 
 		return Response::json($data, 200, []);
     }
@@ -427,5 +425,15 @@ class CloakRoomController extends Controller {
         } else {
             return $letter;
         }
+    }
+
+    public function storePen(Request $request){
+    	CollectedPenalities::penltyCollection($request->id);
+
+    	$data['success'] = true;
+    	$data['message'] = 'Successfully';
+
+		return Response::json($data, 200, []);
+
     }
 }

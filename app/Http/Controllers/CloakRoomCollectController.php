@@ -47,7 +47,7 @@ class CloakRoomCollectController extends Controller {
 		// 	$item->checkout_date_show = date("d M, h:i A",strtotime($item->checkout_date));
 		// }
 
-		$penlty_list = DB::table("cloakroom_penalities")->where("is_checked", "=", 0)->where("added_by", Auth::user()->perent_user_id)->where('is_collected', '=', 0)->where('date', date("Y-m-d",strtotime($date)))->where("pay_type", 1)->where("shift", $check_shift)->get();
+		$penlty_list = DB::table("cloakroom_penalities")->where("is_checked", "=", 0)->where("added_by", Auth::user()->perent_user_id)->where('is_collected','=', 0)->where('date', date("Y-m-d",strtotime($date)))->where("pay_type", 1)->get();
 
 		$penalty_sum = DB::table("collected_penalities")->where('date', date("Y-m-d",strtotime($date)))->where("shift", $check_shift)->sum("paid_amount");
 		$c_sum = DB::table("collected_cloakroom")->where('date', date("Y-m-d",strtotime($date)))->sum("collected_amount");

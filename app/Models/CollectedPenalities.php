@@ -50,6 +50,7 @@ class CollectedPenalities extends Model{
                     'is_late'=>0,
                     'no_of_day' => 1,
                     'collected_pen' => 1,
+                    'is_collected' => 1,
                     'checkout_time' => $checkout_time, 
                 ]);
             }

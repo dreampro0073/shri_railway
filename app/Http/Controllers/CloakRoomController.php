@@ -149,7 +149,7 @@ class CloakRoomController extends Controller {
 			$paid_amount = $request->paid_amount;
 			if($request->id){
 				$group_id = $request->id;
-				$entry = CloakRoom::find($request->id);
+				$entry = CloakRoom::where('id', $request->id)->where("client_id", Auth::user()->client_id)->first();
 				$message = "Updated Successfully!";
 				$entry->check_in = date("H:i:s",strtotime($request->check_in));
 				
@@ -228,7 +228,7 @@ class CloakRoomController extends Controller {
 	public function printPost($id = 0){
 
 		$rate_list = DB::table("cloakroom_rate_list")->where("client_id", Auth::user()->client_id)->first();
-        $print_data = DB::table('cloakroom_entries')->where('id', $id)->first();
+        $print_data = DB::table('cloakroom_entries')->where("client_id", Auth::user()->client_id)->where('id', $id)->first();
 
         $total_amount = $print_data->paid_amount;
 
@@ -264,7 +264,7 @@ class CloakRoomController extends Controller {
 		// }
 
 		$rate_list = DB::table("cloakroom_rate_list")->where("client_id", Auth::user()->client_id)->first();
-        $print_data = DB::table('cloakroom_entries')->where('barcodevalue', $print_id)->first();
+        $print_data = DB::table('cloakroom_entries')->where("client_id", Auth::user()->client_id)->where('barcodevalue', $print_id)->first();
         $total_amount = $print_data->paid_amount;
 
         $bm_amount = DB::table('cloakroom_penalities')->where('cloakroom_id','=',$print_data->id)->where('is_collected',1)->sum('paid_amount');
@@ -302,11 +302,11 @@ class CloakRoomController extends Controller {
     	$now_time = strtotime(date("Y-m-d H:i:s",strtotime("-15 minutes")));
 
     	if($type == 1){
-    		$l_entry = CloakRoom::where('id', $request->entry_id)->where('checkout_status',0)->first();
+    		$l_entry = CloakRoom::where('id', $request->entry_id)->where("client_id", Auth::user()->client_id)->where('checkout_status',0)->first();
 
     	}else{
     		$productName =$request->productName;
-	    	$l_entry = CloakRoom::where('unique_id', $productName)->where('checkout_status',0)->first();
+	    	$l_entry = CloakRoom::where('unique_id', $productName)->where("client_id", Auth::user()->client_id)->where('checkout_status',0)->first();
     	}
 
     	// dd($l_entry);
@@ -318,7 +318,7 @@ class CloakRoomController extends Controller {
 
 	    	if($checkout_time > $now_time){
     			$data['timeOut'] = false;
-	    		$l_entry = CloakRoom::find($entry_id);
+	    		$l_entry = CloakRoom::where('id',$entry_id)->where("client_id", Auth::user()->client_id)->first();
 	    		$l_entry->status = 1; 
 				$l_entry->checkout_status = 1;
 	    		$l_entry->checkout_by = Auth::id();
@@ -373,7 +373,7 @@ class CloakRoomController extends Controller {
 
     public function checkoutStore(Request $request){
     	$check_shift = Entry::checkShift();
-    	$entry = CloakRoom::find($request->id);
+    	$entry = CloakRoom::where('id',$request->id)->where("client_id", Auth::user()->client_id)->first();
     	if(User::checkHrType()){
     		$total_day =  $entry->no_of_day + $request->day;
     	} else {

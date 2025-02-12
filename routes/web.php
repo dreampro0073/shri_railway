@@ -20,6 +20,7 @@ use App\Http\Controllers\AppApiController;
 use App\Http\Controllers\AppDailyEntryContoller;
 use App\Http\Controllers\AadharDetailsController;
 use App\Http\Controllers\BackupController;
+use App\Http\Controllers\RoomController;
 
 
 
@@ -222,6 +223,15 @@ Route::group(['middleware'=>'auth'],function(){
 			Route::get('/history/{g_stock_id}',[GodownsController::class,'history']);
 			Route::get('/set-gid',[GodownsController::class,'setGid']);
 		});
+		
+		Route::get('/all-rooms',[RoomController::class,'allEntries']);
+		Route::group(['prefix'=>"rooms"], function(){
+
+			Route::get('/{type}',[RoomController::class,'index']);
+			Route::get('/print/{id?}', [RoomController::class,'printPost']);
+
+		});	
+
 	});
 });
 
@@ -352,6 +362,21 @@ Route::group(['prefix'=>"api"], function(){
 		Route::post('/init',[SittingCollectController::class,'init']);
 		Route::post('/store',[SittingCollectController::class,'storeCollectSit']);
 		Route::post('/store-pen',[SittingCollectController::class,'storePen']);
+	});
+
+
+	Route::group(['prefix'=>"rooms"], function(){
+		Route::post('/init/{type}',[RoomController::class,'initEntry']);
+		Route::post('/init-all',[RoomController::class,'initAllEntry']);
+		Route::post('/edit-init',[RoomController::class,'editEntry']);
+		Route::post('/store/{type}',[RoomController::class,'store']);
+		Route::post('/cal-check',[RoomController::class,'calCheck']);
+		Route::post('/checkout-init',[RoomController::class,'checkoutInit']);
+		Route::post('/checkout-store',[RoomController::class,'checkoutStore']);
+		Route::get('/delete/{id}',[RoomController::class,'delete']);
+		Route::post('/init-single-entry',[RoomController::class,'initSingleEntry']);
+		Route::get('/delete-e-entry/{entry_id}/{e_entry_id}',[RoomController::class,'deleteEnEntry']);
+
 	});
 
 	

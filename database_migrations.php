@@ -185,4 +185,19 @@ ALTER TABLE `users_backup` CHANGE `parent_user_id` `perent_user_id` INT(11) NOT 
 
 ALTER TABLE `users_backup` ADD `org_id` INT NOT NULL DEFAULT '0' AFTER `perent_user_id`, ADD `is_auto_alert_access` TINYINT(1) NOT NULL DEFAULT '0' AFTER `org_id`;
 
+
+
+ALTER TABLE `client_services` CHANGE `services_id` `services_id` INT(11) NOT NULL DEFAULT '0' COMMENT '1=sittinng,2=cloakroom, 3=canteen,4= Massage, 5=Locker,6=Ledger account, 7 = Recliners, 8 = Rooms';
+
+ALTER TABLE `room_entries` DROP `deleted`, DROP `delete_by`, DROP `delete_time`;
+
+ALTER TABLE `room_entries` ADD `client_id` INT NOT NULL DEFAULT '0' AFTER `id`;
+
+ALTER TABLE `room_e_entries` ADD `client_id` INT NOT NULL DEFAULT '0' AFTER `id`;
+
+ALTER TABLE `pods` ADD `client_id` INT NOT NULL DEFAULT '0' AFTER `id`;
+ALTER TABLE `single_cabins` ADD `client_id` INT NOT NULL DEFAULT '0' AFTER `id`;
+ALTER TABLE `double_beds` ADD `client_id` INT NOT NULL DEFAULT '0' AFTER `id`;
+
+
 ?>

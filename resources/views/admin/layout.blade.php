@@ -40,6 +40,23 @@
                             </li>
                         @endif
 
+                        @if(in_array(8, $service_ids))
+                            <li class="@if(isset($sidebar)) @if($sidebar == 'pods') active @endif @endif">
+                                <a href="{{url('/admin/rooms/1')}}"><i class="fa fa-podcast"></i>PODs</a>
+                            </li>
+                            <li class="@if(isset($sidebar)) @if($sidebar == 'scabins') active @endif @endif">
+                                <a href="{{url('/admin/rooms/2')}}"><i class="fa fa-tasks"></i>Single Suit Cabin</a>
+                            </li>
+                            <li class="@if(isset($sidebar)) @if($sidebar == 'beds') active @endif @endif">
+                                <a href="{{url('/admin/rooms/3')}}"><i class="fa fa-bed"></i>Double Beds</a>
+                            </li>
+                        @endif
+                        @if(in_array(8, $service_ids) && Auth::user()->priv == 2)
+                            <li class="@if(isset($sidebar)) @if($sidebar == 'all-entries') active @endif @endif">
+                                <a href="{{url('/admin/all-rooms')}}"><i class="fa fa-navicon" aria-hidden="true"></i>All Rooms</a>
+                            </li>
+                        @endif
+
                         @if(in_array(7, $service_ids) || Auth::user()->priv == 1)
                             <li class="@if(isset($sidebar)) @if($sidebar == 'rec') active @endif @endif">
                                 <a href="{{url('/admin/recliners')}}"><i class="fa fa-sitemap"></i>Recliners</a>

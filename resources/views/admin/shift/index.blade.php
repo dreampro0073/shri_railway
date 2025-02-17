@@ -133,6 +133,33 @@
                         <td>@{{recliner_data.total_shift_cash}}</td>
                         <td>@{{recliner_data.total_collection}}</td>
                     </tr>
+                    <tr ng-if="service_ids.includes(8)">
+                        <td>PODs</td> 
+                        <td>@{{pod_data.last_hour_upi_total}}</td>
+                        <td>@{{pod_data.last_hour_cash_total}}</td>
+                        <td>@{{pod_data.last_hour_total}}</td>
+                        <td>@{{pod_data.total_shift_upi}}</td>
+                        <td>@{{pod_data.total_shift_cash}}</td>
+                        <td>@{{pod_data.total_collection}}</td> 
+                    </tr>
+                    <tr ng-if="service_ids.includes(8)">                       
+                        <td>Singal Suit Cabin</td> 
+                        <td>@{{singal_cabin_data.last_hour_upi_total}}</td>
+                        <td>@{{singal_cabin_data.last_hour_cash_total}}</td>
+                        <td>@{{singal_cabin_data.last_hour_total}}</td>
+                        <td>@{{singal_cabin_data.total_shift_upi}}</td>
+                        <td>@{{singal_cabin_data.total_shift_cash}}</td>
+                        <td>@{{singal_cabin_data.total_collection}}</td>
+                    </tr>
+                    <tr ng-if="service_ids.includes(8)">                        
+                        <td>Double Beds</td> 
+                        <td>@{{double_bed_data.last_hour_upi_total}}</td>
+                        <td>@{{double_bed_data.last_hour_cash_total}}</td>
+                        <td>@{{double_bed_data.last_hour_total}}</td>
+                        <td>@{{double_bed_data.total_shift_upi}}</td>
+                        <td>@{{double_bed_data.total_shift_cash}}</td>
+                        <td>@{{double_bed_data.total_collection}}</td>
+                    </tr>
                     <tr>
                         <td><b>Grand Total</b></td> 
                         <td><b>@{{last_hour_upi_total}}</b></td>

@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Redirect, Validator, Hash, Response, Session, DB;
 use App\Models\User;
 use App\Models\Entry;
-use App\Models\CloakRoom, App\Models\Sitting, App\Models\Canteen, App\Models\Massage, App\Models\Locker,App\Models\Recliner;
+use App\Models\CloakRoom, App\Models\Sitting, App\Models\Canteen, App\Models\Massage, App\Models\Locker,App\Models\Recliner,App\Models\Room;
 
 
 class ShiftController extends Controller {
@@ -122,6 +122,35 @@ class ShiftController extends Controller {
 			$last_hour_cash_total += $recliner_data['last_hour_cash_total'];
 			$last_hour_total += $recliner_data['last_hour_total'];
 			$data['recliner_data'] = $recliner_data;
+		}		
+
+		if(in_array(8, $service_ids)){
+			$pod_data = Room::totalShiftData(1,$input_date,$user_id,$client_id);
+			$total_shift_upi += $pod_data['total_shift_upi'];
+			$total_shift_cash += $pod_data['total_shift_cash'];
+			$total_collection += $pod_data['total_collection'];
+			$last_hour_upi_total += $pod_data['last_hour_upi_total'];
+			$last_hour_cash_total += $pod_data['last_hour_cash_total'];
+			$last_hour_total += $pod_data['last_hour_total'];
+			$data['pod_data'] = $pod_data;
+
+			$singal_cabin_data = Room::totalShiftData(2,$input_date,$user_id,$client_id);
+			$total_shift_upi += $singal_cabin_data['total_shift_upi'];
+			$total_shift_cash += $singal_cabin_data['total_shift_cash'];
+			$total_collection += $singal_cabin_data['total_collection'];
+			$last_hour_upi_total += $singal_cabin_data['last_hour_upi_total'];
+			$last_hour_cash_total += $singal_cabin_data['last_hour_cash_total'];
+			$last_hour_total += $singal_cabin_data['last_hour_total'];
+			$data['singal_cabin_data'] = $singal_cabin_data;			
+
+			$double_bed_data = Room::totalShiftData(3,$input_date,$user_id,$client_id);
+			$total_shift_upi += $double_bed_data['total_shift_upi'];
+			$total_shift_cash += $double_bed_data['total_shift_cash'];
+			$total_collection += $double_bed_data['total_collection'];
+			$last_hour_upi_total += $double_bed_data['last_hour_upi_total'];
+			$last_hour_cash_total += $double_bed_data['last_hour_cash_total'];
+			$last_hour_total += $double_bed_data['last_hour_total'];
+			$data['double_bed_data'] = $double_bed_data;
 		}
 	
         $data['total_shift_upi'] = $total_shift_upi;

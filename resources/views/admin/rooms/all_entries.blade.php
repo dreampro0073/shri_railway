@@ -45,7 +45,6 @@
                             <th>Bill no</th>
                             <td>
                                 <span>Type</span>
-                                
                             </td>
                             <th>Name</th>
                             <th>Mobile No</th>

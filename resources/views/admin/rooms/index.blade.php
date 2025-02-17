@@ -44,11 +44,11 @@
                         <tr class="table-primary">
                             <th>S.no</th>
                             <th>Bill no</th>
-                            <td>
+                            <th>
                                 <span ng-if="type == 1">Pod</span>
                                 <span ng-if="type == 2">Cabin</span>
                                 <span ng-if="type == 3">Bed</span>
-                            </td>
+                            </th>
                             <th>Name</th>
                             <th>Mobile No</th>
                             <th>Check In/Check Out</th>
@@ -89,7 +89,7 @@
                         </tr>
                     </tbody>
                 </table>
-                <div ng-if="l_entries.length == 0" class="alert alert-danger">Data Not Found!</div>
+                <div ng-if="entries.length == 0" class="alert alert-danger">Data Not Found!</div>
             </div>     
         </div>
     </div>

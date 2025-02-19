@@ -23,6 +23,9 @@ class Entry extends Model
     }
 
     public static function getServiceIds($client_id){
+        $parent = DB::table("users")->select("org_id")->where("client_id", Auth::user()->client_id)->where("priv", 2)->first();
+        $check = DB::table("clients")->where("org_id", $parent->org_id)->where("id", $client_id)->first();
+        if(!$check) die("Something Wrong!");
         return DB::table("client_services")->where('status',1)->where("client_id", $client_id)->pluck('services_id')->toArray();
     }
 

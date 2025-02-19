@@ -47,9 +47,6 @@
 	</style>
 </head>
 <body>
-	<?php  
-	    $service_ids = Session::get('service_ids');
-	?>
 	<div id="printableArea" class="main">
 		<h4>
 			{{Session::get('client_name')}}
@@ -105,7 +102,7 @@
                 </tr>
 			@endif
 			@if(in_array(3, $service_ids))
-			                <tr>
+			    <tr>
                    	<td>
                        <b>Canteen</b>
                    	</td> 
@@ -154,6 +151,75 @@
                     </td>
                     <td>
                         {{$locker_data['total_collection']}}
+                    </td>
+                   
+                </tr>
+			@endif			
+
+			@if(in_array(7, $service_ids))
+				<tr>
+                   	<td>
+                       <b>Recliner</b>
+                   	</td> 
+                   
+                    <td>
+                        {{$recliner_data['total_shift_upi']}}
+                    </td>
+                    <td>
+                        {{$recliner_data['total_shift_cash']}}
+                    </td>
+                    <td>
+                        {{$recliner_data['total_collection']}}
+                    </td>
+                   
+                </tr>
+			@endif
+			@if(in_array(8, $service_ids))
+				<tr>
+                   	<td>
+                       <b>PODs</b>
+                   	</td> 
+                   
+                    <td>
+                        {{$pod_data['total_shift_upi']}}
+                    </td>
+                    <td>
+                        {{$pod_data['total_shift_cash']}}
+                    </td>
+                    <td>
+                        {{$pod_data['total_collection']}}
+                    </td>
+                   
+                </tr>				
+                <tr>
+                   	<td>
+                       <b>Singal Suit Cabin</b>
+                   	</td> 
+                   
+                    <td>
+                        {{$singal_cabin_data['total_shift_upi']}}
+                    </td>
+                    <td>
+                        {{$singal_cabin_data['total_shift_cash']}}
+                    </td>
+                    <td>
+                        {{$singal_cabin_data['total_collection']}}
+                    </td>
+                   
+                </tr>				
+                <tr>
+                   	<td>
+                       <b>Double Beds</b>
+                   	</td> 
+                   
+                    <td>
+                        {{$double_bed_data['total_shift_upi']}}
+                    </td>
+                    <td>
+                        {{$double_bed_data['total_shift_cash']}}
+                    </td>
+                    <td>
+                        {{$double_bed_data['total_collection']}}
                     </td>
                    
                 </tr>

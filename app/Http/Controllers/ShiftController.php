@@ -114,19 +114,19 @@ class ShiftController extends Controller {
 			$data = $this->calculateAmount($recliner_data, $data);
 		}		
 
-		if(in_array(8, $service_ids)){
-			$pod_data = Room::totalShiftData(1,$input_date,$user_id,$client_id);
-			$data['pod_data'] = $pod_data;
-			$data = $this->calculateAmount($pod_data, $data);
+		// if(in_array(8, $service_ids)){
+		// 	$pod_data = Room::totalShiftData(1,$input_date,$user_id,$client_id);
+		// 	$data['pod_data'] = $pod_data;
+		// 	$data = $this->calculateAmount($pod_data, $data);
 
-			$singal_cabin_data = Room::totalShiftData(2,$input_date,$user_id,$client_id);
-			$data['singal_cabin_data'] = $singal_cabin_data;
-			$data = $this->calculateAmount($singal_cabin_data, $data);	
+		// 	$singal_cabin_data = Room::totalShiftData(2,$input_date,$user_id,$client_id);
+		// 	$data['singal_cabin_data'] = $singal_cabin_data;
+		// 	$data = $this->calculateAmount($singal_cabin_data, $data);	
 
-			$double_bed_data = Room::totalShiftData(3,$input_date,$user_id,$client_id);
-			$data['double_bed_data'] = $double_bed_data;
-			$data = $this->calculateAmount($double_bed_data, $data);
-		}
+		// 	$double_bed_data = Room::totalShiftData(3,$input_date,$user_id,$client_id);
+		// 	$data['double_bed_data'] = $double_bed_data;
+		// 	$data = $this->calculateAmount($double_bed_data, $data);
+		// }
 		
 		return $data;
 	}

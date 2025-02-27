@@ -99,7 +99,7 @@
             </div>
         @endif
     </div>
-    @if(in_array(7, $service_ids))
+    @if(in_array(8, $service_ids))
     <div class="row">
         <div class="col-md-4">
             <div class="box card">

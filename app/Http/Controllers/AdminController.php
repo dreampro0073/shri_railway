@@ -51,6 +51,7 @@ class AdminController extends Controller {
             "avail_cabins" => $avail_cabins,
             "avail_beds" => $avail_beds,
             "booked_pods" => $booked_pods,
+            "booked_cabins" => $booked_cabins,
             "booked_beds" => $booked_beds,
 
         ]);

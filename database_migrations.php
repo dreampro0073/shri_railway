@@ -199,5 +199,7 @@ ALTER TABLE `pods` ADD `client_id` INT NOT NULL DEFAULT '0' AFTER `id`;
 ALTER TABLE `single_cabins` ADD `client_id` INT NOT NULL DEFAULT '0' AFTER `id`;
 ALTER TABLE `double_beds` ADD `client_id` INT NOT NULL DEFAULT '0' AFTER `id`;
 
+ALTER TABLE `client_services` ADD `capacity` INT NOT NULL DEFAULT '0' AFTER `status`;
+
 
 ?>

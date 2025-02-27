@@ -19,9 +19,27 @@ class AdminController extends Controller {
 
 
 	public function dashboard(Request $request){
+
+		$sitting_count = 0;
+		$total_sitting_count = 0;
+
+		$sitting_count = DB::table("sitting_entries")->where('checkout_status',0)->sum('no_of_adults');
+		$sitting_count += DB::table("sitting_entries")->where('checkout_status',0)->sum('no_of_children');
+		$sitting_count += DB::table("sitting_entries")->where('checkout_status',0)->sum('no_of_baby_staff');
+
+		$total_sitting = DB::table('client_services')->where('client_id',Auth::user()->client_id)->where('services_id',1)->first();
+
+		if($total_sitting){
+			$total_sitting_count = $total_sitting->capacity;
+		}
+		
+		
+
 		return view('admin.dashboard', [
             "sidebar" => "dashboard",
             "subsidebar" => "dashboard",
+            "sitting_count" => $sitting_count,
+            "total_sitting_count" => $total_sitting_count,
         ]);
 	}
 

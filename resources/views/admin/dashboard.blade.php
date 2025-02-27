@@ -23,19 +23,21 @@
     </div>
     <div class="row">
         @if(in_array(1, $service_ids) || Auth::user()->priv == 1)
-            <div class="col-md-3">
+            <div class="col-md-3" style="margin-bottom:20px;">
                 <a class="no-dec" href="{{url('/admin/sitting')}}">
                     <div class="card p-3 shadow mb-4" style="background:#d3d3d396;; padding: 10px;">
                         <p style="font-size: 30px;">Sitting</p>
-                        <i>
-                            Sitting
-                        </i>
+                        <div>
+                            <h3>
+                                <span style="font-size:26px;color: green;">{{$sitting_count}}</span>/<span style="font-size:28px;color:black;">{{$total_sitting_count}}</span>
+                            </h3>
+                        </div>
                     </div>
                 </a>    
             </div>
         @endif        
         @if(in_array(2, $service_ids) || Auth::user()->priv == 1)
-            <div class="col-md-3">
+            <div class="col-md-3" style="margin-bottom:20px;">
                 <a class="no-dec" href="{{url('/admin/cloak-rooms')}}">
                     <div class="card p-3 shadow mb-4" style="background:#d3d3d396;;padding: 10px;">
                         <p style="font-size: 30px;">Cloakrooms</p>
@@ -46,7 +48,7 @@
                 </a>    
             </div>
             @if(Auth::user()->priv == 1 || Auth::user()->priv == 2)
-                <div class="col-md-3">
+                <div class="col-md-3" style="margin-bottom:20px;">
                     <a class="no-dec" href="{{url('/admin/cloak-rooms/all')}}">
                         <div class="card p-3 shadow mb-4" style="background:#d3d3d396;;padding: 10px;">
                             <p style="font-size: 30px;">Cloakrooms All</p>
@@ -60,7 +62,7 @@
         @endif        
         @if(in_array(3, $service_ids) || Auth::user()->priv == 1)
             @if(Auth::user()->priv == 1 || Auth::user()->priv == 2)
-                <div class="col-md-3">
+                <div class="col-md-3" style="margin-bottom:20px;">
                     <a class="no-dec" href="{{url('/admin/canteens/items')}}">
                         <div class="card p-3 shadow mb-4" style="background:#d3d3d396;;padding: 10px;">
                             <p style="font-size: 30px;">Canteen Items</p>
@@ -71,7 +73,7 @@
                     </a>    
                 </div>
             @endif
-            <div class="col-md-3">
+            <div class="col-md-3" style="margin-bottom:20px;">
                 <a class="no-dec" href="{{url('/admin/daily-entries')}}">
                     <div class="card p-3 shadow mb-4" style="background:#d3d3d396;;padding: 10px;">
                         <p style="font-size: 30px;">Daily Entries</p>
@@ -85,7 +87,7 @@
         @endif
 
         @if(in_array(7, $service_ids) || Auth::user()->priv == 1)
-            <div class="col-md-3">
+            <div class="col-md-3" style="margin-bottom:20px;">
                 <a class="no-dec" href="{{url('/admin/recliners')}}">
                     <div class="card p-3 shadow mb-4" style="background:#d3d3d396;; padding: 10px;">
                         <p style="font-size: 30px;">Recliners</p>
@@ -98,7 +100,7 @@
         @endif
     </div>
     <div class="row" style="margin-top:30px;">
-        <div class="col-md-3">
+        <div class="col-md-3" style="margin-bottom:20px;">
             <a class="no-dec" href="{{url('/admin/shift/current')}}">
                 <div class="card p-3 shadow mb-4" style="background:#d3d3d396;;padding: 10px;">
                     <p style="font-size: 30px;">Shift Status</p>

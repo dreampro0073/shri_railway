@@ -1333,7 +1333,7 @@ app.controller('shiftCtrl', function($scope , $http, $timeout , DBService) {
 
     $scope.init = function () {
         $scope.loading = false;
-
+        console.log($scope.filter);
         DBService.postCall($scope.filter, '/api/shift/init').then((data) => {
             if (data.success) { 
 

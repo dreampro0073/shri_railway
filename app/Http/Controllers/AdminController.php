@@ -30,11 +30,9 @@ class AdminController extends Controller {
 		$total_sitting = DB::table('client_services')->where('client_id',Auth::user()->client_id)->where('services_id',1)->first();
 
 		if($total_sitting){
-			$total_sitting_count = $total_sitting->capacity;
+			$total_sitting_count = isset($total_sitting->capacity) ? $total_sitting->capacity : 0;
 		}
 		
-		
-
 		return view('admin.dashboard', [
             "sidebar" => "dashboard",
             "subsidebar" => "dashboard",

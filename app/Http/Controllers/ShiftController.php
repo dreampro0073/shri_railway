@@ -57,15 +57,14 @@ class ShiftController extends Controller {
         ]);
 	}
 
-	public function getStatus($request, $client_id, $service_ids){
-
-		$input_date = isset($request->input_date) ? $request->input_date : date("Y-m-d");
+	public function getStatus($request, $client_id, $service_ids){ 
+		$input_date = isset($request['input_date']) ? $request['input_date'] : date("Y-m-d");
 		if(Auth::user()->priv != 2){
             $user_id = Auth::id();
         } else{
-			$user_id = isset($request->user_id ) ? $request->user_id : 0;
+			$user_id = isset($request['user_id']) ? $request['user_id'] : 0;
 		}
-
+		 
 		$current_shift = Entry::checkShift();
 
 		$data['total_shift_upi'] = 0;

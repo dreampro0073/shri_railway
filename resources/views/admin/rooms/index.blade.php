@@ -84,7 +84,7 @@
                                 @if(Auth::user()->priv == 1)
                                 <a href="javascript:;" ng-click="edit(item.id)" class="btn btn-warning btn-sm">Edit</a>
                                 @endif
-                                <a href="{{url('/admin/entries/print')}}/@{{item.id}}" class="btn btn-success btn-sm" target="_blank">Print</a>
+                                <a href="{{url('/admin/rooms/print')}}/@{{item.id}}" class="btn btn-success btn-sm" target="_blank">Print</a>
                             </td>
                         </tr>
                     </tbody>

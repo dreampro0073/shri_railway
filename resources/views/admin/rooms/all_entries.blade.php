@@ -87,7 +87,7 @@
                            
                             <td >
                                
-                                <a href="{{url('/admin/entries/print')}}/@{{item.id}}" class="btn btn-success btn-sm" target="_blank">Print</a>
+                                <a href="{{url('/admin/rooms/print')}}/@{{item.id}}" class="btn btn-success btn-sm" target="_blank">Print</a>
 
                                 <a href="javascript:;" ng-click="initSingleEntry(item.id)" class="btn btn-warning btn-sm">View</a>
                         

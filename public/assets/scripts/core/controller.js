@@ -1302,6 +1302,9 @@ app.controller('shiftCtrl', function($scope , $http, $timeout , DBService) {
     $scope.massage_data = [];
     $scope.locker_data = [];
     $scope.recliner_data = [];
+    $scope.pod_data = [];
+    $scope.singal_cabin_data = [];
+    $scope.double_bed_data = [];
     $scope.service_ids = [];
     $scope.clients = [];
     $scope.filter = {
@@ -1344,6 +1347,9 @@ app.controller('shiftCtrl', function($scope , $http, $timeout , DBService) {
                 $scope.massage_data = data.massage_data;
                 $scope.locker_data = data.locker_data;
                 $scope.recliner_data = data.recliner_data;
+                $scope.pod_data = data.pod_data;
+                $scope.singal_cabin_data = data.singal_cabin_data;
+                $scope.double_bed_data = data.double_bed_data;
                
                 $scope.total_shift_upi = data.total_shift_upi ; 
                 $scope.total_shift_cash = data.total_shift_cash ; 

@@ -89,11 +89,7 @@ class Recliner extends Model
         if($user_id == 0 ){
             $total_shift_upi = Recliner::where('client_id', $client_id)->where('date',$input_date)->where('pay_type',2)->sum("paid_amount");
 
-
-
             $total_shift_upi += DB::table('recliner_e_entries')->where('client_id', $client_id)->where('date',$input_date)->where('pay_type',2)->sum("paid_amount");
-
-
 
             $total_shift_cash = Recliner::where('client_id', $client_id)->where('date',$input_date)->where('pay_type',1)->sum("paid_amount");
 
@@ -108,7 +104,6 @@ class Recliner extends Model
             $last_hour_cash_total += DB::table('recliner_e_entries')->where('client_id', $client_id)->where('date',$input_date)->where('pay_type',1)->whereBetween('created_at', [date('Y-m-d H:00:00'), date("Y-m-d H:i:s")])->sum("paid_amount"); 
 
         }else{
-            // dd($user_id);
 
             $total_shift_upi = Recliner::where('client_id', $client_id)->where('added_by',$user_id)->where('date',$input_date)->where('pay_type',2)->sum("paid_amount");
 
@@ -119,9 +114,6 @@ class Recliner extends Model
             $total_shift_cash = Recliner::where('client_id', $client_id)->where('added_by',$user_id)->where('date',$input_date)->where('pay_type',1)->sum("paid_amount");
 
             $total_shift_cash += DB::table('recliner_e_entries')->where('client_id', $client_id)->where('added_by',$user_id)->where('date',$input_date)->where('pay_type',1)->sum("paid_amount");
-
-            // dd($total_shift_cash);
-
 
             $last_hour_upi_total = Recliner::where('client_id', $client_id)->where('added_by',$user_id)->where('date',$input_date)->where('pay_type',2)->whereBetween('created_at', [date('Y-m-d H:00:00'), date("Y-m-d H:i:s")])->sum("paid_amount"); 
 

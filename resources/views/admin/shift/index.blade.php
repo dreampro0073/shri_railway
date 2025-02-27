@@ -11,17 +11,8 @@
                     <h2 class="">Total Shift Collection (<?php echo date("d-m-Y"); ?>)</h2>
                 </div>
                  <div class="col-md-6 text-right" style="padding-top: 25px;">
-                    <a href="{{url('/admin/shift/print/1')}}" class="btn btn-sm btn-warning"  target="_blank">
-                        Print
-                    </a>
+                    <a href="{{url('/admin/shift/print/1?input_date=')}}@{{filter.input_date}}{{'&client_id='}}@{{filter.client_id}}{{'&user_id='}}@{{filter.user_id}}" class="btn btn-sm btn-warning"  target="_blank"> Print </a>
                 </div>
-                <!-- @if(Auth::user()->priv != 2) -->
-                    <div class="col-md-6 text-right" style="padding-top: 25px;">
-                        <a href="{{url('/admin/shift/print/1')}}" class="btn btn-sm btn-warning"  target="_blank">
-                            Print
-                        </a>
-                    </div>
-                <!-- @endif -->
             </div>
             <hr>
             @if(Auth::user()->priv == 2)
@@ -132,6 +123,33 @@
                         <td>@{{recliner_data.total_shift_upi}}</td>
                         <td>@{{recliner_data.total_shift_cash}}</td>
                         <td>@{{recliner_data.total_collection}}</td>
+                    </tr>
+                    <tr ng-if="service_ids.includes(8)">
+                        <td>PODs</td> 
+                        <td>@{{pod_data.last_hour_upi_total}}</td>
+                        <td>@{{pod_data.last_hour_cash_total}}</td>
+                        <td>@{{pod_data.last_hour_total}}</td>
+                        <td>@{{pod_data.total_shift_upi}}</td>
+                        <td>@{{pod_data.total_shift_cash}}</td>
+                        <td>@{{pod_data.total_collection}}</td> 
+                    </tr>
+                    <tr ng-if="service_ids.includes(8)">                       
+                        <td>Singal Suit Cabin</td> 
+                        <td>@{{singal_cabin_data.last_hour_upi_total}}</td>
+                        <td>@{{singal_cabin_data.last_hour_cash_total}}</td>
+                        <td>@{{singal_cabin_data.last_hour_total}}</td>
+                        <td>@{{singal_cabin_data.total_shift_upi}}</td>
+                        <td>@{{singal_cabin_data.total_shift_cash}}</td>
+                        <td>@{{singal_cabin_data.total_collection}}</td>
+                    </tr>
+                    <tr ng-if="service_ids.includes(8)">                        
+                        <td>Double Beds</td> 
+                        <td>@{{double_bed_data.last_hour_upi_total}}</td>
+                        <td>@{{double_bed_data.last_hour_cash_total}}</td>
+                        <td>@{{double_bed_data.last_hour_total}}</td>
+                        <td>@{{double_bed_data.total_shift_upi}}</td>
+                        <td>@{{double_bed_data.total_shift_cash}}</td>
+                        <td>@{{double_bed_data.total_collection}}</td>
                     </tr>
                     <tr>
                         <td><b>Grand Total</b></td> 

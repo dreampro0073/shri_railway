@@ -35,7 +35,6 @@ class RoomController extends Controller {
         ]);
 	}
 	public function allEntries(){
-		// dd('hello');
 		$sidebar = 'all-entries';
         $subsidebar = 'all-entries';
 
@@ -46,8 +45,10 @@ class RoomController extends Controller {
 	}
 	
 	public function initEntry(Request $request,$type){
+		$client_id = Auth::user()->client_id;
 	
 		$entries = DB::table('room_entries')->select('room_entries.*');
+
 		if($request->unique_id){
 			$entries = $entries->where('room_entries.unique_id', 'LIKE', '%'.$request->unique_id.'%');
 		}		
@@ -62,17 +63,16 @@ class RoomController extends Controller {
 			$entries = $entries->where('room_entries.pnr_uid', 'LIKE', '%'.$request->pnr_uid.'%');
 		}		
 		
-		$entries = $entries->where('checkout_status',0)->where('client_id',Auth::user()->client_id)->where('type',$type);
+		$entries = $entries->where('checkout_status',0)->where('client_id',$client_id)->where('type',$type);
 		$entries = $entries->orderBy('id', "DESC")->get();
 
 		foreach ($entries as $key => $item) {
 			$bm_amount = DB::table('room_e_entries')->where('status',0)->where('entry_id','=',$item->id)->sum('paid_amount');
+
 			$item->sh_paid_amount = $item->paid_amount + $bm_amount;
 			$item->check_in = date("d M y",strtotime($item->date))." ".date("h:i A",strtotime($item->check_in));
 			$item->checkout_date = date("d M y, h:i A",strtotime($item->checkout_date));
-
 			$item->show_e_ids = Room::getEnos($item->type,$item->e_ids);
-			
 			$item->str_checkout_time = strtotime($item->checkout_date);
 
 		}
@@ -95,8 +95,6 @@ class RoomController extends Controller {
 		return Response::json($data, 200, []);
 	}
 	public function initAllEntry(Request $request){
-		
-
 		$entries = DB::table('room_entries')->select('room_entries.*');
 		if($request->unique_id){
 			$entries = $entries->where('room_entries.unique_id', 'LIKE', '%'.$request->unique_id.'%');
@@ -112,10 +110,7 @@ class RoomController extends Controller {
 			$entries = $entries->where('room_entries.pnr_uid', 'LIKE', '%'.$request->pnr_uid.'%');
 		}		
 	
-		
-		$entries = $entries->where('client_id',Auth::user()->client_id)->orderBy('id', "DESC")->take(500)->get();
-
-		
+		$entries = $entries->where('client_id', Auth::user()->client_id)->orderBy('id', "DESC")->take(100)->get();
 
 		foreach ($entries as $key => $item) {
 			$bm_amount = DB::table('room_e_entries')->where('status',0)->where('entry_id','=',$item->id)->sum('paid_amount');
@@ -126,7 +121,6 @@ class RoomController extends Controller {
 			$item->show_e_ids = Room::getEnos($item->type,$item->e_ids);
 			$item->str_checkout_time = strtotime($item->checkout_date);
 			
-
 		}
 
 		$data['success'] = true;
@@ -134,6 +128,7 @@ class RoomController extends Controller {
 
 		return Response::json($data, 200, []);
 	}
+
 	public function initSingleEntry(Request $request){
 		$l_entry = Entry::where('id', $request->entry_id)->first();
 		if($l_entry){
@@ -226,10 +221,10 @@ class RoomController extends Controller {
 
 		$user_session_id = Auth::user()->session_id;
 		$user_id = Auth::id();
+		$client_id = Auth::user()->client_id;
 
 		$check_shift = Entry::checkShift();
 		$date = Entry::getPDate();
-
 
 		$cre = [
 			'name'=>$request->name,
@@ -250,6 +245,7 @@ class RoomController extends Controller {
 					DB::table('room_e_entries')->insert([
 						'entry_id' => $entry->id,
 						'added_by' => $user_id,
+						'client_id' => $client_id,
 						'date' => $date,
 						'pay_type' => $request->pay_type,
 						'type' => $type,
@@ -271,6 +267,7 @@ class RoomController extends Controller {
 				$entry->pay_type = $request->pay_type;
 				$entry->created_at = date('Y-m-d H:i:s');
 				$entry->date = $date;
+				$entry->client_id = $client_id;
 
 			}
 
@@ -306,22 +303,19 @@ class RoomController extends Controller {
 			if($type ==1){
 				$sl_pods = $request->sl_pods;
 				$entry->e_ids = implode(',', $sl_pods);
-				DB::table("pods")->where('client_id','=',Auth::user()->client_id)->whereIn('id',$sl_pods)->update(['status'=>1]);
+				DB::table("pods")->where('client_id','=',$client_id)->whereIn('id',$sl_pods)->update(['status'=>1]);
 			}
 			if($type == 2){
 				$sl_cabins = $request->sl_cabins;
 				$entry->e_ids = implode(',', $sl_cabins);
-				DB::table("single_cabins")->where('client_id','=',Auth::user()->client_id)->whereIn('id',$sl_cabins)->update(['status'=>1]);
+				DB::table("single_cabins")->where('client_id','=',$client_id)->whereIn('id',$sl_cabins)->update(['status'=>1]);
 			}
 
 			if($type == 3){
 				$sl_beds = $request->sl_beds;
 				$entry->e_ids = implode(',', $sl_beds);
-				DB::table("double_beds")->where('client_id','=',Auth::user()->client_id)->whereIn('id',$sl_beds)->update(['status'=>1]);
+				DB::table("double_beds")->where('client_id','=',$client_id)->whereIn('id',$sl_beds)->update(['status'=>1]);
 			}
-
-
-
 			
 			$entry->save();
 

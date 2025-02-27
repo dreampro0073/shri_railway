@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Redirect, Validator, Hash, Response, Session, DB;
 use App\Models\User;
 use App\Models\Entry;
-use App\Models\CloakRoom, App\Models\Sitting, App\Models\Canteen, App\Models\Massage, App\Models\Locker,App\Models\Recliner;
+use App\Models\CloakRoom, App\Models\Sitting, App\Models\Canteen, App\Models\Massage, App\Models\Locker,App\Models\Recliner,App\Models\Room;
 
 
 class ShiftController extends Controller {
@@ -21,211 +21,127 @@ class ShiftController extends Controller {
             "sidebar" => "shift",
             "subsidebar" => "shift",
         ]);
-		
 	}
 
 	public function init(Request $request){
-
-		$input_date = $request->input_date;
-		$user_id = $request->has('user_id')?$request->user_id:0;
-		
-		$client_id = Auth::user()->client_id;
-		
-		if($request->client_id){
-			$client_id = $request->client_id;
-			$service_ids = Entry::getServiceIds($client_id);
-		} else {
-			$service_ids = Session::get('service_ids');
-		}
-
-		$users = DB::table('users')->select('id','name')->where('priv','!=',4)->where("client_id", $client_id)->get();
-
-
-		$current_shift = Entry::checkShift();
-		$total_shift_upi = 0;
-		$total_shift_cash = 0;
-		$total_collection = 0;
-		$last_hour_upi_total = 0;
-		$last_hour_cash_total = 0;
-		$last_hour_total = 0;
-
-		if(Auth::user()->priv != 2){
-            $user_id = Auth::id();
-        }
-
-		if(in_array(1, $service_ids)){
-			$sitting_data = Sitting::totalShiftData($input_date,$user_id,$client_id);
-			$total_shift_upi += $sitting_data['total_shift_upi'];
-			$total_shift_cash += $sitting_data['total_shift_cash'];
-			$total_collection += $sitting_data['total_collection'];
-			$last_hour_upi_total += $sitting_data['last_hour_upi_total'];
-			$last_hour_cash_total += $sitting_data['last_hour_cash_total'];
-			$last_hour_total += $sitting_data['last_hour_total'];
-			$data['sitting_data'] = $sitting_data;
-
-			if($user_id && Auth::user()->priv == 2){
-				$data['chage_pay_type_data'] = Sitting::getChangePayTypeLog($input_date, $user_id);
-			}
-
-		}
-
-		if(in_array(2, $service_ids)){
-			$cloak_data = CloakRoom::totalShiftData($input_date,$user_id,$client_id);
-			$total_shift_upi += $cloak_data['total_shift_upi'];
-			$total_shift_cash += $cloak_data['total_shift_cash'];
-			$total_collection += $cloak_data['total_collection'];
-			$last_hour_upi_total += $cloak_data['last_hour_upi_total'];
-			$last_hour_cash_total += $cloak_data['last_hour_cash_total'];
-			$last_hour_total += $cloak_data['last_hour_total'];
-			$data['cloak_data'] = $cloak_data;
-		}
-		
-		if(in_array(3, $service_ids)){
-			$canteen_data = Canteen::totalShiftData($input_date,$user_id,$client_id);
-			$total_shift_upi += $canteen_data['total_shift_upi'];
-			$total_shift_cash += $canteen_data['total_shift_cash'];
-			$total_collection += $canteen_data['total_collection'];
-			$last_hour_upi_total += $canteen_data['last_hour_upi_total'];
-			$last_hour_cash_total += $canteen_data['last_hour_cash_total'];
-			$last_hour_total += $canteen_data['last_hour_total'];
-			$data['canteen_data'] = $canteen_data;
-		}		
-
-		if(in_array(4, $service_ids)){
-			$massage_data = Massage::totalShiftData($input_date,$user_id,$client_id);
-			$total_shift_upi += $massage_data['total_shift_upi'];
-			$total_shift_cash += $massage_data['total_shift_cash'];
-			$total_collection += $massage_data['total_collection'];
-			$last_hour_upi_total += $massage_data['last_hour_upi_total'];
-			$last_hour_cash_total += $massage_data['last_hour_cash_total'];
-			$last_hour_total += $massage_data['last_hour_total'];
-			$data['massage_data'] = $massage_data;
-		}		
-
-		if(in_array(5, $service_ids)){
-			$locker_data = Locker::totalShiftData($input_date,$user_id,$client_id);
-			$total_shift_upi += $locker_data['total_shift_upi'];
-			$total_shift_cash += $locker_data['total_shift_cash'];
-			$total_collection += $locker_data['total_collection'];
-			$last_hour_upi_total += $locker_data['last_hour_upi_total'];
-			$last_hour_cash_total += $locker_data['last_hour_cash_total'];
-			$last_hour_total += $locker_data['last_hour_total'];
-			$data['locker_data'] = $locker_data;
-		}
-
-		if(in_array(7, $service_ids)){
-			$recliner_data = Recliner::totalShiftData($input_date,$user_id,$client_id);
-			$total_shift_upi += $recliner_data['total_shift_upi'];
-			$total_shift_cash += $recliner_data['total_shift_cash'];
-			$total_collection += $recliner_data['total_collection'];
-			$last_hour_upi_total += $recliner_data['last_hour_upi_total'];
-			$last_hour_cash_total += $recliner_data['last_hour_cash_total'];
-			$last_hour_total += $recliner_data['last_hour_total'];
-			$data['recliner_data'] = $recliner_data;
-		}
-	
-        $data['total_shift_upi'] = $total_shift_upi;
-		$data['total_shift_cash'] = $total_shift_cash;
-		$data['total_collection'] = $total_collection;
-		$data['last_hour_upi_total'] = $last_hour_upi_total;
-		$data['last_hour_cash_total'] = $last_hour_cash_total;
-		$data['last_hour_total'] = $last_hour_total;
-
+		$client_id = isset($request->client_id) ? $request->client_id : Auth::user()->client_id;
+		$service_ids = Entry::getServiceIds($client_id);
+		$data = $this->getStatus($request->all(), $client_id, $service_ids);
 		$data['success'] = true;
-		$data['users'] = $users;
+		$data['users'] = DB::table('users')->select('id','name')->where('priv','!=',4)->where("client_id", $client_id)->get();
 		$data['service_ids'] = $service_ids;
 		$data['clients'] = Sitting::getBranches();
 		return Response::json($data, 200, []);
 	}
 	
-	public function print($type =1){
-		$service_ids = Session::get('service_ids');
+	public function print(Request $request, $type = 1){
+		$client_id = isset($request->client_id) ? $request->client_id : Auth::user()->client_id;
+		$service_ids = Entry::getServiceIds($client_id);
+		$data = $this->getStatus($request->all(), $client_id, $service_ids);
 		$current_shift = Entry::checkShift();
-		$total_shift_upi = 0;
-		$total_shift_cash = 0;
-		$total_collection = 0;
-		$last_hour_upi_total = 0;
-		$last_hour_cash_total = 0;
-		$last_hour_total = 0;
-		$sitting_data = [];
-		$cloak_data = [];
-		$canteen_data = [];
-		$massage_data = [];
-		$locker_data = [];
-		$recliner_data = [];
+		
+        return view('admin.print_shift',[
+        	'total_shift_upi'=> isset($data['total_shift_upi']) ? $data['total_shift_upi'] : 0,
+        	'total_shift_cash'=> isset($data['total_shift_cash']) ? $data['total_shift_cash'] : 0,
+        	'total_collection'=> isset($data['total_collection']) ? $data['total_collection'] : 0,
+        	'sitting_data'=> isset($data['sitting_data']) ? $data['sitting_data'] : [],
+			'cloak_data'=> isset($data['cloak_data']) ? $data['cloak_data'] : [],
+			'canteen_data'=> isset($data['canteen_data']) ? $data['canteen_data'] : [],
+			'massage_data'=> isset($data['massage_data']) ? $data['massage_data'] : [],
+			'locker_data'=> isset($data['locker_data']) ? $data['locker_data'] : [],
+			'recliner_data'=> isset($data['recliner_data']) ? $data['recliner_data'] : [],
+			'pod_data'=> isset($data['pod_data']) ? $data['pod_data'] : [],
+			'singal_cabin_data'=> isset($data['singal_cabin_data']) ? $data['singal_cabin_data'] : [],
+			'double_bed_data'=> isset($data['double_bed_data']) ? $data['double_bed_data'] : [], 
+			'service_ids'=>$service_ids,
+        ]);
+	}
 
-		// dd($service_ids);
+	public function getStatus($request, $client_id, $service_ids){
 
-		$client_id = Auth::user()->client_id;
-       
+		$input_date = isset($request->input_date) ? $request->input_date : date("Y-m-d");
 		if(Auth::user()->priv != 2){
             $user_id = Auth::id();
-        }
+        } else{
+			$user_id = isset($request->user_id ) ? $request->user_id : 0;
+		}
 
-        // if(Auth::user()->priv == 4 && Auth::id() == 23){
-        // 	$user_id = 19;
-        // }
+		$current_shift = Entry::checkShift();
 
-        $input_date = date("Y-m-d");
+		$data['total_shift_upi'] = 0;
+		$data['total_shift_cash'] = 0;
+		$data['total_collection'] = 0;
+		$data['last_hour_upi_total'] = 0;
+		$data['last_hour_cash_total'] = 0;
+		$data['last_hour_total'] = 0;
 
 		if(in_array(1, $service_ids)){
 			$sitting_data = Sitting::totalShiftData($input_date,$user_id,$client_id);
-			$total_shift_upi += $sitting_data['total_shift_upi'];
-			$total_shift_cash += $sitting_data['total_shift_cash'];
-			$total_collection += $sitting_data['total_collection'];
-			
+			$data['sitting_data'] = $sitting_data;
+			$data = $this->calculateAmount($sitting_data, $data);
+			if($user_id && Auth::user()->priv == 2){
+				$data['chage_pay_type_data'] = Sitting::getChangePayTypeLog($input_date, $user_id);
+			}
 		}
 
 		if(in_array(2, $service_ids)){
 			$cloak_data = CloakRoom::totalShiftData($input_date,$user_id,$client_id);
-			$total_shift_upi += $cloak_data['total_shift_upi'];
-			$total_shift_cash += $cloak_data['total_shift_cash'];
-			$total_collection += $cloak_data['total_collection'];
-			
+			$data['cloak_data'] = $cloak_data;
+			$data = $this->calculateAmount($cloak_data, $data);
 		}
 		
 		if(in_array(3, $service_ids)){
 			$canteen_data = Canteen::totalShiftData($input_date,$user_id,$client_id);
-			$total_shift_upi += $canteen_data['total_shift_upi'];
-			$total_shift_cash += $canteen_data['total_shift_cash'];
-			$total_collection += $canteen_data['total_collection'];
-			
+			$data['canteen_data'] = $canteen_data;
+			$data = $this->calculateAmount($canteen_data, $data);
 		}		
 
 		if(in_array(4, $service_ids)){
 			$massage_data = Massage::totalShiftData($input_date,$user_id,$client_id);
-			$total_shift_upi += $massage_data['total_shift_upi'];
-			$total_shift_cash += $massage_data['total_shift_cash'];
-			$total_collection += $massage_data['total_collection'];
-			
+			$data['massage_data'] = $massage_data;
+			$data = $this->calculateAmount($massage_data, $data);
 		}		
 
 		if(in_array(5, $service_ids)){
 			$locker_data = Locker::totalShiftData($input_date,$user_id,$client_id);
-			$total_shift_upi += $locker_data['total_shift_upi'];
-			$total_shift_cash += $locker_data['total_shift_cash'];
-			$total_collection += $locker_data['total_collection'];
+			$data['locker_data'] = $locker_data;
+			$data = $this->calculateAmount($locker_data, $data);
 		}
 
 		if(in_array(7, $service_ids)){
 			$recliner_data = Recliner::totalShiftData($input_date,$user_id,$client_id);
-			$total_shift_upi += $recliner_data['total_shift_upi'];
-			$total_shift_cash += $recliner_data['total_shift_cash'];
-			$total_collection += $recliner_data['total_collection'];
+			$data['recliner_data'] = $recliner_data;
+			$data = $this->calculateAmount($recliner_data, $data);
+		}		
+
+		if(in_array(8, $service_ids)){
+			$pod_data = Room::totalShiftData(1,$input_date,$user_id,$client_id);
+			$data['pod_data'] = $pod_data;
+			$data = $this->calculateAmount($pod_data, $data);
+
+			$singal_cabin_data = Room::totalShiftData(2,$input_date,$user_id,$client_id);
+			$data['singal_cabin_data'] = $singal_cabin_data;
+			$data = $this->calculateAmount($singal_cabin_data, $data);	
+
+			$double_bed_data = Room::totalShiftData(3,$input_date,$user_id,$client_id);
+			$data['double_bed_data'] = $double_bed_data;
+			$data = $this->calculateAmount($double_bed_data, $data);
 		}
 		
-
-        return view('admin.print_shift',[
-        	'total_shift_upi'=>$total_shift_upi,
-        	'total_shift_cash'=>$total_shift_cash,
-        	'total_collection'=>$total_collection,
-        	'sitting_data'=>$sitting_data,
-			'cloak_data'=>$cloak_data,
-			'canteen_data'=>$canteen_data,
-			'massage_data'=>$massage_data,
-			'locker_data'=>$locker_data,
-			'recliner_data'=>$recliner_data,
-        ]);
+		return $data;
 	}
+
+	public function calculateAmount($total_data, $data){
+
+		$data['total_shift_upi'] += $total_data['total_shift_upi'];
+		$data['total_shift_cash'] += $total_data['total_shift_cash'];
+		$data['total_collection'] += $total_data['total_collection'];
+		$data['last_hour_upi_total'] += $total_data['last_hour_upi_total'];
+		$data['last_hour_cash_total'] += $total_data['last_hour_cash_total'];
+		$data['last_hour_total'] += $total_data['last_hour_total'];
+		return $data;
+
+	}
+
 
 }

@@ -225,8 +225,8 @@ Route::group(['middleware'=>'auth'],function(){
 		});
 		
 		Route::get('/all-rooms',[RoomController::class,'allEntries']);
+		
 		Route::group(['prefix'=>"rooms"], function(){
-
 			Route::get('/{type}',[RoomController::class,'index']);
 			Route::get('/print/{id?}', [RoomController::class,'printPost']);
 

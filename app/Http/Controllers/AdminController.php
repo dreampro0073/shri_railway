@@ -13,6 +13,7 @@ use Redirect, Validator, Hash, Response, Session, DB;
 
 use App\Models\User, App\Models\Plan;
 use Barryvdh\DomPDF\Facade\Pdf;
+use App\Models\Room;
 
 class AdminController extends Controller {
 
@@ -32,12 +33,26 @@ class AdminController extends Controller {
 		if($total_sitting){
 			$total_sitting_count = isset($total_sitting->capacity) ? $total_sitting->capacity : 0;
 		}
+
+		$avail_pods = Room::getAvailPodsAr();
+		$avail_cabins = Room::getAvailSinCabinsAr();
+		$avail_beds = Room::getAvailBedsAr();
+
+		$booked_pods = Room::getBookedPodsAr();
+		$booked_cabins = Room::getBookedSinCabinsAr();
+		$booked_beds = Room::getBookedBedsAr();
 		
 		return view('admin.dashboard', [
             "sidebar" => "dashboard",
             "subsidebar" => "dashboard",
             "sitting_count" => $sitting_count,
             "total_sitting_count" => $total_sitting_count,
+            "avail_pods" => $avail_pods,
+            "avail_cabins" => $avail_cabins,
+            "avail_beds" => $avail_beds,
+            "booked_pods" => $booked_pods,
+            "booked_beds" => $booked_beds,
+
         ]);
 	}
 

@@ -183,18 +183,7 @@
         </div>
     </div>
     @endif
-    <div class="row" style="margin-top:30px;">
-        <div class="col-md-3" style="margin-bottom:20px;">
-            <a class="no-dec" href="{{url('/admin/shift/current')}}">
-                <div class="card p-3 shadow mb-4" style="background:#d3d3d396;;padding: 10px;">
-                    <p style="font-size: 30px;">Shift Status</p>
-                    <i>
-                        Shift Status
-                    </i>
-                </div>
-            </a>    
-        </div>
-    </div>
+   
 </div>
 @endsection
 

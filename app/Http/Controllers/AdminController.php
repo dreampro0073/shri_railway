@@ -14,6 +14,9 @@ use Redirect, Validator, Hash, Response, Session, DB;
 use App\Models\User, App\Models\Plan;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\Room;
+use App\Models\Recliner;
+use App\Models\Sitting;
+use App\Models\CloakRoom;
 
 class AdminController extends Controller {
 
@@ -26,7 +29,7 @@ class AdminController extends Controller {
 
 		$sitting_count = DB::table("sitting_entries")->where('checkout_status',0)->sum('no_of_adults');
 		$sitting_count += DB::table("sitting_entries")->where('checkout_status',0)->sum('no_of_children');
-		$sitting_count += DB::table("sitting_entries")->where('checkout_status',0)->sum('no_of_baby_staff');
+		$sitting_count += DB::table("sitting_entries")->where('no_of_adults',0)->where('checkout_status',0)->sum('no_of_baby_staff');
 
 		$total_sitting = DB::table('client_services')->where('client_id',Auth::user()->client_id)->where('services_id',1)->first();
 
@@ -41,6 +44,11 @@ class AdminController extends Controller {
 		$booked_pods = Room::getBookedPodsAr();
 		$booked_cabins = Room::getBookedSinCabinsAr();
 		$booked_beds = Room::getBookedBedsAr();
+
+		$booked_recliner = Recliner::getBookedReclinersAr();
+		$avail_recliner = Recliner::getAvailReclinersAr();
+
+		$booked_bags = CloakRoom::getBookedBags();
 		
 		return view('admin.dashboard', [
             "sidebar" => "dashboard",
@@ -53,7 +61,9 @@ class AdminController extends Controller {
             "booked_pods" => $booked_pods,
             "booked_cabins" => $booked_cabins,
             "booked_beds" => $booked_beds,
-
+            "booked_recliner" => $booked_recliner,
+            "avail_recliner" => $avail_recliner,
+            "booked_bags" => $booked_bags,
         ]);
 	}
 

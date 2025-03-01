@@ -21,6 +21,12 @@ class CloakRoom extends Model
         }
         return $slip_id;
     }
+    public static function getBookedBags(){
+
+        $count = CloakRoom::where('check_status',0)->where('client_id',Auth::user()->client_id)->count();
+       
+        return $count;
+    }
 
     public static function totalShiftData($input_date= "", $user_id=0, $client_id){
         $check_shift = Entry::checkShift();

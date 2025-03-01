@@ -18,7 +18,29 @@ class Sitting extends Model
 
         return $ar;
     }
+    public static function getSittingStatus(){
+        $sitting_count = 0;
+        $total_sitting_count = 0;
+        $rem_sitting_count = 0;
 
+        $sitting_count = DB::table("sitting_entries")->where('client_id',Auth::user()->client_id)->where('checkout_status',0)->sum('no_of_adults');
+        $sitting_count += DB::table("sitting_entries")->where('client_id',Auth::user()->client_id)->where('checkout_status',0)->sum('no_of_children');
+        $sitting_count += DB::table("sitting_entries")->where('client_id',Auth::user()->client_id)->where('no_of_adults',0)->where('checkout_status',0)->sum('no_of_baby_staff');
+
+        $total_sitting = DB::table('client_services')->where('client_id',Auth::user()->client_id)->where('services_id',1)->first();
+
+        if($total_sitting){
+            $total_sitting_count = isset($total_sitting->capacity) ? $total_sitting->capacity : 0;
+
+            $rem_sitting_count = $total_sitting_count - $sitting_count;
+        }
+
+        return [
+            'sitting_count' => $sitting_count,
+            'total_sitting_count' => $total_sitting_count,
+            'rem_sitting_count' => $rem_sitting_count,
+        ];
+    }
     public static function getBranches($entry_id=0){
         return DB::table('clients')->where('org_id', Auth::user()->org_id)->pluck("client_name", 'id')->toArray();
     }    

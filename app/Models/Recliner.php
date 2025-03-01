@@ -24,6 +24,12 @@ class Recliner extends Model
     public static function getAvailRecliners(){
         return DB::table('recliners')->where("client_id", Auth::user()->client_id)->where('status',0)->get();
     }
+    public static function getAvailReclinersAr(){
+        return DB::table('recliners')->where("client_id", Auth::user()->client_id)->where('status',1)->pluck('e_no')->toArray();
+    }
+    public static function getBookedReclinersAr(){
+        return DB::table('recliners')->where("client_id", Auth::user()->client_id)->where('status',1)->pluck('e_no')->toArray();
+    }
 
     public static function showPayTypes(){
         return [1=>'Cash',2=>"UPI"];

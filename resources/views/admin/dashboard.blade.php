@@ -37,28 +37,12 @@
             </div>
         @endif        
         @if(in_array(2, $service_ids) || Auth::user()->priv == 1)
-            <div class="col-md-3" style="margin-bottom:20px;">
-                <a class="no-dec" href="{{url('/admin/cloak-rooms')}}">
-                    <div class="card p-3 shadow mb-4" style="background:#d3d3d396;;padding: 10px;">
-                        <p style="font-size: 30px;">Cloakrooms</p>
-                        <i>
-                            Cloakrooms
-                        </i>
-                    </div>
-                </a>    
+            <div class="box card">
+                <h4>{{$booked_bags}}</h4>
+                <h5>
+                    Total Bags
+                </h5>
             </div>
-            @if(Auth::user()->priv == 1 || Auth::user()->priv == 2)
-                <div class="col-md-3" style="margin-bottom:20px;">
-                    <a class="no-dec" href="{{url('/admin/cloak-rooms/all')}}">
-                        <div class="card p-3 shadow mb-4" style="background:#d3d3d396;;padding: 10px;">
-                            <p style="font-size: 30px;">Cloakrooms All</p>
-                            <i>
-                                Cloakrooms All
-                            </i>
-                        </div>
-                    </a>    
-                </div>
-            @endif
         @endif        
         @if(in_array(3, $service_ids) || Auth::user()->priv == 1)
             @if(Auth::user()->priv == 1 || Auth::user()->priv == 2)
@@ -86,19 +70,43 @@
 
         @endif
 
-        @if(in_array(7, $service_ids) || Auth::user()->priv == 1)
-            <div class="col-md-3" style="margin-bottom:20px;">
-                <a class="no-dec" href="{{url('/admin/recliners')}}">
-                    <div class="card p-3 shadow mb-4" style="background:#d3d3d396;; padding: 10px;">
-                        <p style="font-size: 30px;">Recliners</p>
-                        <i>
-                            Recliners
-                        </i>
-                    </div>
-                </a>    
-            </div>
-        @endif
     </div>
+
+    @if(in_array(7, $service_ids))
+    <div class="row">
+        <div class="col-md-4">
+            <div class="box card">
+                <h4>{{sizeof($avail_recliner)}}</h4>
+
+                <h5>
+                    Available Recliner
+                </h5>
+                <span>
+                    <?php echo implode(', ',$avail_recliner); ?>
+                </span>
+
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="box card">
+                <h4>{{sizeof($booked_recliner)}}</h4>
+
+                <h5>
+                    Booked Recliner
+                </h5>
+                <span>
+                    <?php echo implode(', ',$booked_recliner); ?>
+                </span>
+
+            </div>
+        </div>
+       
+       
+    </div>  
+    
+    @endif
+
     @if(in_array(8, $service_ids))
     <div class="row">
         <div class="col-md-4">
@@ -183,6 +191,8 @@
         </div>
     </div>
     @endif
+
+    
    
 </div>
 @endsection

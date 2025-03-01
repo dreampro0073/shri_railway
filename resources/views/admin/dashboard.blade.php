@@ -56,19 +56,7 @@
                     </div>
                 </a>    
             </div>
-            <div class="col-md-3" style="margin-bottom:20px;">
-                <a class="no-dec" href="{{url('/admin/sitting')}}">
-                    <div class="card p-3 shadow mb-4" style="background:#d3d3d396;; padding: 10px;">
-                        <p style="font-size: 30px;">Total Sit</p>
-                        <div>
-                            <h4>{{sizeof($total_sitting_count)}}</h4>
-                            <h3>
-                                <span style="font-size:26px;color: green;">{{$sitting_count}}</span>/<span style="font-size:28px;color:black;">{{$total_sitting_count}}</span>
-                            </h3>
-                        </div>
-                    </div>
-                </a>    
-            </div>
+            
         @endif        
         @if(in_array(2, $service_ids) || Auth::user()->priv == 1)
             <div class="col-md-3">

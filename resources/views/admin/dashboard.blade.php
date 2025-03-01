@@ -26,8 +26,42 @@
             <div class="col-md-3" style="margin-bottom:20px;">
                 <a class="no-dec" href="{{url('/admin/sitting')}}">
                     <div class="card p-3 shadow mb-4" style="background:#d3d3d396;; padding: 10px;">
-                        <p style="font-size: 30px;">Sitting</p>
+                        <p style="font-size: 30px;">Total Sit</p>
                         <div>
+                            <h4>{{$total_sitting_count}}</h4>
+                            
+                        </div>
+                    </div>
+                </a>    
+            </div>
+            <div class="col-md-3" style="margin-bottom:20px;">
+                <a class="no-dec" href="{{url('/admin/sitting')}}">
+                    <div class="card p-3 shadow mb-4" style="background:#d3d3d396;; padding: 10px;">
+                        <p style="font-size: 30px;">Booked Sit</p>
+                        <div>
+                            <h4>{{$sitting_count}}</h4>
+                            
+                        </div>
+                    </div>
+                </a>    
+            </div>
+            <div class="col-md-3" style="margin-bottom:20px;">
+                <a class="no-dec" href="{{url('/admin/sitting')}}">
+                    <div class="card p-3 shadow mb-4" style="background:#d3d3d396;; padding: 10px;">
+                        <p style="font-size: 30px;">Available Sit</p>
+                        <div>
+                            <h4>{{$total_sitting_count-$sitting_count}}</h4>
+                            
+                        </div>
+                    </div>
+                </a>    
+            </div>
+            <div class="col-md-3" style="margin-bottom:20px;">
+                <a class="no-dec" href="{{url('/admin/sitting')}}">
+                    <div class="card p-3 shadow mb-4" style="background:#d3d3d396;; padding: 10px;">
+                        <p style="font-size: 30px;">Total Sit</p>
+                        <div>
+                            <h4>{{sizeof($total_sitting_count)}}</h4>
                             <h3>
                                 <span style="font-size:26px;color: green;">{{$sitting_count}}</span>/<span style="font-size:28px;color:black;">{{$total_sitting_count}}</span>
                             </h3>

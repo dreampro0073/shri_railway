@@ -25,7 +25,7 @@
         @if(in_array(1, $service_ids) || Auth::user()->priv == 1)
             <div class="col-md-3" style="margin-bottom:20px;">
                 <a class="no-dec" href="{{url('/admin/sitting')}}">
-                    <div class="card p-3 shadow mb-4" style="background:#d3d3d396;; padding: 10px;">
+                    <div class="box card" style="background:#d3d3d396;; padding: 10px;">
                         <p style="font-size: 30px;">Total Sit</p>
                         <div>
                             <h4>{{$total_sitting_count}}</h4>
@@ -36,7 +36,7 @@
             </div>
             <div class="col-md-3" style="margin-bottom:20px;">
                 <a class="no-dec" href="{{url('/admin/sitting')}}">
-                    <div class="card p-3 shadow mb-4" style="background:#d3d3d396;; padding: 10px;">
+                    <div class="box card" style="background:#d3d3d396;; padding: 10px;">
                         <p style="font-size: 30px;">Booked Sit</p>
                         <div>
                             <h4>{{$sitting_count}}</h4>
@@ -47,7 +47,7 @@
             </div>
             <div class="col-md-3" style="margin-bottom:20px;">
                 <a class="no-dec" href="{{url('/admin/sitting')}}">
-                    <div class="card p-3 shadow mb-4" style="background:#d3d3d396;; padding: 10px;">
+                    <div class="box card" style="background:#d3d3d396;; padding: 10px;">
                         <p style="font-size: 30px;">Available Sit</p>
                         <div>
                             <h4>{{$avail_sit}}</h4>
@@ -72,7 +72,7 @@
             @if(Auth::user()->priv == 1 || Auth::user()->priv == 2)
                 <div class="col-md-3" style="margin-bottom:20px;">
                     <a class="no-dec" href="{{url('/admin/canteens/items')}}">
-                        <div class="card p-3 shadow mb-4" style="background:#d3d3d396;;padding: 10px;">
+                        <div class="box card" style="background:#d3d3d396;;padding: 10px;">
                             <p style="font-size: 30px;">Canteen Items</p>
                             <i>
                                 Canteen Items

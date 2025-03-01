@@ -23,7 +23,7 @@ class CloakRoom extends Model
     }
     public static function getBookedBags(){
 
-        $count = CloakRoom::where('checkout_status',0)->where('client_id',Auth::user()->client_id)->count();
+        $count = CloakRoom::where('checkout_status',0)->where('client_id',Auth::user()->client_id)->sum('no_of_bag');
        
         return $count;
     }

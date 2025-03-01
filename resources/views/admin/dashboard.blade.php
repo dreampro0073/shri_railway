@@ -37,11 +37,13 @@
             </div>
         @endif        
         @if(in_array(2, $service_ids) || Auth::user()->priv == 1)
-            <div class="box card">
-                <h4>{{$booked_bags}}</h4>
-                <h5>
-                    Total Bags
-                </h5>
+            <div class="col-md-3">
+                    <div class="box card">
+                    <h4>{{$booked_bags}}</h4>
+                    <h5>
+                        Total Bags
+                    </h5>
+                </div>
             </div>
         @endif        
         @if(in_array(3, $service_ids) || Auth::user()->priv == 1)

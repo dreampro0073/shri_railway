@@ -25,7 +25,7 @@
         @if(in_array(1, $service_ids) || Auth::user()->priv == 1)
             <div class="col-md-3" style="margin-bottom:20px;">
                 <a class="no-dec" href="{{url('/admin/sitting')}}">
-                    <div class="box card" style="background:#d3d3d396;; padding: 10px;">
+                    <div class="box card hi-auto" style="background:#d3d3d396;; padding: 10px;">
                         <p style="font-size: 30px;">Total Sit</p>
                         <div>
                             <h4>{{$total_sitting_count}}</h4>
@@ -36,7 +36,7 @@
             </div>
             <div class="col-md-3" style="margin-bottom:20px;">
                 <a class="no-dec" href="{{url('/admin/sitting')}}">
-                    <div class="box card" style="background:#d3d3d396;; padding: 10px;">
+                    <div class="box card hi-auto" style="background:#d3d3d396;; padding: 10px;">
                         <p style="font-size: 30px;">Booked Sit</p>
                         <div>
                             <h4>{{$sitting_count}}</h4>
@@ -47,7 +47,7 @@
             </div>
             <div class="col-md-3" style="margin-bottom:20px;">
                 <a class="no-dec" href="{{url('/admin/sitting')}}">
-                    <div class="box card" style="background:#d3d3d396;; padding: 10px;">
+                    <div class="box card hi-auto" style="background:#d3d3d396;; padding: 10px;">
                         <p style="font-size: 30px;">Available Sit</p>
                         <div>
                             <h4>{{$avail_sit}}</h4>

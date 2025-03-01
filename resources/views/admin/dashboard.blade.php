@@ -50,7 +50,7 @@
                     <div class="card p-3 shadow mb-4" style="background:#d3d3d396;; padding: 10px;">
                         <p style="font-size: 30px;">Available Sit</p>
                         <div>
-                            <h4>{{$total_sitting_count-$sitting_count}}</h4>
+                            <h4>{{$avail_sit}}</h4>
                             
                         </div>
                     </div>

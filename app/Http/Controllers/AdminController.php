@@ -37,6 +37,8 @@ class AdminController extends Controller {
 			$total_sitting_count = isset($total_sitting->capacity) ? $total_sitting->capacity : 0;
 		}
 
+		$avail_sit	=$total_sitting_count-$sitting_count;
+
 		$avail_pods = Room::getAvailPodsAr();
 		$avail_cabins = Room::getAvailSinCabinsAr();
 		$avail_beds = Room::getAvailBedsAr();
@@ -54,6 +56,7 @@ class AdminController extends Controller {
             "sidebar" => "dashboard",
             "subsidebar" => "dashboard",
             "sitting_count" => $sitting_count,
+            "avail_sit" => $avail_sit,
             "total_sitting_count" => $total_sitting_count,
             "avail_pods" => $avail_pods,
             "avail_cabins" => $avail_cabins,

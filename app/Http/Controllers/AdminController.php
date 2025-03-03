@@ -27,8 +27,8 @@ class AdminController extends Controller {
 		$sitting_count = 0;
 		$total_sitting_count = 0;
 
-		$sitting_count = DB::table("sitting_entries")->where('checkout_status',0)->sum('no_of_adults');
-		$sitting_count += DB::table("sitting_entries")->where('checkout_status',0)->sum('no_of_children');
+		$sitting_count = DB::table("sitting_entries")->where('client_id',Auth::user()->client_id)->where('checkout_status',0)->sum('no_of_adults');
+		$sitting_count += DB::table("sitting_entries")->where('client_id',Auth::user()->client_id)->where('checkout_status',0)->sum('no_of_children');
 		$sitting_count += DB::table("sitting_entries")->where('no_of_adults',0)->where('checkout_status',0)->sum('no_of_baby_staff');
 
 		$total_sitting = DB::table('client_services')->where('client_id',Auth::user()->client_id)->where('services_id',1)->first();

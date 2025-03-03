@@ -70,7 +70,7 @@
         @endif        
         @if(in_array(3, $service_ids) || Auth::user()->priv == 1)
             @if(Auth::user()->priv == 1 || Auth::user()->priv == 2)
-                <div class="col-md-3" style="margin-bottom:20px;">
+                <!-- <div class="col-md-3" style="margin-bottom:20px;">
                     <a class="no-dec" href="{{url('/admin/canteens/items')}}">
                         <div class="box card hi-auto" style="background:#d3d3d396;;padding: 10px;">
                             <p style="font-size: 30px;">Canteen Items</p>
@@ -79,9 +79,9 @@
                             </i>
                         </div>
                     </a>    
-                </div>
+                </div> -->
             @endif
-            <div class="col-md-3" style="margin-bottom:20px;">
+            <!-- <div class="col-md-3" style="margin-bottom:20px;">
                 <a class="no-dec" href="{{url('/admin/daily-entries')}}">
                     <div class="card p-3 shadow mb-4" style="background:#d3d3d396;;padding: 10px;">
                         <p style="font-size: 30px;">Daily Entries</p>
@@ -90,7 +90,7 @@
                         </i>
                     </div>
                 </a>    
-            </div>
+            </div> -->
 
         @endif
 

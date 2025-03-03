@@ -25,7 +25,7 @@ class Recliner extends Model
         return DB::table('recliners')->where("client_id", Auth::user()->client_id)->where('status',0)->get();
     }
     public static function getAvailReclinersAr(){
-        return DB::table('recliners')->where("client_id", Auth::user()->client_id)->where('status',1)->pluck('sl_no')->toArray();
+        return DB::table('recliners')->where("client_id", Auth::user()->client_id)->where('status',0)->pluck('sl_no')->toArray();
     }
     public static function getBookedReclinersAr(){
         return DB::table('recliners')->where("client_id", Auth::user()->client_id)->where('status',1)->pluck('sl_no')->toArray();

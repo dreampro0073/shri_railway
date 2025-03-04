@@ -98,9 +98,9 @@
                             </li>
 
                             @if(Auth::user()->priv == 4 || Auth::user()->client_id == 6 || Auth::id() == 48 )
-                                <li class="@if(isset($sidebar)) @if($sidebar == 'csitting') active @endif @endif">
+                               <!--  <li class="@if(isset($sidebar)) @if($sidebar == 'csitting') active @endif @endif">
                                     <a href="{{url('/admin/collect-cloak')}}"><i class="fa fa-sitemap"></i>Collect Cloack</a>
-                                </li>
+                                </li> -->
                             @endif
                         @endif                     
                         @if(in_array(3, $service_ids) || Auth::user()->priv == 1)

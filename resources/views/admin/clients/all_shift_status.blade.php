@@ -7,8 +7,7 @@
     <div class="main" ng-controller="clientSettingCtrl" ng-init="shiftStatus();"> 
         <div class="card shadow mb-4 p-4">    
             <table class="table table-bordered table-striped" style="width:100%;margin-top: 50px;">
-                <thead>
-                    
+                <thead>   
                     <tr>
                         <th>Name</th>
                         <th>UPI</th>

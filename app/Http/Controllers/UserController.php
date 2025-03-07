@@ -66,7 +66,12 @@ class UserController extends Controller {
                     Session::put('auto_alert_status',0);     
                     
                 }
-                return Redirect::to('/admin/dashboard');
+                if(Auth::user()->priv == 5){
+                    return Redirect::to('/admin/clients/shift-status');
+                }else{
+                    return Redirect::to('/admin/dashboard');
+
+                }
 
             } else {
                 return Redirect::back()->withInput()->with('failure','Invalid username or password');

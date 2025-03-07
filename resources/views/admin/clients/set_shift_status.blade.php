@@ -5,7 +5,7 @@
 
 @section('main')
     <div class="main" ng-controller="clientSettingCtrl" ng-init="init();"> 
-        <form name="myForm" novalidate="novalidate" ng-submit="onSubmit(myForm.$valid)">
+        <form name="myForm" novalidate="novalidate" ng-submit="onSubmit(myForm.$valid)" style="margin-top:50px;">
 
             <div class="row" ng-repeat="item in clients">
                 <div class="col-md-4 form-group">

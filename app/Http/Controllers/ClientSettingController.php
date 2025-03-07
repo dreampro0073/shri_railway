@@ -83,6 +83,12 @@ class ClientSettingController extends Controller {
 
             // }
 
+            if($shifts){
+                $client->total_collection = $shift->total_collection;
+                $client->total_shift_cash = $shift->total_shift_cash;
+                $client->total_shift_upi = $shift->total_shift_upi;
+            }
+
             $client->shifts = $shifts;
         }
 

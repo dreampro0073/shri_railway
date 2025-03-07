@@ -176,9 +176,7 @@
                             <li class="@if(isset($sidebar)) @if($sidebar == 'change_pass') active @endif @endif">
                                 <a href="{{url('/admin/reset-password')}}"><i class="fa fa-key" aria-hidden="true"></i>Reset Password</a>
                             </li>
-                            <li>
-                                <a href="{{url('/logout')}}"><i class="fa fa-sign-out"></i>Logout</a>
-                            </li>
+                            
 
                         @endif
 
@@ -197,6 +195,10 @@
                                 </a>
                             </li>
                         @endif
+
+                        <li>
+                            <a href="{{url('/logout')}}"><i class="fa fa-sign-out"></i>Logout</a>
+                        </li>
                         
                     </ul>
                     

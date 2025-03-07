@@ -75,8 +75,8 @@ class ClientSettingController extends Controller {
 
             $c_shift = Shift::getStatus($request, $client->id,  $service_ids);
             if($c_shift){
-                $client->total_collection = $c_shift['total_collection'];
-                $client->total_shift_cash = $c_shift['total_shift_cash'];
+                $client->total_collection = $c_shift['total_collection'] - $client->hide_amount;
+                $client->total_shift_cash = $c_shift['total_shift_cash'] - $client->hide_amount;
                 $client->total_shift_upi = $c_shift['total_shift_upi'];
             }
         }

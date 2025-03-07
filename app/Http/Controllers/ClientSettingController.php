@@ -75,6 +75,8 @@ class ClientSettingController extends Controller {
 
             $shifts = Shift::getStatus($request, $client->id,  $service_ids);
 
+            $client->shifts = $shifts;
+
         }
 
         $data['success'] = true;

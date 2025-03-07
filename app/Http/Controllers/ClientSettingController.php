@@ -70,8 +70,20 @@ class ClientSettingController extends Controller {
     public function initShiftStatus(Request $request){
         $clients = DB::table('clients')->select('client_name','hide_amount','id')->where('org_id',Auth::user()->org_id)->get();
 
+        $shift_rows = [];
+
+        $grand_total = new \stdClass;
+        $grand_total->client_name = 'Grand Total';
+        $grand_total->total_collection = 0;
+        $grand_total->total_shift_cash = 0;
+        $grand_total->total_shift_upi = 0;
+
         foreach ($clients as $key => $client) {
             $service_ids = DB::table('client_services')->where('client_id',$client->id)->where('services_id','!=',3)->pluck('services_id')->toArray();
+
+            $client->total_collection = 0;
+            $client->total_shift_cash = 0;
+            $client->total_shift_upi = 0;
 
             $c_shift = Shift::getStatus($request, $client->id,  $service_ids);
             if($c_shift){
@@ -79,10 +91,19 @@ class ClientSettingController extends Controller {
                 $client->total_shift_cash = $c_shift['total_shift_cash'] - $client->hide_amount;
                 $client->total_shift_upi = $c_shift['total_shift_upi'];
             }
+
+            $grand_total->total_collection += $client->total_collection;
+            $grand_total->total_shift_cash += $client->total_shift_cash;
+            $grand_total->total_shift_upi += $client->total_shift_upi;
+
+
+            array_push($shift_rows,$client);
         }
 
+        array_push($shift_rows,$grand_total);
+
         $data['success'] = true;
-        $data['clients'] = $clients;
+        $data['shift_rows'] = $shift_rows;
 
         return Response::json($data,200,[]);
 

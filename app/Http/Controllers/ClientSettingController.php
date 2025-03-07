@@ -74,19 +74,10 @@ class ClientSettingController extends Controller {
             $service_ids = DB::table('client_services')->where('client_id',$client->id)->where('services_id','!=',3)->pluck('services_id')->toArray();
 
             $c_shift = Shift::getStatus($request, $client->id,  $service_ids);
-
-            // foreach ($c_shift as $key => $shift) {
-                
-            //     $client->total_collection = $shift->total_collection;
-            //     $client->total_shift_cash = $shift->total_shift_cash;
-            //     $client->total_shift_upi = $shift->total_shift_upi;
-
-            // }
-
             if($c_shift){
-                $client->total_collection = $c_shift->total_collection;
-                $client->total_shift_cash = $c_shift->total_shift_cash;
-                $client->total_shift_upi = $c_shift->total_shift_upi;
+                $client->total_collection = $c_shift['total_collection'];
+                $client->total_shift_cash = $c_shift['total_shift_cash'];
+                $client->total_shift_upi = $c_shift['total_shift_upi'];
             }
         }
 

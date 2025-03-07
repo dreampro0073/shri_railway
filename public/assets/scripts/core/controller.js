@@ -2432,6 +2432,40 @@ app.controller('allRoomEntryCtrl', function($scope , $http, $timeout , DBService
         $scope.init();
     }
 });
+app.controller('clientSettingCtrl', function($scope , $http, $timeout , DBService) {
+    $scope.loading = false;
+    $scope.processing = false;
+    $scope.filter = {};
+    
+    $scope.clients = [];
+
+    $scope.init = function () {
+        DBService.postCall($scope.filter, '/api/clients/init-amount-setting').then((data) => {
+            if (data.success) {
+                $scope.clients = data.clients;  
+            }
+        });
+    }
+    $scope.onSubmit = function () {
+        $scope.processing = true;
+        DBService.postCall({clients:$scope.clients}, '/api/clients/store-amount-setting').then((data) => {
+            if (data.success) {
+                $scope.init();
+            }
+            alert(data.message); 
+            $scope.processing = false;
+        });
+    }
+
+    $scope.shiftStatus = function () {
+        $scope.processing = true;
+        DBService.postCall($scope.filter, '/api/clients/shift-status').then((data) => {
+            if(data.success){
+                $scope.shift_rows = data.shift_rows;
+            }
+        });
+    }
+});
 
 // app.controller('dailyEntryCtrl', function($scope , $http, $timeout , DBService) {
 //     $scope.loading = false;

@@ -201,5 +201,10 @@ ALTER TABLE `double_beds` ADD `client_id` INT NOT NULL DEFAULT '0' AFTER `id`;
 
 ALTER TABLE `client_services` ADD `capacity` INT NOT NULL DEFAULT '0' AFTER `status`;
 
+CREATE TABLE `nnhp`.`client_setting` ( `id` INT NOT NULL AUTO_INCREMENT , `client_id` INT NOT NULL DEFAULT '0' , `amount` INT NOT NULL DEFAULT '0' , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+
+ALTER TABLE `client_setting` ADD `org_id` INT NOT NULL DEFAULT '0' AFTER `id`;
+ALTER TABLE `clients` ADD `hide_amount` INT NOT NULL AFTER `rate_type`;
+
 
 ?>

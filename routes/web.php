@@ -21,6 +21,7 @@ use App\Http\Controllers\AppDailyEntryContoller;
 use App\Http\Controllers\AadharDetailsController;
 use App\Http\Controllers\BackupController;
 use App\Http\Controllers\RoomController;
+use App\Http\Controllers\ClientSettingController;
 
 
 
@@ -230,6 +231,10 @@ Route::group(['middleware'=>'auth'],function(){
 			Route::get('/{type}',[RoomController::class,'index']);
 			Route::get('/print/{id?}', [RoomController::class,'printPost']);
 
+		});
+		Route::group(['prefix'=>"clients"], function(){
+			Route::get('/set-amount',[ClientSettingController::class,'setAmount']);
+			Route::get('/shift-status',[ClientSettingController::class,'shiftStatus']);
 		});	
 
 	});
@@ -377,6 +382,12 @@ Route::group(['prefix'=>"api"], function(){
 		Route::post('/init-single-entry',[RoomController::class,'initSingleEntry']);
 		Route::get('/delete-e-entry/{entry_id}/{e_entry_id}',[RoomController::class,'deleteEnEntry']);
 
+	});
+
+	Route::group(['prefix'=>"clients"], function(){
+		Route::post('/init-amount-setting',[ClientSettingController::class,'initAmountSetting']);
+		Route::post('/store-amount-setting',[ClientSettingController::class,'storeAmountSetting']);
+		Route::post('/shift-status',[ClientSettingController::class,'initShiftStatus']);
 	});
 
 	

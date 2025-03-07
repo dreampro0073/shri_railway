@@ -75,15 +75,15 @@ class ClientSettingController extends Controller {
 
             $shifts = Shift::getStatus($request, $client->id,  $service_ids);
 
-            $new_shifts = [];
-
-            foreach ($shifts as $key => $shift) {
+            // foreach ($shifts as $key => $shift) {
                 
-                $client->total_collection = $shift->total_collection;
-                $client->total_shift_cash = $shift->total_shift_cash;
-                $client->total_shift_upi = $shift->total_shift_upi;
+            //     $client->total_collection = $shift->total_collection;
+            //     $client->total_shift_cash = $shift->total_shift_cash;
+            //     $client->total_shift_upi = $shift->total_shift_upi;
 
-            }
+            // }
+
+            $client->shifts = $shifts;
         }
 
         $data['success'] = true;

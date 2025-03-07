@@ -206,5 +206,7 @@ CREATE TABLE `nnhp`.`client_setting` ( `id` INT NOT NULL AUTO_INCREMENT , `clien
 ALTER TABLE `client_setting` ADD `org_id` INT NOT NULL DEFAULT '0' AFTER `id`;
 ALTER TABLE `clients` ADD `hide_amount` INT NOT NULL AFTER `rate_type`;
 
+ALTER TABLE `users` ADD `is_super` TINYINT NOT NULL DEFAULT '0' AFTER `perent_user_id`;
+
 
 ?>

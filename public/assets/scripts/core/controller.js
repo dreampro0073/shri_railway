@@ -2461,7 +2461,7 @@ app.controller('clientSettingCtrl', function($scope , $http, $timeout , DBServic
         $scope.processing = true;
         DBService.postCall($scope.filter, '/api/clients/shift-status').then((data) => {
             if(data.success){
-                $scope.shift_rows = data.clients;
+                $scope.shift_rows = data.shift_rows;
             }
         });
     }

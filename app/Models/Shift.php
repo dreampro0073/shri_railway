@@ -14,7 +14,7 @@ class Shift extends Model
 
     public static function getStatus($request=null, $client_id=0, $service_ids=[]){ 
         $input_date = isset($request['input_date']) ? $request['input_date'] : date("Y-m-d");
-        if(Auth::user()->priv != 2){
+        if(in_array(Auth::user()->priv, [2,5] )){
             $user_id = Auth::id();
         } else{
             $user_id = isset($request['user_id']) ? $request['user_id'] : 0;

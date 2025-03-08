@@ -16,8 +16,8 @@ use App\Models\Shift;
 class ClientSettingController extends Controller {
 
 	public function setAmount(Request $request){
-		$sidebar = 'clients';
-        $subsidebar = 'client-setting';
+		$sidebar = 'set_amount';
+        $subsidebar = 'set_amount';
 
         
 
@@ -27,8 +27,8 @@ class ClientSettingController extends Controller {
         ]);
     }
     public function shiftStatus(Request $request){
-        $sidebar = 'clients';
-        $subsidebar = 'shift-status';
+        $sidebar = 'shift_status';
+        $subsidebar = 'shift_status';
 
         
 

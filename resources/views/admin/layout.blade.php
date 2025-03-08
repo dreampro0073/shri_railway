@@ -181,7 +181,7 @@
                         @endif
 
                         @if(Auth::user()->priv == 5 && Auth::user()->org_id == 1 && Auth::user()->is_super == 1)
-                            <li class="@if(isset($sidebar)) @if($sidebar == 'daily_entries') active @endif @endif">
+                            <li class="@if(isset($sidebar)) @if($sidebar == 'set_amount') active @endif @endif">
                                 <a href="{{url('/admin/clients/set-amount')}}">
                                     <i class="fa fa-shopping-bag" aria-hidden="true"></i>Daily Set Hide Amount
                                 </a>
@@ -189,7 +189,7 @@
                         @endif
 
                         @if(Auth::user()->priv == 5 && Auth::user()->org_id == 1)
-                            <li class="@if(isset($sidebar)) @if($sidebar == 'daily_entries') active @endif @endif">
+                            <li class="@if(isset($sidebar)) @if($sidebar == 'shift_status') active @endif @endif">
                                 <a href="{{url('/admin/clients/shift-status')}}">
                                     <i class="fa fa-shopping-bag" aria-hidden="true"></i>Daily Overall Shift Status
                                 </a>

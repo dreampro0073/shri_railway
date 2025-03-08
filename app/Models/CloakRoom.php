@@ -51,7 +51,7 @@ class CloakRoom extends Model
         }
         
         // $client_id = Auth::user()->client_id;
-        if(Auth::user()->priv != 2){
+        if(in_array(!Auth::user()->priv, [2,5])){
             $user_id = Auth::id();
         }
                 

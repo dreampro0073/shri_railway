@@ -188,7 +188,7 @@ class Room extends Model
         $p_date = Entry::getPDate();
         $shift_date = date("d-m-Y",strtotime($p_date));
 
-        if(Auth::user()->priv != 2){
+        if(in_array(!Auth::user()->priv, [2,5])){
             $user_id = Auth::id();
         }
 

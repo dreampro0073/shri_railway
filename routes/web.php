@@ -22,6 +22,7 @@ use App\Http\Controllers\AadharDetailsController;
 use App\Http\Controllers\BackupController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\ClientSettingController;
+use App\Http\Controllers\ScanningController;
 
 
 
@@ -237,10 +238,16 @@ Route::group(['middleware'=>'auth'],function(){
 			Route::get('/shift-status',[ClientSettingController::class,'shiftStatus']);
 		});	
 
+		Route::group(['prefix'=>"scanning"], function(){
+			Route::get('/',[ScanningController::class,'index']);
+			Route::get('/print/{print_id}',[ScanningController::class,'printBill']);
+		});	
+
 	});
 });
 
 Route::get('set-slip-id',[SittingController::class,'setSlipId']);
+Route::get('view-scanning/{print_id}',[ScanningController::class,'viewScanning']);
 
 Route::group(['prefix'=>"api"], function(){	
 	Route::post('/set-checkout-alert',[UserController::class,'setCheckoutAlert']);
@@ -390,7 +397,11 @@ Route::group(['prefix'=>"api"], function(){
 		Route::post('/shift-status',[ClientSettingController::class,'initShiftStatus']);
 	});
 
-	
+
+	Route::group(['prefix'=>"scanning"], function(){
+		Route::post('/init',[ScanningController::class,'init']);
+		Route::post('/store',[ScanningController::class,'store']);
+	});
 });
 
 Route::group(['prefix'=>"app-api"], function(){

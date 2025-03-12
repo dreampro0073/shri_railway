@@ -224,6 +224,24 @@
                    
                 </tr>
 			@endif
+            @if(in_array(9, $service_ids))
+                <tr>
+                    <td>
+                       <b>Scanning</b>
+                    </td> 
+                   
+                    <td>
+                        {{$scanning_data['total_shift_upi']}}
+                    </td>
+                    <td>
+                        {{$scanning_data['total_shift_cash']}}
+                    </td>
+                    <td>
+                        {{$scanning_data['total_collection']}}
+                    </td>
+                   
+                </tr>
+            @endif
 				
                 <tr>
                    	<td>

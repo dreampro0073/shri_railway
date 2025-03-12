@@ -10,7 +10,7 @@ use Redirect, Validator, Hash, Response, Session, DB;
 
 use App\Models\User;
 use App\Models\Entry;
-use App\Models\CloakRoom, App\Models\Sitting, App\Models\Canteen, App\Models\Massage, App\Models\Locker,App\Models\Recliner,App\Models\Room;
+use App\Models\CloakRoom, App\Models\Sitting, App\Models\Canteen, App\Models\Massage, App\Models\Locker,App\Models\Recliner,App\Models\Room,App\Models\ScanningEntry;
 
 
 class ShiftController extends Controller {
@@ -52,6 +52,7 @@ class ShiftController extends Controller {
 			'pod_data'=> isset($data['pod_data']) ? $data['pod_data'] : [],
 			'singal_cabin_data'=> isset($data['singal_cabin_data']) ? $data['singal_cabin_data'] : [],
 			'double_bed_data'=> isset($data['double_bed_data']) ? $data['double_bed_data'] : [], 
+			'scanning_data'=> isset($data['scanning_data']) ? $data['scanning_data'] : [], 
 			'service_ids'=>$service_ids,
         ]);
 	}
@@ -124,6 +125,12 @@ class ShiftController extends Controller {
 			$double_bed_data = Room::totalShiftData(3,$input_date,$user_id,$client_id);
 			$data['double_bed_data'] = $double_bed_data;
 			$data = $this->calculateAmount($double_bed_data, $data);
+		}
+
+		if(in_array(9, $service_ids)){
+			$scanning_data = ScanningEntry::totalShiftData($input_date,$user_id,$client_id);
+			$data['scanning_data'] = $scanning_data;
+			$data = $this->calculateAmount($scanning_data, $data);
 		}
 		
 		return $data;

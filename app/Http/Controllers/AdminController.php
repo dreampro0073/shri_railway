@@ -16,7 +16,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\Room;
 use App\Models\Recliner;
 use App\Models\Sitting;
-use App\Models\CloakRoom;
+use App\Models\CloakRoom,App\Models\ScanningEntry;;
 
 class AdminController extends Controller {
 
@@ -51,6 +51,13 @@ class AdminController extends Controller {
 		$avail_recliner = Recliner::getAvailReclinersAr();
 
 		$booked_bags = CloakRoom::getBookedBags();
+
+		$leased_count = ScanningEntry::itemCount(2,1);
+		$non_leased_count = ScanningEntry::itemCount(1,1);
+		$outword_count = ScanningEntry::itemCount(1,2);
+		$inword_count = ScanningEntry::itemCount(2,2);
+
+		// dd($inword_count);
 		
 		return view('admin.dashboard', [
             "sidebar" => "dashboard",
@@ -67,6 +74,10 @@ class AdminController extends Controller {
             "booked_recliner" => $booked_recliner,
             "avail_recliner" => $avail_recliner,
             "booked_bags" => $booked_bags,
+            "leased_count" => $leased_count,
+            "non_leased_count" => $non_leased_count,
+            "outword_count" => $outword_count,
+            "inword_count" => $inword_count,
         ]);
 	}
 

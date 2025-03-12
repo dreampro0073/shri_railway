@@ -93,9 +93,6 @@ class ClientSettingController extends Controller {
                 $client->total_shift_cash = ($c_shift['total_shift_cash'] > $client->hide_amount)?$c_shift['total_shift_cash'] - $client->hide_amount : $c_shift['total_shift_cash'];
                 
                 $client->total_shift_upi = $c_shift['total_shift_upi'];
-
-                // $client->total_shift_cash = $c_shift['total_shift_cash'] - $client->hide_amount;
-                // $client->total_shift_upi = $c_shift['total_shift_upi'];
             }
 
             $grand_total->total_collection += $client->total_collection;

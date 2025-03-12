@@ -151,6 +151,15 @@
                         <td>@{{double_bed_data.total_shift_cash}}</td>
                         <td>@{{double_bed_data.total_collection}}</td>
                     </tr>
+                    <tr ng-if="service_ids.includes(9)">
+                        <td>Scanning</td> 
+                        <td>@{{scanning_data.last_hour_upi_total}}</td>
+                        <td>@{{scanning_data.last_hour_cash_total}}</td>
+                        <td>@{{scanning_data.last_hour_total}}</td>
+                        <td>@{{scanning_data.total_shift_upi}}</td>
+                        <td>@{{scanning_data.total_shift_cash}}</td>
+                        <td>@{{scanning_data.total_collection}}</td>
+                    </tr>
                     <tr>
                         <td><b>Grand Total</b></td> 
                         <td><b>@{{last_hour_upi_total}}</b></td>

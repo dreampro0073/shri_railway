@@ -1302,6 +1302,7 @@ app.controller('shiftCtrl', function($scope , $http, $timeout , DBService) {
     $scope.massage_data = [];
     $scope.locker_data = [];
     $scope.recliner_data = [];
+    $scope.scanning_data = [];
     $scope.pod_data = [];
     $scope.singal_cabin_data = [];
     $scope.double_bed_data = [];
@@ -1346,6 +1347,7 @@ app.controller('shiftCtrl', function($scope , $http, $timeout , DBService) {
                 $scope.massage_data = data.massage_data;
                 $scope.locker_data = data.locker_data;
                 $scope.recliner_data = data.recliner_data;
+                $scope.scanning_data = data.scanning_data;
                 $scope.pod_data = data.pod_data;
                 $scope.singal_cabin_data = data.singal_cabin_data;
                 $scope.double_bed_data = data.double_bed_data;
@@ -2465,6 +2467,70 @@ app.controller('clientSettingCtrl', function($scope , $http, $timeout , DBServic
             }
         });
     }
+});
+app.controller('scanningCtrl', function($scope , $http, $timeout , DBService) {
+    $scope.loading = false;
+    $scope.processing = false;
+    $scope.filter = {};
+    
+    $scope.entries = [];
+    $scope.incoming_types = [];
+    $scope.item_types = [];
+    $scope.rate_list = [];
+
+    $scope.formData = {
+        name:'',
+        paid_amount:0,
+
+    }
+
+    $scope.init = function () {
+        DBService.postCall($scope.filter, '/api/scanning/init').then((data) => {
+            if (data.success) {
+                $scope.entries = data.entries;  
+                $scope.incoming_types = data.incoming_types;  
+                $scope.item_types = data.item_types;  
+                $scope.rate_list = data.rate_list;  
+            }
+
+            // console.log($scope.entries);
+        });
+    }
+    $scope.add = () => {
+        $("#exampleModalCenter").modal("show");
+    }
+    $scope.filterClear = function(){
+        $scope.filter = {};
+        $scope.init();
+    }
+    $scope.hideModal =() => {
+
+        $("#exampleModalCenter").modal("hide");
+        $scope.formData.name = '';
+        $scope.formData.paid_amount = 0;
+    }
+    $scope.onSubmit = function () {
+        $scope.processing = true;
+        DBService.postCall($scope.formData, '/api/scanning/store').then((data) => {
+            if (data.success) {
+                $scope.init();
+                $scope.hideModal();
+            }else{
+                alert(data.message); 
+            }
+            $scope.processing = false;
+        });
+    }
+
+    $scope.calAmount = () => {
+
+        var my_item = $scope.rate_list.find(item => item.item_type_id == $scope.formData.item_type_id && item.incoming_type_id == $scope.formData.incoming_type_id);
+
+        $scope.formData.paid_amount = $scope.formData.no_of_item*my_item.rate;
+
+
+    }
+
 });
 
 // app.controller('dailyEntryCtrl', function($scope , $http, $timeout , DBService) {

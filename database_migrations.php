@@ -209,4 +209,21 @@ ALTER TABLE `clients` ADD `hide_amount` INT NOT NULL AFTER `rate_type`;
 ALTER TABLE `users` ADD `is_super` TINYINT NOT NULL DEFAULT '0' AFTER `perent_user_id`;
 
 
+CREATE TABLE `nnhp`.`scanning_entries` ( `id` INT NOT NULL , `client_id` INT NOT NULL DEFAULT '0' , `unique_id` INT NULL DEFAULT NULL , `barcodevalue` VARCHAR(255) NULL DEFAULT NULL , `name` VARCHAR(255) NULL DEFAULT NULL , `no_of_item` INT NOT NULL DEFAULT '0' , `item_type` INT NOT NULL DEFAULT '0' , `incoming_type` TINYINT NOT NULL DEFAULT '0' , `date_time` DATETIME NULL DEFAULT NULL , `pay_type` TINYINT NOT NULL DEFAULT '0' , `added_by` INT NOT NULL DEFAULT '0' , `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , `created_at` TIMESTAMP NULL DEFAULT NULL ) ENGINE = InnoDB;
+ALTER TABLE `scanning_entries` ADD `paid_amount` VARCHAR(20) NULL DEFAULT NULL AFTER `incoming_type`;
+ALTER TABLE `scanning_entries` ADD PRIMARY KEY( `id`);
+ALTER TABLE `scanning_entries` CHANGE `id` `id` INT(11) NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `scanning_entries` ADD `date` DATE NULL DEFAULT NULL AFTER `paid_amount`;
+
+CREATE TABLE `nnhp`.`scanning_rate_list` ( `id` INT NOT NULL AUTO_INCREMENT , `client_id` INT NOT NULL DEFAULT '0' , `item_type_id` TINYINT NOT NULL DEFAULT '0' , `incoming_type_id` TINYINT NOT NULL DEFAULT '0' , `rate` VARCHAR(50) NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+
+CREATE TABLE `nnhp`.`scanning_item_types` ( `id` INT NOT NULL AUTO_INCREMENT , `item_type_name` VARCHAR(255) NULL DEFAULT NULL , `status` TINYINT NOT NULL DEFAULT '0' , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+ALTER TABLE `scanning_rate_list` CHANGE `incoming_type` `incoming_type` TINYINT(4) NOT NULL DEFAULT '0' COMMENT '1-> Outword, 2-> Inword';
+
+ALTER TABLE `scanning_rate_list` CHANGE `rate` `rate` INT(11) NOT NULL DEFAULT '0';
+ALTER TABLE `scanning_entries` CHANGE `item_type` `item_type_id` INT(11) NOT NULL DEFAULT '0';
+
+LTER TABLE `scanning_entries` CHANGE `incoming_type` `incoming_type_id` TINYINT(4) NOT NULL DEFAULT '0';
+
 ?>

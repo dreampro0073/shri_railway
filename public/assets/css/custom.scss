@@ -188,10 +188,11 @@ label.error{
 }
 
 .box{
-	background: #fff;
-	box-shadow: 0 0 10px rgba(0,0,0,0.2);
-	padding: 20px;
+	background:#d3d3d35c;
+	box-shadow: 0 0 2px rgba(0,0,0,0.2);
+	padding: 10px;
 	min-height: 202px;
+
 	h4{
 		display: inline-block;
 		width:48px;
@@ -209,6 +210,9 @@ label.error{
 		font-size: 16px;
 		font-weight: bold;
 	}
+}
+.tag{
+	font-size: 18px !important;
 }
 .input-group-append{
 	position:absolute;

@@ -80,7 +80,7 @@
                             @if(in_array(9, $service_ids) || Auth::user()->priv == 1)
                                 
                                 <li class="@if(isset($sidebar)) @if($sidebar == 'scanning') active @endif @endif">
-                                <a href="{{url('/admin/scanning')}}"><i class="fa fa-lock"></i>Scanning</a>
+                                <a href="{{url('/admin/scanning')}}"><i class="fa fa-qrcode" aria-hidden="true"></i>Scanning</a>
                             </li>
                             @endif
 

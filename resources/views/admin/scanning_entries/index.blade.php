@@ -32,7 +32,7 @@
                             <th>No. of Item</th>
                             <th>Paid Amount</th>
                             <th>Inword/Outword</th>
-	                        <th>#</th>
+	                        <!-- <th>#</th> -->
                         </tr>
                     </thead>
                     <tbody ng-if="entries.length > 0">
@@ -43,10 +43,10 @@
                             <td>@{{ item.no_of_item }}</td>
                             <td>@{{ item.paid_amount }}</td>
                             <td>@{{ item.incoming_type }}</td>
-                            <td>
+                            <!-- <td>
                                 <a href="javascript:;" class="btn btn-sm btn-warning" ng-click="edit(item.id)">Edit</a>
                                 <a target="_blank" href="{{url('admin/scanning/print/')}}/@{{item.barcodevalue}}" class="btn btn-sm btn-warning">Print Barcode</a>
-                            </td>
+                            </td> -->
                         </tr>
                     </tbody>
                 </table>

@@ -27,7 +27,6 @@
 	</div>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 	<!-- <script type="text/javascript">
-		var bill_no = "{{$print_url}}";
         document.getElementById("qrcode").innerHTML = "";
         new QRCode(document.getElementById("qrcode"), {
             text: bill_no,

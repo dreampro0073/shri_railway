@@ -63,10 +63,20 @@ class ScanningController extends Controller {
 
 		$cre = [
 			'name'=>$request->name,
+			'no_of_item'=>$request->no_of_item,
+			// 'paid_amount'=>$request->paid_amount,
+			'item_type_id'=>$request->item_type_id,
+			'incoming_type_id'=>$request->incoming_type_id,
+			'pay_type'=>$request->pay_type,
 		];
 
 		$rules = [
 			'name'=>'required',
+			'no_of_item'=>'required',
+			// 'paid_amount'=>'required',
+			'item_type_id'=>'required',
+			'incoming_type_id'=>'required',
+			'pay_type'=>'required',
 		];
 
 		$validator = Validator::make($cre,$rules);

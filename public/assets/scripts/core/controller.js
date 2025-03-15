@@ -2515,6 +2515,10 @@ app.controller('scanningCtrl', function($scope , $http, $timeout , DBService) {
             if (data.success) {
                 $scope.init();
                 $scope.hideModal();
+
+                 setTimeout(function(){
+                    window.open(base_url+'/admin/scanning/print/'+data.print_id,'_blank');
+                }, 800);
             }else{
                 alert(data.message); 
             }

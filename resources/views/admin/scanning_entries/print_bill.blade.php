@@ -21,7 +21,7 @@
 
 		<div style="text-align:center;margin-top: 10px;">
 			<?php for ($i=0; $i <$print_data->no_of_item ; $i++) {  ?>
-				<div class="qrcode" id="qrcode" style="margin-bottom:15px;padding-bottom: 15px;border-bottom: 1px solid #000;"></div>
+				<div class="qrcode" id="qrcode" style="margin-bottom:15px;padding-bottom: 15px;border-bottom: 1px dotted #000;"></div>
 			<?php } ?>
 		</div>
 	</div>

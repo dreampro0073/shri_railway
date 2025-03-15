@@ -34,5 +34,14 @@
             height: 120
         });
 	</script>
+	<script type="text/javascript">
+		window.onload = function(e){ 
+		    var printContents = document.getElementById("printableArea").innerHTML;
+			var originalContents = document.body.innerHTML;
+			document.body.innerHTML = printContents;
+			window.print();
+			document.body.innerHTML = originalContents; 
+		}
+	</script>
 </body>
 </html>

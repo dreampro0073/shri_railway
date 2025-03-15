@@ -25,7 +25,7 @@
                        
                         <div class="col-md-4 form-group">
                             <label>No of Item</label>
-                            <input type="text" ng-model="formData.no_of_item" class="form-control" ng-disabled="formData.id > 0" ng-change="calAmount()" />
+                            <input type="text" required ng-model="formData.no_of_item" class="form-control" ng-disabled="formData.id > 0" ng-change="calAmount()" />
                         </div> 
                         <div ng-if="entry_id !=0" class="col-md-4 form-group">
                             <label>Paid Amount</label>

@@ -33,8 +33,8 @@ class ScanningController extends Controller {
 			$entries = $entries->where('scanning_entries.name', 'LIKE', '%'.$request->name.'%');
 		}		
 
-		$entries = $entries->take(50);
-		$entries = $entries->get();
+		$entries = $entries->take(500);
+		$entries = $entries->orderBy('id','DESC')->get();
 
 
 		foreach ($entries as $key => $entry) {

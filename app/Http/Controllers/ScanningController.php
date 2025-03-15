@@ -115,12 +115,12 @@ class ScanningController extends Controller {
 	}
 
 	public function printBill(Request $request,$print_id=0){
-		$print_data = DB::table('scanning_entries')->select('id')->where('barcodevalue', $print_id)->where("client_id", Auth::user()->client_id)->first();
+		$print_data = DB::table('scanning_entries')->select('unique_id','id','no_of_item')->where('barcodevalue', $print_id)->where("client_id", Auth::user()->client_id)->first();
 
-		$print_url = url('view-scanning/'.$print_data->id);
+		$print_data->print_url = url('view-scanning/'.$print_data->id);
 
 		return view("admin.scanning_entries.print_bill",[
-			'print_url'=>$print_url
+			'print_data'=>$print_data
 		]);
 
 	}

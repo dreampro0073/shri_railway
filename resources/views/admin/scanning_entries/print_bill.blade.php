@@ -17,23 +17,37 @@
 </head>
 <body>
 	<div id="printableArea" class="main">
+		<!-- <div class="qrcode" id="qrcode"></div> -->
+
 		<div style="text-align:center;margin-top: 10px;">
-			<div class="qrcode" id="qrcode"></div>
+			<?php for ($i=0; $i <$print_data->no_of_item ; $i++) {  ?>
+				<div class="qrcode" id="qrcode" style="margin-bottom:15px;padding-bottom: 15px;border-bottom: 1px solid #000;"></div>
+			<?php } ?>
 		</div>
 	</div>
-
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-	<script type="text/javascript">
+	<!-- <script type="text/javascript">
 		var bill_no = "{{$print_url}}";
-		// console.log(bill_no);
-		// let text = document.getElementById("text").value;
         document.getElementById("qrcode").innerHTML = "";
         new QRCode(document.getElementById("qrcode"), {
             text: bill_no,
             width: 120,
             height: 120
         });
-	</script>
+	</script> -->
+
+	<script>
+		var bill_no = "{{$print_data->print_url}}";
+        document.addEventListener("DOMContentLoaded", function () {  
+            document.querySelectorAll(".qrcode").forEach(function (element) {
+                new QRCode(element, {
+                    text: bill_no,
+                    width: 120,
+                    height: 120
+                });
+            });
+        });
+    </script>
 	<script type="text/javascript">
 		window.onload = function(e){ 
 		    var printContents = document.getElementById("printableArea").innerHTML;

@@ -49,9 +49,7 @@
 </head>
 <body>
 	<div id="printableArea" class="main">
-		<h4>
-			{!! $print_data->client_name !!}
-		</h4>
+		
 		<p style="padding:0 15px;text-align: center;">
 			{!! $print_data->client_address !!}
 		</p>

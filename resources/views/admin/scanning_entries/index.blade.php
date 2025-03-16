@@ -44,8 +44,12 @@
                             <td>@{{ item.paid_amount }}</td>
                             <td>@{{ item.incoming_type }}</td>
                             <td>
-                                <!-- <a href="javascript:;" class="btn btn-sm btn-warning" ng-click="edit(item.id)">Edit</a> -->
-                                <a target="_blank" href="{{url('admin/scanning/print/')}}/@{{item.barcodevalue}}" class="btn btn-sm btn-warning">Print Barcode</a>
+                                @if(Auth::user()->priv == 2)
+                                    <a target="_blank" ng- href="{{url('admin/scanning/print/')}}/@{{item.barcodevalue}}" class="btn btn-sm btn-warning">Print</a>
+                                @endif
+                                @if(Auth::user()->priv == 3)
+                                    <a target="_blank" ng-if="item.print_count < 2" ng- href="{{url('admin/scanning/print/')}}/@{{item.barcodevalue}}" class="btn btn-sm btn-warning">Print</a>
+                                @endif
                             </td>
                         </tr>
                     </tbody>

@@ -50,10 +50,10 @@
 <body>
 	<div id="printableArea" class="main">
 		<h4>
-			{{$print_data->client_name}}
+			{!! $print_data->client_name !!}
 		</h4>
 		<p style="padding:0 15px;text-align: center;">
-			{{$print_data->client_address}}
+			{!! $print_data->client_address !!}
 		</p>
 		<h5>
 			{{$print_data->gst}}
@@ -75,7 +75,7 @@
 			<span class="text">Item Type: {{$print_data->item_type_name}}</span>	
 		</div>
 		<div style="text-align: center;">
-			<span class="text">Type: {{$print_data->item_type_name}}</span>	
+			<span class="text">Type: {{$print_data->incom}}</span>	
 		</div>
 		<div style="text-align: center;">
 			<span class="text">No of Item: {{$print_data->no_of_item}}</span>	

@@ -142,7 +142,7 @@ class ScanningController extends Controller {
     	$show_incoming_types = ScanningEntry::showIncomingTypes();
 		
 		if($print_data){
-			$entry->incoming_type = (isset($entry->incoming_type_id))?$show_incoming_types[$entry->incoming_type_id]:'NA';
+			$print_data->incoming_type = (isset($print_data->incoming_type_id))?$show_incoming_types[$print_data->incoming_type_id]:'NA';
 
 		}
 

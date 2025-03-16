@@ -146,7 +146,7 @@ class ScanningController extends Controller {
 	}
 
 	public function viewScanning(Request $request,$print_id=0){
-		$print_data = DB::table('scanning_entries')->select('scanning_entries.name','scanning_entries.no_of_item','scanning_entries.item_type_id','scanning_entries.incoming_type_id','scanning_item_types.item_type_name','scanning_entries.date','scanning_entries.slip_id','scanning_entries.name as client_name','clients.gst','clients.address as client_address','scanning_entries.paid_amount','paid_amount.no_of_item')->leftJoin('scanning_item_types','scanning_item_types.id','=','scanning_entries.item_type_id')->leftJoin('clients','clients.id','=','scanning_entries.client_id')->where('scanning_entries.id',$print_id)->first();
+		$print_data = DB::table('scanning_entries')->select('scanning_entries.name','scanning_entries.no_of_item','scanning_entries.item_type_id','scanning_entries.incoming_type_id','scanning_item_types.item_type_name','scanning_entries.date','scanning_entries.slip_id','scanning_entries.name as client_name','clients.gst','clients.address as client_address','scanning_entries.paid_amount','scanning_entries.no_of_item')->leftJoin('scanning_item_types','scanning_item_types.id','=','scanning_entries.item_type_id')->leftJoin('clients','clients.id','=','scanning_entries.client_id')->where('scanning_entries.id',$print_id)->first();
 
 		$print_data->incoming_type = "NA";
     	$show_incoming_types = ScanningEntry::showIncomingTypes();

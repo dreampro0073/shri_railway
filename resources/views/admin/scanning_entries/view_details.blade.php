@@ -75,7 +75,7 @@
 			<span class="text">Item Type: {{$print_data->item_type_name}}</span>	
 		</div>
 		<div style="text-align: center;">
-			<span class="text">Type: {{$print_data->incom}}</span>	
+			<span class="text">Type: {{$print_data->incoming_type}}</span>	
 		</div>
 		<div style="text-align: center;">
 			<span class="text">No of Item: {{$print_data->no_of_item}}</span>	

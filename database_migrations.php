@@ -226,4 +226,6 @@ ALTER TABLE `scanning_entries` CHANGE `item_type` `item_type_id` INT(11) NOT NUL
 
 LTER TABLE `scanning_entries` CHANGE `incoming_type` `incoming_type_id` TINYINT(4) NOT NULL DEFAULT '0';
 
+ALTER TABLE `scanning_entries` ADD `print_count` INT NOT NULL DEFAULT '0' AFTER `added_by`, ADD `max_print` INT NOT NULL DEFAULT '2' AFTER `print_count`;
+
 ?>

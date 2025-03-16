@@ -61,23 +61,23 @@
 		<h5>
 			Scanning Details
 		</h5>
-		<div style="text-align: center;">
+		<div style="text-align: center;margin-bottom: 5px;">
 			<span class="text">Slip ID : {{ $print_data->slip_id }}</span>
 		</div>
-		<div style="text-align: center;">
+		<div style="text-align: center;margin-bottom: 5px;">
 			<span class="text">Name : {{$print_data->name}}</span>		
 
 		</div>
-		<div style="text-align: center;">
+		<div style="text-align: center;margin-bottom: 5px;">
 			<span class="text">Date: <?php echo date("d-m-Y",strtotime($print_data->date)); ?></span>	
 		</div>
-		<div style="text-align: center;">
+		<div style="text-align: center;margin-bottom: 5px;">
 			<span class="text">Item Type: {{$print_data->item_type_name}}</span>	
 		</div>
-		<div style="text-align: center;">
+		<div style="text-align: center;margin-bottom: 5px;">
 			<span class="text">Type: {{$print_data->incoming_type}}</span>	
 		</div>
-		<div style="text-align: center;">
+		<div style="text-align: center;margin-bottom: 5px;">
 			<span class="text">No of Item: {{$print_data->no_of_item}}</span>	
 		</div>
 	

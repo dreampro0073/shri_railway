@@ -156,7 +156,6 @@ class ScanningController extends Controller {
 
 		}
 
-
 		return view("admin.scanning_entries.view_details",[
 			'print_data'=>$print_data
 		]);

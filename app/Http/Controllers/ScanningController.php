@@ -136,7 +136,16 @@ class ScanningController extends Controller {
 	}
 
 	public function viewScanning(Request $request,$print_id=0){
-		$print_data = DB::table('scanning_entries')->select('scanning_entries.name','scanning_entries.no_of_item','scanning_entries.item_type_id','scanning_entries.incoming_type_id','scanning_item_types.item_type_name','scanning_entries.date','scanning_entries.slip_id')->leftJoin('scanning_item_types','scanning_item_types.id','=','scanning_entries.item_type_id')->where('scanning_entries.id',$print_id)->first();
+		$print_data = DB::table('scanning_entries')->select('scanning_entries.name','scanning_entries.no_of_item','scanning_entries.item_type_id','scanning_entries.incoming_type_id','scanning_item_types.item_type_name','scanning_entries.date','scanning_entries.slip_id','scanning_entries.name as client_name','clients.gst','clients.address as client_address')->leftJoin('scanning_item_types','scanning_item_types.id','=','scanning_entries.item_type_id')->leftJoin('clients','clients.id','=','scanning_entries.client_id')->where('scanning_entries.id',$print_id)->first();
+
+		$print_data->incoming_type = "NA";
+    	$show_incoming_types = ScanningEntry::showIncomingTypes();
+		
+		if($print_data){
+			$entry->incoming_type = (isset($entry->incoming_type_id))?$show_incoming_types[$entry->incoming_type_id]:'NA';
+
+		}
+
 
 		return view("admin.scanning_entries.view_details",[
 			'print_data'=>$print_data

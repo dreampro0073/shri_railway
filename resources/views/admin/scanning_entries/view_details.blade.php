@@ -50,13 +50,13 @@
 <body>
 	<div id="printableArea" class="main">
 		<h4>
-			{{Session::get('client_name')}}
+			{{$print_data->client_name}}
 		</h4>
 		<p style="padding:0 15px;text-align: center;">
-			{!! Session::get('address') !!}
+			{{$print_data->client_address}}
 		</p>
 		<h5>
-			{{Session::get('gst_no')}}
+			{{$print_data->gst}}
 		</h5>
 		<h5>
 			Scanning Details
@@ -70,6 +70,12 @@
 		</div>
 		<div style="text-align: center;">
 			<span class="text">Date: <?php echo date("d-m-Y",strtotime($print_data->date)); ?></span>	
+		</div>
+		<div style="text-align: center;">
+			<span class="text">Item Type: {{$print_data->item_type_name}}</span>	
+		</div>
+		<div style="text-align: center;">
+			<span class="text">Type: {{$print_data->item_type_name}}</span>	
 		</div>
 		<div style="text-align: center;">
 			<span class="text">No of Item: {{$print_data->no_of_item}}</span>	

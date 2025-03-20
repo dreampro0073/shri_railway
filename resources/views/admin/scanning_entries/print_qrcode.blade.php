@@ -7,59 +7,29 @@
 		@page { margin: 0; }
 		body { margin: 0; }
 		.main{
-			width: 181px;
+			width: 302px;
 		}
-		h4{
-			
-			font-size: 14px;
+		.qrcode{
+			width: 302px;
+			height: 151.18px;
+			margin-bottom: 15px;
 		}
-		h4,h5,p{
-			text-align: center;
-			margin: 0;
-		}
-		.m-space{
-			margin: 2px 0;
-		}
-		.table-div{
-			display: table;
-			width: 100%;
-		}
-		.table-div > div{
-			display: table-cell;
-			vertical-align: middle;
-			padding: 2px;
-		}
-		.w-50{
-			width: 50%;
-		}
-		.w-16{
-			width: 16.66%;
-		}
-		td,span,p{
-			font-size: 12px;
-			font-weight: bold;
-		}
-		.text-right{
-			text-align: right;
-		}
-		.name{
-			text-align: left;
-		}
+		
 		.qrcode img{
 			margin: auto;
 		}
-		.bot-border{
+		/*.bot-border{
 			margin-bottom:15px;
 			padding-bottom: 15px;
 			border-bottom: 1px dotted #000;
-		}
+		}*/
 	</style>
 </head>
 <body>
 	<div id="printableArea" class="main">
 		<div style="text-align:center;margin-top: 10px;">
-			<?php for ($i=0; $i <$print_data->no_of_item ; $i++) {  ?>
-				<div class="qrcode bot-border" id="qrcode" ></div>
+			<?php for ($i=0; $i < $print_data->no_of_item ; $i++) {  ?>
+				<div class="qrcode" id="qrcode"></div>
 			<?php } ?>
 		</div>
 	</div>

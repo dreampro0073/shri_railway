@@ -168,7 +168,7 @@ class ScanningController extends Controller {
 
 		if(Auth::user()->priv == 3){
 			DB::table('scanning_entries')->where('id',$print_data->id)->update([
-	        	'print_count' => $print_data->print_count+1,
+	        	'qr_print_count' => $print_data->qr_print_count+1,
 	        ]);	
 		}
 

@@ -172,7 +172,7 @@ class ScanningController extends Controller {
 	        ]);	
 		}
 
-		return view("admin.scanning_entries.print_bill",[
+		return view("admin.scanning_entries.print_qrcode",[
 			'print_data'=>$print_data
 		]);
 

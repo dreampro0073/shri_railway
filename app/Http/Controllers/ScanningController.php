@@ -158,13 +158,13 @@ class ScanningController extends Controller {
 	public function printQR(Request $request,$print_id=0){
 		// $print_data = DB::table('scanning_entries')->select('unique_id','id','no_of_item')->where('barcodevalue', $print_id)->where("client_id", Auth::user()->client_id)->first();
 
-		$print_data = DB::table('scanning_entries')->select('id','qr_print_count','max_qr_count')->where('scanning_entries.barcodevalue',$print_id)->where("scanning_entries.client_id", Auth::user()->client_id)->first();
+		$print_data = DB::table('scanning_entries')->select('id','qr_print_count','max_qr_count','no_of_item')->where('scanning_entries.barcodevalue',$print_id)->where("scanning_entries.client_id", Auth::user()->client_id)->first();
 
 		if(Auth::user()->priv == 3 && $print_data->qr_print_count >= $print_data->max_qr_count){
 			return "Print not allowed";
 		}
 
-		$print_url = url('view-scanning/'.$print_data->id);
+		$print_data->print_url = url('view-scanning/'.$print_data->id);
 
 		if(Auth::user()->priv == 3){
 			DB::table('scanning_entries')->where('id',$print_data->id)->update([

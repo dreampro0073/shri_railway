@@ -239,20 +239,10 @@
     </script>
     <script type="text/javascript" src="{{url('assets/scripts/jquery.min.js')}}"></script>
     <script type="text/javascript" src="{{url('bootstrap3/js/bootstrap.min.js')}}"></script>
-    <!-- <script type="text/javascript" src="{{url('date/bootstrapp-time.min.js')}}"></script> -->
-     <!-- <script src="https://unpkg.com/gijgo@1.9.14/js/gijgo.min.js" type="text/javascript"></script> -->
+
     <script type="text/javascript" src="{{url('plugins/bootstrap-datepicker/js/bootstrap-datepicker.js')}}"></script>
 
-    <script>
-        // $('.datepicker').datepicker({
-        //     uiLibrary: 'bootstrap4',
-        //     // format: 'dd/mm/YYYY',
-        // });
-        // $('.datepicker1').datepicker({
-        //     uiLibrary: 'bootstrap4',
-        //     // format: 'dd/mm/YYYY',
-        // });
-    </script>
+
     <script type="text/javascript" src="{{url('assets/scripts/selectize.min.js')}}" ></script>
     <script type="text/javascript" src="{{url('assets/scripts/angular.min.js')}}" ></script>
     <script type="text/javascript" src="{{url('assets/scripts/ng-file-upload.min.js')}}" ></script>

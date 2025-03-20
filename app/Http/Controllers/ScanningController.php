@@ -155,6 +155,29 @@ class ScanningController extends Controller {
 
 	}
 
+	public function printQR(Request $request,$print_id=0){
+		// $print_data = DB::table('scanning_entries')->select('unique_id','id','no_of_item')->where('barcodevalue', $print_id)->where("client_id", Auth::user()->client_id)->first();
+
+		$print_data = DB::table('scanning_entries')->select('id','qr_print_count','max_qr_count')->where('scanning_entries.barcodevalue',$print_id)->where("scanning_entries.client_id", Auth::user()->client_id)->first();
+
+		if(Auth::user()->priv == 3 && $print_data->qr_print_count >= $print_data->max_qr_count){
+			return "Print not allowed";
+		}
+
+		$print_url = url('view-scanning/'.$print_data->id);
+
+		if(Auth::user()->priv == 3){
+			DB::table('scanning_entries')->where('id',$print_data->id)->update([
+	        	'print_count' => $print_data->print_count+1,
+	        ]);	
+		}
+
+		return view("admin.scanning_entries.print_bill",[
+			'print_data'=>$print_data
+		]);
+
+	}
+
 	public function viewScanning(Request $request,$print_id=0){
 		$print_data = DB::table('scanning_entries')->select('scanning_entries.name','scanning_entries.no_of_item','scanning_entries.item_type_id','scanning_entries.incoming_type_id','scanning_item_types.item_type_name','scanning_entries.date','scanning_entries.slip_id','scanning_entries.name as client_name','clients.gst','clients.address as client_address','scanning_entries.paid_amount','scanning_entries.no_of_item')->leftJoin('scanning_item_types','scanning_item_types.id','=','scanning_entries.item_type_id')->leftJoin('clients','clients.id','=','scanning_entries.client_id')->where('scanning_entries.id',$print_id)->first();
 

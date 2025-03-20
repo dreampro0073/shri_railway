@@ -7,7 +7,7 @@
 		@page { margin: 0; }
 		body { margin: 0; }
 		.main{
-			width: 300px;
+			width: 181px;
 		}
 		h4{
 			
@@ -57,48 +57,10 @@
 </head>
 <body>
 	<div id="printableArea" class="main">
-		
-		<p style="padding:0 15px;text-align: center;">
-			{!! $print_data->client_address !!}
-
-		</p>
-		<h5>
-			{{ $print_data->gst }}
-		</h5>
-		<h5>
-			Scanning Detail
-		</h5>
-		<div style="text-align: center;">
-			<b style="font-size: 18px;">
-				Slip ID : {{ $print_data->slip_id }}
-			</b>
-		</div>
-
-		<div class="table-div">
-			<div class="w-50">
-				<span class="name">Name : {{$print_data->name}}</span>
-			</div>
-			<div class="w-50">
-				<span class="text text-right">Date: {{date('d-m-Y',strtotime($print_data->date))}} </span>	
-
-			</div>
-		</div>
-		<div class="table-div">
-			<div class="w-50">
-				<span class="text">Item Type: {{$print_data->item_type_name}}</span>
-			</div>
-			<div class="w-50">
-				<span class="text">Type: {{$print_data->incoming_type}}</span>
-			</div>
-		</div>
-
-		<div class="table-div bot-border">
-			<div class="w-50">
-				<span class="text">No Of Item: {{$print_data->no_of_item}}</span>
-			</div>
-			<div class="w-50">
-				<span class="text">Paid Amount: {{$print_data->paid_amount}}</span>
-			</div>
+		<div style="text-align:center;margin-top: 10px;">
+			<?php for ($i=0; $i <$print_data->no_of_item ; $i++) {  ?>
+				<div class="qrcode bot-border" id="qrcode" ></div>
+			<?php } ?>
 		</div>
 	</div>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
@@ -109,8 +71,8 @@
             document.querySelectorAll(".qrcode").forEach(function (element) {
                 new QRCode(element, {
                     text: bill_no,
-                    width: 120,
-                    height: 120
+                    width: 100,
+                    height: 100
                 });
             });
         });

@@ -46,9 +46,11 @@
                             <td>
                                 @if(Auth::user()->priv == 2)
                                     <a target="_blank" ng- href="{{url('admin/scanning/print/')}}/@{{item.barcodevalue}}" class="btn btn-sm btn-warning">Print</a>
+                                    <a target="_blank" ng- href="{{url('admin/scanning/print-qr/')}}/@{{item.barcodevalue}}" class="btn btn-sm btn-warning">Print QR</a>
                                 @endif
                                 @if(Auth::user()->priv == 3)
                                     <a target="_blank" ng-if="item.print_count < 2" ng- href="{{url('admin/scanning/print/')}}/@{{item.barcodevalue}}" class="btn btn-sm btn-warning">Print</a>
+                                    <a target="_blank" ng-if="item.qr_print_count < 2" ng- href="{{url('admin/scanning/print-qr/')}}/@{{item.barcodevalue}}" class="btn btn-sm btn-warning">Print QR</a>
                                 @endif
                             </td>
                         </tr>

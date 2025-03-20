@@ -228,4 +228,6 @@ LTER TABLE `scanning_entries` CHANGE `incoming_type` `incoming_type_id` TINYINT(
 
 ALTER TABLE `scanning_entries` ADD `print_count` INT NOT NULL DEFAULT '0' AFTER `added_by`, ADD `max_print` INT NOT NULL DEFAULT '2' AFTER `print_count`;
 
+ALTER TABLE `scanning_entries` ADD `qr_print_count` INT NOT NULL DEFAULT '0' AFTER `max_print`, ADD `max_qr_count` INT NOT NULL DEFAULT '2' AFTER `qr_print_count`;
+
 ?>

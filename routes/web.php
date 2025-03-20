@@ -241,6 +241,7 @@ Route::group(['middleware'=>'auth'],function(){
 		Route::group(['prefix'=>"scanning"], function(){
 			Route::get('/',[ScanningController::class,'index']);
 			Route::get('/print/{print_id}',[ScanningController::class,'printBill']);
+			Route::get('/print-qr/{print_id}',[ScanningController::class,'printQR']);
 		});	
 
 	});

@@ -35,7 +35,7 @@
 			position: absolute;
 			top: 50%;
 			left: 50%;
-			transform: translate(-48%,-53%);
+			transform: translate(-48%,-50%);
 		}
 
 	</style>

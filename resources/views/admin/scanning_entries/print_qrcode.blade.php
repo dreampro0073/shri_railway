@@ -12,7 +12,7 @@
 		.qrcode{
 			width: 302px;
 			height: 151.18px;
-			margin-bottom: 8px;
+			margin-top:15px;
 			display: flex;
 			align-items: center;
 			justify-content: center;

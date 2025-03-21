@@ -7,12 +7,12 @@
 		@page { margin: 0; }
 		body { margin: 0; }
 		.main{
-			width: 302px;
+			width: 302.px;
 		}
 		.qrcode{
 			width: 302px;
 			height: 151.18px;
-			margin-bottom: 15px;
+			margin-bottom: 10px;
 			display: flex;
 			align-items: center;
 			justify-content: center;

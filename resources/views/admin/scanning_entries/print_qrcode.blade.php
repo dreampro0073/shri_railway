@@ -10,23 +10,19 @@
 			width: 302.px;
 		}
 		.qrcode{
-			width: 302px;
+			width: 302.36px;
 			height: 151.18px;
 			margin-top:15px;
 			display: flex;
 			align-items: center;
 			justify-content: center;
-			padding-top: 10px;
+			padding-top: 13px;
+			text-align: center;
 		}
 		
 		.qrcode img{
-			margin: auto;
+			margin:auto;
 		}
-		/*.bot-border{
-			margin-bottom:15px;
-			padding-bottom: 15px;
-			border-bottom: 1px dotted #000;
-		}*/
 	</style>
 </head>
 <body>

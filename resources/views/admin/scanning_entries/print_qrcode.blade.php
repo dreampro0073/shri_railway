@@ -13,6 +13,9 @@
 			width: 302px;
 			height: 151.18px;
 			margin-bottom: 15px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
 		}
 		
 		.qrcode img{

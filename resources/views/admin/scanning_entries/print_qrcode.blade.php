@@ -9,7 +9,7 @@
 		.main{
 			width: 302.px;
 		}
-		.qrcode{
+		/*.qrcode{
 			width: 302.36px;
 			height: 151.18px;
 			margin-top:15px;
@@ -22,7 +22,21 @@
 		
 		.qrcode img{
 			margin:auto;
+		}*/
+
+		.qrcode{
+			width: 302.36px;
+			height: 151.18px;
+			position: relative;
 		}
+		
+		.qrcode img{
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%,-50%);
+		}
+
 	</style>
 </head>
 <body>

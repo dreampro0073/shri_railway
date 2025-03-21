@@ -1,4 +1,6 @@
-<?php $version = env('JS_VERSION'); 
+<?php 
+    $version = env('JS_VERSION'); 
+    $host = env('APP_ENV'); 
     $service_ids = Session::get('service_ids');
 ?>
 
@@ -10,15 +12,15 @@
 
     <link rel="icon" sizes="32x32" type="image/x-icon" href="{{url('assets/img/favicon.png')}}" >
 
-    <link rel="stylesheet" type="text/css" href="{{url('bootstrap3/css/bootstrap.min.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{url('assets/font-awesome/css/font-awesome.min.css')}}">
-    <!-- <link rel="stylesheet" type="text/css" href="https://unpkg.com/gijgo@1.9.14/css/gijgo.min.css"> -->
-
-    <link rel="stylesheet" type="text/css" href="{{url('plugins/bootstrap-datepicker/css/datepicker3.css')}}">
-
-    <link href="{{url('assets/css/selectize.css')}}" rel="stylesheet" type="text/css"/>
-    
-    <link rel="stylesheet" type="text/css" href="{{url('assets/css/custom.css?v='.$version)}}">
+    @if($host == 'local')
+        <link rel="stylesheet" type="text/css" href="{{url('bootstrap3/css/bootstrap.min.css')}}">
+        <link rel="stylesheet" type="text/css" href="{{url('assets/font-awesome/css/font-awesome.min.css')}}">
+        <link rel="stylesheet" type="text/css" href="{{url('plugins/bootstrap-datepicker/css/datepicker3.css')}}">
+        <link href="{{url('assets/css/selectize.css')}}" rel="stylesheet" type="text/css"/>
+        <link rel="stylesheet" type="text/css" href="{{url('assets/css/custom.css?v='.$version)}}">
+    @else
+        <link rel="stylesheet" type="text/css" href="{{url('assets/dist/web.min.css?v='.$version)}}">
+    @endif
 </head>
 <body  ng-app="app">
 	<div id="wrapper">
@@ -228,32 +230,37 @@
 		
     </div>
     
-    <div ng-controller="checkoutAlertCtrl">
+    <!-- <div ng-controller="checkoutAlertCtrl">
         
-    </div>
+    </div> -->
     <script type="text/javascript">
         var base_url = "{{url('/')}}";
         var CSRF_TOKEN = "{{ csrf_token() }}";
         var auto_alert_status = "{{Session::get('auto_alert_status')}}";
         var authCheck = "{{Auth::user()->is_auto_alert_access}}";
     </script>
-    <script type="text/javascript" src="{{url('assets/scripts/jquery.min.js')}}"></script>
-    <script type="text/javascript" src="{{url('bootstrap3/js/bootstrap.min.js')}}"></script>
 
-    <script type="text/javascript" src="{{url('plugins/bootstrap-datepicker/js/bootstrap-datepicker.js')}}"></script>
+    @if($host == 'local')
 
+        <script type="text/javascript" src="{{url('assets/scripts/jquery.min.js')}}"></script>
+        <script type="text/javascript" src="{{url('bootstrap3/js/bootstrap.min.js')}}"></script>
+        <script type="text/javascript" src="{{url('plugins/bootstrap-datepicker/js/bootstrap-datepicker.js')}}"></script>
+        <script type="text/javascript" src="{{url('assets/scripts/selectize.min.js')}}" ></script>
+        <script type="text/javascript" src="{{url('assets/scripts/angular.min.js')}}" ></script>
+        <script type="text/javascript" src="{{url('assets/scripts/ng-file-upload.min.js')}}" ></script>
+        <script type="text/javascript" src="{{url('assets/scripts/angular-selectize.js')}}" ></script>
+        <script type="text/javascript" src="{{url('assets/scripts/jcs-auto-validate.js')}}" ></script>
+        <script type="text/javascript" src="{{url('assets/scripts/core/custom.js')}}"></script>
+        <script type="text/javascript" src="{{url('assets/scripts/core/app.js')}}" ></script>
+        <script type="text/javascript" src="{{url('assets/scripts/core/services.js')}}" ></script>
+        <script type="text/javascript" type="text/javascript" src="{{url('assets/scripts/core/controller.js?v='.$version)}}"></script>
+        <!-- <script type="text/javascript" type="text/javascript" src="{{url('assets/scripts/core/checkout_alert.js?v='.$version)}}"></script> -->
+    @else
+        <script type="text/javascript" type="text/javascript" src="{{url('assets/dist/plugins.min.js?v='.$version)}}"></script>
+        <script type="text/javascript" type="text/javascript" src="{{url('assets/dist/web.min.js?v='.$version)}}"></script>
+        
+    @endif
 
-    <script type="text/javascript" src="{{url('assets/scripts/selectize.min.js')}}" ></script>
-    <script type="text/javascript" src="{{url('assets/scripts/angular.min.js')}}" ></script>
-    <script type="text/javascript" src="{{url('assets/scripts/ng-file-upload.min.js')}}" ></script>
-    <script type="text/javascript" src="{{url('assets/scripts/angular-selectize.js')}}" ></script>
-    
-    <script type="text/javascript" src="{{url('assets/scripts/jcs-auto-validate.js')}}" ></script>
-    <script type="text/javascript" src="{{url('assets/scripts/core/custom.js')}}"></script>
-    <script type="text/javascript" src="{{url('assets/scripts/core/app.js')}}" ></script>
-    <script type="text/javascript" src="{{url('assets/scripts/core/services.js')}}" ></script>
-    <script type="text/javascript" type="text/javascript" src="{{url('assets/scripts/core/controller.js?v='.$version)}}"></script>
-    <script type="text/javascript" type="text/javascript" src="{{url('assets/scripts/core/checkout_alert.js?v='.$version)}}"></script>
     @yield('footer_scripts')
 
     <script>

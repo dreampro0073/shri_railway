@@ -1,4 +1,4 @@
-//gulp default js1
+//gulp default js js1
 
 const gulp = require('gulp');
 const { src, dest, task } = require('gulp');

@@ -82,9 +82,6 @@
     </script>
     <script type="text/javascript" src="{{url('assets/scripts/jquery.min.js')}}"></script>
     <script type="text/javascript" src="{{url('assets/scripts/jquery.validate.js')}}"></script>
-    <script type="text/javascript" src="{{url('assets/scripts/jquery-ui.min.js')}}"></script>
-    <script type="text/javascript" src="{{url('assets/scripts/bootstrap.min.js')}}"></script>
-    <script type="text/javascript" src="{{url('assets/js/custom.js')}}"></script>
     <script type="text/javascript">
         $(".check-form").validate();
     </script>

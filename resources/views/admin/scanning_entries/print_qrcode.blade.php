@@ -56,8 +56,8 @@
             document.querySelectorAll(".qrcode").forEach(function (element) {
                 new QRCode(element, {
                     text: bill_no,
-                    width: 110,
-                    height: 110
+                    width: 100,
+                    height: 100
                 });
             });
         });

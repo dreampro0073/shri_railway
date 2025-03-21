@@ -41,6 +41,10 @@ use App\Http\Controllers\ScanningController;
 Route::get('/', [UserController::class,'login'])->name("login");
 Route::post('/login', [UserController::class,'postLogin']);
 
+Route::get('/error',function(){
+	return view('error');
+});
+
 Route::get('/barcode-gen', [AdminController::class,'barcodeGen']);
 Route::get('/print', [SittingController::class,'print']);
 Route::get('/print1', [SittingController::class,'print1']);
@@ -118,6 +122,7 @@ Route::get('/getHideAmount', function () {
 
 Route::group(['middleware'=>'auth'],function(){
 	Route::group(['prefix'=>"admin"], function(){
+		Route::post('/uploadFile',[AdminController::class,'uploadFile']);
 		Route::get('/backup-data', [BackupController::class,'dumpData']);
 		// Route::get('/recliners-set', [ReclinerController::class,'reclinersSet']);
 		Route::get('/set-barcode',[AdminController::class,'setBarcode']);
@@ -128,122 +133,130 @@ Route::group(['middleware'=>'auth'],function(){
 		Route::get('/reset-password',[UserController::class,'resetPassword']);
 		Route::post('/reset-password',[UserController::class,'updatePassword']);
 
-		Route::group(['prefix'=>"sitting"], function(){
-			Route::get('/',[SittingController::class,'sitting']);
-			Route::get('/update-print/{slip_id}',[SittingController::class,'updatePrint']);
-			Route::get('/print-unq/{type}/{print_id?}', [SittingController::class,'printPostUnq']);
-			Route::get('/print/{id?}', [SittingController::class,'printPost']);
-			// Route::get('/print-report', [SittingController::class,'printReports']);
-			Route::get('/checkout-without-penalty/{id?}', [SittingController::class,'checkoutWithoutPenalty']);
-			Route::get('/change-pay-type/{id?}', [SittingController::class,'changePayType']);
+		Route::middleware(['check.sitting'])->group(function () {
+		   Route::group(['prefix'=>"sitting"], function(){
+				Route::get('/',[SittingController::class,'sitting']);
+				Route::get('/update-print/{slip_id}',[SittingController::class,'updatePrint']);
+				Route::get('/print-unq/{type}/{print_id?}', [SittingController::class,'printPostUnq']);
+				Route::get('/print/{id?}', [SittingController::class,'printPost']);
+				// Route::get('/print-report', [SittingController::class,'printReports']);
+				Route::get('/checkout-without-penalty/{id?}', [SittingController::class,'checkoutWithoutPenalty']);
+				Route::get('/change-pay-type/{id?}', [SittingController::class,'changePayType']);
 
+			});
 		});
 
-		Route::group(['prefix'=>"recliners"], function(){
-			Route::get('/',[ReclinerController::class,'recliners']);
-			Route::get('/update-print/{slip_id}',[ReclinerController::class,'updatePrint']);
-			Route::get('/print-unq/{type}/{print_id?}', [ReclinerController::class,'printPostUnq']);
-			Route::get('/print/{id?}', [ReclinerController::class,'printPost']);
-			Route::get('/checkout-without-penalty/{id?}', [ReclinerController::class,'checkoutWithoutPenalty']);
-			Route::get('/change-pay-type/{id?}', [ReclinerController::class,'changePayType']);
+		Route::middleware(['check.cloak'])->group(function () {
+		   	Route::group(['prefix'=>"cloak-rooms"], function(){
+				Route::get('/',[CloakRoomController::class,'index']);
+				Route::get('/all',[CloakRoomController::class,'allRooms']);
+				Route::get('/print-unq/{type}/{print_id?}', [CloakRoomController::class,'printPostUnq']);
+				Route::get('/print/{id?}', [CloakRoomController::class,'printPost']);
+				Route::get('/export', [CloakRoomController::class,'export']);
+			});	
+		});
 
+		Route::middleware(['check.canteen'])->group(function () {
+		   	Route::group(['prefix'=>"canteens"], function(){
+				Route::group(['prefix'=>"items"], function(){
+					Route::get('/',[AdminController::class,'canteenItems']);
+					Route::get('/stock/{canteen_item_id}',[AdminController::class,'canteenItemStocks']);
+					Route::get('/print-barcode/{id}',[AdminController::class,'printBarcode']);
+				});
+			});
+
+			Route::group(['prefix'=>"daily-entries"], function(){
+				Route::get('/',[AdminController::class,'dailyEntries']);
+				Route::get('/print/{id}',[ApiController::class,'printBill']);
+			});
+		});
+		Route::middleware(['check.massage'])->group(function () {
+		   	Route::group(['prefix'=>"massage"], function(){
+				Route::get('/',[MassageController::class,'massage']);
+				Route::get('/print/{id?}', [MassageController::class,'printPost']);
+				
+			});
+		});
+		Route::middleware(['check.locker'])->group(function () {
+		   	Route::group(['prefix'=>"locker"], function(){
+				Route::get('/',[LockerController::class,'index']);
+				Route::get('/print/{id?}', [LockerController::class,'printPost']);
+				
+			});	
+		});
+		Route::middleware(['check.ledger'])->group(function () {
+		   	Route::group(["prefix"=>"expenses"],function(){
+				Route::get('/',[ExpenseController::class,'index']);
+				Route::get('/add',[ExpenseController::class,'editForm']);
+				Route::get('/edit/{expense_id}',[ExpenseController::class,'editForm']);
+				Route::get('/print/{expense_id}',[ExpenseController::class,'printExpense']);
+				
+			});		
+			Route::group(["prefix"=>"income"],function(){
+				Route::get('/',[IncomeController::class,'index']);
+				Route::get('/add',[IncomeController::class,'editForm']);
+				Route::get('/edit/{income_id}',[IncomeController::class,'editForm']);
+				Route::get('/print/{income_id}',[IncomeController::class,'printIncome']);
+			});		
+
+			Route::group(["prefix"=>"summary"],function(){
+				Route::get('/',[IncomeController::class,'summary']);
+			});
 		});
 		
+
+	
+		Route::middleware(['check.recliner'])->group(function () {
+		   	Route::group(['prefix'=>"recliners"], function(){
+				Route::get('/',[ReclinerController::class,'recliners']);
+				Route::get('/update-print/{slip_id}',[ReclinerController::class,'updatePrint']);
+				Route::get('/print-unq/{type}/{print_id?}', [ReclinerController::class,'printPostUnq']);
+				Route::get('/print/{id?}', [ReclinerController::class,'printPost']);
+				Route::get('/checkout-without-penalty/{id?}', [ReclinerController::class,'checkoutWithoutPenalty']);
+				Route::get('/change-pay-type/{id?}', [ReclinerController::class,'changePayType']);
+
+			});
+		});
+
+		Route::middleware(['check.room'])->group(function () {
+		   	Route::get('/all-rooms',[RoomController::class,'allEntries']);
+		
+			Route::group(['prefix'=>"rooms"], function(){
+				Route::get('/{type}',[RoomController::class,'index']);
+				Route::get('/print/{id?}', [RoomController::class,'printPost']);
+
+			});
+		});
+		Route::middleware(['check.scanning'])->group(function () {
+		   	Route::group(['prefix'=>"scanning"], function(){
+				Route::get('/',[ScanningController::class,'index']);
+				Route::get('/print/{print_id}',[ScanningController::class,'printBill']);
+				Route::get('/print-qr/{print_id}',[ScanningController::class,'printQR']);
+			});
+		});
 
 		Route::group(['prefix'=>"shift"], function(){
 			Route::get('/current',[ShiftController::class,'index']);
 			Route::get('/print/{type}',[ShiftController::class,'print']);
 		});
-		
-		Route::group(['prefix'=>"cloak-rooms"], function(){
-			Route::get('/',[CloakRoomController::class,'index']);
-			Route::get('/all',[CloakRoomController::class,'allRooms']);
-			Route::get('/print-unq/{type}/{print_id?}', [CloakRoomController::class,'printPostUnq']);
-			Route::get('/print/{id?}', [CloakRoomController::class,'printPost']);
-			Route::get('/export', [CloakRoomController::class,'export']);
-		});	
-	
-		
 
 		// Route::get('collect-cloak', [CloakRoomCollectController::class,'collectCloak']);
 		// Route::get('/collect-sitting',[SittingCollectController::class,'collectSitting']);
 
-		Route::group(['prefix'=>"users"], function(){
-			Route::get('/',[UserController::class,'users']);
-		});
+		// Route::group(['prefix'=>"users"], function(){
+		// 	Route::get('/',[UserController::class,'users']);
+		// });
 
-		Route::group(['prefix'=>"canteens"], function(){
-			Route::group(['prefix'=>"items"], function(){
-				Route::get('/',[AdminController::class,'canteenItems']);
-				Route::get('/stock/{canteen_item_id}',[AdminController::class,'canteenItemStocks']);
-				Route::get('/print-barcode/{id}',[AdminController::class,'printBarcode']);
-			});
+		// Route::group(["prefix"=>"godowns"],function(){
+		// 	Route::get('/',[GodownsController::class,'index']);
+		// 	Route::get('/history/{g_stock_id}',[GodownsController::class,'history']);
+		// 	Route::get('/set-gid',[GodownsController::class,'setGid']);
+		// });
 
-
-		});
-
-		Route::group(['prefix'=>"daily-entries"], function(){
-			Route::get('/',[AdminController::class,'dailyEntries']);
-			Route::get('/print/{id}',[ApiController::class,'printBill']);
-		});
-
-		Route::group(['prefix'=>"massage"], function(){
-			Route::get('/',[MassageController::class,'massage']);
-			Route::get('/print/{id?}', [MassageController::class,'printPost']);
-			
-		});
-		Route::group(['prefix'=>"locker"], function(){
-			Route::get('/',[LockerController::class,'index']);
-			Route::get('/print/{id?}', [LockerController::class,'printPost']);
-			
-		});	
-
-		Route::post('/uploadFile',[AdminController::class,'uploadFile']);
-		
-
-		Route::group(["prefix"=>"expenses"],function(){
-			Route::get('/',[ExpenseController::class,'index']);
-			Route::get('/add',[ExpenseController::class,'editForm']);
-			Route::get('/edit/{expense_id}',[ExpenseController::class,'editForm']);
-			Route::get('/print/{expense_id}',[ExpenseController::class,'printExpense']);
-			
-		});		
-
-		Route::group(["prefix"=>"income"],function(){
-			Route::get('/',[IncomeController::class,'index']);
-			Route::get('/add',[IncomeController::class,'editForm']);
-			Route::get('/edit/{income_id}',[IncomeController::class,'editForm']);
-			Route::get('/print/{income_id}',[IncomeController::class,'printIncome']);
-		});		
-
-		Route::group(["prefix"=>"summary"],function(){
-			Route::get('/',[IncomeController::class,'summary']);
-		});
-
-		Route::group(["prefix"=>"godowns"],function(){
-			Route::get('/',[GodownsController::class,'index']);
-			Route::get('/history/{g_stock_id}',[GodownsController::class,'history']);
-			Route::get('/set-gid',[GodownsController::class,'setGid']);
-		});
-		
-		Route::get('/all-rooms',[RoomController::class,'allEntries']);
-		
-		Route::group(['prefix'=>"rooms"], function(){
-			Route::get('/{type}',[RoomController::class,'index']);
-			Route::get('/print/{id?}', [RoomController::class,'printPost']);
-
-		});
 		Route::group(['prefix'=>"clients"], function(){
 			Route::get('/set-amount',[ClientSettingController::class,'setAmount']);
 			Route::get('/shift-status',[ClientSettingController::class,'shiftStatus']);
-		});	
-
-		Route::group(['prefix'=>"scanning"], function(){
-			Route::get('/',[ScanningController::class,'index']);
-			Route::get('/print/{print_id}',[ScanningController::class,'printBill']);
-			Route::get('/print-qr/{print_id}',[ScanningController::class,'printQR']);
-		});	
-
+		});		
 	});
 });
 

@@ -42,6 +42,9 @@ class UserController extends Controller {
     public function login(){   
         return view('login');
     }
+    public function notAvailable(){   
+        return view('not_available');
+    }
 
     public function postLogin(Request $request){
         $cre = ["email"=>$request->input("email"),"password"=>$request->input("password")];

@@ -13,15 +13,10 @@ class ReclinerController extends Controller {
 
 	public function recliners(Request $request){
 
-		$service_ids = Session::get('service_ids');
-		if(in_array(1, $service_ids)){
-			return view('admin.recliners.index_new', [
-	            "sidebar" => "rec",
-	            "subsidebar" => "rec",
-	        ]);
-		} else {
-			return view('error');
-		}
+		return view('admin.recliners.index_new', [
+            "sidebar" => "rec",
+            "subsidebar" => "rec",
+        ]);
 	}
 	public function reclinersSet(){
 		for ($i=1; $i <= 20; $i++) { 

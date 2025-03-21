@@ -55,6 +55,15 @@ class Kernel extends HttpKernel
      */
     protected $routeMiddleware = [
         'auth' => \App\Http\Middleware\Authenticate::class,
+        'check.sitting' => \App\Http\Middleware\CheckSitting::class,
+        'check.cloak' => \App\Http\Middleware\CheckCloak::class,
+        'check.canteen' => \App\Http\Middleware\CheckCanteen::class,
+        'check.massage' => \App\Http\Middleware\CheckMassage::class,
+        'check.locker' => \App\Http\Middleware\CheckLocker::class,
+        'check.ledger' => \App\Http\Middleware\CheckLedger::class,
+        'check.recliner' => \App\Http\Middleware\CheckRecliner::class,
+        'check.room' => \App\Http\Middleware\CheckRoom::class,
+        'check.scanning' => \App\Http\Middleware\CheckScanning::class,
         'portal' => \App\Http\Middleware\PortalUser::class,
         'admin' => \App\Http\Middleware\AdminUser::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,

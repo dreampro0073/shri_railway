@@ -54,6 +54,12 @@ class User extends Authenticatable {
             return false;
         }
     }
+
+    public static function getServiceIds(){
+        $service_ids = DB::table('client_services')->where("client_id", Auth::user()->client_id)->where('status',1)->pluck('services_id')->toArray();
+
+        return $service_ids;
+    }
     
 
         

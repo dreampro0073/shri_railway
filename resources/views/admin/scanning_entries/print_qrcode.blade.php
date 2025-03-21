@@ -7,7 +7,7 @@
 		@page { margin: 0; }
 		body { margin: 0;margin-top:5px !important; }
 		.main{
-			width: 302px;
+			width: 302.36px;
 		}
 		/*.qrcode{
 			width: 302.36px;

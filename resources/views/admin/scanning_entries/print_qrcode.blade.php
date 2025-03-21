@@ -5,7 +5,7 @@
 	<title></title>
 	<style type="text/css">
 		@page { margin: 0; }
-		body { margin: 0; }
+		body { margin: 0;margin-top:13px; }
 		.main{
 			width: 302.px;
 		}

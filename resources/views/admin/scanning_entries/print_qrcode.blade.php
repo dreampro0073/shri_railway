@@ -54,13 +54,11 @@
 		<div style="text-align:center;margin-top: 10px;">
 			<?php for ($i=0; $i < $print_data->no_of_item ; $i++) {  ?>
 				<div class="rel">
-					<div class="abs">
-						<div class="tab">
-							<div style="padding-right: 20px;">
-								<img src="{{url('assets/img/rail.png')}}" style="width:100px;height:100px;">
-							</div>
-							<div class="qrcode" id="qrcode"></div>
+					<div class="tab">
+						<div style="padding-right: 20px;">
+							<img src="{{url('assets/img/rail.png')}}" style="width:100px;height:100px;">
 						</div>
+						<div class="qrcode" id="qrcode"></div>
 					</div>
 				</div>
 			<?php } ?>

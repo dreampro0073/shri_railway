@@ -28,7 +28,7 @@
 			width: 302.36px;
 			height: 151.18px;
 			position: relative;
-			margin-bottom: 10px;
+			margin-bottom: 15.11px;
 		}
 		.abs{
 			position: absolute;

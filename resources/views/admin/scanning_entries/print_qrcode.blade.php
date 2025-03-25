@@ -32,19 +32,17 @@
 		}
 		.abs{
 			position: absolute;
-			top: 50%;
-			left: 50%;
-			transform: translate(-48%,-50%);
-			width: 100%;
-			height: 100%;
+			top: 10px;
+			left: 10px;
+			right: 10px;
+			bottom: 10px;
+			width:292;
+			height: 131px;
+			width: 302.36px;
 		}
 		.tab{
-			display: table;
-			width: 100%;
-		}
-		.tab > div{
-		 	display: table-cell;
-		 	vertical-align: middle;
+			display: flex;
+			align-items: center;
 		}
 	</style>
 </head>

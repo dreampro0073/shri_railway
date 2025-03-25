@@ -40,12 +40,27 @@
 			height: 131px;
 			width: 302.36px;*/
 		}
-		.tab{
+		/*.tab{
 			display: flex;
 			align-items: center;
 			justify-content: center;
 			width: 100%;
 			height: 100%;
+		}*/
+		.tab{
+			width: 302.36px;
+			height: 151.18px;
+			position: relative;		
+		}
+		.tab .logo-img{
+			position: absolute;
+			left: 20px;
+			top: 20px;
+		}
+		.tab .qrcode{
+			position: absolute;
+			right: 20px;
+			top: 20px;
 		}
 	</style>
 </head>
@@ -55,7 +70,7 @@
 			<?php for ($i=0; $i < $print_data->no_of_item ; $i++) {  ?>
 				<div class="rel">
 					<div class="tab">
-						<div style="padding-right: 20px;">
+						<div class="logo-img">
 							<img src="{{url('assets/img/rail.png')}}" style="width:100px;height:100px;">
 						</div>
 						<div class="qrcode" id="qrcode"></div>

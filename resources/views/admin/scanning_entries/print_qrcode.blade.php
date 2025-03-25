@@ -31,19 +31,21 @@
 			margin-bottom: 15.11px;
 		}
 		.abs{
-			position: absolute;
+			/*position: absolute;
 			top: 10px;
 			left: 10px;
 			right: 10px;
 			bottom: 10px;
 			width:292;
 			height: 131px;
-			width: 302.36px;
+			width: 302.36px;*/
 		}
 		.tab{
 			display: flex;
 			align-items: center;
 			justify-content: center;
+			width: 100%;
+			height: 100%;
 		}
 	</style>
 </head>
@@ -54,7 +56,7 @@
 				<div class="rel">
 					<div class="abs">
 						<div class="tab">
-							<div class="">
+							<div style="padding-right: 20px;">
 								<img src="{{url('assets/img/rail.png')}}" style="width:100px;height:100px;">
 							</div>
 							<div class="qrcode" id="qrcode"></div>

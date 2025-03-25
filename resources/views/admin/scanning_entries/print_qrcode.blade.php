@@ -24,27 +24,44 @@
 			margin:auto;
 		}*/
 
-		.qrcode{
+		.rel{
 			width: 302.36px;
 			height: 151.18px;
 			position: relative;
-			margin-bottom: 10p;
+			margin-bottom: 10px;
 		}
-		
-		.qrcode img{
+		.abs{
 			position: absolute;
 			top: 50%;
 			left: 50%;
 			transform: translate(-48%,-50%);
+			width: 100%;
+			height: 100%;
 		}
-
+		.tab{
+			display: table;
+			width: 100%;
+		}
+		.tab > div{
+		 	display: table-cell;
+		 	vertical-align: middle;
+		}
 	</style>
 </head>
 <body>
 	<div id="printableArea" class="main">
 		<div style="text-align:center;margin-top: 10px;">
 			<?php for ($i=0; $i < $print_data->no_of_item ; $i++) {  ?>
-				<div class="qrcode" id="qrcode"></div>
+				<div class="rel">
+					<div class="abs">
+						<div class="tab">
+							<div class="">
+								<img src="{{url('assets/img/rail.png')}}" style="width:100px;height:100px;">
+							</div>
+							<div class="qrcode" id="qrcode"></div>
+						</div>
+					</div>
+				</div>
 			<?php } ?>
 		</div>
 	</div>

@@ -983,6 +983,7 @@ app.controller('sittingCtrl', function($scope , $http, $timeout , DBService, $in
     });
 
 
+
     // $scope.checkoutAlert = function() {
     //     console.log('hello');
     //     DBService.postCall($scope.filter, '/api/sitting/checkout-alert').then((data) => {

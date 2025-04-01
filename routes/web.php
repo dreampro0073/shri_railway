@@ -243,9 +243,9 @@ Route::group(['middleware'=>'auth'],function(){
 		// Route::get('collect-cloak', [CloakRoomCollectController::class,'collectCloak']);
 		// Route::get('/collect-sitting',[SittingCollectController::class,'collectSitting']);
 
-		// Route::group(['prefix'=>"users"], function(){
-		// 	Route::get('/',[UserController::class,'users']);
-		// });
+		Route::group(['prefix'=>"users"], function(){
+			Route::get('/',[UserController::class,'users']);
+		});
 
 		// Route::group(["prefix"=>"godowns"],function(){
 		// 	Route::get('/',[GodownsController::class,'index']);

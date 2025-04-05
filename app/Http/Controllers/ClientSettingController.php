@@ -18,9 +18,6 @@ class ClientSettingController extends Controller {
 	public function setAmount(Request $request){
 		$sidebar = 'set_amount';
         $subsidebar = 'set_amount';
-
-        
-
         return view('admin.clients.set_shift_status',[
             'sidebar'=>$sidebar,
             'subsidebar'=>$subsidebar,

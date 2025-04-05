@@ -241,7 +241,6 @@
     </script>
 
     @if($host == 'local')
-
         <script type="text/javascript" src="{{url('assets/scripts/jquery.min.js')}}"></script>
         <script type="text/javascript" src="{{url('bootstrap3/js/bootstrap.min.js')}}"></script>
         <script type="text/javascript" src="{{url('plugins/bootstrap-datepicker/js/bootstrap-datepicker.js')}}"></script>

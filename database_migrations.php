@@ -230,4 +230,6 @@ ALTER TABLE `scanning_entries` ADD `print_count` INT NOT NULL DEFAULT '0' AFTER 
 
 ALTER TABLE `scanning_entries` ADD `qr_print_count` INT NOT NULL DEFAULT '0' AFTER `max_print`, ADD `max_qr_count` INT NOT NULL DEFAULT '2' AFTER `qr_print_count`;
 
+ALTER TABLE `clients` ADD `create_date` DATE NULL DEFAULT NULL AFTER `hide_amount`;
+
 ?>

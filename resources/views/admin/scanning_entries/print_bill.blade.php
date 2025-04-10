@@ -89,7 +89,7 @@
 				<span class="name">Time : {{date('H:i:s',strtotime($print_data->date))}}</span>
 			</div>
 			<div class="w-50">
-				<span class="text text-right">Payment: {{$print_data->show_pay_type}}  </span>	
+				<span class="text text-right">Payment: {{$print_data->pay_type == 1 ? 'Cash':'UPI' }}  </span>	
 
 			</div>
 		</div>

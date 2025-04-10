@@ -83,6 +83,16 @@
 
 			</div>
 		</div>
+
+		<div class="table-div">
+			<div class="w-50">
+				<span class="name">Time : {{date('H:i:s',strtotime($print_data->date))}}</span>
+			</div>
+			<div class="w-50">
+				<span class="text text-right">Payment: {{$print_data->show_pay_type}}  </span>	
+
+			</div>
+		</div>
 		<div class="table-div">
 			<div class="w-50">
 				<span class="text">Item Type: {{$print_data->item_type_name}}</span>

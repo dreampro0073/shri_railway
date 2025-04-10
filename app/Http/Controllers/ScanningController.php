@@ -136,11 +136,11 @@ class ScanningController extends Controller {
 		$print_data->incoming_type = "NA";
     	$show_incoming_types = ScanningEntry::showIncomingTypes();
 
-    	// $show_pay_types  = Entry::showPayTypes();
+    	$show_pay_types  = Entry::showPayTypes();
 
 		if($print_data){
 			$print_data->incoming_type = (isset($print_data->incoming_type_id))?$show_incoming_types[$print_data->incoming_type_id]:'NA';
-			// $print_data->show_pay_type = (isset($print_data->pay_type))?$show_pay_types[$print_data->pay_type]:'NA';
+			$print_data->show_pay_type = (isset($print_data->pay_type))?$show_pay_types[$print_data->pay_type]:'NA';
 
 		}
 

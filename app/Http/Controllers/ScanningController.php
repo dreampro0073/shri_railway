@@ -200,6 +200,25 @@ class ScanningController extends Controller {
 		]);
 	}
 
+	public function changePayType($id){
+		$entry = ScanningEntry::where("added_by", Auth::id())->where('id',$id)->first();
+		$entry->pay_type = $entry->pay_type == 1 ? 2 : 1;
+		$entry->save();
+		
+		DB::table("change_pay_type_log")->insert([
+			"sitting_id"=>$id,
+			"service_id"=>9,
+			"old_pay_type"=> $entry->pay_type == 1 ? 2 : 1,
+			"new_pay_type"=> $entry->pay_type,
+			"e_entry_id"=> $e_entry ? $e_entry->id : 0,
+			"changed_by"=> Auth::id(),
+			"date"=>date("Y-m-d"),
+			"created_at"=>date("Y-m-d H:i:s"),
+		]);
+
+		return Redirect::back();
+	}
+
 }
 
 

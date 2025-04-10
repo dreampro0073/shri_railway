@@ -232,6 +232,9 @@ Route::group(['middleware'=>'auth'],function(){
 				Route::get('/',[ScanningController::class,'index']);
 				Route::get('/print/{print_id}',[ScanningController::class,'printBill']);
 				Route::get('/print-qr/{print_id}',[ScanningController::class,'printQR']);
+
+				Route::get('/change-pay-type/{id?}', [ScanningController::class,'changePayType']);
+				
 			});
 		});
 

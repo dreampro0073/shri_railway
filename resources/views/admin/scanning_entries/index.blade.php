@@ -43,7 +43,11 @@
                             <td>@{{ item.item_type_name }}</td>
                             <td>@{{ item.no_of_item }}</td>
                             <td>@{{ item.paid_amount }}</td>
-                            <td>@{{ item.show_pay_type }}</td>
+                            <td>@{{ item.show_pay_type }}
+                                <span ng-if="item.added_by == {{ Auth::id() }}">
+                                    <a onclick="return confirm('Are you sure?')" ng-if="item.checkout_status != 1" href="{{url('/admin/scanning/change-pay-type')}}/@{{item.id}}" style="font-size: 15px;"><i class="fa fa-edit"> </i></a>
+                                </span>
+                            </td>
                             <td>@{{ item.incoming_type }}</td>
                             <td>
                                 @if(Auth::user()->priv == 2)

@@ -564,6 +564,7 @@ class ReclinerController extends Controller {
 		
 		DB::table("change_pay_type_log")->insert([
 			"sitting_id"=>$id,
+			"service_id"=>7,
 			"old_pay_type"=> $entry->pay_type == 1 ? 2 : 1,
 			"new_pay_type"=> $entry->pay_type,
 			"e_entry_id"=> $e_entry ? $e_entry->id : 0,

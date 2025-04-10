@@ -31,6 +31,7 @@
                             <th>Item Type</th>
                             <th>No. of Item</th>
                             <th>Paid Amount</th>
+                            <th>Payment</th>
                             <th>Inword/Outword</th>
 	                        <th>#</th>
                         </tr>
@@ -42,6 +43,7 @@
                             <td>@{{ item.item_type_name }}</td>
                             <td>@{{ item.no_of_item }}</td>
                             <td>@{{ item.paid_amount }}</td>
+                            <td>@{{ item.show_pay_type }}</td>
                             <td>@{{ item.incoming_type }}</td>
                             <td>
                                 @if(Auth::user()->priv == 2)

@@ -36,9 +36,12 @@ class ScanningController extends Controller {
 		$entries = $entries->take(500);
 		$entries = $entries->orderBy('id','DESC')->get();
 
+		$show_pay_types = Entry::showPayTypes()''
+
 
 		foreach ($entries as $key => $entry) {
 			$entry->incoming_type = (isset($entry->incoming_type_id))?$show_incoming_types[$entry->incoming_type_id]:'NA';
+			$entry->show_pay_type = (isset($entry->pay_type))?$show_pay_types[$entry->pay_type]:'NA';
 		}
 
 		$rate_list = ScanningEntry::rateList();

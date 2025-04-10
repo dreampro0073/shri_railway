@@ -36,7 +36,7 @@ class ScanningController extends Controller {
 		$entries = $entries->take(500);
 		$entries = $entries->orderBy('id','DESC')->get();
 
-		$show_pay_types = Entry::showPayTypes()''
+		$show_pay_types = Entry::showPayTypes();
 
 
 		foreach ($entries as $key => $entry) {

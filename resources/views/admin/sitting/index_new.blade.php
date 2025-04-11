@@ -1,3 +1,6 @@
+<?php 
+    $client_ids = Session::get('client_ids');
+?>
 @extends('admin.layout')
 
 @section('main')
@@ -60,9 +63,9 @@
                             <th>Validity</th>
                             <th>Paid Amount</th>
                             <th>Pay Type</th>
-                            @if(Auth::user()->priv == 1)
+                           <!--  @if(Auth::user()->priv == 1)
                                 <th>#</th>
-                            @endif
+                            @endif -->
                             <th>#</th>
                         </tr>
                     </thead>
@@ -81,11 +84,13 @@
                             <td>
                                 <span ng-if="item.pay_type == 1">Cash </span>
                                 <span ng-if="item.pay_type == 2">UPI </span>
-                                <!-- <span ng-if="item.added_by == {{ Auth::id() }}">
+                                @if(in_array(Auth::user()->client_id,$client_ids))
+                                <span ng-if="item.added_by == {{ Auth::id() }}">
                                     <a onclick="return confirm('Are you sure?')" ng-if="item.checkout_status != 1" href="{{url('/admin/sitting/change-pay-type')}}/@{{item.id}}" style="font-size: 15px;"><i class="fa fa-edit"> </i></a>
-                                </span> -->
+                                </span>
+                                @endif
                             </td>
-                            @if(Auth::user()->priv == 1)
+                           <!--  @if(Auth::user()->priv == 1)
 
                             <td>
                                 <div ng-if="item.deleted == 1">
@@ -93,7 +98,7 @@
                                     <span >@{{item.delete_time}}</span>
                                 </div>
                             </td>
-                            @endif
+                            @endif -->
                             
                             <td>
                                 @if(Auth::user()->client_id != 1 && (Auth::user()->priv == 2 || Auth::user()->priv == 1))

@@ -210,7 +210,7 @@ class ScanningController extends Controller {
 			"service_id"=>9,
 			"old_pay_type"=> $entry->pay_type == 1 ? 2 : 1,
 			"new_pay_type"=> $entry->pay_type,
-			"e_entry_id"=> $e_entry ? $e_entry->id : 0,
+			// "e_entry_id"=> $e_entry ? $e_entry->id : 0,
 			"changed_by"=> Auth::id(),
 			"date"=>date("Y-m-d"),
 			"created_at"=>date("Y-m-d H:i:s"),

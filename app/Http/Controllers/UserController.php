@@ -60,14 +60,17 @@ class UserController extends Controller {
                 $user->last_login = date("Y-m-d H:i:s");
                 $user->save();
 
+
                 if($client){
                     $service_ids = DB::table('client_services')->where("client_id", $client_id)->where('status',1)->pluck('services_id')->toArray();
                     Session::put('client_name',$client->name);
                     Session::put('gst_no',$client->gst);
                     Session::put('service_ids',$service_ids);
                     Session::put('address',$client->address);
-                    Session::put('auto_alert_status',0);     
-                    
+                    Session::put('auto_alert_status',0);    
+
+                    $client_ids = [1,2,3,9,10,11];
+                    Session::put('client_ids',$client_ids);     
                 }
                 if(Auth::user()->priv == 5){
                     return Redirect::to('/admin/clients/shift-status');

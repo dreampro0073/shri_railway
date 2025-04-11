@@ -69,7 +69,7 @@
                         
                                              
                        
-                        <div class="col-md-12 form-group">
+                        <div class="col-md-8 form-group">
                             <label>Remarks</label>
                             <textarea ng-model="formData.remarks" class="form-control"></textarea>
                         </div>

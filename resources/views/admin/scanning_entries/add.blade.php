@@ -64,7 +64,7 @@
                         </div>
                         <div class="col-md-4">
                             <label>Train Number</label>
-                            <input type="number" ng-model="formData.train_no" class="form-control" required />
+                            <input required type="number" ng-model="formData.train_no" class="form-control"  />
                         </div>
                         
                                              

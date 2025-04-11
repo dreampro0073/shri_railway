@@ -30,6 +30,7 @@
                     <thead style="background-color: rgba(0,0,0,.075);">
                         <tr class="table-primary">
                             <th>S.no</th>
+                            <th>Train No</th>
                             <th>Name</th>
                             <th>Item Type</th>
                             <th>No. of Item</th>
@@ -42,6 +43,7 @@
                     <tbody ng-if="entries.length > 0">
                         <tr ng-repeat="item in entries">
                             <td>@{{ $index+1 }}</td>
+                            <td>@{{ item.train_no }}</td>
                             <td>@{{ item.name }}</td>
                             <td>@{{ item.item_type_name }}</td>
                             <td>@{{ item.no_of_item }}</td>

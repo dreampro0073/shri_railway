@@ -62,7 +62,10 @@
                                 <label><input ng-click="calAmount()" type="radio" ng-model="formData.incoming_type_id" ng-value="2" required>&nbsp;Leased Inword</label>
                             </div>
                         </div>
-
+                        <div class="col-md-4">
+                            <label>Train Number</label>
+                            <input type="number" ng-model="formData.train_no" class="form-control" required />
+                        </div>
                         
                                              
                        

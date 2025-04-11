@@ -98,6 +98,7 @@ class ScanningController extends Controller {
 			$entry->name = $request->name;
 			$entry->unique_id = strtotime('now');
 			$entry->no_of_item = $request->no_of_item;
+			$entry->train_no = $request->train_no;
 			$entry->item_type_id = $request->item_type_id;
 			$entry->incoming_type_id = $request->incoming_type_id;
 			$entry->pay_type = $request->pay_type;
@@ -130,7 +131,7 @@ class ScanningController extends Controller {
 	public function printBill(Request $request,$print_id=0){
 		// $print_data = DB::table('scanning_entries')->select('unique_id','id','no_of_item')->where('barcodevalue', $print_id)->where("client_id", Auth::user()->client_id)->first();
 
-		$print_data = DB::table('scanning_entries')->select('scanning_entries.name','scanning_entries.id','scanning_entries.no_of_item','scanning_entries.item_type_id','scanning_entries.incoming_type_id','scanning_item_types.item_type_name','scanning_entries.date','scanning_entries.slip_id','scanning_entries.name as client_name','clients.gst','clients.address as client_address','scanning_entries.barcodevalue','scanning_entries.unique_id','scanning_entries.paid_amount','scanning_entries.date_time','scanning_entries.incoming_type_id','scanning_entries.print_count','scanning_entries.max_print','scanning_entries.pay_type','scanning_entries.date_time')->leftJoin('scanning_item_types','scanning_item_types.id','=','scanning_entries.item_type_id')->leftJoin('clients','clients.id','=','scanning_entries.client_id')->where('scanning_entries.barcodevalue',$print_id)->where("scanning_entries.client_id", Auth::user()->client_id)->first();
+		$print_data = DB::table('scanning_entries')->select('scanning_entries.name','scanning_entries.train_no','scanning_entries.id','scanning_entries.no_of_item','scanning_entries.item_type_id','scanning_entries.incoming_type_id','scanning_item_types.item_type_name','scanning_entries.date','scanning_entries.slip_id','scanning_entries.name as client_name','clients.gst','clients.address as client_address','scanning_entries.barcodevalue','scanning_entries.unique_id','scanning_entries.paid_amount','scanning_entries.date_time','scanning_entries.incoming_type_id','scanning_entries.print_count','scanning_entries.max_print','scanning_entries.pay_type','scanning_entries.date_time')->leftJoin('scanning_item_types','scanning_item_types.id','=','scanning_entries.item_type_id')->leftJoin('clients','clients.id','=','scanning_entries.client_id')->where('scanning_entries.barcodevalue',$print_id)->where("scanning_entries.client_id", Auth::user()->client_id)->first();
 
 		if(Auth::user()->priv == 3 && $print_data->print_count >= $print_data->max_print){
 			return "Print not allowed";

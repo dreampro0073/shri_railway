@@ -622,7 +622,8 @@ class SittingController extends Controller {
 			} else {
 				$checkout_time = strtotime($entry->checkout_date);
 				$current_time = strtotime("now");
-				if($current_time < ($checkout_time + 600)){
+				// if($current_time < ($checkout_time + 600)){
+				if($current_time < ($checkout_time + 598)){
 					$entry->checkout_status = 1;
 					$entry->checkout_by = Auth::id();
 					$entry->checkout_time = date("Y-m-d H:i:s");

@@ -75,9 +75,9 @@
                         </div>
                     </div>
                     <div class="pt-4">
-                        <button type="submit" class="btn btn-primary" ng-disabled="loading">
-                            <span ng-if="!loading">Submit</span>
-                            <span ng-if="loading">Loading...</span>
+                        <button type="submit" class="btn btn-primary" ng-disabled="processing">
+                            <span ng-if="!processing">Submit</span>
+                            <span ng-if="processing">Loading...</span>
                         </button> 
                     </div>  
                     

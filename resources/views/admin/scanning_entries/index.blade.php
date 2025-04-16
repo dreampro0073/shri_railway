@@ -14,6 +14,10 @@
                         <div class="col-md-3 form-group">
                             <label class="label-control">Name</label>
                             <input type="text" class="form-control" ng-model="filter.name" />
+                        </div> 
+                        <div class="col-md-3 form-group">
+                            <label class="label-control">Train Number</label>
+                            <input type="text" class="form-control" ng-model="filter.train_no" />
                         </div>   
                         <div class="col-md-3 text-right" style="margin-top: 25px;" class="mb-2">
                             <button type="button" ng-click="init()" class="btn btn-primary" style="width: 70px;">Search</button>

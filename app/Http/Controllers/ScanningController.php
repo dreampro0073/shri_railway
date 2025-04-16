@@ -31,6 +31,9 @@ class ScanningController extends Controller {
 		}		
 		if($request->name){
 			$entries = $entries->where('scanning_entries.name', 'LIKE', '%'.$request->name.'%');
+		}	
+		if($request->train_no){
+			$entries = $entries->where('scanning_entries.train_no', 'LIKE', '%'.$request->train_no.'%');
 		}		
 
 		$entries = $entries->take(500);

@@ -45,6 +45,7 @@ class ScanningController extends Controller {
 		foreach ($entries as $key => $entry) {
 			$entry->incoming_type = (isset($entry->incoming_type_id))?$show_incoming_types[$entry->incoming_type_id]:'NA';
 			$entry->show_pay_type = (isset($entry->pay_type))?$show_pay_types[$entry->pay_type]:'NA';
+			$entry->show_date_time = date("d-m-Y H:i a",strtotime($entry->date_time));
 		}
 
 		$rate_list = ScanningEntry::rateList();

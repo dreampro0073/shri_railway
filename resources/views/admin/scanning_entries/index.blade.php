@@ -36,6 +36,7 @@
                             <th>S.no</th>
                             <th>Train No</th>
                             <th>Name</th>
+                            <th>Date/Time</th>
                             <th>Item Type</th>
                             <th>No. of Item</th>
                             <th>Paid Amount</th>
@@ -49,6 +50,7 @@
                             <td>@{{ $index+1 }}</td>
                             <td>@{{ item.train_no }}</td>
                             <td>@{{ item.name }}</td>
+                            <td>@{{ item.show_date_time }}</td>
                             <td>@{{ item.item_type_name }}</td>
                             <td>@{{ item.no_of_item }}</td>
                             <td>@{{ item.paid_amount }}</td>

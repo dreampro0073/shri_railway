@@ -243,7 +243,7 @@ Route::group(['middleware'=>'auth'],function(){
 			Route::get('/print/{type}',[ShiftController::class,'print']);
 		});
 
-		// Route::get('collect-cloak', [CloakRoomCollectController::class,'collectCloak']);
+		Route::get('collect-cloak', [CloakRoomCollectController::class,'collectCloak']);
 		// Route::get('/collect-sitting',[SittingCollectController::class,'collectSitting']);
 
 		Route::group(['prefix'=>"users"], function(){

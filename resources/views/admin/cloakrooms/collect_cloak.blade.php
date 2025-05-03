@@ -33,7 +33,7 @@
                     </div>
                 </form>
             </div>
-           <!--  <hr>
+            <hr>
             <div>
                 <h3>Today Cloakroom (@{{c_sum}})</h3>
                 <table class="table table-bordered table-striped" >
@@ -85,7 +85,7 @@
                     </tbody>
                 </table>
                 <div ng-if="l_entries.length == 0" class="alert alert-danger">Data Not Found!</div>
-            </div>  -->
+            </div> 
             <hr>
             <div>
                 <h3>Today Penality (@{{penalty_sum}})</h3>

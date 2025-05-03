@@ -57,8 +57,8 @@ class CloakRoomCollectController extends Controller {
 		}
 
 		$data['success'] = true;
-		// $data['l_entries'] = $l_entries;
-		$data['l_entries'] = [];
+		$data['l_entries'] = $l_entries;
+		// $data['l_entries'] = [];
 		$data['penlty_list'] = $penlty_list;
 		$data['penalty_sum'] = $penalty_sum;
 		$data['c_sum'] = $c_sum;

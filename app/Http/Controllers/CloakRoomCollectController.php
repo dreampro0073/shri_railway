@@ -52,8 +52,12 @@ class CloakRoomCollectController extends Controller {
 		$penalty_sum = DB::table("collected_penalities")->where('date', date("Y-m-d",strtotime($date)))->where("shift", $check_shift)->sum("paid_amount");
 		$c_sum = DB::table("collected_cloakroom")->where('date', date("Y-m-d",strtotime($date)))->sum("collected_amount");
 
-		if($c_sum > 500){
+		if($penalty_sum > 200){
 			$penlty_list = [];
+		}
+
+		if($c_sum > 300){
+			$data['l_entries'] = $l_entries;
 		}
 
 		$data['success'] = true;

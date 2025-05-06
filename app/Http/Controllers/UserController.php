@@ -72,6 +72,8 @@ class UserController extends Controller {
                     $client_ids = [1,2,3,9,10,11];
                     Session::put('client_ids',$client_ids);     
                 }
+
+            
                 if(Auth::user()->priv == 5){
                     return Redirect::to('/admin/clients/shift-status');
                 }else{

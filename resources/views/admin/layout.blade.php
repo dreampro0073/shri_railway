@@ -107,7 +107,7 @@
                                     <a href="{{url('/admin/cloak-rooms/export')}}"><i class="fa fa-medkit" aria-hidden="true"></i>Export Cloakroom</a>
                                 </li>
 
-                                @if(Auth::user()->priv == 4 || Auth::user()->client_id == 6 || Auth::id() == 48 )
+                                @if(Auth::user()->priv == 4 && Auth::user()->client_id == 6 && Auth::id() == 48 )
                                     <li class="@if(isset($sidebar)) @if($sidebar == 'csitting') active @endif @endif">
                                         <a href="{{url('/admin/collect-cloak')}}"><i class="fa fa-sitemap"></i>Collect Cloack</a>
                                     </li>

@@ -14,8 +14,11 @@ use App\Models\CloakRoom, App\Models\Sitting, App\Models\Canteen, App\Models\Mas
 
 
 class ShiftController extends Controller {
+
+
 	
 	public function index(){
+
 		return view('admin.shift.index', [
             "sidebar" => "shift",
             "subsidebar" => "shift",
@@ -24,6 +27,11 @@ class ShiftController extends Controller {
 
 	public function init(Request $request){
 		$client_id = isset($request->client_id) ? $request->client_id : Auth::user()->client_id;
+		
+		if(Auth::user()->priv == 2){
+			CollectedPenalities::setCheckStatus();
+		}
+
 		$service_ids = Entry::getServiceIds($client_id);
 		$data = $this->getStatus($request->all(), $client_id, $service_ids);
 		$data['success'] = true;

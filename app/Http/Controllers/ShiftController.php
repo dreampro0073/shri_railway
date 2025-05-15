@@ -12,6 +12,11 @@ use App\Models\User;
 use App\Models\Entry;
 use App\Models\CloakRoom, App\Models\Sitting, App\Models\Canteen, App\Models\Massage, App\Models\Locker,App\Models\Recliner,App\Models\Room,App\Models\ScanningEntry;
 
+use App\Models\CollectedPenalities;
+
+
+
+
 
 class ShiftController extends Controller {
 

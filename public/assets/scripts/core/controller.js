@@ -1,3 +1,57 @@
+app.controller('superDashboardCtrl', function($scope , $http, $timeout , DBService, Upload,$interval) {
+
+});
+
+
+app.controller('clientsCtrl', function($scope , $http, $timeout , DBService, Upload,$interval) {
+    $scope.clients = [];
+    $scope.client = {
+        services: [{demo:''}],
+    };
+    $scope.client_id = 0;
+
+    $scope.init = function(){
+        DBService.postCall({}, '/api/superAdmin/get-clients').then((data) => {
+            if (data.success) {
+                $scope.clients = data.clients;
+            }
+        });
+    }    
+
+    $scope.addClient = function(){
+        DBService.postCall({client_id: $scope.client_id}, '/api/superAdmin/edit-init').then((data) => {
+            if (data.success) {
+                $scope.client = data.client;
+            } else {
+
+            }
+            $scope.services = data.services;
+        });
+    }    
+
+
+    $scope.addService = function(){
+        $scope.client.services.push({demo:''});
+    }
+
+    $scope.removeService = function(index) {
+        if(confirm("Are you sure?") == true){
+            $scope.client.services.splice(index, 1);
+        };
+    }
+
+
+    $scope.storeClient = function(){
+        DBService.postCall($scope.client, '/api/superAdmin/store-client').then((data) => {
+            alert(data.message);
+            if (data.success) {
+                $scope.addClient();
+            }
+        });
+    }
+
+});
+
 app.controller('cloackCtrl', function($scope , $http, $timeout , DBService, Upload,$interval) {
     $scope.loading = false;
     $scope.aadhar_flag = false;
@@ -94,7 +148,7 @@ app.controller('cloackCtrl', function($scope , $http, $timeout , DBService, Uplo
     $scope.checkoutCloak = function(entry_id){
         $scope.entry_id = entry_id;
         if(confirm("Are you sure?") == true){
-             DBService.postCall({entry_id : $scope.entry_id}, '/api/cloak-rooms/checkout-init/1').then((data) => {
+            DBService.postCall({entry_id : $scope.entry_id}, '/api/cloak-rooms/checkout-init/1').then((data) => {
                 if (data.timeOut) {
                     $scope.formData = data.l_entry;
                     $scope.formData.checkout_by = '';      

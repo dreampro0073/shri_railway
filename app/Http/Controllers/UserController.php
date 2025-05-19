@@ -60,7 +60,7 @@ class UserController extends Controller {
                 $user->last_login = date("Y-m-d H:i:s");
                 $user->save();
 
-                if($client){
+                if($client && Auth::user()->priv != 1){
                     $service_ids = DB::table('client_services')->where("client_id", $client_id)->where('status',1)->pluck('services_id')->toArray();
                     Session::put('client_name',$client->name);
                     Session::put('gst_no',$client->gst);
@@ -69,7 +69,9 @@ class UserController extends Controller {
                     Session::put('auto_alert_status',0);     
                     
                 }
-                if(Auth::user()->priv == 5){
+                if(Auth::user()->priv == 1){
+                    return Redirect::to('/superAdmin/dashboard');
+                }else if(Auth::user()->priv == 5){
                     return Redirect::to('/admin/clients/shift-status');
                 }else{
                     return Redirect::to('/admin/dashboard');

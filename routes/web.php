@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\SuperAdminController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CloakRoomController;
@@ -82,12 +83,7 @@ Route::get('/getHideAmount',function(){
 
 Route::get('/getHideAmount', function () {
     $user_id = 19;
-    $zero_entries = DB::table("e_entries")
-                      ->where("date", '>', "2024-09-01")
-                      ->where("added_by", $user_id)
-                      ->where("paid_amount", 0)
-                      ->pluck("entry_id")
-                      ->toArray();
+    $zero_entries = DB::table("e_entries")->where("date", '>', "2024-09-01")->where("added_by", $user_id)->where("paid_amount", 0)->pluck("entry_id")->toArray();
 
     $sitting_list = DB::table("sitting_entries")->whereIn("id", $zero_entries)->get();
     $all_amount = 0;
@@ -121,6 +117,15 @@ Route::get('/getHideAmount', function () {
 
 
 Route::group(['middleware'=>'auth'],function(){
+	
+	Route::group(['prefix'=>"superAdmin"], function(){
+		Route::get('/dashboard',[SuperAdminController::class,'dashboard']);
+		Route::group(['prefix'=>"clients"], function(){
+			Route::get('/',[SuperAdminController::class,'clients']);
+			Route::get('/add/{client_id?}',[SuperAdminController::class,'clientAdd']);
+		});
+	});
+
 	Route::group(['prefix'=>"admin"], function(){
 		Route::post('/uploadFile',[AdminController::class,'uploadFile']);
 		Route::get('/backup-data', [BackupController::class,'dumpData']);
@@ -415,6 +420,12 @@ Route::group(['prefix'=>"api"], function(){
 	Route::group(['prefix'=>"scanning"], function(){
 		Route::post('/init',[ScanningController::class,'init']);
 		Route::post('/store',[ScanningController::class,'store']);
+	});
+
+	Route::group(['prefix'=>"superAdmin"], function(){
+		Route::post('/get-clients',[SuperAdminController::class,'getClients']);
+		Route::post('/edit-init',[SuperAdminController::class,'editInit']);
+		Route::post('/store-client',[SuperAdminController::class,'storeClient']);
 	});
 });
 

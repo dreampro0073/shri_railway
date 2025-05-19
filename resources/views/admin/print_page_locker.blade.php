@@ -107,6 +107,11 @@
 			<!-- <span style="text-align:right;font-weight: bold;">E.&.O.E</span> -->
 			<span style="text-align:right;font-weight: bold;">** Non Refundable **</span>
 		</div>
+
+		<div style="margin-top:10px;text-align: right;">
+			Authorised Signatory : {{Auth::user()->name}}
+		</div>
+		
 		<div style="margin-top:10px;text-align:center;">
 
 			<p>

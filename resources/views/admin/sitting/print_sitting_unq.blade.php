@@ -77,7 +77,7 @@
 
 			</div>
 			<div class="w-50">
-				<span class="text text-right">Date: {{date("d-m-Y",strtotime($print_data->date))}} ?></span>	
+				<span class="text text-right">Date: {{date("d-m-Y",strtotime($print_data->date))}} </span>	
 
 			</div>
 		</div>

@@ -32,6 +32,7 @@
                         <tr class="table-primary">
                             <th>S.no</th>
                             <th>No of Hour</th>
+                            <th>No of People</th>
                             <th>Date/Time</th>
                             <th>Pay Type</th>
                             <th>Paid Amount</th>
@@ -43,6 +44,7 @@
                         <tr ng-repeat="item in entries">
                             <td>@{{ $index+1 }}</td>
                             <td>@{{ item.no_of_hours }}</td>
+                            <td>@{{ item.no_of_people }}</td>
                             <td>@{{ item.show_date_time }}</td>
 
                             <td>

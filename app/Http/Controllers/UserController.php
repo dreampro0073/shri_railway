@@ -61,6 +61,8 @@ class UserController extends Controller {
                 $user->save();
 
 
+
+
                 if($client){
                     $service_ids = DB::table('client_services')->where("client_id", $client_id)->where('status',1)->pluck('services_id')->toArray();
                     Session::put('client_name',$client->name);
@@ -69,12 +71,12 @@ class UserController extends Controller {
                     Session::put('address',$client->address);
                     Session::put('auto_alert_status',0);    
 
-                    $client_ids = [1,2,3,9,10,11];
+                    $client_ids = [1,2,3,9,10,11,12];
                     Session::put('client_ids',$client_ids);     
                 }
-
-            
-                if(Auth::user()->priv == 5){
+                if(Auth::user()->priv == 1){
+                    return Redirect::to('/superAdmin/dashboard');
+                }else if(Auth::user()->priv == 5){
                     return Redirect::to('/admin/clients/shift-status');
                 }else{
                     return Redirect::to('/admin/dashboard');

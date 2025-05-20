@@ -16,7 +16,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\Room;
 use App\Models\Recliner;
 use App\Models\Sitting;
-use App\Models\CloakRoom,App\Models\ScanningEntry;;
+use App\Models\CloakRoom,App\Models\ScanningEntry;
 
 class AdminController extends Controller {
 

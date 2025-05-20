@@ -33,7 +33,7 @@
                         </span>
                     </div>
                     <ul class="nav nav-pills nav-stacked">
-                        @if(Auth::user()->priv !=5)
+                        @if(Auth::user()->priv !=5 && Auth::user()->priv !=1)
                             <li class="@if(isset($sidebar)) @if($sidebar == 'dashboard') active @endif @endif">
                                 <a href="{{url('/admin/dashboard')}}"><i class="fa fa-home"></i>Dashboard</a>
                             </li>
@@ -209,6 +209,16 @@
                                 <a href="{{url('/admin/clients/shift-status')}}">
                                     <i class="fa fa-shopping-bag" aria-hidden="true"></i>Daily Overall Shift Status
                                 </a>
+                            </li>
+                        @endif
+
+                        @if(Auth::user()->priv == 1)
+                            <li class="@if(isset($sidebar)) @if($sidebar == 'dashboard') active @endif @endif">
+                                <a href="{{url('/superAdmin/dashboard')}}"><i class="fa fa-home"></i>Dashboard</a>
+                            </li>
+
+                            <li class="@if(isset($sidebar)) @if($sidebar == 'clients') active @endif @endif">
+                                <a href="{{url('/superAdmin/clients')}}"><i class="fa fa-users"></i>Clients</a>
                             </li>
                         @endif
 

@@ -73,19 +73,24 @@
 				Slip ID : {{ $print_data->slip_id }}
 			</b>
 		</div>
-		<div style="text-align:center;">
-			<span class="name">No. of Hours/No. of Person : {{$print_data->no_of_hours}}</span>
-		</div>
+		
 
 		<div style="text-align:center;">
 			<span class="name">Date: {{$print_data->show_date_time}}</span>
 		</div>
-
 		<div class="table-div">
+			<div class="w-50">
+				<span class="text text-right">No. of Hours: {{$print_data->no_of_hours}} Hr </span>	
+
+			</div>
+			<div class="w-50">
+				<span class="text">No. of Person: {{$print_data->no_of_people}}</span>
+			</div>
 			
+		</div>
+		<div class="table-div">
 			<div class="w-50">
 				<span class="text text-right">Payment: {{$print_data->show_pay_type}}  </span>	
-
 			</div>
 			<div class="w-50">
 				<span class="text">Paid Amount: {{$print_data->paid_amount}}</span>

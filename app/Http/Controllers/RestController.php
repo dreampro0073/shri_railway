@@ -85,6 +85,7 @@ class RestController extends Controller {
 			$entry->added_by = Auth::id();
 			$entry->paid_amount = $request->paid_amount;
 			$entry->no_of_hours = $request->no_of_hours;
+			$entry->no_of_people = $request->no_of_people;
 			$entry->pay_type = $request->pay_type;
 			$entry->slip_id = Rest::getSlipId();
 			$entry->check_in = date("H:i:s");
@@ -105,7 +106,7 @@ class RestController extends Controller {
 
 	public function printBill($id = 0){
 
-        $print_data = DB::table('rest_entries')->select("rest_entries.no_of_hours","rest_entries.slip_id","rest_entries.date_time","rest_entries.paid_amount","clients.gst","clients.address as client_address","rest_entries.pay_type")->leftJoin('clients','clients.id','=','rest_entries.client_id')->where("rest_entries.client_id", Auth::user()->client_id)->where('rest_entries.id', $id)->first();
+        $print_data = DB::table('rest_entries')->select("rest_entries.no_of_hours","rest_entries.no_of_people","rest_entries.slip_id","rest_entries.date_time","rest_entries.paid_amount","clients.gst","clients.address as client_address","rest_entries.pay_type")->leftJoin('clients','clients.id','=','rest_entries.client_id')->where("rest_entries.client_id", Auth::user()->client_id)->where('rest_entries.id', $id)->first();
 
         // dd($print_data);
 

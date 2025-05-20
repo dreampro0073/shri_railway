@@ -2596,9 +2596,11 @@ app.controller('scanningCtrl', function($scope , $http, $timeout , DBService) {
 
 app.controller('restCtrl', function($scope , $http, $timeout , DBService) {
     $scope.loading = false;
+    $scope.processing = false;
     $scope.formData = {
         pay_type:1,
         no_of_hours:1,
+        no_of_people:1,
         paid_amount:0,
     };
 
@@ -2624,18 +2626,17 @@ app.controller('restCtrl', function($scope , $http, $timeout , DBService) {
     }
 
     $scope.calAmount = function(){
-        $scope.formData.paid_amount = $scope.formData.no_of_hours*$scope.rate_list.first_rate;
+        $scope.formData.paid_amount = $scope.formData.no_of_people*$scope.formData.no_of_hours*$scope.rate_list.first_rate;
     }
 
     $scope.onSubmit = function () {
-        $scope.loading = true;
+        $scope.processing = true;
         DBService.postCall($scope.formData, '/api/rest/store').then((data) => {
             if (data.success) {
-
-
                 $scope.formData = {
                     pay_type:1,
                     no_of_hours:1,
+                    no_of_people:1,
                     paid_amount:0,
                 };
                 $scope.init();
@@ -2643,7 +2644,7 @@ app.controller('restCtrl', function($scope , $http, $timeout , DBService) {
                     window.open(base_url+'/admin/rest/print/'+data.id, '_blank')
                 }, 800);
             }
-            $scope.loading = false;
+            $scope.processing = false;
         });
     }
 

@@ -234,4 +234,6 @@ ALTER TABLE `clients` ADD `create_date` DATE NULL DEFAULT NULL AFTER `hide_amoun
 //Dipanshu Chauhan 11th Apr 2025
 ALTER TABLE `scanning_entries` ADD `train_no` INT NULL DEFAULT NULL AFTER `name`;
 
+CREATE TABLE `nnhp`.`restroom` ( `id` INT NOT NULL , `client_id` INT NOT NULL DEFAULT '0' , `no_of_hours` INT NOT NULL DEFAULT '0' , `date` DATE NULL DEFAULT NULL , `paid_amount` INT NULL DEFAULT NULL , `pay_type` INT NOT NULL DEFAULT '0' , `added_by` INT NULL DEFAULT '0' , `updated_at` DATETIME NOT NULL , `created_at` DATETIME NOT NULL , `time` TIME NULL DEFAULT NULL ) ENGINE = InnoDB;
+
 ?>

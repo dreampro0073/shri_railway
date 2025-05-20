@@ -86,6 +86,13 @@
                             </li>
                             @endif
 
+                             @if(in_array(10, $service_ids) || Auth::user()->priv == 1)
+                                
+                                <li class="@if(isset($sidebar)) @if($sidebar == 'rest') active @endif @endif">
+                                <a href="{{url('/admin/rest')}}"><i class="fa fa-qrcode" aria-hidden="true"></i>Rest</a>
+                            </li>
+                            @endif
+
 
 
                             <!-- @if(in_array(1, $service_ids) && Auth::user()->priv == 4)

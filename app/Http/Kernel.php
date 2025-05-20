@@ -64,6 +64,7 @@ class Kernel extends HttpKernel
         'check.recliner' => \App\Http\Middleware\CheckRecliner::class,
         'check.room' => \App\Http\Middleware\CheckRoom::class,
         'check.scanning' => \App\Http\Middleware\CheckScanning::class,
+        'check.rest' => \App\Http\Middleware\CheckRest::class,
         'portal' => \App\Http\Middleware\PortalUser::class,
         'admin' => \App\Http\Middleware\AdminUser::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,

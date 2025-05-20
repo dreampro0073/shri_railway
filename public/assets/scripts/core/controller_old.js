@@ -1307,7 +1307,6 @@ app.controller('shiftCtrl', function($scope , $http, $timeout , DBService) {
     $scope.pod_data = [];
     $scope.singal_cabin_data = [];
     $scope.double_bed_data = [];
-    $scope.rest_data = [];
     $scope.service_ids = [];
     $scope.clients = [];
     $scope.filter = {
@@ -1353,7 +1352,6 @@ app.controller('shiftCtrl', function($scope , $http, $timeout , DBService) {
                 $scope.pod_data = data.pod_data;
                 $scope.singal_cabin_data = data.singal_cabin_data;
                 $scope.double_bed_data = data.double_bed_data;
-                $scope.rest_data = data.rest_data;
                
                 $scope.total_shift_upi = data.total_shift_upi ; 
                 $scope.total_shift_cash = data.total_shift_cash ; 
@@ -2538,62 +2536,6 @@ app.controller('scanningCtrl', function($scope , $http, $timeout , DBService) {
 
     }
 
-});
-
-app.controller('restCtrl', function($scope , $http, $timeout , DBService) {
-    $scope.loading = false;
-    $scope.formData = {
-        pay_type:1,
-        no_of_hours:1,
-        paid_amount:0,
-    };
-
-    $scope.filter = {};
-  
-    $scope.entries = [];
-    $scope.rate_list ={};
- 
-    $scope.init = function () {
-        
-        DBService.postCall($scope.filter, '/api/rest/init').then((data) => {
-            if(data.success){
-                $scope.pay_types = data.pay_types;
-                $scope.entries = data.entries;
-                $scope.rate_list = data.rate_list;
-                $scope.formData.paid_amount = $scope.formData.no_of_hours*$scope.rate_list.first_rate;
-            }
-        });
-    }
-    $scope.filterClear = function(){
-        $scope.filter = {};
-        $scope.init();
-    }
-
-    $scope.calAmount = function(){
-        $scope.formData.paid_amount = $scope.formData.no_of_hours*$scope.rate_list.first_rate;
-    }
-
-    $scope.onSubmit = function () {
-        $scope.loading = true;
-        DBService.postCall($scope.formData, '/api/rest/store').then((data) => {
-            if (data.success) {
-
-
-                $scope.formData = {
-                    pay_type:1,
-                    no_of_hours:1,
-                    paid_amount:0,
-                };
-                $scope.init();
-                setTimeout(function(){
-                    window.open(base_url+'/admin/rest/print/'+data.id, '_blank')
-                }, 800);
-            }
-            $scope.loading = false;
-        });
-    }
-
-   
 });
 
 // app.controller('dailyEntryCtrl', function($scope , $http, $timeout , DBService) {

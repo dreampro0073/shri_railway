@@ -24,6 +24,9 @@ use App\Http\Controllers\RoomController;
 use App\Http\Controllers\ClientSettingController;
 use App\Http\Controllers\ScanningController;
 
+use App\Http\Controllers\RestController;
+
+
 
 
 /*
@@ -238,6 +241,14 @@ Route::group(['middleware'=>'auth'],function(){
 			});
 		});
 
+		Route::middleware(['check.rest'])->group(function () {
+		   	Route::group(['prefix'=>"rest"], function(){
+				Route::get('/',[RestController::class,'index']);
+				Route::get('/print/{print_id}',[RestController::class,'printBill']);
+				
+			});
+		});
+
 		Route::group(['prefix'=>"shift"], function(){
 			Route::get('/current',[ShiftController::class,'index']);
 			Route::get('/print/{type}',[ShiftController::class,'print']);
@@ -418,6 +429,11 @@ Route::group(['prefix'=>"api"], function(){
 	Route::group(['prefix'=>"scanning"], function(){
 		Route::post('/init',[ScanningController::class,'init']);
 		Route::post('/store',[ScanningController::class,'store']);
+	});
+
+	Route::group(['prefix'=>"rest"], function(){
+		Route::post('/init',[RestController::class,'init']);
+		Route::post('/store',[RestController::class,'store']);
 	});
 });
 

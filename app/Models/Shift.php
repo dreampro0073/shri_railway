@@ -7,7 +7,9 @@ use Illuminate\Support\Facades\Auth;
 use DB;
 use App\Models\User;
 use App\Models\Entry;
-use App\Models\CloakRoom, App\Models\Sitting, App\Models\Canteen, App\Models\Massage, App\Models\Locker,App\Models\Recliner,App\Models\Room;
+use App\Models\CloakRoom, App\Models\Sitting, App\Models\Canteen, App\Models\Massage, App\Models\Locker,App\Models\Recliner,App\Models\Room,App\Models\Rest;
+
+
 
 class Shift extends Model
 {
@@ -85,6 +87,12 @@ class Shift extends Model
             $scanning_data = ScanningEntry::totalShiftData($input_date,$user_id,$client_id);
             $data['scanning_data'] = $scanning_data;
             $data = Shift::calculateAmount($scanning_data, $data);
+        } 
+
+        if(in_array(10, $service_ids)){
+            $rest_data = Rest::totalShiftData($input_date,$user_id,$client_id);
+            $data['rest_data'] = $rest_data;
+            $data = Shift::calculateAmount($rest_data, $data);
         } 
         
         return $data;

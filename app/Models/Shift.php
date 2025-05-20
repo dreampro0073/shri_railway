@@ -81,6 +81,11 @@ class Shift extends Model
             $data['double_bed_data'] = $double_bed_data;
             $data = Shift::calculateAmount($double_bed_data, $data);
         }
+        if(in_array(9, $service_ids)){
+            $scanning_data = ScanningEntry::totalShiftData($input_date,$user_id,$client_id);
+            $data['scanning_data'] = $scanning_data;
+            $data = Shift::calculateAmount($scanning_data, $data);
+        } 
         
         return $data;
     }

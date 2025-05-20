@@ -1,16 +1,94 @@
+// app.controller('checkoutAlertCtrl', function($scope , $http, $timeout , DBService, $interval) {
+
+//     $scope.checkoutAlert = function() {
+//         DBService.postCall($scope.filter, '/api/sitting/checkout-alert').then((data) => {
+//             if (data.success) {
+//                 $scope.speak(data.message);
+//             }
+//         });
+//     }
+//     setInterval($scope.checkoutAlert, 30000);
+
+//     $scope.speak = function(message) {
+//         const speech = new SpeechSynthesisUtterance(message);
+//         speech.lang = 'en-US';
+//         speech.rate = 0.8; 
+//         speech.pitch = 1.2;
+//         speech.volume = 1;  
+//         window.speechSynthesis.speak(speech);
+
+//     }
+// });
+// app.controller('checkoutAlertCtrl', function($scope , $http, $timeout , DBService, $interval) {
+//     $scope.loading = false;
+
+//     $scope.checkoutAlert = function() {
+//         console.log("helo");
+
+//         var autoAlertStatus = auto_alert_status;
+//         // if(autoAlertStatus == 1 && authCheck == 1){
+//             DBService.postCall($scope.filter, '/api/sitting/checkout-alert').then((data) => {
+//                 if (data.success) {
+//                     $scope.speak(data.message);
+//                 }
+//             });
+//         // }
+//     }
+//     // $scope.checkoutAlert();
+//     setInterval($scope.checkoutAlert, 6000);
+
+//     $scope.speak = function(message) {
+//         const utterance = new SpeechSynthesisUtterance(message);
+//         const voices = speechSynthesis.getVoices();
+//         // utterance.voice = voices[0];
+//         utterance.voice = voices.find(voice => voice.lang === 'en-US');
+//         utterance.rate = 0.8; 
+//         utterance.pitch = 1.2;
+//         utterance.volume = 1;     
+//         speechSynthesis.speak(utterance);
+
+//     }
+
+// });
+
+// app.controller('checkoutAlertCtrl', function($scope , $http, $timeout , DBService, $interval) {
+//     $scope.loading = false;
+
+//     $scope.checkoutAlert = function() {
+
+//         var autoAlertStatus = auto_alert_status;
+//         // if(autoAlertStatus == 1 && authCheck == 1){
+//             DBService.postCall({}, '/api/sitting/checkout-alert').then((data) => {
+//                 if (data.success) {
+//                     $scope.speak(data.message);
+//                 }
+//             });
+//         // }
+//     }
+    
+//     setInterval($scope.checkoutAlert, 10000);
+
+//     $scope.speak = function(message) {
+//         const speech = new SpeechSynthesisUtterance(message);
+//         speech.lang = 'en-US';
+//         window.speechSynthesis.speak(speech);
+//     }
+
+// });
+
 app.controller('checkoutAlertCtrl', function($scope , $http, $timeout , DBService, $interval) {
     $scope.loading = false;
 
     $scope.checkoutAlert = function() {
 
         var autoAlertStatus = auto_alert_status;
-        if(autoAlertStatus == 1 && authCheck == 1){
+        // if(autoAlertStatus == 1 && authCheck == 1){
             DBService.postCall($scope.filter, '/api/sitting/checkout-alert').then((data) => {
                 if (data.success) {
                     $scope.speak(data.message);
                 }
             });
-        }
+        // }
     }
     
     setInterval($scope.checkoutAlert, 10000);
@@ -81,7 +159,5 @@ app.controller('dashboardCtrl', function($scope , $http, $timeout , DBService, $
                 // console.log(data);
             }
         }); 
-    }
-   
-    
+    }   
 });

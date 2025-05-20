@@ -608,7 +608,7 @@ class SittingController extends Controller {
 	public function newCheckout(Request $request,$type=0){
 		$client_id = Auth::user()->client_id;
 
-		if($type== 1){
+		if($type == 1){
 			$entry = Sitting::where("client_id", Auth::user()->client_id)->where("id", $request->checkout_id)->first();
 		}else{
 			$productName =$request->productName;
@@ -622,7 +622,8 @@ class SittingController extends Controller {
 			} else {
 				$checkout_time = strtotime($entry->checkout_date);
 				$current_time = strtotime("now");
-				if($current_time < ($checkout_time + 600)){
+				// if($current_time < ($checkout_time + 600)){
+				if($current_time < ($checkout_time + 598)){
 					$entry->checkout_status = 1;
 					$entry->checkout_by = Auth::id();
 					$entry->checkout_time = date("Y-m-d H:i:s");
@@ -659,7 +660,7 @@ class SittingController extends Controller {
 					$amount = $amount + ($ex_amount * ($total_hr -1));
 					$entry->paid_amount = $entry->paid_amount*1 + $e_total;
 					$entry->total_amount = $amount;
-					$entry->balance_amount = $amount- $entry->paid_amount;
+					$entry->balance_amount = ($amount - $entry->paid_amount)*1;
 					$entry->hours_occ = $total_hr;
 					$entry->mobile_no = $entry->mobile_no*1;
 					$entry->train_no = $entry->train_no*1;
@@ -713,6 +714,7 @@ class SittingController extends Controller {
 		
 		DB::table("change_pay_type_log")->insert([
 			"sitting_id"=>$id,
+			"service_id"=>1,
 			"old_pay_type"=> $entry->pay_type == 1 ? 2 : 1,
 			"new_pay_type"=> $entry->pay_type,
 			"e_entry_id"=> $e_entry ? $e_entry->id : 0,

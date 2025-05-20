@@ -496,14 +496,16 @@ class ReclinerController extends Controller {
 
 					$amount = 0;
 
-					$amount = $amount + ($entry->hours_occ*$rate_list->first_rate );
-
-					$ex_amount = ($entry->hours_occ*$rate_list->second_rate );
-
-					$amount = $amount + ($ex_amount * ($total_hr -1));
+					$amount = $amount + $rate_list->first_rate;
+					$amount = $amount + ($rate_list->second_rate * ($total_hr - 1));
+					// $amount = $amount + ($entry->hours_occ*$rate_list->first_rate);
+					// $ex_amount = ($entry->hours_occ*$rate_list->second_rate );
+					// dd($ex_amount);
+					// $amount = $amount + ($ex_amount + ($total_hr -1));
+					
 					$entry->paid_amount = $entry->paid_amount*1 + $e_total;
 					$entry->total_amount = $amount;
-					$entry->balance_amount = $amount- $entry->paid_amount;
+					$entry->balance_amount = $amount - $entry->paid_amount;
 					$entry->hours_occ = $total_hr;
 					$entry->mobile_no = $entry->mobile_no*1;
 					$entry->train_no = $entry->train_no*1;
@@ -564,6 +566,7 @@ class ReclinerController extends Controller {
 		
 		DB::table("change_pay_type_log")->insert([
 			"sitting_id"=>$id,
+			"service_id"=>7,
 			"old_pay_type"=> $entry->pay_type == 1 ? 2 : 1,
 			"new_pay_type"=> $entry->pay_type,
 			"e_entry_id"=> $e_entry ? $e_entry->id : 0,

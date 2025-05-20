@@ -1,3 +1,6 @@
+<?php 
+    $client_ids = Session::get('client_ids');
+?>
 @extends('admin.layout')
 
 @section('main')
@@ -81,9 +84,11 @@
                             <td>
                                 <span ng-if="item.pay_type == 1">Cash </span>
                                 <span ng-if="item.pay_type == 2">UPI </span>
-                                <span ng-if="item.added_by == {{ Auth::id() }}">
-                                    <a onclick="return confirm('Are you sure?')" ng-if="item.checkout_status != 1" href="{{url('/admin/recliners/change-pay-type')}}/@{{item.id}}" style="font-size: 15px;"><i class="fa fa-edit"> </i></a>
-                                </span>
+                                <!-- @if(in_array(Auth::user()->client_id,$client_ids))
+                                    <span ng-if="item.added_by == {{ Auth::id() }}">
+                                        <a onclick="return confirm('Are you sure?')" ng-if="item.checkout_status != 1" href="{{url('/admin/recliners/change-pay-type')}}/@{{item.id}}" style="font-size: 15px;"><i class="fa fa-edit"> </i></a>
+                                    </span>
+                                @endif -->
                             </td>
                             
                             

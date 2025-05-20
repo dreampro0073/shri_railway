@@ -1,3 +1,6 @@
+<?php 
+    $client_ids = Session::get('client_ids');
+?>
 @extends('admin.layout')
 
 @section('main')
@@ -11,6 +14,10 @@
                         <div class="col-md-3 form-group">
                             <label class="label-control">Name</label>
                             <input type="text" class="form-control" ng-model="filter.name" />
+                        </div> 
+                        <div class="col-md-3 form-group">
+                            <label class="label-control">Train Number</label>
+                            <input type="text" class="form-control" ng-model="filter.train_no" />
                         </div>   
                         <div class="col-md-3 text-right" style="margin-top: 25px;" class="mb-2">
                             <button type="button" ng-click="init()" class="btn btn-primary" style="width: 70px;">Search</button>
@@ -27,10 +34,13 @@
                     <thead style="background-color: rgba(0,0,0,.075);">
                         <tr class="table-primary">
                             <th>S.no</th>
+                            <th>Train No</th>
                             <th>Name</th>
+                            <th>Date/Time</th>
                             <th>Item Type</th>
                             <th>No. of Item</th>
                             <th>Paid Amount</th>
+                            <th>Payment</th>
                             <th>Inword/Outword</th>
 	                        <th>#</th>
                         </tr>
@@ -38,10 +48,19 @@
                     <tbody ng-if="entries.length > 0">
                         <tr ng-repeat="item in entries">
                             <td>@{{ $index+1 }}</td>
+                            <td>@{{ item.train_no }}</td>
                             <td>@{{ item.name }}</td>
+                            <td>@{{ item.show_date_time }}</td>
                             <td>@{{ item.item_type_name }}</td>
                             <td>@{{ item.no_of_item }}</td>
                             <td>@{{ item.paid_amount }}</td>
+                            <td>@{{ item.show_pay_type }}
+                                @if(in_array(Auth::user()->client_id,$client_ids))
+                                <span ng-if="item.added_by == {{ Auth::id() }}">
+                                    <a onclick="return confirm('Are you sure?')" ng-if="item.checkout_status != 1" href="{{url('/admin/scanning/change-pay-type')}}/@{{item.id}}" style="font-size: 15px;"><i class="fa fa-edit"> </i></a>
+                                </span>
+                                @endif
+                            </td>
                             <td>@{{ item.incoming_type }}</td>
                             <td>
                                 @if(Auth::user()->priv == 2)

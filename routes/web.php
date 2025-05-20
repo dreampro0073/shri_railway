@@ -237,6 +237,9 @@ Route::group(['middleware'=>'auth'],function(){
 				Route::get('/',[ScanningController::class,'index']);
 				Route::get('/print/{print_id}',[ScanningController::class,'printBill']);
 				Route::get('/print-qr/{print_id}',[ScanningController::class,'printQR']);
+
+				Route::get('/change-pay-type/{id?}', [ScanningController::class,'changePayType']);
+				
 			});
 		});
 
@@ -245,12 +248,12 @@ Route::group(['middleware'=>'auth'],function(){
 			Route::get('/print/{type}',[ShiftController::class,'print']);
 		});
 
-		// Route::get('collect-cloak', [CloakRoomCollectController::class,'collectCloak']);
+		Route::get('collect-cloak', [CloakRoomCollectController::class,'collectCloak']);
 		// Route::get('/collect-sitting',[SittingCollectController::class,'collectSitting']);
 
-		// Route::group(['prefix'=>"users"], function(){
-		// 	Route::get('/',[UserController::class,'users']);
-		// });
+		Route::group(['prefix'=>"users"], function(){
+			Route::get('/',[UserController::class,'users']);
+		});
 
 		// Route::group(["prefix"=>"godowns"],function(){
 		// 	Route::get('/',[GodownsController::class,'index']);

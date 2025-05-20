@@ -33,7 +33,7 @@
                     </div>
                 </form>
             </div>
-           <!--  <hr>
+            <hr>
             <div>
                 <h3>Today Cloakroom (@{{c_sum}})</h3>
                 <table class="table table-bordered table-striped" >
@@ -85,7 +85,7 @@
                     </tbody>
                 </table>
                 <div ng-if="l_entries.length == 0" class="alert alert-danger">Data Not Found!</div>
-            </div>  -->
+            </div> 
             <hr>
             <div>
                 <h3>Today Penality (@{{penalty_sum}})</h3>
@@ -115,7 +115,7 @@
                 <div ng-if="penlty_list.length == 0" class="alert alert-danger">Data Not Found!</div>
             </div>     
         </div>
-        <!-- <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -159,6 +159,6 @@
                    
                 </div>
             </div>
-        </div> -->
+        </div>
     </div>
 @endsection

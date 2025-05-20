@@ -229,6 +229,7 @@ class LockerController extends Controller {
 				$day += 1;
 			}
 
+    		// $locker_ids = explode(',', $request->locker_ids);
     		$locker_ids = explode(',', $l_entry->locker_ids);
 
 			$l_entry->mobile_no = $l_entry->mobile_no*1;

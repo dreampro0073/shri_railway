@@ -62,19 +62,22 @@
                                 <label><input ng-click="calAmount()" type="radio" ng-model="formData.incoming_type_id" ng-value="2" required>&nbsp;Leased Inword</label>
                             </div>
                         </div>
-
+                        <div class="col-md-4">
+                            <label>Train Number</label>
+                            <input required type="number" ng-model="formData.train_no" class="form-control"  />
+                        </div>
                         
                                              
                        
-                        <div class="col-md-12 form-group">
+                        <div class="col-md-8 form-group">
                             <label>Remarks</label>
                             <textarea ng-model="formData.remarks" class="form-control"></textarea>
                         </div>
                     </div>
                     <div class="pt-4">
-                        <button type="submit" class="btn btn-primary" ng-disabled="loading">
-                            <span ng-if="!loading">Submit</span>
-                            <span ng-if="loading">Loading...</span>
+                        <button type="submit" class="btn btn-primary" ng-disabled="processing">
+                            <span ng-if="!processing">Submit</span>
+                            <span ng-if="processing">Loading...</span>
                         </button> 
                     </div>  
                     

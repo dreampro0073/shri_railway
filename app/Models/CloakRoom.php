@@ -54,6 +54,9 @@ class CloakRoom extends Model
         if(in_array(!Auth::user()->priv, [2,5])){
             $user_id = Auth::id();
         }
+        if(Auth::user()->priv == 4){
+            $user_id = Auth::user()->perent_user_id;
+        }
                 
         if($user_id == 0){
             $total_shift_upi = CloakRoom::where('date',$input_date)->where("client_id", $client_id)->where('pay_type',2)->sum("paid_amount");

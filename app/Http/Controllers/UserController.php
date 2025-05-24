@@ -71,7 +71,7 @@ class UserController extends Controller {
                     'client_id'=>$client_id,
                     'user_id'=>$user->id,
                     'login_time'=> date("Y-m-d H:i:s"),
-                    'login_time'=> $request()->ip(),
+                    // 'login_time'=> $request()->ip(),
                 ]);
 
                 $currentSessionId = Session::getId();

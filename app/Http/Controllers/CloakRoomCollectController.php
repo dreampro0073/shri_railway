@@ -82,7 +82,7 @@ class CloakRoomCollectController extends Controller {
 
 			$a_t_sum = $a_penalty_sum+$a_c_sum;
 
-			return("admin.c_data",compact('c_sum','penalty_sum','t_sum','a_penalty_sum','a_c_sum','a_t_sum'));
+			return("admin.c_data",compact('penalty_sum','c_sum','t_sum','a_penalty_sum','a_c_sum','a_t_sum'));
 
 		}else{
 			return "Oops!";

@@ -69,7 +69,7 @@ class UserController extends Controller {
 
                 DB::table('login_logs')->insert([
                     'client_id'=>$client_id,
-                    'user_id'=>$user_id,
+                    'user_id'=>$user->id,
                     'login_time'=> date("Y-m-d H:i:s"),
                 ]);
 

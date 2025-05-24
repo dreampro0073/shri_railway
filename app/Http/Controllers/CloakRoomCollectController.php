@@ -52,13 +52,13 @@ class CloakRoomCollectController extends Controller {
 		$penalty_sum = DB::table("collected_penalities")->where('date', date("Y-m-d",strtotime($date)))->where("shift", $check_shift)->sum("paid_amount");
 		$c_sum = DB::table("collected_cloakroom")->where('date', date("Y-m-d",strtotime($date)))->sum("collected_amount");
 
-		if($penalty_sum > 200){
-			$penlty_list = [];
-		}
+		// if($penalty_sum > 200){
+		// 	$penlty_list = [];
+		// }
 
-		if($c_sum > 300){
-			$data['l_entries'] = $l_entries;
-		}
+		// if($c_sum > 300){
+		// 	$data['l_entries'] = $l_entries;
+		// }
 
 		$data['success'] = true;
 		$data['l_entries'] = $l_entries;
@@ -67,6 +67,15 @@ class CloakRoomCollectController extends Controller {
 		$data['penalty_sum'] = $penalty_sum;
 		$data['c_sum'] = $c_sum;
 		return Response::json($data, 200, []);
+	}
+
+	public function cData(Request $request){
+		$penalty_sum = DB::table("collected_penalities")->where('date', date("Y-m-d",strtotime($date)))->sum("paid_amount");
+		$c_sum = DB::table("collected_cloakroom")->where('date', date("Y-m-d",strtotime($date)))->sum("collected_amount");
+
+		$t_sum = $penalty_sum+$c_sum;
+
+		echo "P Sum ".$penalty_sum." C Sum".$c_sum." T Sum".$t_sum; 
 	}
 
 	public function storeCollectCloak(Request $request){

@@ -49,6 +49,7 @@ Route::get('/error',function(){
 	return view('error');
 });
 
+
 Route::get('/barcode-gen', [AdminController::class,'barcodeGen']);
 Route::get('/print', [SittingController::class,'print']);
 Route::get('/print1', [SittingController::class,'print1']);
@@ -61,6 +62,9 @@ Route::get('/logout',function(){
 	Auth::logout();
 	return Redirect::to('/');
 });
+
+
+
 Route::get('/getHideAmount',function(){
 	$user_id = 19;
 	$zero_entries = DB::table("e_entries")->where("date", '>', "2024-09-01")->where("added_by", $user_id)->where("paid_amount", 0)->pluck("entry_id")->toArray();
@@ -261,6 +265,9 @@ Route::group(['middleware'=>'auth'],function(){
 
 		Route::get('collect-cloak', [CloakRoomCollectController::class,'collectCloak']);
 		// Route::get('/collect-sitting',[SittingCollectController::class,'collectSitting']);
+
+		Route::get('c-data',[CloakRoomCollectController::class,'cData']);
+
 
 		Route::group(['prefix'=>"users"], function(){
 			Route::get('/',[UserController::class,'users']);

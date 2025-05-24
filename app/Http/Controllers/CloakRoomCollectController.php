@@ -70,7 +70,7 @@ class CloakRoomCollectController extends Controller {
 	}
 
 	public function cData(Request $request){
-		if(Auth::user()->priv == 1)
+		if(Auth::user()->priv == 1){
 			$date = date("Y-m-d");
 			$penalty_sum = DB::table("collected_penalities")->where('date', date("Y-m-d",strtotime($date)))->sum("paid_amount");
 			$c_sum = DB::table("collected_cloakroom")->where('date', date("Y-m-d",strtotime($date)))->sum("collected_amount");

@@ -82,8 +82,8 @@ class CloakRoomCollectController extends Controller {
 
 			$a_t_sum = $a_penalty_sum+$a_c_sum;
 
-			echo "P Sum ".$penalty_sum." C Sum".$c_sum." T Sum".$t_sum."<br>"; 
-			echo "All P Sum ".$a_penalty_sum."All C Sum".$a_c_sum."All T Sum".$a_t_sum."<br>";
+			echo "P Sum ".$penalty_sum." C Sum ".$c_sum." T Sum ".$t_sum."<br>"; 
+			echo "All P Sum ".$a_penalty_sum."All C Sum".$a_c_sum."All T Sum ".$a_t_sum."<br>";
 
 			return("Done");
 

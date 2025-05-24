@@ -84,9 +84,9 @@ class CloakRoomCollectController extends Controller {
 
 			echo "P Sum ".$penalty_sum." C Sum".$c_sum." T Sum".$t_sum."<br>"; 
 			echo "All P Sum ".$a_penalty_sum."All C Sum".$a_c_sum."All T Sum".$a_t_sum."<br>"; 
-		}else{
-
 		}
+
+		return("Done")
 	}
 
 	public function storeCollectCloak(Request $request){

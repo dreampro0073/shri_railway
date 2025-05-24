@@ -70,12 +70,23 @@ class CloakRoomCollectController extends Controller {
 	}
 
 	public function cData(Request $request){
-		$penalty_sum = DB::table("collected_penalities")->where('date', date("Y-m-d",strtotime($date)))->sum("paid_amount");
-		$c_sum = DB::table("collected_cloakroom")->where('date', date("Y-m-d",strtotime($date)))->sum("collected_amount");
+		if(Auth::user()->priv == 1)
+			$date = date("Y-m-d");
+			$penalty_sum = DB::table("collected_penalities")->where('date', date("Y-m-d",strtotime($date)))->sum("paid_amount");
+			$c_sum = DB::table("collected_cloakroom")->where('date', date("Y-m-d",strtotime($date)))->sum("collected_amount");
 
-		$t_sum = $penalty_sum+$c_sum;
+			$t_sum = $penalty_sum+$c_sum;
 
-		echo "P Sum ".$penalty_sum." C Sum".$c_sum." T Sum".$t_sum; 
+			$a_penalty_sum = DB::table("collected_penalities")->sum("paid_amount");
+			$a_c_sum = DB::table("collected_cloakroom")->sum("collected_amount");
+
+			$a_t_sum = $a_penalty_sum+$a_c_sum;
+
+			echo "P Sum ".$penalty_sum." C Sum".$c_sum." T Sum".$t_sum."<br>"; 
+			echo "All P Sum ".$a_penalty_sum."All C Sum".$a_c_sum."All T Sum".$a_t_sum."<br>"; 
+		}else{
+
+		}
 	}
 
 	public function storeCollectCloak(Request $request){

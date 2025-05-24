@@ -64,6 +64,7 @@ Route::get('/logout',function(){
 });
 
 
+// Route::get('make-pass',[UserController::class,'makePass']);
 
 Route::get('/getHideAmount',function(){
 	$user_id = 19;

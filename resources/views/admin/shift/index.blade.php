@@ -26,7 +26,6 @@
 
                 <div class="col-md-3 form-group">
                     <input type="text" placeholder="DD-MM-YYYY" class="datepicker form-control" ng-model="filter.input_date">
-                    
                 </div>               
                 <div class="col-md-3 form-group" >
                     <select ng-model="filter.user_id" class="form-control" convert-to-number>

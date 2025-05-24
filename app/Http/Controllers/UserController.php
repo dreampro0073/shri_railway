@@ -8,8 +8,9 @@ use Illuminate\Http\Request;
 
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
-use Redirect, Validator, Hash, Response, Session, DB,DateTime;
+use Redirect, Validator, Hash, Response, DB,DateTime;
 
 use App\Models\User;
 use Crypt;
@@ -18,6 +19,9 @@ use Dompdf\Dompdf;
 use Dompdf\Options;
 
 class UserController extends Controller {
+    public function makePass(){
+        return Hash::make("Vik@s@2018");
+    }
 
     public function index(){
         return Redirect::to('admin/dashboard');
@@ -54,13 +58,21 @@ class UserController extends Controller {
         if($validator->passes()){
             $cre["active"] = 1;
             if(Auth::attempt($cre)){
+
+                
+
                 $client_id = Auth::user()->client_id;   
                 $client = DB::table("clients")->where("id",$client_id)->first();
                 $user = User::find(Auth::id());
                 $user->last_login = date("Y-m-d H:i:s");
                 $user->save();
 
+                $currentSessionId = Session::getId();
 
+                DB::table('sessions')
+                    ->where('user_id', $user->id)
+                    ->where('id', '!=', $currentSessionId)
+                    ->delete();
 
 
                 if($client){

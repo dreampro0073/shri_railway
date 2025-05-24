@@ -67,6 +67,12 @@ class UserController extends Controller {
                 $user->last_login = date("Y-m-d H:i:s");
                 $user->save();
 
+                DB::table('login_logs')->insert([
+                    'client_id'=>$client_id,
+                    'user_id'=>$user_id,
+                    'login_time'=> date("Y-m-d H:i:s"),
+                ]);
+
                 $currentSessionId = Session::getId();
 
                 DB::table('sessions')

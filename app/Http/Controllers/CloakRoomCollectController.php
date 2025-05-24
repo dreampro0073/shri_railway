@@ -72,17 +72,24 @@ class CloakRoomCollectController extends Controller {
 	public function cData(Request $request){
 		if(Auth::user()->priv == 1){
 			$date = date("Y-m-d");
-			$penalty_sum = DB::table("collected_penalities")->where('date', date("Y-m-d",strtotime($date)))->sum("paid_amount");
-			$c_sum = DB::table("collected_cloakroom")->where('date', date("Y-m-d",strtotime($date)))->sum("collected_amount");
 
-			$t_sum = $penalty_sum+$c_sum;
+			$penalty_sum = DB::table("collected_penalities")
+			    ->where('date', date("Y-m-d", strtotime($date)))
+			    ->sum("paid_amount");
+
+			$c_sum = DB::table("collected_cloakroom")
+			    ->where('date', date("Y-m-d", strtotime($date)))
+			    ->sum("collected_amount");
+
+			$t_sum = $penalty_sum + $c_sum;
 
 			$a_penalty_sum = DB::table("collected_penalities")->sum("paid_amount");
 			$a_c_sum = DB::table("collected_cloakroom")->sum("collected_amount");
 
-			$a_t_sum = $a_penalty_sum+$a_c_sum;
+			$a_t_sum = $a_penalty_sum + $a_c_sum;
 
-			return("c_data",compact('penalty_sum','c_sum','t_sum','a_penalty_sum','a_c_sum','a_t_sum'));
+			return view("c_data", compact('penalty_sum', 'c_sum', 't_sum', 'a_penalty_sum', 'a_c_sum', 'a_t_sum'));
+
 
 		}else{
 			return "Oops!";

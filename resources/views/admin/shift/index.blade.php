@@ -17,12 +17,12 @@
             <hr>
             @if(Auth::user()->priv == 2)
             <div class="row">
-                <div class="col-md-3 form-group" >
+                <!-- <div class="col-md-3 form-group" >
                     <select ng-model="filter.client_id" class="form-control" ng-change="changeFilter()"  convert-to-number>
                         <option value="">Select</option>
                         <option value="@{{key}}" ng-repeat="(key, value) in clients">@{{value}}</option>
                     </select>
-                </div> 
+                </div>  -->
 
                 <div class="col-md-3 form-group">
                     <input type="text" placeholder="DD-MM-YYYY" class="datepicker form-control" ng-model="filter.input_date">

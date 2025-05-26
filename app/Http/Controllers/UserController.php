@@ -30,7 +30,7 @@ class UserController extends Controller {
     }
 
     public function users(){
-        $sidebar = 'users';
+        $sidebar = 'users'; 
         return view('admin.users.index',compact('sidebar'));
     }
 
@@ -151,7 +151,9 @@ class UserController extends Controller {
 
 
     public function initUsers(Request $request){
-        $users = DB::table('users')->select('id','name','email','mobile', 'priv', 'active')->where("priv", '!=', '4')->where("client_id", Auth::user()->client_id);
+        $no_of_users = DB::table('users')->where("priv", [2,3])->where("active", '!=', 0)->where("client_id", Auth::user()->client_id)->count();
+
+        $users = DB::table('users')->select('id','name','email','mobile', 'priv', 'active')->where("active", '!=', 0)->whereIn("priv",  [2,3])->where("client_id", Auth::user()->client_id);
 
         if($request->name){
             $users = $users->where('name','LIKE','%'.$request->name.'%');
@@ -162,8 +164,12 @@ class UserController extends Controller {
         if($request->mobile){
             $users = $users->where('mobile','LIKE','%'.$request->mobile.'%');
         }
-        $users = $users->get();
+        $users = $users->orderBy("priv", "ASC")->orderBy("name", "ASC")->get();
+        $add_new_flag = false;
 
+        $client = DB::table("clients")->where("id", Auth::user()->client_id)->first();
+
+        $data["add_new_flag"] = $no_of_users < $client->max_users ? true : false;
         $data['success'] = true;
         $data['users'] = $users;
         

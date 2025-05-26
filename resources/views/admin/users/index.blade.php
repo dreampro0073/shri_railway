@@ -24,7 +24,8 @@
                         <div class="col-md-3 text-right" style="margin-top: 25px;" class="mb-2">
                             <button type="button" ng-click="init()" class="btn  btn-primary" style="width: 70px;">Search</button>
                             <button type="button" ng-click="filterClear()" class="btn  btn-warning" style="width: 70px;">Clear</button>
-                            <button type="button" ng-click="add()" class="btn  btn-primary" style="width: 70px;">Add</button>
+
+                            <button ng-if="add_new_flag" type="button" ng-click="add()" class="btn  btn-primary" style="width: 70px;">Add</button>
                         </div>
                     </div>
                 </form>
@@ -49,7 +50,7 @@
                             <td>@{{ item.email }}</td>
                             <td>
                                 <a href="javascript:;" ng-click="edit(item.id)" class="btn btn-warning btn-sm">Edit</a>
-                                 <a ng-click="activeUser(item, $index)" ng-show="item.active == 0 && item.priv == 3" class="btn btn-success btn-sm">Active</a>
+                                 <!-- <a ng-click="activeUser(item, $index)" ng-show="item.active == 0 && item.priv == 3" class="btn btn-success btn-sm">Active</a> -->
                                  <a ng-click="activeUser(item, $index)" ng-show="item.active != 0 && item.priv == 3" class="btn btn-danger btn-sm">Inactive</a>
                             </td>
                         </tr>

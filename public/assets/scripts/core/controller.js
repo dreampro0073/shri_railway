@@ -1430,6 +1430,7 @@ app.controller('shiftCtrl', function($scope , $http, $timeout , DBService) {
 
 app.controller('userCtrl', function($scope , $http, $timeout , DBService) {
     $scope.loading = false;
+    $scope.add_new_flag = false;
     $scope.formData = {
         name:'',
         email:'',
@@ -1444,6 +1445,7 @@ app.controller('userCtrl', function($scope , $http, $timeout , DBService) {
     $scope.init = function () {
         DBService.postCall($scope.filter, '/api/users/init').then((data) => {
             $scope.users = data.users;
+            $scope.add_new_flag = data.add_new_flag;
         });
     }
     $scope.filterClear = function(){

@@ -153,6 +153,8 @@ class SuperAdminController extends Controller {
 					"mobile" => $request->mobile, 
 					"gst" => $request->gst, 
 					"address" => $request->address,
+					"max_users" => $request->max_users,
+					"max_logins" => $request->max_logins,
 				]);
 			} else {
 				$client_id = DB::table("clients")->insertGetId([
@@ -162,6 +164,8 @@ class SuperAdminController extends Controller {
 					"mobile" => $request->mobile, 
 					"gst" => $request->gst, 
 					"address" => $request->address,
+					"max_users" => $request->max_users,
+					"max_logins" => $request->max_logins,
 					"created_at" => date("Y-m-d H:i:s"), 
 				]);
 

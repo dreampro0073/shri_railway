@@ -1,4 +1,5 @@
 //gulp default js js1
+//gulp default js
 
 const gulp = require('gulp');
 const { src, dest, task } = require('gulp');
@@ -36,16 +37,20 @@ function js(done) {
 	var files = [
 		'../public/assets/scripts/jquery.min.js',
 		'../public/bootstrap3/js/bootstrap.min.js',
-		// '../plugins/bootstrap-datepicker/js/bootstrap-datepicker.js',
+		'../public/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js',
 		'../public/assets/scripts/selectize.min.js',
 		'../public/assets/scripts/angular.min.js',
 		'../public/assets/scripts/ng-file-upload.min.js',
 		'../public/assets/scripts/angular-selectize.js',
-		'../public/assets/scripts/jcs-auto-validate.js',		
+		'../public/assets/scripts/jcs-auto-validate.js',
+		'../public/assets/scripts/core/custom.js',
+		'../public/assets/scripts/core/app.js',
+		'../public/assets/scripts/core/services.js',
+		'../public/assets/scripts/core/controller.js',
 	];
   	gulp
   	.src(files)
-  	.pipe(concat('plugins.min.js'))
+  	.pipe(concat('web.min.js'))
 	.pipe(uglify())
 	.pipe(dest('../public/assets/dist'));
 	
@@ -55,23 +60,23 @@ function js(done) {
 };
 exports.js = js;
 
-function js1(done) {
-	var files = [
-		'../public/assets/scripts/core/custom.js',
-		'../public/assets/scripts/core/app.js',
-		'../public/assets/scripts/core/services.js',
-		'../public/assets/scripts/core/controller.js',
+// function js1(done) {
+// 	var files = [
+// 		'../public/assets/scripts/core/custom.js',
+// 		'../public/assets/scripts/core/app.js',
+// 		'../public/assets/scripts/core/services.js',
+// 		'../public/assets/scripts/core/controller.js',
 		
-	];
-  	gulp
-  	.src(files)
-  	.pipe(concat('web.min.js'))
-	.pipe(uglify())
-	.pipe(dest('../public/assets/dist'));
+// 	];
+//   	gulp
+//   	.src(files)
+//   	.pipe(concat('web.min.js'))
+// 	.pipe(uglify())
+// 	.pipe(dest('../public/assets/dist'));
 	
-	console.log("Web Custom done!");
+// 	console.log("Web Custom done!");
 
-  	done();
-};
-exports.js1 = js1;
+//   	done();
+// };
+// exports.js1 = js1;
 

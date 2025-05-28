@@ -59,8 +59,6 @@ class UserController extends Controller {
             $cre["active"] = 1;
             if(Auth::attempt($cre)){
 
-                
-
                 $client_id = Auth::user()->client_id;   
                 $client = DB::table("clients")->where("id",$client_id)->first();
                 $user = User::find(Auth::id());
@@ -82,6 +80,25 @@ class UserController extends Controller {
                     ->delete();
 
 
+                if(Auth::user()->priv == 3 && $request->login_mode == 1){
+                    DB::table("login_token")->insert([
+                        "client_id" => $client_id,
+                        "user_id" => Auth::id(),
+                        "created_at" => date("Y-m-d H:i:s"),
+                    ]);
+
+                    $current_tokens = DB::table("login_token")->where("client_id", $client_id)->count();
+
+                    if($current_tokens > $client->max_logins){
+                        $extra = $current_tokens - $client->max_logins;
+                        
+                        $logout_user_ids = []; // Logout user_ids and total logout users ==  $extra, get login ASC 
+                        DB::table("login_token")->whereIn("user_id", $logout_user_ids)->where("client_id", $client_id)->delete();
+                    }
+
+                }
+
+
                 if($client){
                     $service_ids = DB::table('client_services')->where("client_id", $client_id)->where('status',1)->pluck('services_id')->toArray();
                     Session::put('client_name',$client->name);
@@ -89,6 +106,7 @@ class UserController extends Controller {
                     Session::put('service_ids',$service_ids);
                     Session::put('address',$client->address);
                     Session::put('auto_alert_status',0);    
+                    Session::put('login_mode',$request->input("login_mode"));    
 
                     $client_ids = [1,2,3,9,10,11,12];
                     Session::put('client_ids',$client_ids);     

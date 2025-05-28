@@ -252,4 +252,6 @@ ALTER TABLE `login_logs` ADD `ip` VARCHAR(255) NULL DEFAULT NULL AFTER `login_ti
 // Devendra 26May2025
 ALTER TABLE `clients` ADD `max_users` INT NULL DEFAULT '0' AFTER `org_id`, ADD `max_logins` INT NULL DEFAULT '0' AFTER `max_users`;
 
+CREATE TABLE `login_token` ( `id` INT NOT NULL AUTO_INCREMENT , `user_id` INT NOT NULL , `client_id` INT NOT NULL , `created_at` TIMESTAMP NULL DEFAULT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+
 ?>

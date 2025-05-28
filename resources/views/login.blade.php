@@ -42,14 +42,23 @@
                                         <label>Email</label>
                                         {{Form::text('email','',["class"=>"form-control form-control-user","id"=>"exampleInputEmail","autocomplete"=>"off","placeholder"=>"Enter Email Address...",'required'=>"required"])}}
                                         <span class="error">{{$errors->first('email')}}</span>
-                                        
                                     </div>
+
                                     <div class="form-group">
                                         <label>Password</label>
-                                       
                                         {{Form::password('password',["class"=>"form-control form-control-user","required"=>"true","id"=>"exampleInputPassword","placeholder"=>"Enter Password"])}}
                                     </div>
-                                   
+
+                                    <div class="form-group">
+                                        <label>Login Mode</label> 
+                                        <label class="btn btn-secondary active">
+                                           <input type="radio" name="login_mode" id="option1" value="1" autocomplete="off" checked> Oprator
+                                       </label>
+                                       <label class="btn btn-secondary">
+                                           <input type="radio" name="login_mode" id="option2" value="2" autocomplete="off">  Checker
+                                       </label>
+                                        <span class="error">{{$errors->first('login_mode')}}</span>
+                                    </div>
                                    
                                     <div class="text-center">
                                         <button type="submit" class="btn btn-primary btn-user btn-block" style="margin:auto;">Login</button>

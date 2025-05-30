@@ -85,7 +85,10 @@
                             </td>
                             @endif 
                             <td>
-                                <a href="javascript:;" ng-click="checkoutLoker(item.id)" class="btn btn-danger btn-sm">Checkout</a>
+                                <a href="javascript:;" ng-click="checkoutLoker(item.id, false)" class="btn btn-danger btn-sm">Checkout</a>
+
+                                <a href="javascript:;" ng-click="checkoutLoker(item.id, true)" class="btn btn-danger btn-sm">Checkout without penalty</a>
+                                
                                 <a href="javascript:;" ng-click="edit(item.id)" class="btn btn-warning btn-sm">Edit</a>
                                 <a href="{{url('/admin/locker/print')}}/@{{item.id}}" class="btn btn-success btn-sm" target="_blank">Print</a>
                                 <!-- @if(Auth::id() !=1)

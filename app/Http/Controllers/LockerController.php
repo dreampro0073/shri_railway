@@ -205,9 +205,19 @@ class LockerController extends Controller {
     	$now_time = strtotime(date("Y-m-d H:i:s",strtotime("+5 minutes")));
 
     	$l_entry = Locker::where('id', $request->entry_id)->where("client_id", $client_id)->first();
-    	$checkout_time = strtotime($l_entry->checkout_date);
+    	
+    	if(!$request->freePenalty){
+    		$checkout_time = strtotime($l_entry->checkout_date);
+    		if($checkout_time > $now_time){
+    			$penality = false;
+    		} else {
+    			$penality = true;	
+    		}
+    	} else {
+    		$penality = false;
+    	}
 
-    	if($checkout_time > $now_time){
+    	if(!$penality){
     		$data['timeOut'] = false;
     		$entry = Locker::where("client_id", $client_id)->find($request->entry_id);
     		$entry->status = 1; 
@@ -216,7 +226,6 @@ class LockerController extends Controller {
     		$data['success'] = true;
 
 			$locker_ids = explode(',', $l_entry->locker_ids);
-
 
     		DB::table('lockers')->where("client_id", $client_id)->whereIn('id',$locker_ids)->update(['status'=>0]);
     

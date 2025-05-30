@@ -477,11 +477,11 @@ app.controller('lockerCtrl', function($scope , $http, $timeout , DBService) {
         });
     }    
 
-    $scope.checkoutLoker = function(entry_id){
+    $scope.checkoutLoker = function(entry_id, freePenalty){
         $scope.entry_id = entry_id;
 
         if(confirm("Are you sure?") == true){
-             DBService.postCall({entry_id : $scope.entry_id}, '/api/locker/checkout-init').then((data) => {
+             DBService.postCall({entry_id : $scope.entry_id, freePenalty : freePenalty}, '/api/locker/checkout-init').then((data) => {
                 if (data.timeOut) {
                     $scope.formData = data.l_entry;
                     
@@ -2132,11 +2132,12 @@ app.controller('entryRoomCtrl', function($scope , $http, $timeout , DBService,$i
         });
     }    
 
-    $scope.checkoutLoker = function(entry_id){
+    $scope.checkoutLoker = function(entry_id, freePenalty){
         $scope.entry_id = entry_id;
+        alert(freePenalty);
         
         if(confirm("Are you sure?") == true){
-            DBService.postCall({entry_id : $scope.entry_id}, '/api/rooms/checkout-init').then((data) => {
+            DBService.postCall({entry_id : $scope.entry_id, freePenalty: freePenalty}, '/api/rooms/checkout-init').then((data) => {
                 if (data.timeOut) {
                     $scope.formData = data.l_entry;
                     

@@ -255,6 +255,7 @@
         var CSRF_TOKEN = "{{ csrf_token() }}";
         var auto_alert_status = "{{Session::get('auto_alert_status')}}";
         var authCheck = "{{Auth::user()->is_auto_alert_access}}";
+        var api_key = "{{Auth::user()->api_key}}";
     </script>
 
     @if($host == 'local')
@@ -270,6 +271,7 @@
         <script type="text/javascript" src="{{url('assets/scripts/core/app.js')}}" ></script>
         <script type="text/javascript" src="{{url('assets/scripts/core/services.js')}}" ></script>
         <script type="text/javascript" type="text/javascript" src="{{url('assets/scripts/core/controller.js?v='.$version)}}"></script>
+        <script type="text/javascript" type="text/javascript" src="{{url('assets/scripts/core/gcanteen_ctrl.js?v='.$version)}}"></script>
         <!-- <script type="text/javascript" type="text/javascript" src="{{url('assets/scripts/core/checkout_alert.js?v='.$version)}}"></script> -->
     @else
         <script type="text/javascript" type="text/javascript" src="{{url('assets/dist/plugins.min.js?v='.$version)}}"></script>

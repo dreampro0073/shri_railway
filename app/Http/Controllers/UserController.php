@@ -30,7 +30,7 @@ class UserController extends Controller {
     }
 
     public function users(){
-        $sidebar = 'users';
+        $sidebar = 'users'; 
         return view('admin.users.index',compact('sidebar'));
     }
 
@@ -51,6 +51,7 @@ class UserController extends Controller {
     }
 
     public function postLogin(Request $request){
+
         $cre = ["email"=>$request->input("email"),"password"=>$request->input("password")];
         $rules = ["email"=>"required","password"=>"required"];
         $validator = Validator::make($cre,$rules);
@@ -59,13 +60,13 @@ class UserController extends Controller {
             $cre["active"] = 1;
             if(Auth::attempt($cre)){
 
-                
-
                 $client_id = Auth::user()->client_id;   
                 $client = DB::table("clients")->where("id",$client_id)->first();
                 $user = User::find(Auth::id());
                 $user->last_login = date("Y-m-d H:i:s");
                 $user->save();
+
+                
 
                 DB::table('login_logs')->insert([
                     'client_id'=>$client_id,
@@ -79,7 +80,33 @@ class UserController extends Controller {
                 DB::table('sessions')
                     ->where('user_id', $user->id)
                     ->where('id', '!=', $currentSessionId)
-                    ->delete();
+                    ->delete(); 
+
+                // if(Auth::user()->priv == 3 && $request->login_mode == 1){
+                // if(Auth::user()->priv == 3){
+                //     // dd('hello');
+                   
+                //     DB::table("login_token")->insert([
+                //         "client_id" => $client_id,
+                //         "user_id" => Auth::id(),
+                //         "created_at" => date("Y-m-d H:i:s"),
+                //     ]);
+
+                //     $current_tokens = DB::table("login_token")->where("client_id", $client_id)->count();
+
+                //     if($current_tokens > $client->max_logins){
+                        
+
+                //         $lt_user_ids =  DB::table('login_token')->where('client_id',Auth::user()->client_id)->where('id','DESC')->take(2)->pluck('user_id')->toArray();
+
+                //         $user_logs_ids = DB::table('login_token')->where('client_id',Auth::user()->client_id)->whereNotIn('user_id',$lt_user_ids)->pluck('user_id')->toArray();
+
+                //         DB::table('sessions')->whereIn('user_id', $user_logs_ids)->delete();
+                        
+                //         DB::table("login_token")->whereIn("user_id", $user_logs_ids)->where("client_id", $client_id)->delete();
+                //     }
+
+                // }
 
 
                 if($client){
@@ -89,6 +116,7 @@ class UserController extends Controller {
                     Session::put('service_ids',$service_ids);
                     Session::put('address',$client->address);
                     Session::put('auto_alert_status',0);    
+                    Session::put('login_mode',$request->input("login_mode"));    
 
                     $client_ids = [1,2,3,9,10,11,12];
                     Session::put('client_ids',$client_ids);     
@@ -151,7 +179,9 @@ class UserController extends Controller {
 
 
     public function initUsers(Request $request){
-        $users = DB::table('users')->select('id','name','email','mobile', 'priv', 'active')->where("priv", '!=', '4')->where("client_id", Auth::user()->client_id);
+        $no_of_users = DB::table('users')->where("priv", [2,3])->where("active", '!=', 0)->where("client_id", Auth::user()->client_id)->count();
+
+        $users = DB::table('users')->select('id','name','email','mobile', 'priv', 'active')->where("active", '!=', 0)->whereIn("priv",  [2,3])->where("client_id", Auth::user()->client_id);
 
         if($request->name){
             $users = $users->where('name','LIKE','%'.$request->name.'%');
@@ -162,8 +192,12 @@ class UserController extends Controller {
         if($request->mobile){
             $users = $users->where('mobile','LIKE','%'.$request->mobile.'%');
         }
-        $users = $users->get();
+        $users = $users->orderBy("priv", "ASC")->orderBy("name", "ASC")->get();
+        $add_new_flag = false;
 
+        $client = DB::table("clients")->where("id", Auth::user()->client_id)->first();
+
+        $data["add_new_flag"] = $no_of_users < $client->max_users ? true : false;
         $data['success'] = true;
         $data['users'] = $users;
         

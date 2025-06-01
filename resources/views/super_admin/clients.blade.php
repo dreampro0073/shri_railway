@@ -26,6 +26,8 @@
                     <th>Address</th>
                     <th>Org ID</th>
                     <th>No Of Users</th>
+                    <th>Max Users</th>
+                    <th>Max Logins</th>
                     <th>#</th>
                 </tr>
             </thead>
@@ -40,6 +42,8 @@
                     <td>@{{client.address}}</td>
                     <td>@{{client.org_id}}</td>
                     <td>@{{client.no_of_users}}</td>
+                    <td>@{{client.max_users}}</td>
+                    <td>@{{client.max_logins}}</td>
                     <td>
                         <a class="btn btn-sm btn-warning" href="{{url('/superAdmin/clients/add/')}}/@{{client.id}}">Edit</a>
                         <button type="button" class="btn btn-sm btn-danger" ng-click="activateClient(client.id)">Deactivate</button>

@@ -3,7 +3,10 @@ app.service('DBService', function($http, $rootScope){
     this.getCall = function(route){
         var promise = $http({
             method: 'GET',
-            url: base_url + route
+            url: base_url + route,
+            headers: {
+                'apiToken': api_key
+            }
         })
         .then(function(response) {
             console.log(response);
@@ -24,7 +27,10 @@ app.service('DBService', function($http, $rootScope){
         var promise = $http({
             method: 'POST',
             url: base_url + route,
-            data: data
+            data: data,
+            headers: {
+                'apiToken': api_key
+            }
         })
         .then(function(response) {
             if(response.status == 200){

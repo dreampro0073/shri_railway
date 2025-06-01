@@ -38,6 +38,14 @@
             <label>Address</label>
             <input type="text" ng-model="client.address" class="form-control">
        </div>
+        <div class="col-md-2 form-group">
+            <label>No of maximum Users</label>
+            <input type="number" ng-model="client.max_users" class="form-control">
+       </div> 
+        <div class="col-md-2 form-group">
+            <label>No of maximum logins</label>
+            <input type="number" ng-model="client.max_logins" class="form-control">
+       </div> 
     </div>
 
     <div class="row">

@@ -51,6 +51,7 @@ class UserController extends Controller {
     }
 
     public function postLogin(Request $request){
+
         $cre = ["email"=>$request->input("email"),"password"=>$request->input("password")];
         $rules = ["email"=>"required","password"=>"required"];
         $validator = Validator::make($cre,$rules);
@@ -65,6 +66,8 @@ class UserController extends Controller {
                 $user->last_login = date("Y-m-d H:i:s");
                 $user->save();
 
+                
+
                 DB::table('login_logs')->insert([
                     'client_id'=>$client_id,
                     'user_id'=>$user->id,
@@ -77,26 +80,33 @@ class UserController extends Controller {
                 DB::table('sessions')
                     ->where('user_id', $user->id)
                     ->where('id', '!=', $currentSessionId)
-                    ->delete();
+                    ->delete(); 
 
+                // if(Auth::user()->priv == 3 && $request->login_mode == 1){
+                // if(Auth::user()->priv == 3){
+                //     // dd('hello');
+                   
+                //     DB::table("login_token")->insert([
+                //         "client_id" => $client_id,
+                //         "user_id" => Auth::id(),
+                //         "created_at" => date("Y-m-d H:i:s"),
+                //     ]);
 
-                if(Auth::user()->priv == 3 && $request->login_mode == 1){
-                    DB::table("login_token")->insert([
-                        "client_id" => $client_id,
-                        "user_id" => Auth::id(),
-                        "created_at" => date("Y-m-d H:i:s"),
-                    ]);
+                //     $current_tokens = DB::table("login_token")->where("client_id", $client_id)->count();
 
-                    $current_tokens = DB::table("login_token")->where("client_id", $client_id)->count();
-
-                    if($current_tokens > $client->max_logins){
-                        $extra = $current_tokens - $client->max_logins;
+                //     if($current_tokens > $client->max_logins){
                         
-                        $logout_user_ids = []; // Logout user_ids and total logout users ==  $extra, get login ASC 
-                        DB::table("login_token")->whereIn("user_id", $logout_user_ids)->where("client_id", $client_id)->delete();
-                    }
 
-                }
+                //         $lt_user_ids =  DB::table('login_token')->where('client_id',Auth::user()->client_id)->where('id','DESC')->take(2)->pluck('user_id')->toArray();
+
+                //         $user_logs_ids = DB::table('login_token')->where('client_id',Auth::user()->client_id)->whereNotIn('user_id',$lt_user_ids)->pluck('user_id')->toArray();
+
+                //         DB::table('sessions')->whereIn('user_id', $user_logs_ids)->delete();
+                        
+                //         DB::table("login_token")->whereIn("user_id", $user_logs_ids)->where("client_id", $client_id)->delete();
+                //     }
+
+                // }
 
 
                 if($client){

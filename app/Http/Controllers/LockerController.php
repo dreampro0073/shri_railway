@@ -231,10 +231,9 @@ class LockerController extends Controller {
 
     		// $locker_ids = explode(',', $request->locker_ids);
     		$locker_ids = explode(',', $l_entry->locker_ids);
-
 			$l_entry->mobile_no = $l_entry->mobile_no*1;
 			$l_entry->train_no = $l_entry->train_no*1;
-			$l_entry->pnr_uid = $l_entry->pnr_uid*1;
+			$l_entry->pnr_uid = $l_entry->pnr_uid;
 			$l_entry->paid_amount = $l_entry->paid_amount*1;
 			$l_entry->balance = $day*70*sizeof($locker_ids);
 			$l_entry->total_balance = $l_entry->paid_amount+$l_entry->balance;

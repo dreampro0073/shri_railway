@@ -33,7 +33,8 @@
                             <th>S.no</th>
                             <th>No of Hour</th>
                             <th>No of People</th>
-                            <th>Date/Time</th>
+                            <th>Check In</th>
+                            <th>Valid Till</th>
                             <th>Pay Type</th>
                             <th>Paid Amount</th>
                             
@@ -46,6 +47,7 @@
                             <td>@{{ item.no_of_hours }}</td>
                             <td>@{{ item.no_of_people }}</td>
                             <td>@{{ item.show_date_time }}</td>
+                            <td>@{{ item.show_valid }}</td>
 
                             <td>
                                @{{ item.show_pay_type }}

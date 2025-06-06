@@ -76,7 +76,17 @@
 		
 
 		<div style="text-align:center;">
-			<span class="name">Date: {{$print_data->show_date_time}}</span>
+			<span class="name">Date: {{$print_data->date}}</span>
+		</div>
+		<div class="table-div">
+			<div class="w-50">
+				<span class="text text-right">Check In: {{$print_data->check_in}} </span>	
+
+			</div>
+			<div class="w-50">
+				<span class="text">Valid Up To: {{$print_data->check_out}}</span>
+			</div>
+			
 		</div>
 		<div class="table-div">
 			<div class="w-50">

@@ -255,4 +255,6 @@ ALTER TABLE `clients` ADD `max_users` INT NULL DEFAULT '0' AFTER `org_id`, ADD `
 CREATE TABLE `login_token` ( `id` INT NOT NULL AUTO_INCREMENT , `user_id` INT NOT NULL , `client_id` INT NOT NULL , `created_at` TIMESTAMP NULL DEFAULT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
 ALTER TABLE `clients` ADD `org_id` INT NOT NULL DEFAULT '0' AFTER `address`;
 
+ALTER TABLE `rest_entries` ADD `checkout_date` TIMESTAMP NULL DEFAULT NULL AFTER `date_time`;
+
 ?>

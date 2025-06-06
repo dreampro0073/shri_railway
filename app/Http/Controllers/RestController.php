@@ -39,6 +39,7 @@ class RestController extends Controller {
 		foreach ($entries as $key => $entry) {
 			$entry->show_pay_type = (isset($entry->pay_type))?$show_pay_types[$entry->pay_type]:'NA';
 			$entry->show_date_time = date("d-m-Y H:i a",strtotime($entry->date_time));
+			$entry->show_valid = ($entry->checkout_date)?date("d-m-Y H:i a",strtotime($entry->checkout_date)):'';
 		}
 		
 		$rate_list = Rest::rateList();
@@ -92,6 +93,11 @@ class RestController extends Controller {
 			$entry->date_time = date("Y-m-d H:i:s");
 			$entry->client_id = Auth::user()->client_id;
 			$entry->save();
+			$no_of_min = $entry->no_of_hours*60;
+
+			$entry->checkout_date = date("Y-m-d H:i:s",strtotime("+".$no_of_min." minutes",strtotime($entry->date_time)));
+			$entry->save();
+
 
 			$data['id'] = $entry->id;
 			$data['print_id'] = $entry->id;
@@ -106,7 +112,7 @@ class RestController extends Controller {
 
 	public function printBill($id = 0){
 
-        $print_data = DB::table('rest_entries')->select("rest_entries.no_of_hours","rest_entries.no_of_people","rest_entries.slip_id","rest_entries.date_time","rest_entries.paid_amount","clients.gst","clients.address as client_address","rest_entries.pay_type")->leftJoin('clients','clients.id','=','rest_entries.client_id')->where("rest_entries.client_id", Auth::user()->client_id)->where('rest_entries.id', $id)->first();
+        $print_data = DB::table('rest_entries')->select("rest_entries.no_of_hours","rest_entries.no_of_people","rest_entries.slip_id","rest_entries.date_time","rest_entries.paid_amount","clients.gst","clients.address as client_address","rest_entries.pay_type",'rest_entries.checkout_date')->leftJoin('clients','clients.id','=','rest_entries.client_id')->where("rest_entries.client_id", Auth::user()->client_id)->where('rest_entries.id', $id)->first();
 
         // dd($print_data);
 
@@ -116,7 +122,11 @@ class RestController extends Controller {
 
         if($print_data){
         	$print_data->show_pay_type = (isset($print_data->pay_type))?$show_pay_types[$print_data->pay_type]:'NA';
-			$print_data->show_date_time = date("d M Y H:i a",strtotime($print_data->date_time));
+        	$print_data->check_in = (isset($print_data->date_time))?date("H:i a",strtotime($print_data->date_time)):'';
+        	$print_data->check_out = (isset($print_data->checkout_date))?date("H:i a",strtotime($print_data->checkout_date)):'';
+        	$print_data->date = (isset($print_data->date_time))?date("d-m-Y",strtotime($print_data->date_time)):'';
+        	
+			
         }
 
         // dd($print_data);

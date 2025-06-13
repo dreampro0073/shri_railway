@@ -57,10 +57,11 @@
 </head>
 <body>
 	<div id="printableArea" class="main">
-		
+		<h4>
+			{{Session::get('client_name')}}
+		</h4>
 		<p style="padding:0 15px;text-align: center;">
 			{!! $print_data->client_address !!}
-
 		</p>
 		<h5>
 			{{ $print_data->gst }}

@@ -416,7 +416,7 @@ class SittingController extends Controller {
 			$entry->no_of_baby_staff = $request->no_of_baby_staff ? $request->no_of_baby_staff : 0;
 			$entry->hours_occ = $request->hours_occ ? $request->hours_occ : 0;
 			$entry->remarks = $request->remarks;
-			$entry->unique_id = strtotime('now').Auth::id();
+			$entry->unique_id = strtotime('now');
 			$entry->save();
 
 			$entry->total_hours = $entry->hours_occ;

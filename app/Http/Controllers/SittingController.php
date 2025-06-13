@@ -416,7 +416,7 @@ class SittingController extends Controller {
 			$entry->no_of_baby_staff = $request->no_of_baby_staff ? $request->no_of_baby_staff : 0;
 			$entry->hours_occ = $request->hours_occ ? $request->hours_occ : 0;
 			$entry->remarks = $request->remarks;
-			$entry->unique_id = strtotime('now');
+			$entry->unique_id = strtotime('now').Auth::id();
 			$entry->save();
 
 			$entry->total_hours = $entry->hours_occ;
@@ -435,7 +435,7 @@ class SittingController extends Controller {
 			$e_total = Sitting::eSum($entry->id);
 
 			$entry->total_amount = $e_total + $entry->paid_amount;
-			$barcodevalue = bin2hex($entry->unique_id).Auth::id();
+			$barcodevalue = bin2hex($entry->unique_id);
 			$entry->barcodevalue = $barcodevalue;
 			$entry->max_print = $entry->max_print+1;
 

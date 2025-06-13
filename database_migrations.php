@@ -257,4 +257,12 @@ ALTER TABLE `clients` ADD `org_id` INT NOT NULL DEFAULT '0' AFTER `address`;
 
 ALTER TABLE `rest_entries` ADD `checkout_date` TIMESTAMP NULL DEFAULT NULL AFTER `date_time`;
 
+//Dipanshu 13th June
+
+ALTER TABLE `sitting_entries` CHANGE `unique_id` `unique_id` VARCHAR(55) NULL DEFAULT NULL;
+
+ALTER TABLE `sitting_entries` CHANGE `unique_id` `unique_id` BIGINT(55) NULL DEFAULT NULL;
+
+ALTER TABLE `sitting_entries` CHANGE `unique_id` `unique_id` VARCHAR(255) NULL DEFAULT NULL;
+
 ?>

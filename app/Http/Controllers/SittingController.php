@@ -435,7 +435,7 @@ class SittingController extends Controller {
 			$e_total = Sitting::eSum($entry->id);
 
 			$entry->total_amount = $e_total + $entry->paid_amount;
-			$barcodevalue = bin2hex($entry->unique_id);
+			$barcodevalue = bin2hex($entry->unique_id).Auth::id();
 			$entry->barcodevalue = $barcodevalue;
 			$entry->max_print = $entry->max_print+1;
 

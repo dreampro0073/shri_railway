@@ -211,6 +211,7 @@ class SittingController extends Controller {
 		$entries = $entries->get();
 		foreach ($entries as $item) {
 			$item->show_time = date("h:i A",strtotime($item->check_in)).' - '.date("h:i A",strtotime($item->check_out));
+			$item->show_date = date("d-m-Y",strtotime($item->date));
 
 			$e_total = Sitting::eSum($item->id);
 

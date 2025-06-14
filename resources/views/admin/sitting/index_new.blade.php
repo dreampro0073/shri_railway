@@ -60,6 +60,7 @@
                             <th>Name</th>
                             <th>Mobile No</th>
                             <th>PNR</th>
+                            <th>Date</th>
                             <th>Validity</th>
                             <th>Paid Amount</th>
                             <th>Pay Type</th>
@@ -79,6 +80,7 @@
                             <td>@{{ item.mobile_no }}</td>
 
                             <td>@{{ item.pnr_uid }}</td>
+                            <td>@{{ item.show_date }}</td>
                             <td>@{{ item.show_time }} (@{{item.hours_occ}} Hr)</td>
                             <td>@{{ item.paid_amount }}</td>
                             <td>

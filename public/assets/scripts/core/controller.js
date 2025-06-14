@@ -1325,6 +1325,10 @@ app.controller('reclinerCtrl', function($scope , $http, $timeout , DBService, $i
                         $scope.entries[i].check_class = "t-info";
                     }
                 }
+
+                if($scope.entries[i].client_id == 8){
+                    $scope.entries[i].check_class = "";
+                }
             }
 
         }

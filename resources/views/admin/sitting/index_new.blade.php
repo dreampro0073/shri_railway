@@ -86,11 +86,11 @@
                             <td>
                                 <span ng-if="item.pay_type == 1">Cash </span>
                                 <span ng-if="item.pay_type == 2">UPI </span>
-                                <!-- @if(in_array(Auth::user()->client_id,$client_ids))
-                                <span ng-if="item.added_by == {{ Auth::id() }}">
+                                @if(in_array(Auth::user()->client_id,$client_ids))
+                                <!-- <span ng-if="item.added_by == {{ Auth::id() }}">
                                     <a onclick="return confirm('Are you sure?')" ng-if="item.checkout_status != 1" href="{{url('/admin/sitting/change-pay-type')}}/@{{item.id}}" style="font-size: 15px;"><i class="fa fa-edit"> </i></a>
-                                </span>
-                                @endif -->
+                                </span> -->
+                                @endif
                             </td>
                            <!--  @if(Auth::user()->priv == 1)
 

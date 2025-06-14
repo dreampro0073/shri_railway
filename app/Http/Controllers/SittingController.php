@@ -207,7 +207,7 @@ class SittingController extends Controller {
 		
 		
 		$entries = $entries->orderBy("checkout_status", 'ASC')->orderBy('id', "DESC");
-		$entries = $entries->take(50);
+		$entries = $entries->take(100);
 		$entries = $entries->get();
 		foreach ($entries as $item) {
 			$item->show_time = date("h:i A",strtotime($item->check_in)).' - '.date("h:i A",strtotime($item->check_out));

@@ -1,5 +1,5 @@
 app.service('DBService', function($http, $rootScope){
-
+    console.log(api_key+'api key');
     this.getCall = function(route){
         var promise = $http({
             method: 'GET',

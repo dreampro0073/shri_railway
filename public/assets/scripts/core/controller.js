@@ -1011,10 +1011,13 @@ app.controller('sittingCtrl', function($scope , $http, $timeout , DBService, $in
 
     $scope.updateCheckoutClass = function(){
         const milliseconds = new Date().getTime();
+        console.log(milliseconds+'mm second');
         const unixTimestamp = Math.floor(milliseconds / 1000);
+        console.log(unixTimestamp+'uu second')
         for (var i = 0; i < $scope.entries.length; i++) {
             $scope.entries[i].check_class = "";
             if($scope.entries[i].checkout_status == 0){
+                // console.log($scope.entries[i].str_checkout_time+'cc time');
                 if(unixTimestamp > $scope.entries[i].str_checkout_time){
                     $scope.entries[i].check_class = "t-danger";
                 } else {
@@ -1025,9 +1028,9 @@ app.controller('sittingCtrl', function($scope , $http, $timeout , DBService, $in
                     }
                 }
 
-                if($scope.entries[i].client_id == 8){
-                    $scope.entries[i].check_class = "";
-                }
+                // if($scope.entries[i].client_id == 8){
+                //     $scope.entries[i].check_class = "";
+                // }
             }
 
         }

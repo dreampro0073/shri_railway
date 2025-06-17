@@ -250,6 +250,7 @@
     <!-- <div ng-controller="checkoutAlertCtrl">
         
     </div> -->
+   
     <script type="text/javascript">
         var base_url = "{{url('/')}}";
         var CSRF_TOKEN = "{{ csrf_token() }}";

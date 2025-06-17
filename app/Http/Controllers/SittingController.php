@@ -186,6 +186,11 @@ class SittingController extends Controller {
 		}
 	}
 	public function initEntries(Request $request){
+		
+		// dd($request->header("apiToken"));
+        // $user = User::AuthenticateUser($request->header("apiToken"));
+       	// dd($user);
+
 
 		if(Auth::user()->priv == 2){
 			Entry::setCheckStatus();

@@ -40,7 +40,7 @@ class ShiftController extends Controller {
 		$data = $this->getStatus($request->all(), $client_id, $service_ids);
 		// $data = Shift::getStatus($request->all(), $client_id, $service_ids);
 		$data['success'] = true;
-		$data['users'] = DB::table('users')->select('id','name')->where('priv','!=',4)->where("client_id", $client_id)->get();
+		$data['users'] = DB::table('users')->select('id','name')->where('priv','!=',4)->where("client_id", $client_id)->where('active',1)->get();
 		$data['service_ids'] = $service_ids;
 		$data['clients'] = Sitting::getBranches();
 		return Response::json($data, 200, []);

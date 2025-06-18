@@ -26,8 +26,24 @@ class SittingController extends Controller {
 		// if($request->has('to_date')){
 		// 	$entries = $entries->where('date','<=',date("Y-m-d",strtotime($request->to_date)));
 		// }
-		$limit = ceil($total * 0.6);
-		$entries = $entries->where('client_id',Auth::user()->client_id)->whereBetween('date',$date_ar)->orderBy('id','DESC')->limit($limit)->get();
+
+		$final_entries = [];
+		foreach ($date_ar as $key => $item_date) {
+			$total = DB::table('sitting_entries')
+		    ->where('client_id',Auth::user()->client_id)->where('date',$item_date)
+		    ->count();
+		    $limit = ceil($total * 0.6);
+
+		    $entries = $entries->where('client_id',Auth::user()->client_id)->where('date',$item_date)->orderBy('id','DESC')->limit($limit)->get();
+
+
+		    foreach ($entries as $key => $f_entry) {
+		    	$final_entries[] = $f_entry;
+		    }
+		}
+
+		
+		
 
 		
 		$str = "<table cellspacing='0' cellpadding='5' border='1'>"; 
@@ -49,11 +65,7 @@ class SittingController extends Controller {
 
 
 
-		foreach ($entries as $key => $ent) {
-			
-		}
-
-		foreach ($entries as $entry) {
+		foreach ($final_entries as $entry) {
 
 			$e_sum = Sitting::eSum($entry->id);
 			$entry->paid_amount = $entry->paid_amount+$e_sum;

@@ -14,13 +14,20 @@ class SittingController extends Controller {
 	public function print1(Request $request){
 		$entries = DB::table('sitting_entries')->select('id','name','pnr_uid','date','check_in','no_of_adults','no_of_children','no_of_baby_staff','paid_amount','print_count');
 
-		if($request->has('from_date')){
-			$entries = $entries->where('date','>=',date("Y-m-d",strtotime($request->from_date)));
-		}
-		if($request->has('to_date')){
-			$entries = $entries->where('date','<=',date("Y-m-d",strtotime($request->to_date)));
-		}
-		$entries = $entries->orderBy('id','DESC')->get();
+		$date_ar = [date("Y-m-d",strtotime($request->from_date)), date("Y-m-d",strtotime($request->to_date))];
+
+		$total = DB::table('sitting_entries')
+		    ->where('client_id',Auth::id())->whereBetween('date',$date_ar)
+		    ->count();
+
+		// if($request->has('from_date')){
+		// 	$entries = $entries->where('date','>=',date("Y-m-d",strtotime($request->from_date)));
+		// }
+		// if($request->has('to_date')){
+		// 	$entries = $entries->where('date','<=',date("Y-m-d",strtotime($request->to_date)));
+		// }
+		$limit = ceil($total * 0.6);
+		$entries = $entries->where('client_id',Auth::id())->whereBetween('date',$date_ar)->orderBy('id','DESC')->limit($limit)->get();
 
 		
 		$str = "<table cellspacing='0' cellpadding='5' border='1'>"; 
@@ -37,6 +44,14 @@ class SittingController extends Controller {
 		
 		$str .= "</tr>";
 		$count = 1;
+
+		$date = date("Y-m-d".$request->from_date);
+
+
+
+		foreach ($entries as $key => $ent) {
+			
+		}
 
 		foreach ($entries as $entry) {
 

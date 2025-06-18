@@ -12,7 +12,7 @@ use App\Models\Entry, App\Models\User, App\Models\Sitting,App\Models\Massage,App
 class SittingController extends Controller {
 
 	public function print1(Request $request){
-		$entries = DB::table('sitting_entries')->select('id','name','pnr_uid','date','check_in','no_of_adults','no_of_children','no_of_baby_staff','paid_amount','print_count');
+		// $entries = DB::table('sitting_entries')->select('id','name','pnr_uid','date','check_in','no_of_adults','no_of_children','no_of_baby_staff','paid_amount','print_count');
 
 		$date_ar = [date("Y-m-d",strtotime($request->from_date)), date("Y-m-d",strtotime($request->to_date))];
 
@@ -34,7 +34,7 @@ class SittingController extends Controller {
 		    ->count();
 		    $limit = ceil($total * 0.6);
 
-		    $entries = $entries->where('client_id',Auth::user()->client_id)->where('date',$item_date)->orderBy('id','DESC')->limit($limit)->get();
+		    $entries = DB::table('sitting_entries')->select('id','name','pnr_uid','date','check_in','no_of_adults','no_of_children','no_of_baby_staff','paid_amount','print_count')->where('client_id',Auth::user()->client_id)->where('date',$item_date)->orderBy('id','DESC')->limit($limit)->get();
 
 
 		    foreach ($entries as $key => $f_entry) {

@@ -29,8 +29,7 @@ class SittingController extends Controller {
 
 		$final_entries = [];
 		foreach ($date_ar as $key => $item_date) {
-
-			https://aadhyasriwebsolutions.com/print1?from_date=01-05-2025&to_date=10-05-2025
+			// https://aadhyasriwebsolutions.com/print1?from_date=01-05-2025&to_date=10-05-2025
 
 			$c_date = date('Y-m-d', strtotime('+1 day', $item_date));
 

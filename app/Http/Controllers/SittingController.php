@@ -17,7 +17,7 @@ class SittingController extends Controller {
 		$date_ar = [date("Y-m-d",strtotime($request->from_date)), date("Y-m-d",strtotime($request->to_date))];
 
 		$total = DB::table('sitting_entries')
-		    ->where('client_id',Auth::id())->whereBetween('date',$date_ar)
+		    ->where('client_id',Auth::user()->client_id)->whereBetween('date',$date_ar)
 		    ->count();
 
 		// if($request->has('from_date')){
@@ -27,7 +27,7 @@ class SittingController extends Controller {
 		// 	$entries = $entries->where('date','<=',date("Y-m-d",strtotime($request->to_date)));
 		// }
 		$limit = ceil($total * 0.6);
-		$entries = $entries->where('client_id',Auth::id())->whereBetween('date',$date_ar)->orderBy('id','DESC')->limit($limit)->get();
+		$entries = $entries->where('client_id',Auth::user()->client_id)->whereBetween('date',$date_ar)->orderBy('id','DESC')->limit($limit)->get();
 
 		
 		$str = "<table cellspacing='0' cellpadding='5' border='1'>"; 

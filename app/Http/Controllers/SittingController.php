@@ -14,7 +14,7 @@ class SittingController extends Controller {
 	public function print1(Request $request){
 		// $entries = DB::table('sitting_entries')->select('id','name','pnr_uid','date','check_in','no_of_adults','no_of_children','no_of_baby_staff','paid_amount','print_count');
 
-		$date_ar = [date("Y-m-d",strtotime($request->from_date)), date("Y-m-d",strtotime($request->to_date))];
+		// $date_ar = [date("Y-m-d",strtotime($request->from_date)), date("Y-m-d",strtotime($request->to_date))];
 
 		// $total = DB::table('sitting_entries')
 		//     ->where('client_id',Auth::user()->client_id)->whereBetween('date',$date_ar)
@@ -27,12 +27,14 @@ class SittingController extends Controller {
 		// 	$entries = $entries->where('date','<=',date("Y-m-d",strtotime($request->to_date)));
 		// }
 
-		$final_entries = ["2025-05-31","2025-06-01","2025-06-02","2025-06-03","2025-06-04","2025-06-05","2025-06-06"];
+		$final_dates = ["2025-05-31","2025-06-01","2025-06-02","2025-06-03","2025-06-04","2025-06-05","2025-06-06"];
+
+		$final_entries = [];
 
 
 
-		foreach ($date_ar as $key => $item_date) {
-			$c_date = date('Y-m-d',$item_date);
+		foreach ($final_dates as $key => $c_date) {
+			
 			$total = DB::table('sitting_entries')
 		    ->where('client_id',Auth::user()->client_id)->where('date',$c_date)
 		    ->count();

@@ -16,9 +16,9 @@ class SittingController extends Controller {
 
 		$date_ar = [date("Y-m-d",strtotime($request->from_date)), date("Y-m-d",strtotime($request->to_date))];
 
-		$total = DB::table('sitting_entries')
-		    ->where('client_id',Auth::user()->client_id)->whereBetween('date',$date_ar)
-		    ->count();
+		// $total = DB::table('sitting_entries')
+		//     ->where('client_id',Auth::user()->client_id)->whereBetween('date',$date_ar)
+		//     ->count();
 
 		// if($request->has('from_date')){
 		// 	$entries = $entries->where('date','>=',date("Y-m-d",strtotime($request->from_date)));
@@ -29,9 +29,10 @@ class SittingController extends Controller {
 
 		$final_entries = [];
 		foreach ($date_ar as $key => $item_date) {
-			// https://aadhyasriwebsolutions.com/print1?from_date=01-05-2025&to_date=10-05-2025
+			
+			$item_date = strtotime($item_date)+86400;
 
-			$c_date = date('Y-m-d', strtotime('+1 day', $item_date));
+			$c_date = date('Y-m-d',$item_date);
 
 			if($item_date <=  date("Y-m-d",strtotime($request->to_date))){
 				$total = DB::table('sitting_entries')

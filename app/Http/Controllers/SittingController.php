@@ -29,17 +29,26 @@ class SittingController extends Controller {
 
 		$final_entries = [];
 		foreach ($date_ar as $key => $item_date) {
-			$total = DB::table('sitting_entries')
-		    ->where('client_id',Auth::user()->client_id)->where('date',$item_date)
-		    ->count();
-		    $limit = ceil($total * 0.6);
 
-		    $entries = DB::table('sitting_entries')->select('id','name','pnr_uid','date','check_in','no_of_adults','no_of_children','no_of_baby_staff','paid_amount','print_count')->where('client_id',Auth::user()->client_id)->where('date',$item_date)->orderBy('id','DESC')->limit($limit)->get();
+			https://aadhyasriwebsolutions.com/print1?from_date=01-05-2025&to_date=10-05-2025
+
+			$c_date = date('Y-m-d', strtotime('+1 day', $item_date));
+
+			if($item_date <=  date("Y-m-d",strtotime($request->to_date))){
+				$total = DB::table('sitting_entries')
+			    ->where('client_id',Auth::user()->client_id)->where('date',$c_date)
+			    ->count();
+			    $limit = ceil($total * 0.6);
+
+			    $entries = DB::table('sitting_entries')->select('id','name','pnr_uid','date','check_in','no_of_adults','no_of_children','no_of_baby_staff','paid_amount','print_count')->where('client_id',Auth::user()->client_id)->where('date',$c_date)->orderBy('id','DESC')->limit($limit)->get();
 
 
-		    foreach ($entries as $key => $f_entry) {
-		    	$final_entries[] = $f_entry;
-		    }
+			    foreach ($entries as $key => $f_entry) {
+			    	$final_entries[] = $f_entry;
+			    }
+			}
+
+			
 		}
 
 		

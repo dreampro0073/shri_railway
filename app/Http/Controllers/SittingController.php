@@ -27,26 +27,23 @@ class SittingController extends Controller {
 		// 	$entries = $entries->where('date','<=',date("Y-m-d",strtotime($request->to_date)));
 		// }
 
-		$final_entries = [];
+		$final_entries = ["2025-05-31","2025-06-01","2025-06-02","2025-06-03","2025-06-04","2025-06-05","2025-06-06"];
+
+
+
 		foreach ($date_ar as $key => $item_date) {
-			
-			$item_date = strtotime($item_date)+86400;
-
 			$c_date = date('Y-m-d',$item_date);
+			$total = DB::table('sitting_entries')
+		    ->where('client_id',Auth::user()->client_id)->where('date',$c_date)
+		    ->count();
+		    $limit = ceil($total * 0.6);
 
-			if($item_date <=  date("Y-m-d",strtotime($request->to_date))){
-				$total = DB::table('sitting_entries')
-			    ->where('client_id',Auth::user()->client_id)->where('date',$c_date)
-			    ->count();
-			    $limit = ceil($total * 0.6);
-
-			    $entries = DB::table('sitting_entries')->select('id','name','pnr_uid','date','check_in','no_of_adults','no_of_children','no_of_baby_staff','paid_amount','print_count')->where('client_id',Auth::user()->client_id)->where('date',$c_date)->orderBy('id','DESC')->limit($limit)->get();
+		    $entries = DB::table('sitting_entries')->select('id','name','pnr_uid','date','check_in','no_of_adults','no_of_children','no_of_baby_staff','paid_amount','print_count')->where('client_id',Auth::user()->client_id)->where('date',$c_date)->orderBy('id','DESC')->limit($limit)->get();
 
 
-			    foreach ($entries as $key => $f_entry) {
-			    	$final_entries[] = $f_entry;
-			    }
-			}
+		    foreach ($entries as $key => $f_entry) {
+		    	$final_entries[] = $f_entry;
+		    }
 
 			
 		}

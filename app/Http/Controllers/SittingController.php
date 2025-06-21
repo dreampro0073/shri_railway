@@ -685,15 +685,26 @@ class SittingController extends Controller {
 					$data['success'] = true;
 					$data["message"] = "Successfully Checkout";
 				} else {
-					$extra_time = $current_time-$checkout_time;
-					$extra_time = round($extra_time/60/60, 2);
-					$extra_hours = explode(".",$extra_time);
-					$ex_hours = $extra_hours[0]*1;
-					if($extra_hours[1] > 10){
-						$ex_hours += 1;
-					}
-					$total_hr = $ex_hours+$entry->hours_occ; 
+					// $extra_time = $current_time-$checkout_time;
+					// $extra_time = round($extra_time/60/60, 2);
+					// $extra_hours = explode(".",$extra_time);
+					// $ex_hours = $extra_hours[0]*1;
+					// if($extra_hours[1] > 10){
+					// 	$ex_hours += 1;
+					// }
+					// $total_hr = $ex_hours+$entry->hours_occ; 
 
+					$extra_time = $current_time - $checkout_time;
+					$extra_time_hours = round($extra_time / 3600, 2);
+					$extra_parts = explode('.', $extra_time_hours);
+					$ex_hours = (int)$extra_parts[0];
+					$decimal_part = isset($extra_parts[1]) ? (int)$extra_parts[1] : 0;
+					if ($decimal_part > 10) {
+					    $ex_hours += 1;
+					}
+
+					$total_hr = $ex_hours + $entry->hours_occ;
+					
 					$e_total = Sitting::eSum($entry->id);
 					$rate_list = Sitting::rateList();
 

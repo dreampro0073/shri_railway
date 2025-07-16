@@ -265,4 +265,8 @@ ALTER TABLE `sitting_entries` CHANGE `unique_id` `unique_id` BIGINT(55) NULL DEF
 
 ALTER TABLE `sitting_entries` CHANGE `unique_id` `unique_id` VARCHAR(255) NULL DEFAULT NULL;
 
+//Dipanshu Chauhan
+
+ALTER TABLE `room_entries` ADD `checkout_by` INT NOT NULL DEFAULT '0' AFTER `added_by`;
+
 ?>

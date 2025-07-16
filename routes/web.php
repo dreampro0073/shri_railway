@@ -254,6 +254,7 @@ Route::group(['middleware'=>'auth'],function(){
 			Route::group(['prefix'=>"rooms"], function(){
 				Route::get('/{type}',[RoomController::class,'index']);
 				Route::get('/print/{id?}', [RoomController::class,'printPost']);
+				Route::get('/checkout-without-penalty/{id?}', [RoomController::class,'checkoutWithoutPenalty']);
 
 			});
 		});

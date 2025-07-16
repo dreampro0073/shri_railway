@@ -431,6 +431,19 @@ class RoomController extends Controller {
 		
 		return Response::json($data, 200, []);
     }
+
+    public function checkoutWithoutPenalty($id){
+		if(Auth::user()->priv == 2){
+			$entry = Room::where("checkout_status", "!=", 1)->where('id',$id)->first();
+			$entry->is_late = 1;
+			$entry->checkout_status = 1;
+			$entry->checkout_by = Auth::id();
+			$entry->checkout_time = date("Y-m-d H:i:s");
+			$entry->save();
+		} 
+
+		return Redirect::back();
+	}
     
  
 	public function deleteEnEntry($entry_id =0,$e_entry_id=0){

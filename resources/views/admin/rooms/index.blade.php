@@ -84,6 +84,14 @@
                                 @if(Auth::user()->priv == 1)
                                 <a href="javascript:;" ng-click="edit(item.id)" class="btn btn-warning btn-sm">Edit</a>
                                 @endif
+
+
+                                @if(Auth::user()->priv == 2)
+                                   <a onclick="return confirm('Are you sure?')" href="{{url('/admin/rooms/checkout-without-penalty')}}/@{{item.id}}" ng-if="item.checkout_status != 1 && item.check_class == 't-danger'" class="btn btn-warning btn-sm">Checkout without penalty</a>
+                                @endif
+
+                                
+
                                 <a href="{{url('/admin/rooms/print')}}/@{{item.id}}" class="btn btn-success btn-sm" target="_blank">Print</a>
                             </td>
                         </tr>

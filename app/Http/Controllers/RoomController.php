@@ -440,6 +440,10 @@ class RoomController extends Controller {
 			$entry->checkout_by = Auth::id();
 			$entry->checkout_time = date("Y-m-d H:i:s");
 			$entry->save();
+
+			$e_ids = explode(',', $entry->e_ids);
+
+			Room::updateAvailStatus($entry->type,$e_ids);   
 		} 
 
 		return Redirect::back();

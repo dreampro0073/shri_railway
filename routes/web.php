@@ -497,6 +497,7 @@ Route::group(['prefix'=>"api"], function(){
 	Route::group(['prefix'=>"shift-status"], function(){
 		Route::post('/init',[ShiftController::class,'Appinit']);
 	});	
+	Route::post('/app-login',[AppApiController::class,'login']);
 });
 
 // Route::group(['prefix'=>"app-api"], function(){
@@ -507,11 +508,11 @@ Route::group(['prefix'=>"api"], function(){
 //     // Route::post('/reasons',[AppApiController::class,'reasons']);
 // 	// Route::post('/delete',[AppApiController::class,'deleteMyAccount']);
 
-// 	Route::group(["prefix"=>"app-login"],function(){
-// 	    Route::post('/login',[AppApiController::class,'login']);
-// 	    Route::post('/m-login',[AppApiController::class,'mLogin']);
-// 	    Route::post('/change_password',[AppApiController::class,'changePassword']);
-// 	});	
+// Route::group(["prefix"=>"app-login"],function(){
+//     Route::post('/login',[AppApiController::class,'login']);
+//     Route::post('/m-login',[AppApiController::class,'mLogin']);
+//     Route::post('/change_password',[AppApiController::class,'changePassword']);
+// });	
 
 // 	Route::group(["prefix" => 'delete-account'],function(){
 // 	    Route::post('/reasons',[AppApiController::class,'reasons']);

@@ -29,7 +29,7 @@ class AppApiController extends Controller {
 
 		 	if(Auth::attempt($cre)){
                 $user = Auth::user();
-                if($user->active == 0){
+                if($user->active == 1){
                     $data["success"] = true;
 
                     if(!$user->api_token){

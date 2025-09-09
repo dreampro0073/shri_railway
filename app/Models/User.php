@@ -90,11 +90,11 @@ class User extends Authenticatable {
         return $rand_pwd;
     }
 
-    public static function AuthenticateUser($api_key){
-        if(!$api_key || $api_key == NULL){
+    public static function AuthenticateUser($api_token){
+        if(!$api_token || $api_token == NULL){
             die("user not found");
         } else {
-            $user = User::where('api_key',$api_key)->first();
+            $user = User::where('api_token',$api_token)->first();
             if($user){
                 return $user;
             }else{

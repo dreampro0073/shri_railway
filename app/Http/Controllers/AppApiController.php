@@ -33,11 +33,9 @@ class AppApiController extends Controller {
                     $data["success"] = true;
 
                     if(!$user->api_token){
-                        $user->api_token = md5($user->id.strtotime("now"));
+                        $user->api_token = Hash::make($user->id.strtotime("now"));
                         $user->save();
                     }
-
-                    $user->can_add_canteen = false;
                     $data["user"] = $user;
                     $data["apiToken"] = $user->api_token;
                     $data["message"] = "User Login";

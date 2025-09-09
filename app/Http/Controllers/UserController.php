@@ -22,6 +22,9 @@ class UserController extends Controller {
     public function makePass(){
         return Hash::make("Vik@s@2018");
     }
+    public function webCam(){
+        return view('web_cam');
+    }
 
     public function index(){
         return Redirect::to('admin/dashboard');
@@ -66,7 +69,10 @@ class UserController extends Controller {
                 $user->last_login = date("Y-m-d H:i:s");
                 $user->save();
 
-                
+                if(!$user->api_token){
+                    $user->api_token = Hash::make($user->id.strtotime("now"));
+                    $user->save();
+                }
 
                 DB::table('login_logs')->insert([
                     'client_id'=>$client_id,

@@ -47,6 +47,9 @@
                         <div class="col-md-3 text-right" style="margin-top: 25px;" class="mb-2">
                             <button type="button" ng-click="init()" class="btn  btn-primary" style="width: 70px;">Search</button>
                             <button type="button" ng-click="filterClear()" class="btn  btn-warning" style="width: 70px;">Clear</button>
+                            <a href="{{url('admin/cloak-rooms/print-begs')}}">
+                                Print Begs
+                            </a>
                             @if($type == 0 && Auth::user()->priv !=4)
                             <button type="button" ng-click="add()" class="btn  btn-primary" style="width: 70px;">Add</button>
                             @endif

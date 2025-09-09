@@ -29,8 +29,16 @@ class CloakRoomController extends Controller {
             "type" => 1,
         ]);
 	}
-	public function initRoom(Request $request,$type =0){
+	public function printBegs(){
 
+		$l_entries = DB::table('cloakroom_entries')->select('slip_id','no_of_bag')->where("cloakroom_entries.client_id", Auth::user()->client_id)->where('checkout_status',0)->get();
+
+		return view('admin.cloakrooms.print_begs', [
+            "sidebar" => "cloakrooms",
+            "subsidebar" => "cloakrooms",
+        ]);
+	}
+	public function initRoom(Request $request,$type =0){
 		$max_per_page = 100;
 		$page_no = $request->page_no;
 
@@ -109,6 +117,8 @@ class CloakRoomController extends Controller {
             "type" => 0,
         ]);
 	}
+	
+
 	public function editRoom(Request $request){
 		$l_entry = CloakRoom::where('id', $request->entry_id)->where("client_id", Auth::user()->client_id)->first();
 

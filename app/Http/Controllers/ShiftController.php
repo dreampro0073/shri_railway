@@ -18,9 +18,7 @@ use App\Models\CollectedPenalities;
 
 
 
-class ShiftController extends Controller {
-
-	
+class ShiftController extends Controller {	
 	public function index(){
 
 		return view('admin.shift.index', [
@@ -39,6 +37,22 @@ class ShiftController extends Controller {
 		$service_ids = Entry::getServiceIds($client_id);
 		$data = $this->getStatus($request->all(), $client_id, $service_ids);
 		// $data = Shift::getStatus($request->all(), $client_id, $service_ids);
+		$data['success'] = true;
+		$data['users'] = DB::table('users')->select('id','name')->where('priv','!=',4)->where("client_id", $client_id)->where('active',1)->get();
+		$data['service_ids'] = $service_ids;
+		$data['clients'] = Sitting::getBranches();
+		return Response::json($data, 200, []);
+	}
+
+	public function Appinit(Request $request){
+		$apiToken =$request->header("apiToken");
+		$user = User::AuthenticateUser($apiToken);
+		$client_id = isset($request->client_id) ? $request->client_id : $user->client_id;
+		if($user->priv == 2){
+			CollectedPenalities::setCheckStatus();
+		}
+		$service_ids = Entry::getServiceIds($client_id);
+		$data = $this->getStatus($request->all(), $client_id, $service_ids);
 		$data['success'] = true;
 		$data['users'] = DB::table('users')->select('id','name')->where('priv','!=',4)->where("client_id", $client_id)->where('active',1)->get();
 		$data['service_ids'] = $service_ids;

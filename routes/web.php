@@ -12,7 +12,6 @@ use App\Http\Controllers\MassageController;
 use App\Http\Controllers\LockerController;
 use App\Http\Controllers\CloakRoomCollectController;
 use App\Http\Controllers\SittingCollectController;
-
 use App\Http\Controllers\IncomeController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\GodownsController;
@@ -24,11 +23,9 @@ use App\Http\Controllers\BackupController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\ClientSettingController;
 use App\Http\Controllers\ScanningController;
-
 use App\Http\Controllers\RestController;
 use App\Http\Controllers\GodownCanteenController;
-
-
+use App\Http\Controllers\WebcamController;
 
 
 /*
@@ -44,6 +41,9 @@ use App\Http\Controllers\GodownCanteenController;
 
 
 Route::get('/', [UserController::class,'login'])->name("login");
+Route::get('/webcam', [UserController::class,'webCam']);
+Route::get('/webcam/get', [WebcamController::class,'webCamGet']);
+Route::post('/webcam/store', [WebcamController::class, 'store']);
 Route::post('/login', [UserController::class,'postLogin']);
 
 Route::get('/error',function(){
@@ -64,8 +64,6 @@ Route::get('/logout',function(){
 	return Redirect::to('/');
 });
 
-
-// Route::get('make-pass',[UserController::class,'makePass']);
 
 Route::get('/getHideAmount',function(){
 	$user_id = 19;
@@ -167,6 +165,7 @@ Route::group(['middleware'=>'auth'],function(){
 				Route::get('/print-unq/{type}/{print_id?}', [CloakRoomController::class,'printPostUnq']);
 				Route::get('/print/{id?}', [CloakRoomController::class,'printPost']);
 				Route::get('/export', [CloakRoomController::class,'export']);
+				Route::get('/print-begs', [CloakRoomController::class,'printBegs']);
 			});	
 		});
 
@@ -494,6 +493,10 @@ Route::group(['prefix'=>"api"], function(){
 		Route::post('/store-client',[SuperAdminController::class,'storeClient']);
 
 	});
+
+	Route::group(['prefix'=>"shift-status"], function(){
+		Route::post('/init',[ShiftController::class,'Appinit']);
+	});	
 });
 
 // Route::group(['prefix'=>"app-api"], function(){

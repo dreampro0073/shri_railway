@@ -1,5 +1,4 @@
 app.service('DBService', function($http, $rootScope){
-    console.log(api_key+'api key');
     this.getCall = function(route){
         var promise = $http({
             method: 'GET',
@@ -18,12 +17,9 @@ app.service('DBService', function($http, $rootScope){
                 }
             }
         });
-
         return promise;
     }
-
     this.postCall = function(data, route){
-
         var promise = $http({
             method: 'POST',
             url: base_url + route,
@@ -41,8 +37,6 @@ app.service('DBService', function($http, $rootScope){
                 }
             }
         });
-
         return promise;
     }
-
 });

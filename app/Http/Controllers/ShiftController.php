@@ -85,7 +85,7 @@ class ShiftController extends Controller {
 			'service_ids'=>$service_ids,
         ]);
 	}
-
+	
 	public function getStatus($request, $client_id, $service_ids){ 
 		$input_date = isset($request['input_date']) ? $request['input_date'] : date("Y-m-d");
 		if(Auth::user()->priv != 2){

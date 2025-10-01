@@ -71,6 +71,13 @@ class MassageController extends Controller {
 		$validator = Validator::make($cre,$rules);
 
 		if($validator->passes()){
+
+			if($request->no_of_person < 0){
+				$data['success'] = false;
+				$data['message'] = "Minus Value not allowed";
+					return Response::json($data, 200, []);
+			}
+
 			if($request->id){
 				$group_id = $request->id;
 				$entry = Massage::find($request->id);

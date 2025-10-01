@@ -65,183 +65,25 @@
             </thead>
 
             <tbody>
-			@if(in_array(1, $service_ids))
+			@foreach($data['data_rows'] as $item)
 			    <tr>
                    	<td>
-                       <b>Sitting</b>
+                       <b>{{$item['label']}}</b>
                    	</td> 
                    
                     <td>
-                        {{$sitting_data['total_shift_upi']}}
+                        {{$item['total_shift_upi']}}
                     </td>
                     <td>
-                        {{$sitting_data['total_shift_cash']}}
+                        {{$item['total_shift_cash']}}
                     </td>
                     <td>
-                        {{$sitting_data['total_collection']}}
+                        {{$item['total_collection']}}
                     </td>
                    
                 </tr>
-			@endif
-			@if(in_array(2, $service_ids))
-			    <tr>
-                   	<td>
-                       <b>Cloakroom</b>
-                   	</td> 
-                   
-                    <td>
-                        {{$cloak_data['total_shift_upi']}}
-                    </td>
-                    <td>
-                        {{$cloak_data['total_shift_cash']}}
-                    </td>
-                    <td>
-                        {{$cloak_data['total_collection']}}
-                    </td>
-                   
-                </tr>
-			@endif
-			@if(in_array(3, $service_ids))
-			    <tr>
-                   	<td>
-                       <b>Canteen</b>
-                   	</td> 
-                   
-                    <td>
-                        {{$canteen_data['total_shift_upi']}}
-                    </td>
-                    <td>
-                        {{$canteen_data['total_shift_cash']}}
-                    </td>
-                    <td>
-                        {{$canteen_data['total_collection']}}
-                    </td>
-                   
-                </tr>
-			@endif
-			@if(in_array(4, $service_ids))
-			    <tr>
-                   	<td>
-                       <b>Massage</b>
-                   	</td> 
-                   
-                    <td>
-                        {{$massage_data['total_shift_upi']}}
-                    </td>
-                    <td>
-                        {{$massage_data['total_shift_cash']}}
-                    </td>
-                    <td>
-                        {{$massage_data['total_collection']}}
-                    </td>
-                   
-                </tr>
-			@endif
-			@if(in_array(5, $service_ids))
-				<tr>
-                   	<td>
-                       <b>Locker</b>
-                   	</td> 
-                   
-                    <td>
-                        {{$locker_data['total_shift_upi']}}
-                    </td>
-                    <td>
-                        {{$locker_data['total_shift_cash']}}
-                    </td>
-                    <td>
-                        {{$locker_data['total_collection']}}
-                    </td>
-                   
-                </tr>
-			@endif			
-
-			@if(in_array(7, $service_ids))
-				<tr>
-                   	<td>
-                       <b>Recliner</b>
-                   	</td> 
-                   
-                    <td>
-                        {{$recliner_data['total_shift_upi']}}
-                    </td>
-                    <td>
-                        {{$recliner_data['total_shift_cash']}}
-                    </td>
-                    <td>
-                        {{$recliner_data['total_collection']}}
-                    </td>
-                   
-                </tr>
-			@endif
-			@if(in_array(8, $service_ids))
-				<tr>
-                   	<td>
-                       <b>PODs</b>
-                   	</td> 
-                   
-                    <td>
-                        {{$pod_data['total_shift_upi']}}
-                    </td>
-                    <td>
-                        {{$pod_data['total_shift_cash']}}
-                    </td>
-                    <td>
-                        {{$pod_data['total_collection']}}
-                    </td>
-                   
-                </tr>				
-                <tr>
-                   	<td>
-                       <b>Singal Suit Cabin</b>
-                   	</td> 
-                   
-                    <td>
-                        {{$singal_cabin_data['total_shift_upi']}}
-                    </td>
-                    <td>
-                        {{$singal_cabin_data['total_shift_cash']}}
-                    </td>
-                    <td>
-                        {{$singal_cabin_data['total_collection']}}
-                    </td>
-                   
-                </tr>				
-                <tr>
-                   	<td>
-                       <b>Double Beds</b>
-                   	</td> 
-                   
-                    <td>
-                        {{$double_bed_data['total_shift_upi']}}
-                    </td>
-                    <td>
-                        {{$double_bed_data['total_shift_cash']}}
-                    </td>
-                    <td>
-                        {{$double_bed_data['total_collection']}}
-                    </td>
-                   
-                </tr>
-			@endif
-            @if(in_array(9, $service_ids))
-                <tr>
-                    <td>
-                       <b>Scanning</b>
-                    </td> 
-                   
-                    <td>
-                        {{$scanning_data['total_shift_upi']}}
-                    </td>
-                    <td>
-                        {{$scanning_data['total_shift_cash']}}
-                    </td>
-                    <td>
-                        {{$scanning_data['total_collection']}}
-                    </td>
-                   
-                </tr>
-            @endif
+			@endforeach
+			
 				
                 <tr>
                    	<td>
@@ -249,13 +91,13 @@
                    	</td> 
                    
                     <td>
-                        {{$total_shift_upi}}
+                        {{$data['total_shift_upi']}}
                     </td>
                     <td>
-                        {{$total_shift_cash}}
+                        {{$data['total_shift_cash']}}
                     </td>
                     <td>
-                        {{$total_collection}}
+                        {{$data['total_collection']}}
                     </td>
                    
                 </tr>

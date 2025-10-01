@@ -43,7 +43,7 @@
                     <div class="row">
                         <div class="col-md-4 form-group">
                             <label>No of Person</label>
-                            <select ng-model="formData.no_of_person" class="form-control" ng-change="changeTime()" required convert-to-number>
+                            <select min="0" ng-model="formData.no_of_person" class="form-control" ng-change="changeTime()" required convert-to-number>
                                 <?php for ($i=1; $i <= 10; $i++) { ?>
                                     <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
                                 <?php } ?>

@@ -68,21 +68,7 @@ class ShiftController extends Controller {
 		$current_shift = Entry::checkShift();
 		
         return view('admin.print_shift',[
-        	'total_shift_upi'=> isset($data['total_shift_upi']) ? $data['total_shift_upi'] : 0,
-        	'total_shift_cash'=> isset($data['total_shift_cash']) ? $data['total_shift_cash'] : 0,
-        	'total_collection'=> isset($data['total_collection']) ? $data['total_collection'] : 0,
-        	'sitting_data'=> isset($data['sitting_data']) ? $data['sitting_data'] : [],
-			'cloak_data'=> isset($data['cloak_data']) ? $data['cloak_data'] : [],
-			'canteen_data'=> isset($data['canteen_data']) ? $data['canteen_data'] : [],
-			'massage_data'=> isset($data['massage_data']) ? $data['massage_data'] : [],
-			'locker_data'=> isset($data['locker_data']) ? $data['locker_data'] : [],
-			'recliner_data'=> isset($data['recliner_data']) ? $data['recliner_data'] : [],
-			'pod_data'=> isset($data['pod_data']) ? $data['pod_data'] : [],
-			'singal_cabin_data'=> isset($data['singal_cabin_data']) ? $data['singal_cabin_data'] : [],
-			'double_bed_data'=> isset($data['double_bed_data']) ? $data['double_bed_data'] : [], 
-			'scanning_data'=> isset($data['scanning_data']) ? $data['scanning_data'] : [], 
-			'restroom_data'=> isset($data['restroom_data']) ? $data['restroom_data'] : [], 
-			'service_ids'=>$service_ids,
+        	'data' => $data,
         ]);
 	}
 	

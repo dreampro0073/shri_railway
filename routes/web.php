@@ -26,6 +26,7 @@ use App\Http\Controllers\ScanningController;
 use App\Http\Controllers\RestController;
 use App\Http\Controllers\GodownCanteenController;
 use App\Http\Controllers\WebcamController;
+use App\Http\Controllers\WebController;
 
 
 /*
@@ -41,6 +42,7 @@ use App\Http\Controllers\WebcamController;
 
 
 Route::get('/', [UserController::class,'login'])->name("login");
+Route::get('/home', [WebController::class,'home'])->name("home");
 Route::get('/webcam', [UserController::class,'webCam']);
 Route::get('/webcam/get', [WebcamController::class,'webCamGet']);
 Route::post('/webcam/store', [WebcamController::class, 'store']);

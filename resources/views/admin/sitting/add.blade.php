@@ -40,15 +40,15 @@
                         </div>
                         <div class="col-md-3 form-group">
                             <label>No of Adults</label>
-                            <input type="number" ng-model="formData.no_of_adults" ng-change="changeAmount()" class="form-control" ng-disabled="formData.id > 0" />
+                            <input min="0" type="number" ng-model="formData.no_of_adults" ng-change="changeAmount()" class="form-control" ng-disabled="formData.id > 0" />
                         </div>
                         <div class="col-md-3 form-group">
                             <label>No of children</label>
-                            <input type="number" ng-model="formData.no_of_children" ng-change="changeAmount()" class="form-control" ng-disabled="formData.id > 0" />
+                            <input min="0" type="number" ng-model="formData.no_of_children" ng-change="changeAmount()" class="form-control" ng-disabled="formData.id > 0" />
                         </div>
                         <div class="col-md-3 form-group">
                             <label>Baby/Staff</label>
-                            <input type="number" ng-model="formData.no_of_baby_staff" class="form-control" ng-disabled="formData.id > 0" />
+                            <input min="0" type="number" ng-model="formData.no_of_baby_staff" class="form-control" ng-disabled="formData.id > 0" />
                         </div>
 
                         <div class="col-md-3 form-group">

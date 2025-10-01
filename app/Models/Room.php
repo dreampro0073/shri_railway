@@ -171,6 +171,15 @@ class Room extends Model
     }
 
     public static function totalShiftData($type = 1, $input_date= "", $user_id=0, $client_id){
+        $label = "Pods";
+
+        if($type == 2){
+            $label = "Single Cabins";
+        }
+        if($type == 3){
+            $label = "Double Beds";
+        }
+
         $check_shift = Entry::checkShift();
         
         $total_shift_cash = 0;
@@ -234,6 +243,8 @@ class Room extends Model
         $data['last_hour_total'] = $last_hour_total;
         $data['check_shift'] = $check_shift;
         $data['shift_date'] = $shift_date;
+        $data['label'] = $label;
+
 
         return $data;
     }

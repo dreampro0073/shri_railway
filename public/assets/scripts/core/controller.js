@@ -1357,20 +1357,9 @@ app.controller('reclinerCtrl', function($scope , $http, $timeout , DBService, $i
         $scope.changeAmount();
     }
 });
-
 app.controller('shiftCtrl', function($scope , $http, $timeout , DBService) {
     $scope.loading= false;
-    $scope.sitting_data = [];
-    $scope.cloak_data = [];
-    $scope.canteen_data = [];
-    $scope.massage_data = [];
-    $scope.locker_data = [];
-    $scope.recliner_data = [];
-    $scope.scanning_data = [];
-    $scope.pod_data = [];
-    $scope.singal_cabin_data = [];
-    $scope.double_bed_data = [];
-    $scope.rest_data = [];
+    $scope.data_rows = [];
     $scope.service_ids = [];
     $scope.clients = [];
     $scope.filter = {
@@ -1406,17 +1395,7 @@ app.controller('shiftCtrl', function($scope , $http, $timeout , DBService) {
                 $scope.clients = data.clients;                 
                 $scope.service_ids = data.service_ids;                 
                 
-                $scope.sitting_data = data.sitting_data; 
-                $scope.cloak_data = data.cloak_data; 
-                $scope.canteen_data = data.canteen_data; 
-                $scope.massage_data = data.massage_data;
-                $scope.locker_data = data.locker_data;
-                $scope.recliner_data = data.recliner_data;
-                $scope.scanning_data = data.scanning_data;
-                $scope.pod_data = data.pod_data;
-                $scope.singal_cabin_data = data.singal_cabin_data;
-                $scope.double_bed_data = data.double_bed_data;
-                $scope.rest_data = data.rest_data;
+                $scope.data_rows = data.data_rows;
                
                 $scope.total_shift_upi = data.total_shift_upi ; 
                 $scope.total_shift_cash = data.total_shift_cash ; 
@@ -1436,6 +1415,84 @@ app.controller('shiftCtrl', function($scope , $http, $timeout , DBService) {
 
     
 });
+// app.controller('shiftCtrl', function($scope , $http, $timeout , DBService) {
+//     $scope.loading= false;
+//     $scope.sitting_data = [];
+//     $scope.cloak_data = [];
+//     $scope.canteen_data = [];
+//     $scope.massage_data = [];
+//     $scope.locker_data = [];
+//     $scope.recliner_data = [];
+//     $scope.scanning_data = [];
+//     $scope.pod_data = [];
+//     $scope.singal_cabin_data = [];
+//     $scope.double_bed_data = [];
+//     $scope.rest_data = [];
+//     $scope.service_ids = [];
+//     $scope.clients = [];
+//     $scope.filter = {
+//         input_date:'',
+//         user_id:'',
+//         client_id:'',
+//     }
+
+//     $scope.clear = function(){
+//         $scope.filter = {
+//             input_date:'',
+//             user_id:'',
+//             client_id:'',
+//         }
+//         $scope.init();
+//     }
+//     $scope.changeFilter = function(){
+//         $scope.filter.user_id = '',
+//         $scope.init();
+//     }
+//     $scope.serach = function(){
+//         $scope.init();
+//     }
+
+//     $scope.users  = [];
+
+//     $scope.init = function () {
+//         $scope.loading = false;
+//         DBService.postCall($scope.filter, '/api/shift/init').then((data) => {
+//             if (data.success) { 
+
+//                 $scope.users = data.users;                 
+//                 $scope.clients = data.clients;                 
+//                 $scope.service_ids = data.service_ids;                 
+                
+//                 $scope.sitting_data = data.sitting_data; 
+//                 $scope.cloak_data = data.cloak_data; 
+//                 $scope.canteen_data = data.canteen_data; 
+//                 $scope.massage_data = data.massage_data;
+//                 $scope.locker_data = data.locker_data;
+//                 $scope.recliner_data = data.recliner_data;
+//                 $scope.scanning_data = data.scanning_data;
+//                 $scope.pod_data = data.pod_data;
+//                 $scope.singal_cabin_data = data.singal_cabin_data;
+//                 $scope.double_bed_data = data.double_bed_data;
+//                 $scope.rest_data = data.rest_data;
+               
+//                 $scope.total_shift_upi = data.total_shift_upi ; 
+//                 $scope.total_shift_cash = data.total_shift_cash ; 
+//                 $scope.total_collection = data.total_collection ; 
+
+//                 $scope.last_hour_upi_total = data.last_hour_upi_total ; 
+//                 $scope.last_hour_cash_total = data.last_hour_cash_total ; 
+//                 $scope.last_hour_total = data.last_hour_total ;
+//                 $scope.change_data = data.chage_pay_type_data ;
+                
+//                 $scope.check_shift = data.check_shift ; 
+//                 $scope.shift_date = data.shift_date ; 
+//             }
+//             $scope.loading = true;
+//         });
+//     }    
+
+    
+// });
 
 app.controller('userCtrl', function($scope , $http, $timeout , DBService) {
     $scope.loading = false;

@@ -69,105 +69,15 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-if="service_ids.includes(1)">
-                       <td>Sitting</td> 
-                        <td>@{{sitting_data.last_hour_upi_total}}</td>
-                        <td>@{{sitting_data.last_hour_cash_total}}</td>
-                        <td>@{{sitting_data.last_hour_total}}</td>
-                        <td>@{{sitting_data.total_shift_upi}}</td>
-                        <td>@{{sitting_data.total_shift_cash}}</td>
-                        <td>@{{sitting_data.total_collection}}</td>
+                    <tr ng-repeat="item in data_rows">
+                        <td>@{{item.label}}</td> 
+                        <td>@{{item.last_hour_upi_total}}</td>
+                        <td>@{{item.last_hour_cash_total}}</td>
+                        <td>@{{item.last_hour_total}}</td>
+                        <td>@{{item.total_shift_upi}}</td>
+                        <td>@{{item.total_shift_cash}}</td>
+                        <td>@{{item.total_collection}}</td>
                     </tr>                   
-                    <tr ng-if="service_ids.includes(2)">
-                        <td>Cloakroom</td> 
-                        <td>@{{cloak_data.last_hour_upi_total}}</td>
-                        <td>@{{cloak_data.last_hour_cash_total}}</td>
-                        <td>@{{cloak_data.last_hour_total}}</td>
-                        <td>@{{cloak_data.total_shift_upi}}</td>
-                        <td>@{{cloak_data.total_shift_cash}}</td>
-                        <td>@{{cloak_data.total_collection}}</td>
-                    </tr>
-                    <tr ng-if="service_ids.includes(3)">
-                        <td>Canteen</td> 
-                        <td>@{{canteen_data.last_hour_upi_total}}</td>
-                        <td>@{{canteen_data.last_hour_cash_total}}</td>
-                        <td>@{{canteen_data.last_hour_total}}</td>
-                        <td>@{{canteen_data.total_shift_upi}}</td>
-                        <td>@{{canteen_data.total_shift_cash}}</td>
-                        <td>@{{canteen_data.total_collection}}</td>
-                    </tr>
-                    <tr ng-if="service_ids.includes(4)">
-                        <td>Massage</td> 
-                        <td>@{{massage_data.last_hour_upi_total}}</td>
-                        <td>@{{massage_data.last_hour_cash_total}}</td>
-                        <td>@{{massage_data.last_hour_total}}</td>
-                        <td>@{{massage_data.total_shift_upi}}</td>
-                        <td>@{{massage_data.total_shift_cash}}</td>
-                        <td>@{{massage_data.total_collection}}</td>
-                    </tr>
-                    <tr ng-if="service_ids.includes(5)">
-                        <td>Locker</td> 
-                        <td>@{{locker_data.last_hour_upi_total}}</td>
-                        <td>@{{locker_data.last_hour_cash_total}}</td>
-                        <td>@{{locker_data.last_hour_total}}</td>
-                        <td>@{{locker_data.total_shift_upi}}</td>
-                        <td>@{{locker_data.total_shift_cash}}</td>
-                        <td>@{{locker_data.total_collection}}</td>
-                    </tr>
-                    <tr ng-if="service_ids.includes(7)">
-                        <td>Recliner</td> 
-                        <td>@{{recliner_data.last_hour_upi_total}}</td>
-                        <td>@{{recliner_data.last_hour_cash_total}}</td>
-                        <td>@{{recliner_data.last_hour_total}}</td>
-                        <td>@{{recliner_data.total_shift_upi}}</td>
-                        <td>@{{recliner_data.total_shift_cash}}</td>
-                        <td>@{{recliner_data.total_collection}}</td>
-                    </tr>
-                    <tr ng-if="service_ids.includes(8)">
-                        <td>PODs</td> 
-                        <td>@{{pod_data.last_hour_upi_total}}</td>
-                        <td>@{{pod_data.last_hour_cash_total}}</td>
-                        <td>@{{pod_data.last_hour_total}}</td>
-                        <td>@{{pod_data.total_shift_upi}}</td>
-                        <td>@{{pod_data.total_shift_cash}}</td>
-                        <td>@{{pod_data.total_collection}}</td> 
-                    </tr>
-                    <tr ng-if="service_ids.includes(8)">                       
-                        <td>Singal Suit Cabin</td> 
-                        <td>@{{singal_cabin_data.last_hour_upi_total}}</td>
-                        <td>@{{singal_cabin_data.last_hour_cash_total}}</td>
-                        <td>@{{singal_cabin_data.last_hour_total}}</td>
-                        <td>@{{singal_cabin_data.total_shift_upi}}</td>
-                        <td>@{{singal_cabin_data.total_shift_cash}}</td>
-                        <td>@{{singal_cabin_data.total_collection}}</td>
-                    </tr>
-                    <tr ng-if="service_ids.includes(8)">                        
-                        <td>Double Beds</td> 
-                        <td>@{{double_bed_data.last_hour_upi_total}}</td>
-                        <td>@{{double_bed_data.last_hour_cash_total}}</td>
-                        <td>@{{double_bed_data.last_hour_total}}</td>
-                        <td>@{{double_bed_data.total_shift_upi}}</td>
-                        <td>@{{double_bed_data.total_shift_cash}}</td>
-                        <td>@{{double_bed_data.total_collection}}</td>
-                    </tr>
-                    <tr ng-if="service_ids.includes(9)">
-                        <td>Scanning</td> 
-                        <td>@{{scanning_data.last_hour_upi_total}}</td>
-                        <td>@{{scanning_data.last_hour_cash_total}}</td>
-                        <td>@{{scanning_data.last_hour_total}}</td>
-                        <td>@{{scanning_data.total_shift_upi}}</td>
-                        <td>@{{scanning_data.total_shift_cash}}</td>
-                        <td>@{{scanning_data.total_collection}}</td>
-                    </tr>
-                    <tr ng-if="service_ids.includes(10)">
-                        <td>Rest</td> 
-                        <td>@{{rest_data.last_hour_upi_total}}</td>
-                        <td>@{{rest_data.last_hour_cash_total}}</td>
-                        <td>@{{rest_data.last_hour_total}}</td>
-                        <td>@{{rest_data.total_shift_upi}}</td>
-                        <td>@{{rest_data.total_shift_cash}}</td>
-                        <td>@{{rest_data.total_collection}}</td>
-                    </tr>
                     <tr>
                         <td><b>Grand Total</b></td> 
                         <td><b>@{{last_hour_upi_total}}</b></td>

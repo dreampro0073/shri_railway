@@ -72,6 +72,8 @@ class Locker extends Model
         $data['last_hour_total'] = $last_hour_total;
         $data['check_shift'] = $check_shift;
         $data['shift_date'] = $shift_date;
+        $data['label'] = "Locker";
+
 
         return $data;
     }

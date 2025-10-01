@@ -29,6 +29,9 @@
 </head>
 <body>
 	<div class="main" id="printableArea">
+		<h4>
+			{{date("d-m-Y",strtotime('now'))}}
+		</h4>
 		<table style="width:100%;margin: -1;" border="1" cellpadding="4" cellspacing="0" >
 			<tbody>
 				<tr>
@@ -37,8 +40,8 @@
 					<td class="w-32">Begs</td>
 					
 				</tr>
-				@if(sizeof($data) > 0)
-					@foreach($data as $key => $item)
+				@if(sizeof($l_entries) > 0)
+					@foreach($l_entries as $key => $item)
 						<tr>
 							<td class="w-32">{{$key+1}}</td>
 							<td class="w-32">{{$item->slip_id}}</td>

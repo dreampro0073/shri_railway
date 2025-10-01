@@ -403,6 +403,12 @@ class SittingController extends Controller {
 
 		if($validator->passes()){
 			$total_amount = $request->total_amount;
+			if($request->no_of_adults < 0 || $request->no_of_children < 0 || $request->no_of_baby_staff < 0 ){
+				$data['success'] = false;
+				$data['message'] = "Minus Value not allowed";
+					return Response::json($data, 200, []);
+			}
+			
 			if($request->id){
 				$entry = Sitting::find($request->id);
 				if($request->hours_occ <= $entry->hours_occ){
@@ -594,6 +600,67 @@ class SittingController extends Controller {
 	}
 
 	public function printPostUnq($type =1,$print_id = ''){
+        $print_data = DB::table('sitting_entries')->where('barcodevalue', $print_id)->where("client_id", Auth::user()->client_id)->first();
+
+        if (!$print_data) {
+            return view('admin.sitting.print_blocked', [
+                'message' => 'Slip not found.'
+            ]);
+        }
+
+        if ($type == 1 && Auth::user()->priv == 2 && $print_data->print_count >= $print_data->max_print) {
+            return view('admin.sitting.print_blocked', [
+                'message' => "Printing not allowed. Already printed {$print_data->print_count} time(s). Max: {$print_data->max_print}."
+            ]);
+        }
+        
+        $print_data->total_member = $print_data->no_of_adults + $print_data->no_of_children + $print_data->no_of_baby_staff;
+        $print_data->adult_amount = 0;
+        $print_data->children_amount = 0;
+        $print_data->adult_s_amount = 0;
+        $print_data->children_s_amount = 0;
+
+        $hours = $print_data->hours_occ;
+        $rate_list = Sitting::rateList();
+
+        $e_total = Sitting::eSum($print_data->id);
+
+        $total_amount =  $print_data->paid_amount + $e_total;
+
+        $sec_hours = 0;
+        $is_sec_rate = false;
+
+        if($rate_list->adult_rate != $rate_list->adult_rate_sec){
+        	$is_sec_rate = true;
+        }
+        $print_data->is_sec_rate = $is_sec_rate;
+
+        if($hours > 0) {
+            $print_data->adult_f_amount = $print_data->no_of_adults * 1 * $rate_list->adult_rate;
+            $print_data->children_f_amount = $print_data->no_of_children * $rate_list->child_rate * 1;
+        }
+        
+        $sec_hours = $hours - 1;
+        if($hours > 1 && $print_data->is_sec_rate) {
+        	
+            $print_data->adult_s_amount = $print_data->no_of_adults * $sec_hours * $rate_list->adult_rate_sec;
+            $print_data->children_s_amount = $print_data->no_of_children * $rate_list->child_rate_sec * $sec_hours;
+        }else if($hours > 1){
+        	
+        	$print_data->adult_f_amount += $print_data->no_of_adults * $sec_hours * $rate_list->adult_rate_sec;
+            $print_data->children_f_amount += $print_data->no_of_children * $rate_list->child_rate_sec * $sec_hours;
+        }
+        if($type == 1){
+        	DB::table('sitting_entries')->where('id',$print_data->id)->update([
+	        	'print_count' => $print_data->print_count+1,
+	        ]);
+        }
+        
+              
+		return view('admin.sitting.print_sitting_unq',compact('print_data','total_amount','rate_list','type'));
+	}
+
+	public function printPostUnqOld25Sep($type =1,$print_id = ''){
         $print_data = DB::table('sitting_entries')->where('barcodevalue', $print_id)->where("client_id", Auth::user()->client_id)->first();
 
         if($type == 1 && Auth::user()->priv == 3 && $print_data->print_count >= $print_data->max_print){

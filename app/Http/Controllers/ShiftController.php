@@ -103,70 +103,101 @@ class ShiftController extends Controller {
 		$data['last_hour_cash_total'] = 0;
 		$data['last_hour_total'] = 0;
 
+		$data_rows =[];
+
 		if(in_array(1, $service_ids)){
 			$sitting_data = Sitting::totalShiftData($input_date,$user_id,$client_id);
-			$data['sitting_data'] = $sitting_data;
+			// $data['sitting_data'] = $sitting_data;
 			$data = $this->calculateAmount($sitting_data, $data);
 			if($user_id && Auth::user()->priv == 2){
 				$data['chage_pay_type_data'] = Sitting::getChangePayTypeLog($input_date, $user_id);
 			}
+			
+			$data_rows[] = $sitting_data;
 		}
 
 		if(in_array(2, $service_ids)){
 			$cloak_data = CloakRoom::totalShiftData($input_date,$user_id,$client_id);
-			$data['cloak_data'] = $cloak_data;
+			// $data['cloak_data'] = $cloak_data;
 			$data = $this->calculateAmount($cloak_data, $data);
+
+			$data_rows[] = $cloak_data;
 		}
 		
 		if(in_array(3, $service_ids)){
 			$canteen_data = Canteen::totalShiftData($input_date,$user_id,$client_id);
-			$data['canteen_data'] = $canteen_data;
+			// $data['canteen_data'] = $canteen_data;
 			$data = $this->calculateAmount($canteen_data, $data);
+
+			$data_rows[] = $canteen_data;
 		}		
 
 		if(in_array(4, $service_ids)){
 			$massage_data = Massage::totalShiftData($input_date,$user_id,$client_id);
-			$data['massage_data'] = $massage_data;
+			// $data['massage_data'] = $massage_data;
 			$data = $this->calculateAmount($massage_data, $data);
+
+			$data_rows[] = $massage_data;
+
 		}		
 
 		if(in_array(5, $service_ids)){
 			$locker_data = Locker::totalShiftData($input_date,$user_id,$client_id);
-			$data['locker_data'] = $locker_data;
+			// $data['locker_data'] = $locker_data;
 			$data = $this->calculateAmount($locker_data, $data);
+
+			$data_rows[] = $locker_data;
+
 		}
 
 		if(in_array(7, $service_ids)){
 			$recliner_data = Recliner::totalShiftData($input_date,$user_id,$client_id);
-			$data['recliner_data'] = $recliner_data;
+			// $data['recliner_data'] = $recliner_data;
 			$data = $this->calculateAmount($recliner_data, $data);
+			$data_rows[] = $recliner_data;
 		}		
 
 		if(in_array(8, $service_ids)){
 			$pod_data = Room::totalShiftData(1,$input_date,$user_id,$client_id);
-			$data['pod_data'] = $pod_data;
+			// $data['pod_data'] = $pod_data;
 			$data = $this->calculateAmount($pod_data, $data);
 
+			$data_rows[] = $pod_data;
+
 			$singal_cabin_data = Room::totalShiftData(2,$input_date,$user_id,$client_id);
-			$data['singal_cabin_data'] = $singal_cabin_data;
+			// $data['singal_cabin_data'] = $singal_cabin_data;
 			$data = $this->calculateAmount($singal_cabin_data, $data);	
 
+			$data_rows[] = $singal_cabin_data;
+
 			$double_bed_data = Room::totalShiftData(3,$input_date,$user_id,$client_id);
-			$data['double_bed_data'] = $double_bed_data;
+			// $data['double_bed_data'] = $double_bed_data;
 			$data = $this->calculateAmount($double_bed_data, $data);
+
+			$data_rows[] = $double_bed_data;
 		}
 
 		if(in_array(9, $service_ids)){
 			$scanning_data = ScanningEntry::totalShiftData($input_date,$user_id,$client_id);
-			$data['scanning_data'] = $scanning_data;
+			// $data['scanning_data'] = $scanning_data;
 			$data = $this->calculateAmount($scanning_data, $data);
+
+			$data_rows[] = $scanning_data;
+
+
+
 		}
 
 		if(in_array(10, $service_ids)){
             $rest_data = Rest::totalShiftData($input_date,$user_id,$client_id);
-            $data['rest_data'] = $rest_data;
+            // $data['rest_data'] = $rest_data;
             $data = Shift::calculateAmount($rest_data, $data);
+
+			$data_rows[] = $rest_data;
+
         } 
+
+        $data['data_rows'] = $data_rows;
 		
 		return $data;
 	}

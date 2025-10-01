@@ -32,10 +32,10 @@ class CloakRoomController extends Controller {
 	public function printBegs(){
 
 		$l_entries = DB::table('cloakroom_entries')->select('slip_id','no_of_bag')->where("cloakroom_entries.client_id", Auth::user()->client_id)->where('checkout_status',0)->get();
-
 		return view('admin.cloakrooms.print_begs', [
             "sidebar" => "cloakrooms",
             "subsidebar" => "cloakrooms",
+            "l_entries" => $l_entries,
         ]);
 	}
 	public function initRoom(Request $request,$type =0){

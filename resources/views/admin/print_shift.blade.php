@@ -65,24 +65,24 @@
             </thead>
 
             <tbody>
-			@foreach($data['data_rows'] as $item)
-			    <tr>
-                   	<td>
-                       <b>{{$item['label']}}</b>
-                   	</td> 
-                   
-                    <td>
-                        {{$item['total_shift_upi']}}
-                    </td>
-                    <td>
-                        {{$item['total_shift_cash']}}
-                    </td>
-                    <td>
-                        {{$item['total_collection']}}
-                    </td>
-                   
-                </tr>
-			@endforeach
+    			@foreach($data['data_rows'] as $item)
+    			    <tr>
+                       	<td>
+                           <b>{{$item['label']}}</b>
+                       	</td> 
+                       
+                        <td>
+                            {{$item['total_shift_upi']}}
+                        </td>
+                        <td>
+                            {{$item['total_shift_cash']}}
+                        </td>
+                        <td>
+                            {{$item['total_collection']}}
+                        </td>
+                       
+                    </tr>
+    			@endforeach
 			
 				
                 <tr>

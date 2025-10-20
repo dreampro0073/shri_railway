@@ -1,8 +1,8 @@
 <header id="header" class="header d-flex align-items-center fixed-top">
 	<div class="container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
 
-		<a href="index.html" class="logo d-flex align-items-center">
-			<h1 class="sitename">Devin</h1>
+		<a href="{{url('home')}}" class="logo d-flex align-items-center">
+			<img src="{{url('assets/img/aadh1.png')}}" >&#8482;
 		</a>
 
 		<nav id="navmenu" class="navmenu">

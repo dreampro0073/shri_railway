@@ -13,10 +13,10 @@
 						<p>We are passionate about turning ideas into impactful digital experiences. With a commitment to innovation and dedication, we specialize in delivering high-quality software development, website design, and digital solutions that help businesses grow and thrive in the digital age.</p>
 						<div class="hero-actions justify-content-center justify-content-lg-start">
 							<a href="#services" class="btn-primary scrollto">Start Journey</a>
-							<a href="https://www.youtube.com/watch?v=Y7f98aduVJ8" class="glightbox btn-video d-flex align-items-center">
+							<!-- <a href="https://www.youtube.com/watch?v=Y7f98aduVJ8" class="glightbox btn-video d-flex align-items-center">
 								<i class="bi bi-play-fill"></i>
 								<span>Watch Demo</span>
-							</a>
+							</a> -->
 						</div>
 					</div>
 				</div>
@@ -61,7 +61,7 @@
                   <p>Projects Completed</p>
                 </div>
                 <div class="stat-item">
-                  <h3><span data-purecounter-start="0" data-purecounter-end="12" data-purecounter-duration="0" class="purecounter">12</span>+</h3>
+                  <h3><span data-purecounter-start="0" data-purecounter-end="12" data-purecounter-duration="0" class="purecounter">8</span>+</h3>
                   <p>Years Experience</p>
                 </div>
                 <div class="stat-item">
@@ -92,7 +92,7 @@
       <!-- Section Title -->
       <div class="container section-title">
         <h2>Services</h2>
-        <p>Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit</p>
+        <p>Delivering quality services tailored to your needs with reliability, efficiency, and care.</p>
       </div><!-- End Section Title -->
 
       <div class="container">
@@ -105,7 +105,7 @@
                 <i class="bi bi-palette"></i>
               </div>
               <h3>Creative Design</h3>
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore.</p>
+              <p>We design solutions that inspire, connect, and deliver results. Our journey is driven by innovation, guided by purpose, and built for growth.</p>
               <a href="service-details.html" class="service-link">
                 Learn More
                 <i class="bi bi-arrow-right"></i>
@@ -119,7 +119,7 @@
                 <i class="bi bi-code-slash"></i>
               </div>
               <h3>Web Development</h3>
-              <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo.</p>
+              <p>We design and develop fast, responsive, and user-friendly websites that connect ideas with people.</p>
               <a href="service-details.html" class="service-link">
                 Learn More
                 <i class="bi bi-arrow-right"></i>
@@ -133,7 +133,7 @@
                 <i class="bi bi-megaphone"></i>
               </div>
               <h3>Digital Marketing</h3>
-              <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+              <p>We specialize in digital marketing that helps brands grow, connect with the right audience, and build a strong online presence through creative strategies and data-driven results.</p>
               <a href="service-details.html" class="service-link">
                 Learn More
                 <i class="bi bi-arrow-right"></i>
@@ -147,7 +147,7 @@
                 <i class="bi bi-graph-up-arrow"></i>
               </div>
               <h3>Business Strategy</h3>
-              <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim.</p>
+              <p>Crafting smart strategies that drive growth, innovation, and long-term success for businesses.</p>
               <a href="service-details.html" class="service-link">
                 Learn More
                 <i class="bi bi-arrow-right"></i>
@@ -161,7 +161,7 @@
                 <i class="bi bi-shield-check"></i>
               </div>
               <h3>Security Solutions</h3>
-              <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.</p>
+              <p>Providing smart, reliable, and advanced security solutions to protect what matters most.</p>
               <a href="service-details.html" class="service-link">
                 Learn More
                 <i class="bi bi-arrow-right"></i>
@@ -175,7 +175,7 @@
                 <i class="bi bi-headset"></i>
               </div>
               <h3>24/7 Support</h3>
-              <p>Totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae.</p>
+              <p>Always available, our 24/7 support ensures quick solutions and reliable assistance anytime you need.</p>
               <a href="service-details.html" class="service-link">
                 Learn More
                 <i class="bi bi-arrow-right"></i>
@@ -199,9 +199,7 @@
               <i class="bi bi-laptop"></i>
             </div>
             <h3>Streamlined Workflow Solution</h3>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.
-            </p>
+           
             <div class="features-list">
               <div class="feature-item">
                 <i class="bi bi-check-circle-fill"></i>
@@ -226,9 +224,7 @@
               <i class="bi bi-graph-up"></i>
             </div>
             <h3>Performance Analytics</h3>
-            <p>
-              Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel.
-            </p>
+           
             <div class="features-list">
               <div class="feature-item">
                 <i class="bi bi-check-circle-fill"></i>
@@ -253,9 +249,7 @@
               <i class="bi bi-shield-lock"></i>
             </div>
             <h3>Enterprise Security Framework</h3>
-            <p>
-              Quisque velit nisi, pretium ut lacinia in, elementum id enim. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar.
-            </p>
+            
             <div class="features-list">
               <div class="feature-item">
                 <i class="bi bi-check-circle-fill"></i>
@@ -280,9 +274,7 @@
               <i class="bi bi-people"></i>
             </div>
             <h3>Collaborative Team Environment</h3>
-            <p>
-              Praesent sapien massa, convallis a pellentesque nec, egestas non nisi. Cras ultricies ligula sed magna dictum porta.
-            </p>
+            
             <div class="features-list">
               <div class="feature-item">
                 <i class="bi bi-check-circle-fill"></i>
@@ -312,7 +304,7 @@
       <!-- Section Title -->
       <div class="container section-title">
         <h2>How We Work</h2>
-        <p>Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit</p>
+        <p>We defines collaboration, communication, and flexibility to foster efficiency and balance.</p>
       </div><!-- End Section Title -->
 
       <div class="container">
@@ -382,17 +374,17 @@
           <div class="col-lg-6">
             <div class="team-member d-flex">
               <div class="member-img">
-                <img src="{{url('/front_end/img/person/person-m-7.webp')}}" class="img-fluid" alt="" loading="lazy">
+                <img src="{{url('/front_end/img/person/dipanshu.png')}}" class="img-fluid" alt="" loading="lazy">
               </div>
               <div class="member-info flex-grow-1">
-                <h4>Walter White</h4>
-                <span>Chief Executive Officer</span>
+                <h4>Dipanshu Chauhan</h4>
+                <span>Product Manager</span>
                 <p>Aliquam iure quaerat voluptatem praesentium possimus unde laudantium vel dolorum distinctio dire flow</p>
                 <div class="social">
-                  <a href=""><i class="bi bi-facebook"></i></a>
-                  <a href=""><i class="bi bi-twitter-x"></i></a>
-                  <a href=""><i class="bi bi-linkedin"></i></a>
-                  <a href=""><i class="bi bi-youtube"></i></a>
+                  <!-- <a href=""><i class="bi bi-facebook"></i></a>
+                  <a href=""><i class="bi bi-twitter-x"></i></a> -->
+                  <a href="https://www.linkedin.com/in/dipanshu-chauhan-390723169/" target="_blank"><i class="bi bi-linkedin"></i></a>
+                  <!-- <a href=""><i class="bi bi-youtube"></i></a> -->
                 </div>
               </div>
             </div>
@@ -401,18 +393,18 @@
           <div class="col-lg-6">
             <div class="team-member d-flex">
               <div class="member-img">
-                <img src="{{url('front_end/img/person/person-f-8.webp')}}" class="img-fluid" alt="" loading="lazy">
+                <img src="{{url('front_end/img/person/devendra1.png')}}" class="img-fluid" alt="" loading="lazy">
               </div>
               <div class="member-info flex-grow-1">
-                <h4>Sarah Jhonson</h4>
-                <span>Product Manager</span>
+                <h4>Devendra Diwakar</h4>
+                <span>Developer</span>
                 <p>Labore ipsam sit consequatur exercitationem rerum laboriosam laudantium aut quod dolores exercitationem ut</p>
-                <div class="social">
+                <!-- <div class="social">
                   <a href=""><i class="bi bi-facebook"></i></a>
                   <a href=""><i class="bi bi-twitter-x"></i></a>
                   <a href=""><i class="bi bi-linkedin"></i></a>
                   <a href=""><i class="bi bi-youtube"></i></a>
-                </div>
+                </div> -->
               </div>
             </div>
           </div><!-- End Team Member -->
@@ -420,16 +412,16 @@
           <div class="col-lg-6">
             <div class="team-member d-flex">
               <div class="member-img">
-                <img src="{{url('front_end/img/person/person-m-6.webp')}}" class="img-fluid" alt="" loading="lazy">
+                <img src="{{url('front_end/img/person/aashish.png')}}" class="img-fluid" alt="" loading="lazy">
               </div>
               <div class="member-info flex-grow-1">
-                <h4>William Anderson</h4>
-                <span>CTO</span>
+                <h4>Aashish Chauhan</h4>
+                <span>Developer</span>
                 <p>Illum minima ea autem doloremque ipsum quidem quas aspernatur modi ut praesentium vel tque sed facilis at qui</p>
                 <div class="social">
-                  <a href=""><i class="bi bi-facebook"></i></a>
+                  <!-- <a href="https://in.linkedin.com/in/ashish-chauhan-271b90284" target="_black"><i class="bi bi-facebook"></i></a> -->
                   <a href=""><i class="bi bi-twitter-x"></i></a>
-                  <a href=""><i class="bi bi-linkedin"></i></a>
+                  <a href="https://in.linkedin.com/in/ashish-chauhan-271b90284" target="_black"><i class="bi bi-linkedin"></i></a>
                   <a href=""><i class="bi bi-youtube"></i></a>
                 </div>
               </div>
@@ -439,11 +431,11 @@
           <div class="col-lg-6">
             <div class="team-member d-flex">
               <div class="member-img">
-                <img src="{{url('front_end/img/person/person-f-4.webp')}}" class="img-fluid" alt="" loading="lazy">
+                <img src="{{url('front_end/img/person/pushpa.png')}}" class="img-fluid" alt="" loading="lazy">
               </div>
               <div class="member-info flex-grow-1">
-                <h4>Amanda Jepson</h4>
-                <span>Accountant</span>
+                <h4>Pushpendra</h4>
+                <span>Developer</span>
                 <p>Magni voluptatem accusamus assumenda cum nisi aut qui dolorem voluptate sed et veniam quasi quam consectetur</p>
                 <div class="social">
                   <a href=""><i class="bi bi-facebook"></i></a>
@@ -455,43 +447,7 @@
             </div>
           </div><!-- End Team Member -->
 
-          <div class="col-lg-6">
-            <div class="team-member d-flex">
-              <div class="member-img">
-                <img src="{{url('front_end/img/person/person-m-12.webp')}}" class="img-fluid" alt="" loading="lazy">
-              </div>
-              <div class="member-info flex-grow-1">
-                <h4>Brian Doe</h4>
-                <span>Marketing</span>
-                <p>Qui consequuntur quos accusamus magnam quo est molestiae eius laboriosam sunt doloribus quia impedit laborum velit</p>
-                <div class="social">
-                  <a href=""><i class="bi bi-facebook"></i></a>
-                  <a href=""><i class="bi bi-twitter-x"></i></a>
-                  <a href=""><i class="bi bi-linkedin"></i></a>
-                  <a href=""><i class="bi bi-youtube"></i></a>
-                </div>
-              </div>
-            </div>
-          </div><!-- End Team Member -->
-
-          <div class="col-lg-6">
-            <div class="team-member d-flex">
-              <div class="member-img">
-                <img src="{{url('front_end/img/person/person-f-9.webp')}}" class="img-fluid" alt="" loading="lazy">
-              </div>
-              <div class="member-info flex-grow-1">
-                <h4>Josepha Palas</h4>
-                <span>Operation</span>
-                <p>Sint sint eveniet explicabo amet consequatur nesciunt error enim rerum earum et omnis fugit eligendi cupiditate vel</p>
-                <div class="social">
-                  <a href=""><i class="bi bi-facebook"></i></a>
-                  <a href=""><i class="bi bi-twitter-x"></i></a>
-                  <a href=""><i class="bi bi-linkedin"></i></a>
-                  <a href=""><i class="bi bi-youtube"></i></a>
-                </div>
-              </div>
-            </div>
-          </div><!-- End Team Member -->
+          
 
         </div>
 
@@ -503,7 +459,7 @@
       <!-- Section Title -->
       <div class="container section-title">
         <h2>Contact</h2>
-        <p>Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit</p>
+        <p>We're here to help! Whether you have questions, feedback, or need support, feel free to reach out. Our team is ready to assist you and will respond as soon as possible.</p>
       </div><!-- End Section Title -->
 
       <div class="container">
@@ -512,7 +468,7 @@
             <div class="contact-form-container">
               <div class="form-intro">
                 <h2>Let's Start a Conversation</h2>
-                <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat.</p>
+                <!-- <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat.</p> -->
               </div>
 
               <form action="forms/contact.php" method="post" class="php-email-form contact-form">
@@ -571,7 +527,7 @@
             <div class="contact-sidebar">
               <div class="contact-header">
                 <h3>Get in Touch</h3>
-                <p>Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud.</p>
+                <!-- <p>Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud.</p> -->
               </div>
 
               <div class="contact-methods">
@@ -580,8 +536,12 @@
                     <i class="bi bi-geo-alt"></i>
                   </div>
                   <div class="contact-details">
+                    <div>
+                      <span class="method-label">Reg. Office</span>
+                      <p>Shaheed Wala Grant, Buggawala, Haridwar, Uttarakhand (247662)</p>
+                    </div>
                     <span class="method-label">Address</span>
-                    <p>892 Park Avenue, Manhattan<br>New York, NY 10075</p>
+                    <p>M-39, M Cluster, Shivalik Nagar, Haridwar, Uttarakhand (247662)</p>
                   </div>
                 </div>
 
@@ -591,7 +551,7 @@
                   </div>
                   <div class="contact-details">
                     <span class="method-label">Email</span>
-                    <p>hello@businessdemo.com</p>
+                    <p><a href="mailto:aadhyasriwebsolutions@gmail.com">aadhyasriwebsolutions@gmail.com</a></p>
                   </div>
                 </div>
 
@@ -601,7 +561,9 @@
                   </div>
                   <div class="contact-details">
                     <span class="method-label">Phone</span>
-                    <p>+1 (555) 789-2468</p>
+                    <p>
+                      <a href="tel:+91-7351334717">+91-7351334717</a>
+                    </p>
                   </div>
                 </div>
 
@@ -611,7 +573,7 @@
                   </div>
                   <div class="contact-details">
                     <span class="method-label">Hours</span>
-                    <p>Monday - Friday: 9AM - 6PM<br>Saturday: 10AM - 4PM</p>
+                    <p>Monday - Sunday: 9AM - 6PM</p>
                   </div>
                 </div>
               </div>

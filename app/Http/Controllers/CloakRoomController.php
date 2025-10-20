@@ -39,7 +39,7 @@ class CloakRoomController extends Controller {
         ]);
 	}
 	public function initRoom(Request $request,$type =0){
-		$max_per_page = 100;
+		$max_per_page = 30;
 		$page_no = $request->page_no;
 
 		if(Auth::user()->priv == 2){

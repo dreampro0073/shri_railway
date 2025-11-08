@@ -38,77 +38,190 @@ class CloakRoomController extends Controller {
             "l_entries" => $l_entries,
         ]);
 	}
-	public function initRoom(Request $request,$type =0){
-		$max_per_page = 10;
-		$page_no = $request->page_no;
+	public function initRoom(Request $request, $type = 0)
+	{
+	    // Increase execution/memory limits (important for large data)
+	    ini_set('max_execution_time', 300);
+	    ini_set('memory_limit', '512M');
 
-		if(Auth::user()->priv == 2){
-			CollectedPenalities::setCheckStatus();
-		}
+	    $max_per_page = 10;
+	    $page_no = $request->page_no ?? 1;
+	    $client_id = Auth::user()->client_id;
 
-		$l_entries = DB::table('cloakroom_entries')->select('cloakroom_entries.*','aadhar_details.front as aadhar_front','aadhar_details.back as aadhar_back')->leftJoin("aadhar_details","aadhar_details.aadhar_no", "=" ,"cloakroom_entries.aadhar_no")->where("cloakroom_entries.client_id", Auth::user()->client_id);
-		if($request->slip_id){
-			$l_entries = $l_entries->where('cloakroom_entries.slip_id', $request->slip_id);
-		}
+	    // Always reconnect before DB queries
+	    DB::disconnect('mysql');
+	    DB::reconnect('mysql');
 
-		if($request->unique_id){
-			$l_entries = $l_entries->where('cloakroom_entries.unique_id', 'LIKE', '%'.$request->unique_id.'%');
-		}		
+	    // Privilege check
+	    if (Auth::user()->priv == 2) {
+	        CollectedPenalities::setCheckStatus();
+	    }
 
-		if($request->name){
-			$l_entries = $l_entries->where('cloakroom_entries.name', 'LIKE', '%'.$request->name.'%');
-		}		
-		if($request->mobile_no){
-			$l_entries = $l_entries->where('cloakroom_entries.mobile_no', 'LIKE', '%'.$request->mobile_no.'%');
-		}		
-		if($request->pnr_uid){
-			$l_entries = $l_entries->where('cloakroom_entries.pnr_uid', 'LIKE', '%'.$request->pnr_uid.'%');
-		}		
-		
-		if($type == 0){
-			$l_entries = $l_entries->where('cloakroom_entries.checkout_status', 0);
-			
-		}
-		if($type == 1){
-			$l_entries = $l_entries->skip(($page_no-1)*$max_per_page)->take($max_per_page);
-		}
-		if($request->has('export') && $request->export == 1){
-			$dt_ar = [date("Y-m-d",strtotime($request->from_date)),date("Y-m-d",strtotime($request->to_date))];
-			$l_entries = $l_entries->whereBetween('date',$dt_ar);
-		}
-		$l_entries = $l_entries->orderBy('cloakroom_entries.id', "DESC")->get();
-		foreach ($l_entries as $key => $item) {
-			$bm_amount = DB::table('cloakroom_penalities')->where("client_id", Auth::user()->client_id)->where('is_collected',0)->where('cloakroom_id','=',$item->id)->sum('paid_amount');
-			$item->sh_paid_amount = $item->paid_amount + $bm_amount;
-			$item->checkin_date_show = date("d M, h:i A",strtotime($item->checkin_date));
-			$item->checkout_date_show = date("d M, h:i A",strtotime($item->checkout_date));
+	    // === Base Query ===
+	    $query = DB::table('cloakroom_entries')
+	        ->select(
+	            'cloakroom_entries.*',
+	            'aadhar_details.front as aadhar_front',
+	            'aadhar_details.back as aadhar_back'
+	        )
+	        ->leftJoin('aadhar_details', 'aadhar_details.aadhar_no', '=', 'cloakroom_entries.aadhar_no')
+	        ->where('cloakroom_entries.client_id', $client_id);
 
-			$item->str_checkout_time = strtotime($item->checkout_date);
-		}
-		
+	    // === Filters ===
+	    if ($request->filled('slip_id')) {
+	        $query->where('cloakroom_entries.slip_id', $request->slip_id);
+	    }
 
-		if($request->has('export') && $request->export == 1){
-            if(sizeof($l_entries) > 0){
-                include(app_path().'/Excel/export_entries.php');
-                $data["excel_link"] = url('temp/'.$filename);
-            }
-        }
-		$rate_list = DB::table("cloakroom_rate_list")->where("client_id", Auth::user()->client_id)->first();
-		$pay_types = Entry::payTypes();
+	    if ($request->filled('unique_id')) {
+	        $query->where('cloakroom_entries.unique_id', 'LIKE', '%'.$request->unique_id.'%');
+	    }
 
-		$days = Entry::days();
+	    if ($request->filled('name')) {
+	        $query->where('cloakroom_entries.name', 'LIKE', '%'.$request->name.'%');
+	    }
 
-		$show_pay_types = Entry::showPayTypes();
-        
-		$data['success'] = true;
-		$data['l_entries'] = $l_entries;
-		$data['pay_types'] = $pay_types;
-		$data['rate_list'] = $rate_list;
-		$data['days'] = $days;
-		$data["users"] = User::where("active", 1)->where("client_id", Auth::user()->client_id)->where("priv", 3)->pluck("name", 'id')->toArray();
-		
-		return Response::json($data, 200, []);
+	    if ($request->filled('mobile_no')) {
+	        $query->where('cloakroom_entries.mobile_no', 'LIKE', '%'.$request->mobile_no.'%');
+	    }
+
+	    if ($request->filled('pnr_uid')) {
+	        $query->where('cloakroom_entries.pnr_uid', 'LIKE', '%'.$request->pnr_uid.'%');
+	    }
+
+	    if ($type == 0) {
+	        $query->where('cloakroom_entries.checkout_status', 0);
+	    }
+
+	    // === Pagination / Export ===
+	    if ($type == 1) {
+	        $query->skip(($page_no - 1) * $max_per_page)->take($max_per_page);
+	    }
+
+	    if ($request->has('export') && $request->export == 1) {
+	        $from = date("Y-m-d", strtotime($request->from_date));
+	        $to   = date("Y-m-d", strtotime($request->to_date));
+	        $query->whereBetween('date', [$from, $to]);
+	    }
+
+	    // === Execute Query ===
+	    $l_entries = $query->orderByDesc('cloakroom_entries.id')->get();
+
+	    // === Add Computed Fields ===
+	    foreach ($l_entries as $item) {
+
+	        // reconnect before subquery (prevents "gone away")
+	        DB::reconnect('mysql');
+
+	        $bm_amount = DB::table('cloakroom_penalities')
+	            ->where('client_id', $client_id)
+	            ->where('is_collected', 0)
+	            ->where('cloakroom_id', $item->id)
+	            ->sum('paid_amount');
+
+	        $item->sh_paid_amount = $item->paid_amount + $bm_amount;
+	        $item->checkin_date_show = date("d M, h:i A", strtotime($item->checkin_date));
+	        $item->checkout_date_show = date("d M, h:i A", strtotime($item->checkout_date));
+	        $item->str_checkout_time = strtotime($item->checkout_date);
+	    }
+
+	    // === Export ===
+	    if ($request->has('export') && $request->export == 1 && sizeof($l_entries) > 0) {
+	        include(app_path().'/Excel/export_entries.php');
+	        $data["excel_link"] = url('temp/'.$filename);
+	    }
+
+	    // === Supporting Data ===
+	    DB::reconnect('mysql');
+	    $rate_list = DB::table('cloakroom_rate_list')
+	        ->where('client_id', $client_id)
+	        ->first();
+
+	    $data['success'] = true;
+	    $data['l_entries'] = $l_entries;
+	    $data['pay_types'] = Entry::payTypes();
+	    $data['rate_list'] = $rate_list;
+	    $data['days'] = Entry::days();
+	    $data['show_pay_types'] = Entry::showPayTypes();
+	    $data['users'] = User::where('active', 1)
+	        ->where('client_id', $client_id)
+	        ->where('priv', 3)
+	        ->pluck('name', 'id')
+	        ->toArray();
+
+	    return response()->json($data, 200);
 	}
+
+	// public function initRoom(Request $request,$type =0){
+	// 	$max_per_page = 10;
+	// 	$page_no = $request->page_no;
+
+	// 	if(Auth::user()->priv == 2){
+	// 		CollectedPenalities::setCheckStatus();
+	// 	}
+
+	// 	$l_entries = DB::table('cloakroom_entries')->select('cloakroom_entries.*','aadhar_details.front as aadhar_front','aadhar_details.back as aadhar_back')->leftJoin("aadhar_details","aadhar_details.aadhar_no", "=" ,"cloakroom_entries.aadhar_no")->where("cloakroom_entries.client_id", Auth::user()->client_id);
+	// 	if($request->slip_id){
+	// 		$l_entries = $l_entries->where('cloakroom_entries.slip_id', $request->slip_id);
+	// 	}
+
+	// 	if($request->unique_id){
+	// 		$l_entries = $l_entries->where('cloakroom_entries.unique_id', 'LIKE', '%'.$request->unique_id.'%');
+	// 	}		
+
+	// 	if($request->name){
+	// 		$l_entries = $l_entries->where('cloakroom_entries.name', 'LIKE', '%'.$request->name.'%');
+	// 	}		
+	// 	if($request->mobile_no){
+	// 		$l_entries = $l_entries->where('cloakroom_entries.mobile_no', 'LIKE', '%'.$request->mobile_no.'%');
+	// 	}		
+	// 	if($request->pnr_uid){
+	// 		$l_entries = $l_entries->where('cloakroom_entries.pnr_uid', 'LIKE', '%'.$request->pnr_uid.'%');
+	// 	}		
+		
+	// 	if($type == 0){
+	// 		$l_entries = $l_entries->where('cloakroom_entries.checkout_status', 0);
+			
+	// 	}
+	// 	if($type == 1){
+	// 		$l_entries = $l_entries->skip(($page_no-1)*$max_per_page)->take($max_per_page);
+	// 	}
+	// 	if($request->has('export') && $request->export == 1){
+	// 		$dt_ar = [date("Y-m-d",strtotime($request->from_date)),date("Y-m-d",strtotime($request->to_date))];
+	// 		$l_entries = $l_entries->whereBetween('date',$dt_ar);
+	// 	}
+	// 	$l_entries = $l_entries->orderBy('cloakroom_entries.id', "DESC")->get();
+	// 	foreach ($l_entries as $key => $item) {
+	// 		$bm_amount = DB::table('cloakroom_penalities')->where("client_id", Auth::user()->client_id)->where('is_collected',0)->where('cloakroom_id','=',$item->id)->sum('paid_amount');
+	// 		$item->sh_paid_amount = $item->paid_amount + $bm_amount;
+	// 		$item->checkin_date_show = date("d M, h:i A",strtotime($item->checkin_date));
+	// 		$item->checkout_date_show = date("d M, h:i A",strtotime($item->checkout_date));
+
+	// 		$item->str_checkout_time = strtotime($item->checkout_date);
+	// 	}
+		
+
+	// 	if($request->has('export') && $request->export == 1){
+    //         if(sizeof($l_entries) > 0){
+    //             include(app_path().'/Excel/export_entries.php');
+    //             $data["excel_link"] = url('temp/'.$filename);
+    //         }
+    //     }
+	// 	$rate_list = DB::table("cloakroom_rate_list")->where("client_id", Auth::user()->client_id)->first();
+	// 	$pay_types = Entry::payTypes();
+
+	// 	$days = Entry::days();
+
+	// 	$show_pay_types = Entry::showPayTypes();
+        
+	// 	$data['success'] = true;
+	// 	$data['l_entries'] = $l_entries;
+	// 	$data['pay_types'] = $pay_types;
+	// 	$data['rate_list'] = $rate_list;
+	// 	$data['days'] = $days;
+	// 	$data["users"] = User::where("active", 1)->where("client_id", Auth::user()->client_id)->where("priv", 3)->pluck("name", 'id')->toArray();
+		
+	// 	return Response::json($data, 200, []);
+	// }
 
 	public function export(){
 		return view('admin.cloakrooms.export', [

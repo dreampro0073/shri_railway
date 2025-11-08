@@ -101,7 +101,9 @@ app.controller('cloackCtrl', function($scope , $http, $timeout , DBService, Uplo
                 $scope.cloak_first_rate = data.rate_list.first_rate;
                 $scope.cloak_second_rate = data.rate_list.second_rate;
                 $scope.d_count = data.d_count;
-                $scope.updateCheckoutClass();
+                if ($scope.type ==1 ) {
+                    $scope.updateCheckoutClass();
+                }
                 $scope.users = data.users;
                 if(data.excel_link){
                     $scope.excel_loading = false;

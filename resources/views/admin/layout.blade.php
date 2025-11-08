@@ -21,6 +21,7 @@
     <link rel="stylesheet" type="text/css" href="{{url('assets/css/custom.css?v='.$version)}}">
 </head>
 <body  ng-app="app" oncontextmenu="return false;">
+<!-- <body  ng-app="app"> -->
 	<div id="wrapper">
         <div class="container-fluid">
             <div id="content" style="display: flex;">

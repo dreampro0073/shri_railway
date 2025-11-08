@@ -67,7 +67,7 @@
                     <ul class="pagination">
                         <li ng-if="filter.page_no > 1" ng-click="getData(-1)"><<</li>
                         <li class="p">@{{filter.page_no}}</li>
-                        <li ng-if="l_entries.length == 100" ng-click="getData(1)">>></li>    
+                        <li ng-if="l_entries.length == 30" ng-click="getData(1)">>></li>    
                     </ul>
                 </div>
             </div>

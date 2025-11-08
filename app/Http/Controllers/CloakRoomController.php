@@ -66,7 +66,7 @@ class CloakRoomController extends Controller {
 		}		
 		
 		if($type == 0){
-			$l_entries = $l_entries->where('checkout_status', 0);
+			$l_entries = $l_entries->where('cloakroom_entries.checkout_status', 0);
 			
 		}
 		if($type == 1){
@@ -76,7 +76,7 @@ class CloakRoomController extends Controller {
 			$dt_ar = [date("Y-m-d",strtotime($request->from_date)),date("Y-m-d",strtotime($request->to_date))];
 			$l_entries = $l_entries->whereBetween('date',$dt_ar);
 		}
-		$l_entries = $l_entries->orderBy('id', "DESC")->get();
+		$l_entries = $l_entries->orderBy('cloakroom_entries.id', "DESC")->get();
 		foreach ($l_entries as $key => $item) {
 			$bm_amount = DB::table('cloakroom_penalities')->where("client_id", Auth::user()->client_id)->where('is_collected',0)->where('cloakroom_id','=',$item->id)->sum('paid_amount');
 			$item->sh_paid_amount = $item->paid_amount + $bm_amount;

@@ -39,7 +39,7 @@ class CloakRoomController extends Controller {
         ]);
 	}
 	public function initRoom(Request $request,$type =0){
-		$max_per_page = 30;
+		$max_per_page = 10;
 		$page_no = $request->page_no;
 
 		if(Auth::user()->priv == 2){
@@ -69,7 +69,7 @@ class CloakRoomController extends Controller {
 			$l_entries = $l_entries->where('checkout_status', 0);
 			
 		}
-		if($request->has('export') && $request->export == 0 && $type == 1){
+		if($type == 1){
 			$l_entries = $l_entries->skip(($page_no-1)*$max_per_page)->take($max_per_page);
 		}
 		if($request->has('export') && $request->export == 1){

@@ -193,14 +193,13 @@
 			window.print();
 			document.body.innerHTML = originalContents; 
 		}
-		document.addEventListener('keydown', function(event) {
-            if (event.ctrlKey && event.key === 'p') {
-                location.reload();
-            }else{
-            	console.log('no');
-
+		document.addEventListener('keydown', function (e) {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'p') {
+                e.preventDefault();
+                alert("Manual printing is disabled. Please use auto-print only.");
             }
         });
+
 	</script>
 </body>
 </html>

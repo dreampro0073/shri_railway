@@ -122,8 +122,8 @@
                             @endif
                             <td>
                                 @{{item.aadhar_no}}<br>
-                                <a ng-if="item.aadhar_front" href="{{url('/')}}/@{{item.aadhar_front}}" class="btn mt-2 btn-primary btn-sm" target="_blank">Front</a>
-                                <a ng-if="item.aadhar_back" href="{{url('/')}}/@{{item.aadhar_back}}" class="btn mt-2 btn-primary btn-sm" target="_blank">Back</a>
+                                <!-- <a ng-if="item.aadhar_front" href="{{url('/')}}/@{{item.aadhar_front}}" class="btn mt-2 btn-primary btn-sm" target="_blank">Front</a>
+                                <a ng-if="item.aadhar_back" href="{{url('/')}}/@{{item.aadhar_back}}" class="btn mt-2 btn-primary btn-sm" target="_blank">Back</a> -->
                                 
                             </td>  
 

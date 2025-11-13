@@ -38,9 +38,7 @@ class CloakRoomController extends Controller {
             "l_entries" => $l_entries,
         ]);
 	}
-	public function initRoom(Request $request, $type = 0)
-	{
-	    // Increase execution/memory limits (important for large data)
+	public function initRoom(Request $request, $type = 0){
 	    ini_set('max_execution_time', 300);
 	    ini_set('memory_limit', '512M');
 
@@ -48,26 +46,15 @@ class CloakRoomController extends Controller {
 	    $page_no = $request->page_no ?? 1;
 	    $client_id = Auth::user()->client_id;
 
-	    // Always reconnect before DB queries
 	    DB::disconnect('mysql');
 	    DB::reconnect('mysql');
-
-	    // Privilege check
 	    if (Auth::user()->priv == 2) {
 	        CollectedPenalities::setCheckStatus();
 	    }
 
-	    // === Base Query ===
 	    $query = DB::table('cloakroom_entries')
-	        ->select(
-	            'cloakroom_entries.*',
-	            'aadhar_details.front as aadhar_front',
-	            'aadhar_details.back as aadhar_back'
-	        )
-	        ->leftJoin('aadhar_details', 'aadhar_details.aadhar_no', '=', 'cloakroom_entries.aadhar_no')
-	        ->where('cloakroom_entries.client_id', $client_id);
+	        ->select('cloakroom_entries.*')->where('cloakroom_entries.client_id', $client_id);
 
-	    // === Filters ===
 	    if ($request->filled('slip_id')) {
 	        $query->where('cloakroom_entries.slip_id', $request->slip_id);
 	    }
@@ -92,7 +79,6 @@ class CloakRoomController extends Controller {
 	        $query->where('cloakroom_entries.checkout_status', 0);
 	    }
 
-	    // === Pagination / Export ===
 	    if ($type == 1) {
 	        $query->skip(($page_no - 1) * $max_per_page)->take($max_per_page);
 	    }
@@ -103,13 +89,9 @@ class CloakRoomController extends Controller {
 	        $query->whereBetween('date', [$from, $to]);
 	    }
 
-	    // === Execute Query ===
 	    $l_entries = $query->orderByDesc('cloakroom_entries.id')->get();
 
-	    // === Add Computed Fields ===
 	    foreach ($l_entries as $item) {
-
-	        // reconnect before subquery (prevents "gone away")
 	        DB::reconnect('mysql');
 
 	        $bm_amount = DB::table('cloakroom_penalities')
@@ -124,13 +106,12 @@ class CloakRoomController extends Controller {
 	        $item->str_checkout_time = strtotime($item->checkout_date);
 	    }
 
-	    // === Export ===
+
 	    if ($request->has('export') && $request->export == 1 && sizeof($l_entries) > 0) {
 	        include(app_path().'/Excel/export_entries.php');
 	        $data["excel_link"] = url('temp/'.$filename);
 	    }
 
-	    // === Supporting Data ===
 	    DB::reconnect('mysql');
 	    $rate_list = DB::table('cloakroom_rate_list')
 	        ->where('client_id', $client_id)
@@ -382,12 +363,19 @@ class CloakRoomController extends Controller {
 	public function printPostUnq($type= 1,$print_id = ''){
 		$print_data = DB::table('cloakroom_entries')->where('barcodevalue','=',$print_id)->where('client_id',Auth::user()->client_id)->first();
 
+		if (!$print_data) {
+            return view('admin.sitting.print_blocked', [
+                'message' => 'Slip not found.'
+            ]);
+        }
+
 		// if($type == 1 && Auth::user()->priv == 3 && $print_data->print_count > 0){
 		// 	return "Print not allowed";
 		// }
 
 		$rate_list = DB::table("cloakroom_rate_list")->where("client_id", Auth::user()->client_id)->first();
         $print_data = DB::table('cloakroom_entries')->where("client_id", Auth::user()->client_id)->where('barcodevalue', $print_id)->first();
+
         $total_amount = $print_data->paid_amount;
 
         $bm_amount = DB::table('cloakroom_penalities')->where('cloakroom_id','=',$print_data->id)->where('is_collected',1)->sum('paid_amount');
@@ -412,8 +400,6 @@ class CloakRoomController extends Controller {
         		'print_count' => $print_data->print_count+1,
         	]);
         }
-
-        // return 'di';
         if(User::checkHrType()){
 			return view('admin.cloakrooms.print_page_cloack_unq_1',compact('print_data','total_amount','rate_list','type'));
 		}else{

@@ -122,93 +122,6 @@ class SittingController extends Controller {
 		}
 	}
 
-	public function dumpSittingData(Request $request){
-	    return "Wow";
-// 		$old_entry_ids = DB::table('users_backup')->pluck('id')->toArray();
-// 		foreach ($old_entry_ids as $key => $old_id) {
-// 			$newTask = (new User)
-// 			->setTable('users_backup')
-// 			->find($old_id)
-// 			->replicate()
-// 			->setTable('users')
-// 			->save();
-// 		}
-
-		// $old_entry_ids = DB::table('massage_entries_backup')->where('is_backup',0)->take(1000)->pluck('id')->toArray();
-		// foreach ($old_entry_ids as $key => $old_id) {
-		// 	$newTask = (new Massage)
-		// 	->setTable('massage_entries_backup')
-		// 	->find($old_id)
-		// 	->replicate()
-		// 	->setTable('massage_entries')
-		// 	->save();
-
-		// 	DB::table('massage_entries_backup')->where('is_backup',0)->where('id',$old_id)->update([
-		// 		'is_backup' => 1,
-		// 	]);
-		// }
-
-		// $old_entry_ids = DB::table('locker_entries_backup')->where('is_backup',0)->take(5000)->pluck('id')->toArray();
-		// if(sizeof($old_entry_ids) > 0){
-		// 	foreach ($old_entry_ids as $key => $old_id) {
-		// 		$newTask = (new Locker)
-		// 		->setTable('locker_entries_backup')
-		// 		->find($old_id)
-		// 		->replicate()
-		// 		->setTable('locker_entries')
-		// 		->save();
-
-		// 		DB::table('locker_entries_backup')->where('is_backup',0)->where('id',$old_id)->update([
-		// 			'is_backup' => 1,
-		// 		]);
-		// 	}
-		// 	echo 'done';
-
-		// }else{
-		// 	echo 'all done';
-		// }
-
-		// $old_entry_ids = DB::table('locker_penalty_backup')->where('is_backup',0)->take(1000)->pluck('id')->toArray();
-		// if(sizeof($old_entry_ids) > 0){
-		// 	foreach ($old_entry_ids as $key => $old_id) {
-		// 		$newTask = (new LockerPen)
-		// 		->setTable('locker_penalty_backup')
-		// 		->find($old_id)
-		// 		->replicate()
-		// 		->setTable('locker_penalty')
-		// 		->save();
-
-		// 		DB::table('locker_penalty_backup')->where('is_backup',0)->where('id',$old_id)->update([
-		// 			'is_backup' => 1,
-		// 		]);
-		// 	}
-		// 	echo 'done';
-
-		// }else{
-		// 	echo 'all done';
-		// }
-
-		// $old_entry_ids = DB::table('sitting_entries_backup')->where('is_backup',0)->take(10000)->pluck('id')->toArray();
-		// if(sizeof($old_entry_ids) > 0){
-		// 	foreach ($old_entry_ids as $key => $old_id) {
-		// 		$newTask = (new Sitting)
-		// 		->setTable('sitting_entries_backup')
-		// 		->find($old_id)
-		// 		->replicate()
-		// 		->setTable('sitting_entries')
-		// 		->save();
-
-		// 		DB::table('sitting_entries_backup')->where('is_backup',0)->where('id',$old_id)->update([
-		// 			'is_backup' => 1,
-		// 		]);
-		// 	}
-		// 	echo 'done';
-
-		// }else{
-		// 	echo 'all done';
-		// }		
-	}
-
 	public function sitting(Request $request){
 		$service_ids = Session::get('service_ids');
 		if(in_array(1, $service_ids)){
@@ -221,12 +134,6 @@ class SittingController extends Controller {
 		}
 	}
 	public function initEntries(Request $request){
-		
-		// dd($request->header("apiToken"));
-        // $user = User::AuthenticateUser($request->header("apiToken"));
-       	// dd($user);
-
-
 		if(Auth::user()->priv == 2){
 			Entry::setCheckStatus();
 		}
@@ -464,9 +371,6 @@ class SittingController extends Controller {
 			$entry->hours_occ = $request->hours_occ ? $request->hours_occ : 0;
 			$entry->remarks = $request->remarks;
 			$entry->unique_id = strtotime('now').Auth::id();
-
-			// dd(strtotime('now').Auth::id());
-
 			$entry->save();
 
 			$entry->total_hours = $entry->hours_occ;
@@ -479,9 +383,6 @@ class SittingController extends Controller {
 				$check_in_date = $entry->date." ".$entry->check_in;
 				$entry->checkout_date = date("Y-m-d H:i:s",strtotime("+".$no_of_min." minutes",strtotime($check_in_date)));
 			}
-			
-
-
 			$e_total = Sitting::eSum($entry->id);
 
 			$entry->total_amount = $e_total + $entry->paid_amount;
@@ -666,9 +567,6 @@ class SittingController extends Controller {
         if($type == 1 && Auth::user()->priv == 3 && $print_data->print_count >= $print_data->max_print){
 			return "Print not allowed";
 		}
-		// if($type == 2 && Auth::user()->priv == 3 && $print_data->print_count >= $print_data->max_print){
-		// 	return "Print not allowed";
-		// }
         
         $print_data->total_member = $print_data->no_of_adults + $print_data->no_of_children + $print_data->no_of_baby_staff;
         $print_data->adult_amount = 0;

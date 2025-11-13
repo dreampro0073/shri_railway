@@ -42,7 +42,7 @@ class CloakRoomController extends Controller {
 	    ini_set('max_execution_time', 300);
 	    ini_set('memory_limit', '512M');
 
-	    $max_per_page = 10;
+	    $max_per_page = 100;
 	    $page_no = $request->page_no ?? 1;
 	    $client_id = Auth::user()->client_id;
 

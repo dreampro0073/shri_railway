@@ -187,7 +187,7 @@ class UserController extends Controller {
     public function initUsers(Request $request){
         $no_of_users = DB::table('users')->where("priv", [2,3])->where("active", '!=', 0)->where("client_id", Auth::user()->client_id)->count();
 
-        $users = DB::table('users')->select('id','name','email','mobile', 'priv', 'active')->where("active", '!=', 0)->whereIn("priv",  [2,3])->where("client_id", Auth::user()->client_id);
+        $users = DB::table('users')->select('id','name','email','mobile', 'priv', 'active')->whereIn("priv",  [2,3])->where("client_id", Auth::user()->client_id);
 
         if($request->name){
             $users = $users->where('name','LIKE','%'.$request->name.'%');

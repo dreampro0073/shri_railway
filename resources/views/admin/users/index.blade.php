@@ -39,6 +39,7 @@
                             <th>Name</th>
                             <th>Mobile</th>
                             <th>Email</th>
+                            <th>Statue</th>
                             <th>#</th>
                         </tr>
                     </thead>
@@ -48,6 +49,7 @@
                             <td>@{{ item.name }}</td>
                             <td>@{{ item.mobile }}</td>
                             <td>@{{ item.email }}</td>
+                            <td><span ng-if="item.active == 1">Active</span><span ng-if="item.active == 0">Inactive</span></td>
                             <td>
                                 <a href="javascript:;" ng-click="edit(item.id)" class="btn btn-warning btn-sm">Edit</a>
                                  <a ng-click="activeUser(item, $index)" ng-show="item.active == 0 && item.priv == 3" class="btn btn-success btn-sm">Active</a>

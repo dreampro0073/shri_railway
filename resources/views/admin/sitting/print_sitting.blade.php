@@ -1,3 +1,4 @@
+<?php $print_name = Session::has('print_name')?Session::get('print_name'):0; ?>
 <!DOCTYPE html>
 <html>
 <head>

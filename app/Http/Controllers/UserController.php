@@ -123,7 +123,8 @@ class UserController extends Controller {
                     Session::put('address',$client->address);
                     Session::put('auto_alert_status',0);    
                     Session::put('login_mode',$request->input("login_mode"));    
-
+                    Session::put('print_name',$client->print_name);    
+                    
                     $client_ids = [1,2,3,9,10,11,12];
                     Session::put('client_ids',$client_ids);     
                 }

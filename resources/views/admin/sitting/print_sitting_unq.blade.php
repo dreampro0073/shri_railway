@@ -1,3 +1,4 @@
+<?php $print_name = Session::has('print_name')?Session::get('print_name'):0; ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -38,11 +39,17 @@
 </head>
 <body>
     <div id="printableArea" class="main">
-        <h4>{{ Session::get('client_name') }}</h4>
+        @if($print_name == 0)
+            <h4>{{ Session::get('client_name') }}</h4>
+        @endif
+       
         <p style="padding:0 15px;text-align: center;">
             {!! Session::get('address') !!}
         </p>
-        <h5>{{ Session::get('gst_no') }}</h5>
+        @if($print_name == 0)
+            <h5>{{ Session::get('gst_no') }}</h5>
+        @endif
+        
         <h5>SITTING</h5>
 
         <div style="text-align: center;">

@@ -271,4 +271,6 @@ ALTER TABLE `room_entries` ADD `checkout_by` INT NOT NULL DEFAULT '0' AFTER `add
 
 CREATE TABLE `nnhp`.`web_at` ( `id` INT NOT NULL AUTO_INCREMENT , `user_id` INT NOT NULL DEFAULT '0' , `file_path` VARCHAR(255) NULL DEFAULT NULL , `status` INT NOT NULL DEFAULT '0' , `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , `created_at` TIMESTAMP NULL DEFAULT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
 
+ALTER TABLE `clients` ADD `print_name` TINYINT NOT NULL DEFAULT '0' COMMENT '0->Yes,1->No' AFTER `create_date`;
+
 ?>

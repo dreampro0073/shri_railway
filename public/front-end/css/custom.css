@@ -556,6 +556,9 @@ footer {
       top: 10%; }
       .about-us .about-flash .about-flash-info img {
         width: 75%;
-        height: auto; } }
+        height: auto; }
+
+  .owl-dots {
+    bottom: 16px; } }
 
 /*# sourceMappingURL=custom.css.map */

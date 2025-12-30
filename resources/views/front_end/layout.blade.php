@@ -11,7 +11,7 @@
     <link href="{{url('front-end/plugins/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
     <link href="{{url('front-end/plugins/bootstrap-icons/bootstrap-icons.css')}}" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="{{url('front-end/plugins/owlcarousel/assets/owl.carousel.min.css')}}">
-    <link href="{{url('front-end/css/custom.css?v=1.0.1')}}" rel="stylesheet">
+    <link href="{{url('front-end/css/custom.css?v=1.0.2')}}" rel="stylesheet">
 
     @yield('header_scripts')
 </head>

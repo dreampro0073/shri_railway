@@ -526,9 +526,11 @@ footer {
       font-size: calc(var(--base-font)*3); }
 
   .home-slider .banner-heading {
-    font-size: calc(var(--base-font)*1.25); }
+    font-size: calc(var(--base-font)*1.50); }
     .home-slider .banner-heading span {
       font-size: calc(var(--base-font)*1.025); }
+  .home-slider .owl-item .item .image img {
+    aspect-ratio: 16/10; }
 
   .tech-row {
     flex-direction: column; }

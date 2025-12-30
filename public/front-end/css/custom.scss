@@ -684,10 +684,19 @@ footer{
 
 	.home-slider{
 		.banner-heading{
-			font-size:calc(var(--base-font)*1.25);
+			font-size:calc(var(--base-font)*1.50);
 			span{
 				font-size:calc(var(--base-font)*1.025);
 				
+			}
+		}
+		.owl-item{
+			.item{
+				.image{
+					img{
+						aspect-ratio: 16/10;
+					}
+				}
 			}
 		}
 	}

@@ -11,8 +11,7 @@
 
 <div style="height: 100vh;display: flex;align-content: center;justify-content:center;background: url('assets/img/indianrailway1.jpeg');no-repeat;background-size: cover;background-blend-mode: multiply;">
     <div class="container">
-        <div class="row justify-content-center" >
-
+        <div class="row justify-content-center">
             <div class="col-md-6 col-md-offset-3 login-box">
                 <div>
                     <span style="font-size: 32px;font-weight: bold;margin-bottom: 2px;text-align: center;display: block;">Aadhyasri Web Solutions</span> 

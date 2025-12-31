@@ -3,7 +3,7 @@
 @section('main')
 
 <div class="main">
-	<section class="banner">
+	<section class="banner" id="home">
 		<div class="home-slider owl-carousel">
 			<div class="item">
 				<div class="image">
@@ -33,18 +33,20 @@
 			</div>
 		</div>
 	</section>
-	<section class="section about-us max">
+	<section class="section about-us max" id="about-us">
 		<div class="container">
 			<div class="row">
 				<div class="col-md-6">
 					<div class="">
 						<div class="title">About the Company</div>
-						<h2 class="section-title">
-							You Can not Use Up<br>Creativity.
-						</h2>
+						
+						<h1 class="section-title">
+							Aadhyasri Web Solutions
+						</h1>
 						<p class="text mb-24">
 							Does any industry face a more complex audience journey and marketing sales process than B2B technology? Consider the number of people who influence a sale, the length of the decision-making cycle, the competing interests of the people who purchase, implement, manage, and use the technology. It’s a lot meaningful content here.
 						</p>
+						<h2 class="d-none">Best IT Company in Haridwar</h2>
 						<div class="d-flex exp-div mb-4">
 							<div class="icon">
 								<i class="bi bi-patch-check"></i>
@@ -55,7 +57,6 @@
 									Does any industry face a more complex audience journey and marketing sales process.
 								</p>
 							</div>
-							
 						</div>
 						<div class="d-flex exp-div">
 							<div class="icon">
@@ -149,7 +150,7 @@
 
 		</div>
 	</section>
-	<section class="section service-section">
+	<section class="section service-section" id="our-service">
 		<div class="upper-container ">
 			<div class="text-center">
 				<div>
@@ -431,7 +432,99 @@
 			</div>
 		</div>
 	</section>
-	<section class="section contact-us">
+	<section class="section projects">
+		<div class="container">
+			<div class="text-center">
+				<div class="title">LATEST PROJECTS</div>
+				<h2 class="section-title">
+					Reads now our Latest Projects
+				</h2>
+			</div>
+			<div class="row">
+				<div class="col-md-6">
+					<div class="project-box">
+						<div class="image">
+							<a href="javascript:;" class="arrow-icon">
+								<i class="bi bi-arrow-right"></i>
+							</a>
+							<img src="{{url('front-end/images/projects/loungue.jpg')}}">
+							<div class="info">
+								<div>
+									<h3>
+										Railway Station Loungue Management
+									</h3>
+									<p>
+										All-in-one lounge management software to simplify operations and elevate service
+									</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-6 mob-mt-20">
+					<div class="project-box">
+						<div class="image">
+							<a href="javascript:;" class="arrow-icon">
+								<i class="bi bi-arrow-right"></i>
+							</a>
+							<img src="{{url('front-end/images/projects/canteen.jpg')}}">
+							<div class="info">
+								<div>
+									<h3>
+										Canteen Management
+									</h3>
+									<p>
+										Smart canteen management software for fast service and smooth daily operations
+									</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-6 mt-4">
+					<div class="project-box">
+						<div class="image">
+							<a href="javascript:;" class="arrow-icon">
+								<i class="bi bi-arrow-right"></i>
+							</a>
+							<img src="{{url('front-end/images/projects/parking.jpg')}}">
+							<div class="info">
+								<div>
+									<h3>
+										Vehicle Parking App
+									</h3>
+									<p>
+										Smart vehicle parking app for easy booking, tracking, and payments
+									</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-6 mt-4">
+					<div class="project-box">
+						<div class="image">
+							<a href="javascript:;" class="arrow-icon">
+								<i class="bi bi-arrow-right"></i>
+							</a>
+							<img src="{{url('front-end/images/projects/fin.jpg')}}">
+							<div class="info">
+								<div>
+									<h3>
+										Financial Management
+									</h3>
+									<p>
+										Smart financial management for better control, clarity, and growth
+									</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<section class="section contact-us mob-pt-0" id="contact">
 		<div class="container">
 			<div class="text-center">
 				<div class="title">Get in Touch</div>

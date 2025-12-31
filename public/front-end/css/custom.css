@@ -22,8 +22,14 @@ a {
   a:hover {
     text-decoration: none; }
 
+.main {
+  padding-top: 60px; }
+
 header {
-  background: var(--white-color); }
+  background: var(--white-color);
+  position: fixed;
+  width: 100%;
+  z-index: 999; }
   header .menu {
     list-style: none;
     padding-left: 0;
@@ -170,7 +176,7 @@ header {
       left: 0;
       right: 0;
       bottom: 0;
-      z-index: 999;
+      z-index: 99;
       width: 100%;
       text-align: center; }
       .about-us .about-flash .about-flash-info img {
@@ -270,8 +276,11 @@ header {
     transform: scale(1); }
   .service-box1.with-box {
     background: var(--white-color);
-    box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+    border-radius: 0;
     text-align: center; }
+    .service-box1.with-box::after {
+      border-radius: 0; }
     .service-box1.with-box a, .service-box1.with-box i {
       color: var(--black-color); }
     .service-box1.with-box:hover a, .service-box1.with-box:hover i {
@@ -500,9 +509,74 @@ footer {
     .tech-box:hover h4 {
       color: var(--bg-dark-color); }
 
+.project-box .image {
+  position: relative;
+  cursor: pointer; }
+  .project-box .image img {
+    aspect-ratio: 16/7;
+    object-fit: cover;
+    object-position: center;
+    width: 100%; }
+  .project-box .image .info {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 100%;
+    padding: 20px;
+    display: flex;
+    align-items: flex-end;
+    width: 100%;
+    background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, #1C2C52 100%);
+    transition: -webkit-transform 0.4s ease;
+    transition: transform 0.4s ease;
+    transition: transform 0.4s ease, -webkit-transform 0.4s ease;
+    -webkit-transform: scale(0, 1);
+    -ms-transform: scale(0, 1);
+    transform: scale(0, 1);
+    -webkit-transform-origin: right center;
+    -ms-transform-origin: right center;
+    transform-origin: right center;
+    color: var(--white-color); }
+    .project-box .image .info h3 {
+      font-size: calc(var(--base-font)*1.25); }
+    .project-box .image .info p {
+      font-size: calc(var(--base-font)*0.813); }
+  .project-box .image .arrow-icon {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 40px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg-dark-color);
+    transition: all 0.4s ease;
+    z-index: 99; }
+    .project-box .image .arrow-icon i {
+      color: var(--white-color);
+      font-size: calc(var(--base-font)*1.50); }
+.project-box:hover .image .info {
+  -webkit-transform: scale(1, 1);
+  -ms-transform: scale(1, 1);
+  transform: scale(1, 1);
+  -webkit-transform-origin: left center;
+  -ms-transform-origin: left center;
+  transform-origin: left center; }
+.project-box:hover .image .arrow-icon {
+  top: 0;
+  background: var(--white-color); }
+  .project-box:hover .image .arrow-icon i {
+    color: var(--bg-dark-color) !important; }
+
 @media only screen and (max-width: 768px) {
   .mob-mt-20 {
     margin-top: 20px; }
+
+  .mob-pt-0 {
+    padding-top: 0; }
 
   header .menu {
     display: none; }
@@ -511,6 +585,8 @@ footer {
       header .menu li a {
         padding: 8px 0;
         text-align: center; }
+        header .menu li a:after {
+          display: none; }
 
   .mob-mb-20 {
     margin-bottom: 20px; }
@@ -561,6 +637,37 @@ footer {
         height: auto; }
 
   .owl-dots {
-    bottom: 16px; } }
+    bottom: 16px; }
+
+  .project-box .image .info {
+    transform: scale(1, 1); }
+  .project-box .image img {
+    aspect-ratio: 16/10; }
+
+  .lower-container .row .col-md-4:nth-child(even) .service-box1 i, .lower-container .row .col-md-4:nth-child(even) .service-box1 h3, .lower-container .row .col-md-4:nth-child(even) .service-box1 p, .contact-us .row .col-md-4:nth-child(even) .service-box1 i, .contact-us .row .col-md-4:nth-child(even) .service-box1 h3, .contact-us .row .col-md-4:nth-child(even) .service-box1 p {
+    color: var(--white-color); }
+  .lower-container .row .col-md-4:nth-child(even) .service-box1::after, .contact-us .row .col-md-4:nth-child(even) .service-box1::after {
+    opacity: 1;
+    height: 100%; }
+  .lower-container .row .col-md-4:nth-child(even) .service-box1 .shape-one, .lower-container .row .col-md-4:nth-child(even) .service-box1 .shape-two, .contact-us .row .col-md-4:nth-child(even) .service-box1 .shape-one, .contact-us .row .col-md-4:nth-child(even) .service-box1 .shape-two {
+    transform: scale(1); }
+  .lower-container .row .col-md-4:nth-child(even) .service-box1.with-box a, .lower-container .row .col-md-4:nth-child(even) .service-box1.with-box i, .contact-us .row .col-md-4:nth-child(even) .service-box1.with-box a, .contact-us .row .col-md-4:nth-child(even) .service-box1.with-box i {
+    color: var(--white-color); }
+  .lower-container .row .col-md-4:nth-child(odd) .service-box1 i, .lower-container .row .col-md-4:nth-child(odd) .service-box1 h3, .lower-container .row .col-md-4:nth-child(odd) .service-box1 p, .contact-us .row .col-md-4:nth-child(odd) .service-box1 i, .contact-us .row .col-md-4:nth-child(odd) .service-box1 h3, .contact-us .row .col-md-4:nth-child(odd) .service-box1 p {
+    color: var(--black-color); }
+  .lower-container .row .col-md-4:nth-child(odd) .service-box1::after, .contact-us .row .col-md-4:nth-child(odd) .service-box1::after {
+    opacity: 0;
+    background: none; }
+  .lower-container .row .col-md-4:nth-child(odd) .service-box1 .shape-one, .lower-container .row .col-md-4:nth-child(odd) .service-box1 .shape-two, .contact-us .row .col-md-4:nth-child(odd) .service-box1 .shape-one, .contact-us .row .col-md-4:nth-child(odd) .service-box1 .shape-two {
+    transform: scale(1); }
+  .lower-container .row .col-md-4:nth-child(odd) .service-box1.with-box a, .lower-container .row .col-md-4:nth-child(odd) .service-box1.with-box i, .contact-us .row .col-md-4:nth-child(odd) .service-box1.with-box a, .contact-us .row .col-md-4:nth-child(odd) .service-box1.with-box i {
+    color: var(--black-color); }
+
+  .how-we-work .row .col-md-3:nth-child(even) .step-item .step-circle {
+    background: var(--theme-color);
+    color: var(--white-color);
+    transform: scale(1.25); }
+    .how-we-work .row .col-md-3:nth-child(even) .step-item .step-circle span {
+      font-weight: 600; } }
 
 /*# sourceMappingURL=custom.css.map */

@@ -17,11 +17,11 @@
 			</div>
 			<div class="col-md-8">
 				<ul class="menu">
-					<li><a href="javascript:;">Home</a></li>
-					<li><a href="javascript:;">About Us</a></li>
-					<li><a href="javascript:;">Our Services</a></li>
-					<li><a href="javascript:;">Contact US</a></li>
-					<li><a href="{{url('/')}}">Login</a></li>
+					<li><a href="#home" class="scroll-link">Home</a></li>
+					<li><a href="#about-us" class="scroll-link">About Us</a></li>
+					<li><a href="#our-service" class="scroll-link">Our Services</a></li>
+					<li><a href="#contact" class="scroll-link">Contact US</a></li>
+					<li><a href="{{url('/')}}" class="scroll-link">Login</a></li>
 				</ul>
 			</div>
 		</div>

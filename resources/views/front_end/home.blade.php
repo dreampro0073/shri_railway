@@ -7,7 +7,7 @@
 		<div class="home-slider owl-carousel">
 			<div class="item">
 				<div class="image">
-					<img src="{{url('front-end/images/banner/banner1.jpg')}}">
+					<img alt="IT Solutions | Web Development" src="{{url('front-end/images/banner/banner1.jpg')}}">
 					<div class="content">
 						<div class="container">
 							<div class="banner-heading">
@@ -20,7 +20,7 @@
 			</div>
 			<div class="item">
 				<div class="image">
-					<img src="{{url('front-end/images/banner/banner2.jpg')}}">
+					<img alt="IT Business Consulting | App Development" src="{{url('front-end/images/banner/banner2.jpg')}}">
 					<div class="content">
 						<div class="container">
 							<div class="banner-heading">
@@ -39,7 +39,6 @@
 				<div class="col-md-6">
 					<div class="">
 						<div class="title">About the Company</div>
-						
 						<h1 class="section-title">
 							Aadhyasri Web Solutions
 						</h1>
@@ -75,10 +74,10 @@
 				<div class="col-md-6">
 					<div class="about-flash">
 						<div class="about-flash-image">
-							<img src="front-end/images/pattern-1.png" />
+							<img alt="Best Software Company" src="front-end/images/pattern-1.png" />
 						</div>
 						<div class="about-flash-info">
-							<img src="front-end/images/about.jpg" />
+							<img alt="Best Digital Company" src="front-end/images/about.jpg" />
 						</div>
 					</div>
 				</div>
@@ -447,7 +446,7 @@
 							<a href="javascript:;" class="arrow-icon">
 								<i class="bi bi-arrow-right"></i>
 							</a>
-							<img src="{{url('front-end/images/projects/loungue.jpg')}}">
+							<img alt="Railway Station Loungue Management" src="{{url('front-end/images/projects/loungue.jpg')}}">
 							<div class="info">
 								<div>
 									<h3>
@@ -467,7 +466,7 @@
 							<a href="javascript:;" class="arrow-icon">
 								<i class="bi bi-arrow-right"></i>
 							</a>
-							<img src="{{url('front-end/images/projects/canteen.jpg')}}">
+							<img alt="Canteen Management | Shopping Shop Software" src="{{url('front-end/images/projects/canteen.jpg')}}">
 							<div class="info">
 								<div>
 									<h3>
@@ -487,7 +486,7 @@
 							<a href="javascript:;" class="arrow-icon">
 								<i class="bi bi-arrow-right"></i>
 							</a>
-							<img src="{{url('front-end/images/projects/parking.jpg')}}">
+							<img alt="Vehicle Parking App" src="{{url('front-end/images/projects/parking.jpg')}}">
 							<div class="info">
 								<div>
 									<h3>
@@ -507,7 +506,7 @@
 							<a href="javascript:;" class="arrow-icon">
 								<i class="bi bi-arrow-right"></i>
 							</a>
-							<img src="{{url('front-end/images/projects/fin.jpg')}}">
+							<img alt="Financial Management" src="{{url('front-end/images/projects/fin.jpg')}}">
 							<div class="info">
 								<div>
 									<h3>
@@ -561,7 +560,7 @@
 							<div class="info">
 								<h3>Call us</h3>
 								<p class="text">
-									<a href="tel:+91-7351334717">7351334717</a>
+									<a title="Call us to Aadhyasri Web Solutions" href="tel:+91-7351334717">7351334717</a>
 								</p>
 							</div>
 						</div>
@@ -578,7 +577,7 @@
 							<div class="info">
 								<h3>Mail Us</h3>
 								<p class="text">
-									<a href="mailto:aadhyasriwebsolutions@gmail.com">aadhyasriwebsolutions@gmail.com</a>
+									<a title="Mail to Aadhyasri Web Solutions" href="mailto:aadhyasriwebsolutions@gmail.com">aadhyasriwebsolutions@gmail.com</a>
 								</p> 
 							</div>
 						</div>

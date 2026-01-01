@@ -38,6 +38,9 @@ header{
 		text-align: right;
 		margin: 0;
 		padding: 0;
+		display: flex;
+		justify-content: flex-end;
+		align-items: center;
 		li{
 			display: inline-block;
 			padding: 0 30px;
@@ -68,10 +71,25 @@ header{
     			}
 			}
 			&:last-child{
+				padding: 0;
 				a{
 					// padding-right: 0;
 				}
 			}
+		}
+	}
+}
+.login-btn{
+	padding: 10px 0 !important;
+	width: 100px;
+	background-color: var(--bg-dark-color);
+	text-align: center;
+	.txt{
+		color: var(--white-color);
+	}
+	&:hover{
+		&:after{
+			display: none;
 		}
 	}
 }
@@ -465,7 +483,7 @@ header{
 		height: 100%;
 		z-index: 1;
 		opacity: 1;
-		background-color: #ffffff;
+		background-color:var(--white-color);
 		-webkit-transition: all 0.4s;
 		-moz-transition: all 0.4s;
 		-o-transition: all 0.4s;
@@ -482,6 +500,21 @@ header{
     		color:var(--bg-dark-color);
     	}
     }
+    &.login-btn{
+		line-height: 20px !important;
+		background-color: var(--bg-blue-color);
+		&::before{
+			background-color:var(--bg-dark-color);
+		}
+		.txt{
+			color: var(--white-color);
+		}
+		&:hover{
+			&:after{
+				display: none;
+			}
+		}
+	}
 }
 footer{
 	padding: 20px 0;
@@ -912,6 +945,9 @@ footer{
 				}
 			}
 		}
+	}
+	.login-btn{
+		margin: auto;
 	}
 
 }

@@ -1,20 +1,35 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <!-- Basic Meta -->
     <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aadhyasri Web Solutions</title>
-    <link rel="icon" sizes="32x32" type="image/x-icon" href="{{url('assets/img/favicon.png')}}" >
-    <link href="https://fonts.googleapis.com" rel="preconnect">
-    <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&family=Questrial:wght@400&display=swap" rel="stylesheet">
-    <link href="{{url('front-end/plugins/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
-    <link href="{{url('front-end/plugins/bootstrap-icons/bootstrap-icons.css')}}" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="{{url('front-end/plugins/owlcarousel/assets/owl.carousel.min.css')}}">
-    <link href="{{url('front-end/css/custom.css?v=1.0.4')}}" rel="stylesheet">
+
+    <!-- SEO Meta -->
+    <title>Aadhyasri Web Solutions | Web Development & Digital Services</title>
+    <meta name="description" content="Aadhyasri Web Solutions provides professional web development, website design, SEO and digital solutions for businesses.">
+    <meta name="keywords" content="Aadhyasri Web Solutions, web development, website design, SEO services, digital marketing">
+    <meta name="author" content="Aadhyasri Web Solutions">
+
+    <!-- Open Graph (Social Media) -->
+    <meta property="og:title" content="Aadhyasri Web Solutions">
+    <meta property="og:description" content="Professional web development & digital solutions for your business.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ url('/') }}">
+    <meta property="og:image" content="{{ url('assets/img/favicon.png') }}">
+
+    <!-- Favicon -->
+    <link rel="icon" sizes="32x32" type="image/x-icon" href="{{ url('assets/img/favicon.png') }}">
+    
+    <link href="{{ url('front-end/plugins/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ url('front-end/plugins/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url('front-end/plugins/owlcarousel/assets/owl.carousel.min.css') }}">
+    <link href="{{ url('front-end/css/custom.css?v=1.0.4') }}" rel="stylesheet">
 
     @yield('header_scripts')
 </head>
+
 <body>  
     @include('front_end.header')
 

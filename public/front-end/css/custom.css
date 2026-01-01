@@ -35,7 +35,10 @@ header {
     padding-left: 0;
     text-align: right;
     margin: 0;
-    padding: 0; }
+    padding: 0;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center; }
     header .menu li {
       display: inline-block;
       padding: 0 30px; }
@@ -61,6 +64,18 @@ header {
           color: var(--theme-color); }
           header .menu li a:hover:after {
             width: 100%; }
+      header .menu li:last-child {
+        padding: 0; }
+
+.login-btn {
+  padding: 10px 0 !important;
+  width: 100px;
+  background-color: var(--bg-dark-color);
+  text-align: center; }
+  .login-btn .txt {
+    color: var(--white-color); }
+  .login-btn:hover:after {
+    display: none; }
 
 .logo img {
   height: 60px;
@@ -367,7 +382,7 @@ header {
     height: 100%;
     z-index: 1;
     opacity: 1;
-    background-color: #ffffff;
+    background-color: var(--white-color);
     -webkit-transition: all 0.4s;
     -moz-transition: all 0.4s;
     -o-transition: all 0.4s;
@@ -379,6 +394,15 @@ header {
     transform: scale(1, 1); }
   .theme-btn:hover .txt {
     color: var(--bg-dark-color); }
+  .theme-btn.login-btn {
+    line-height: 20px !important;
+    background-color: var(--bg-blue-color); }
+    .theme-btn.login-btn::before {
+      background-color: var(--bg-dark-color); }
+    .theme-btn.login-btn .txt {
+      color: var(--white-color); }
+    .theme-btn.login-btn:hover:after {
+      display: none; }
 
 footer {
   padding: 20px 0;
@@ -668,6 +692,9 @@ footer {
     color: var(--white-color);
     transform: scale(1.25); }
     .how-we-work .row .col-md-3:nth-child(even) .step-item .step-circle span {
-      font-weight: 600; } }
+      font-weight: 600; }
+
+  .login-btn {
+    margin: auto; } }
 
 /*# sourceMappingURL=custom.css.map */

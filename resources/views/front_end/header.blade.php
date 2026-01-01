@@ -21,7 +21,9 @@
 					<li><a href="#about-us" class="scroll-link">About Us</a></li>
 					<li><a href="#our-service" class="scroll-link">Our Services</a></li>
 					<li><a href="#contact" class="scroll-link">Contact US</a></li>
-					<li><a href="{{url('/')}}" class="scroll-link">Login</a></li>
+					<li>
+						<a href="{{url('/login')}}" class="login-btn theme-btn"><span class="txt">Login</span></a>
+					</li>
 				</ul>
 			</div>
 		</div>

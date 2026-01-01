@@ -41,8 +41,8 @@ use App\Http\Controllers\WebController;
 */
 
 
-Route::get('/', [UserController::class,'login'])->name("login");
-Route::get('/home', [WebController::class,'home'])->name("home");
+Route::get('/login', [UserController::class,'login'])->name("login");
+Route::get('/', [WebController::class,'home'])->name("home");
 Route::get('/webcam', [UserController::class,'webCam']);
 Route::get('/webcam/get', [WebcamController::class,'webCamGet']);
 Route::post('/webcam/store', [WebcamController::class, 'store']);
@@ -63,7 +63,7 @@ Route::post('/aadhar/upload-by-mobile/{id}', [AadharDetailsController::class, 'p
 
 Route::get('/logout',function(){
 	Auth::logout();
-	return Redirect::to('/');
+	return Redirect::to('/login');
 });
 
 

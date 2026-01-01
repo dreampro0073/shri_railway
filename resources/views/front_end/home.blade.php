@@ -20,7 +20,7 @@
 			</div>
 			<div class="item">
 				<div class="image">
-					<img alt="IT Business Consulting | App Development" src="{{url('front-end/images/banner/banner2.jpg')}}">
+					<img alt="IT Business Consulting | App Development" src="{{url('front-end/images/banner/banner4.jpg')}}">
 					<div class="content">
 						<div class="container">
 							<div class="banner-heading">

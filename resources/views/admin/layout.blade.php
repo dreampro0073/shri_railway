@@ -20,14 +20,14 @@
     <link href="{{url('assets/css/selectize.css')}}" rel="stylesheet" type="text/css"/>
     <link rel="stylesheet" type="text/css" href="{{url('assets/css/custom.css?v='.$version)}}">
     <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-WEC6NN0XE0"></script>
+    <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-WEC6NN0XE0"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
 
         gtag('config', 'G-WEC6NN0XE0');
-    </script>
+    </script> -->
 </head>
 <body  ng-app="app" oncontextmenu="return false;">
 <!-- <body  ng-app="app"> -->

@@ -25,7 +25,7 @@
     <link href="{{ url('front-end/plugins/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ url('front-end/plugins/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="{{ url('front-end/plugins/owlcarousel/assets/owl.carousel.min.css') }}">
-    <link href="{{ url('front-end/css/custom.css?v=1.0.5') }}" rel="stylesheet">
+    <link href="{{ url('front-end/css/custom.css?v=1.0.6') }}" rel="stylesheet">
 
     @yield('header_scripts')
 
@@ -51,7 +51,7 @@
     <!-- Bootstrap core JavaScript-->
     <script src="{{url('front-end/js/jquery.min.js')}}"></script>
     <script src="{{url('front-end/plugins/owlcarousel/owl.carousel.min.js')}}"></script>
-    <script src="{{url('front-end/js/custom.js?v=1.0.5')}}"></script>
+    <script src="{{url('front-end/js/custom.js?v=1.0.6')}}"></script>
 
     @yield('footer_scripts')
 

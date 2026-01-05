@@ -39,7 +39,7 @@
 
     </div>
     <span style="position: absolute;top: 10px;right: 10px;text-align: right;">
-        <img src="{{url('assets/img/aadh1.png')}}" style="height:50px;width: auto;">
+        <img src="{{url('assets/img/aadh_new.png')}}" style="height:50px;width: auto;">
         <br>
         <a href="mailto:aadhyasriwebsolutions@gmail.com" style="text-align:right;">aadhyasriwebsolutions@gmail.com</a>
 

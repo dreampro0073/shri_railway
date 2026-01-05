@@ -248,7 +248,7 @@
         </div>
 
         <span style="position: fixed;bottom:0;left:0;width: 100%;padding:8px;display: block;text-align: center;background: #fff;border-top: 1px solid #a6a6a67d;">
-            <img src="{{url('assets/img/aadh1.png')}}" style="height:50px;width: auto;">
+            <img src="{{url('assets/img/aadh_new.png')}}" style="height:50px;width: auto;">
             <!-- <a href="mailto:aadhyasriwebsolutions@gmail.com">aadhyasriwebsolutions@gmail.com</a> -->
 
         </span>

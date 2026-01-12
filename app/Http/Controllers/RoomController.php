@@ -59,7 +59,7 @@ class RoomController extends Controller {
 			$entries = $entries->where('room_entries.pnr_uid', 'LIKE', '%'.$request->pnr_uid.'%');
 		}		
 		
-		$entries = $entries->where('status',1)->where('checkout_status',0)->where('client_id',$client_id)->where('type',$type);
+		$entries = $entries->where('checkout_status',0)->where('client_id',$client_id)->where('type',$type);
 		$entries = $entries->orderBy('id', "DESC")->get();
 
 		foreach ($entries as $key => $item) {
@@ -106,7 +106,7 @@ class RoomController extends Controller {
 			$entries = $entries->where('room_entries.pnr_uid', 'LIKE', '%'.$request->pnr_uid.'%');
 		}		
 	
-		$entries = $entries->where('status',1)->where('client_id', Auth::user()->client_id)->orderBy('id', "DESC")->take(100)->get();
+		$entries = $entries->where('client_id', Auth::user()->client_id)->orderBy('id', "DESC")->take(100)->get();
 
 		foreach ($entries as $key => $item) {
 			$bm_amount = DB::table('room_e_entries')->where('status',0)->where('entry_id','=',$item->id)->sum('paid_amount');

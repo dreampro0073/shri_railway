@@ -2450,6 +2450,10 @@ app.controller('entryRoomCtrl', function($scope , $http, $timeout , DBService,$i
 
     $scope.insPods = (pod_id) => {
         let idx = $scope.sl_pods.indexOf(pod_id);
+
+        if($scope.formData.id && $scope.formData.online_booking == 1 && $scope.sl_pods.length == $scope.formData.no_of_rooms ){
+            return;
+        }
         if(idx == -1){
             $scope.sl_pods.push(pod_id);
         }else{

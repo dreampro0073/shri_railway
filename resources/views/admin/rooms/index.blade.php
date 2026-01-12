@@ -6,8 +6,7 @@
         <div class="card shadow mb-4 p-4">    
             <div class="filters" style="margin:24px 0;">
                 <form name="filterForm"  novalidate>
-                    <div class="row" style="font-size: 14px">
-
+                    <div class="row" style="font-size: 14px;">
                         <div class="col-md-9">
                             <div class="row">
                                 <div class="col-md-2 form-group">
@@ -82,8 +81,10 @@
                             <td>
                                 <a href="javascript:;" ng-click="checkoutLoker(item.id)" class="btn btn-danger btn-sm">Checkout</a>
                                 @if(Auth::user()->priv == 1)
-                                <a href="javascript:;" ng-click="edit(item.id)" class="btn btn-warning btn-sm">Edit</a>
+                                
                                 @endif
+
+                                <a href="javascript:;" ng-click="edit(item.id)" class="btn btn-warning btn-sm">Edit</a>
 
 
                                 @if(Auth::user()->priv == 2)

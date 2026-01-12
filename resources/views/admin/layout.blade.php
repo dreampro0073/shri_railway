@@ -29,8 +29,8 @@
         gtag('config', 'G-WEC6NN0XE0');
     </script> -->
 </head>
-<body  ng-app="app" oncontextmenu="return false;">
-<!-- <body  ng-app="app"> -->
+<!-- <body  ng-app="app" oncontextmenu="return false;"> -->
+<body  ng-app="app">
 	<div id="wrapper">
         <div class="container-fluid">
             <div id="content" style="display: flex;">

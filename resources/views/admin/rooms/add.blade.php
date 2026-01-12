@@ -57,8 +57,13 @@
                                 <option ng-repeat="item in pay_types" value="@{{item.value}}">@{{ item.label}}</option>
                             </select>
                         </div>
+
+                         <div class="col-md-3 form-group" ng-if="formData.online_booking == 1 ">
+                            <label>No of Room</label>
+                            <input type="text" ng-model="formData.no_of_rooms" class="form-control" readonly disabled>
+                        </div>
                        
-                        <div class="col-md-12 form-group" ng-if="entry_id == 0 && type == 1">
+                        <div class="col-md-12 form-group" ng-if="type == 1">
                             <label>Available PODS</label>
                             <br>
                             <span ng-repeat="item in avail_pods">

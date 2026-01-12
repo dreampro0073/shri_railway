@@ -273,4 +273,41 @@ CREATE TABLE `nnhp`.`web_at` ( `id` INT NOT NULL AUTO_INCREMENT , `user_id` INT 
 
 ALTER TABLE `clients` ADD `print_name` TINYINT NOT NULL DEFAULT '0' COMMENT '0->Yes,1->No' AFTER `create_date`;
 
+ALTER TABLE `room_entries` ADD `booking_amount` INT(11) NULL DEFAULT '0' AFTER `nos`, ADD `full_payment` TINYINT NOT NULL DEFAULT '0' COMMENT '1-->Full Pay, 2->Booking' AFTER `booking_amount`, ADD `email_id` VARCHAR(255) NULL DEFAULT NULL AFTER `full_payment`;
+
+ALTER TABLE `room_entries` ADD `online_booking` TINYINT NOT NULL DEFAULT '0' AFTER `email_id`;
+
+ALTER TABLE `room_entries` ADD `payment_status` TINYINT NOT NULL DEFAULT '0' AFTER `online_booking`;
+
+
+ALTER TABLE `pods` ADD `checkin_date` DATETIME NULL DEFAULT NULL AFTER `status`, ADD `checkout_date` DATETIME NULL DEFAULT NULL AFTER `checkin_date`;
+
+ALTER TABLE `single_cabins` ADD `checkin_date` DATETIME NULL DEFAULT NULL AFTER `status`, ADD `checkout_date` DATETIME NULL DEFAULT NULL AFTER `checkin_date`;
+
+ALTER TABLE `double_beds` ADD `checkin_date` DATETIME NULL DEFAULT NULL AFTER `status`, ADD `checkout_date` DATETIME NULL DEFAULT NULL AFTER `checkin_date`;
+ALTER TABLE `room_entries` ADD `checkin_date` DATETIME NULL DEFAULT NULL AFTER `check_out`;
+
+CREATE TABLE room_availability (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    room_type TINYINT,   -- 1=pod, 2=single, 3=double
+    room_id BIGINT,
+    booking_id BIGINT,
+    from_datetime DATETIME,
+    to_datetime DATETIME,
+    status TINYINT DEFAULT 1, -- 1=booked, 0=cancelled
+    created_at TIMESTAMP NULL,
+    updated_at TIMESTAMP NULL,
+    INDEX(room_type, room_id, from_datetime, to_datetime)
+);
+
+CREATE TABLE `nnhp`.`orders` ( `id` INT NOT NULL AUTO_INCREMENT , `order_id` VARCHAR(255) NULL DEFAULT NULL , `room_entry_id` INT NOT NULL DEFAULT '0' , `type` INT NOT NULL DEFAULT '0' , `name` VARCHAR(255) NULL DEFAULT NULL , `client_id` INT NOT NULL DEFAULT '0' , `status` TINYINT NOT NULL DEFAULT '0' , `created_at` DATETIME NULL DEFAULT NULL , `remarks` TEXT NULL DEFAULT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+ALTER TABLE `orders` ADD INDEX( `order_id`, `room_entry_id`, `client_id`);
+
+ALTER TABLE `orders` ADD `txn_id` VARCHAR(255) NULL DEFAULT NULL AFTER `id`;
+
+ALTER TABLE `orders` ADD `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER `created_at`;
+ALTER TABLE `orders` CHANGE `created_at` `created_at` TIMESTAMP NULL DEFAULT NULL;
+
+
+
 ?>

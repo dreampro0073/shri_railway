@@ -6,7 +6,7 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Auth;
 use Redirect, Validator, Hash, Response, Session, DB;
 use App\Models\User;
-use App\Models\Room;
+use App\Models\Room,use App\Models\Room1;
 use App\Models\Entry;
 
 class RoomController extends Controller {	
@@ -59,7 +59,7 @@ class RoomController extends Controller {
 			$entries = $entries->where('room_entries.pnr_uid', 'LIKE', '%'.$request->pnr_uid.'%');
 		}		
 		
-		$entries = $entries->where('checkout_status',0)->where('client_id',$client_id)->where('type',$type);
+		$entries = $entries->where('status',1)->where('checkout_status',0)->where('client_id',$client_id)->where('type',$type);
 		$entries = $entries->orderBy('id', "DESC")->get();
 
 		foreach ($entries as $key => $item) {
@@ -106,7 +106,7 @@ class RoomController extends Controller {
 			$entries = $entries->where('room_entries.pnr_uid', 'LIKE', '%'.$request->pnr_uid.'%');
 		}		
 	
-		$entries = $entries->where('client_id', Auth::user()->client_id)->orderBy('id', "DESC")->take(100)->get();
+		$entries = $entries->where('status',1)->where('client_id', Auth::user()->client_id)->orderBy('id', "DESC")->take(100)->get();
 
 		foreach ($entries as $key => $item) {
 			$bm_amount = DB::table('room_e_entries')->where('status',0)->where('entry_id','=',$item->id)->sum('paid_amount');
@@ -213,6 +213,8 @@ class RoomController extends Controller {
 		return Response::json($data, 200, []);
 	}
 
+
+
 	public function store(Request $request,$type){
 
 		$user_session_id = Auth::user()->session_id;
@@ -312,7 +314,7 @@ class RoomController extends Controller {
 				$entry->e_ids = implode(',', $sl_beds);
 				DB::table("double_beds")->where('client_id','=',$client_id)->whereIn('id',$sl_beds)->update(['status'=>1]);
 			}
-			
+			$entry->status = 1;
 			$entry->save();
 
 			$data['id'] = $entry->id;
@@ -395,7 +397,6 @@ class RoomController extends Controller {
     	$check_shift = Entry::checkShift();
     	$entry = Room::find($request->id);
 
-		$entry->status = 1; 
 		$entry->checkout_status = 1;
 		$entry->penality = $request->collect_amount;
 		$entry->checkout_time = date('Y-m-d H:i:s'); 
@@ -454,6 +455,246 @@ class RoomController extends Controller {
 
 		return Response::json($data, 200, []);
 	}
+	public function availInit(Request $request){
+		$hours = Room::hours();
+		$types = Room::types();
 
+		$data['success'] = true;
+		$data['types'] = $types;
+		$data['hours'] = $hours;
+
+		return Response::json($data,200,[]);
+	}
+	public function getRoomAmount(Request $request){
+		$type = $request->type;
+		$hours_occ = $request->hours_occ;
+		$no_of_rooms = $request->no_of_rooms;
+
+		$total_amount = Room::getAmount($type,$hours_occ,$no_of_rooms);
+
+		$booking_amount = 0;
+		if($type == 1){
+			$booking_amount = 100*$no_of_rooms;
+		}else if($type == 2){
+			$booking_amount = 200*$no_of_rooms;
+		}else if($type == 3){
+			$booking_amount = 300*$no_of_rooms;
+		}
+
+
+		$data['success'] = true;
+		$data['total_amount'] = $total_amount;
+		$data['booking_amount'] = $booking_amount;
+		return Response::json($data,200,[]);
+	}
+
+	public function getCheckoutTime(Request $request){
+		$check_in = date('H:i:s', strtotime($request->check_in));
+		$no_of_min = ($request->hours_occ * 60) - 1;
+		$checkout_time = date("h:i A",strtotime("+{$no_of_min} minutes", strtotime($check_in)));
+		$data['checkout_time'] = $checkout_time;
+		$data['success'] = true;
+
+
+		return Response::json($data, 200, []);
+	}
+
+	public function bookRoom(Request $request){
+		$entry = new Room1;
+		$entry->name = $request->name;
+		$entry->mobile_no = $request->mobile_no;
+		$entry->email_id = $request->email_id;
+		$entry->pnr_uid = $request->pnr_uid;
+		$entry->hours_occ = $request->hours_occ;
+		$entry->full_payment = $request->full_payment;
+		$entry->date = date("Y-m-d",strtotime($request->date));
+		$entry->type = $request->type;
+		$entry->hours_occ = $request->hours_occ;
+		$entry->no_of_rooms = $request->no_of_rooms;
+		$entry->client_id = 1;
+		$entry->added_by = User::systemCreatedId();
+		$entry->online_booking = 1;
+		$entry->save();
+
+		if($entry->full_payment == 1){
+			$entry->total_amount = $request->total_amount;
+			$entry->paid_amount = $request->total_amount;
+		}else{
+			$entry->booking_amount = $request->booking_amount;
+			$entry->paid_amount = $request->booking_amount;
+			$entry->total_amount = $request->booking_amount;
+		}
+		$entry->check_in = date("H:i:s",strtotime($request->check_in));
+
+		$entry->save();
+
+		$no_of_min = $entry->hours_occ*60;
+		$no_of_min = $no_of_min - 1;
+		$entry->check_out = date("H:i:s",strtotime("+".$no_of_min." minutes",strtotime($entry->check_in)));
+
+		$checkin_date = $entry->date." ".$entry->check_in;
+		$checkout_date = date("Y-m-d H:i:s",strtotime("+".$no_of_min.' minutes',strtotime($checkin_date)));
+        $entry->checkout_date = $checkout_date;		
+        $entry->checkin_date = $checkin_date;		
+		$entry->save();
+
+
+		if ($entry->type == 1) {
+	        $table = 'pods';
+	    } elseif ($entry->type == 2) {
+	        $table = 'single_cabins';
+	    } else {
+	        $table = 'double_beds';
+	    }
+
+	    $availableIds = DB::table($table)
+	        ->where('client_id', $entry->client_id)
+	        ->whereNotIn('id', function ($q) use ($entry, $checkin_date, $checkout_date) {
+	            $q->select('room_id')
+	              ->from('room_availability')
+	              ->where('room_type', $entry->type)
+	              ->where('from_datetime', '<', $checkout_date)
+	              ->where('to_datetime', '>', $checkin_date)
+	              ->where('status', 1);
+	        })
+	        ->limit($entry->no_of_rooms)
+	        ->pluck('id');
+
+	    if ($availableIds->count() < $entry->no_of_rooms) {
+	        DB::rollBack();
+	        return response()->json([
+	            'success' => false,
+	            'message' => 'Rooms not available for selected date & slot'
+	        ]);
+	    }
+
+	  
+	    foreach ($availableIds as $rid) {
+	        DB::table('room_availability')->insert([
+	            'room_type' => $entry->type,
+	            'room_id' => $rid,
+	            'booking_id' => $entry->id,
+	            'from_datetime' => $entry->checkin_date,
+	            'to_datetime' => $entry->checkout_date,
+	            'status' => 1,
+	            'created_at' => now(),
+	            'updated_at' => now()
+	        ]);
+	    }
+
+	    $entry->e_ids = implode(',', $availableIds->toArray());
+	    $entry->save();
+
+		$data['success'] = true;
+		$data['message'] = "Successfully Saved";
+		$data['entry_id'] = $entry->id;
+		return Response::json($data,200,[]);
+	}
+
+	public function createOrder(Request $request)
+	{
+	    $entry_id = $request->entry_id;
+	    $entry = Room1::find($entry_id);
+	   	
+	    $txnId = 'TXN' . time();
+
+	    // $payload = [
+	    //     "merchantId" => env('PHONEPE_MERCHANT_ID'),
+	    //     "merchantTransactionId" => $txnId,
+	    //     "merchantUserId" => "USER_" . ($entry->client_id ? $entry->client_id : 0),
+	    //     "amount" => $entry->booking_amount * 100,
+	    //     "redirectUrl" => url('/api/payment/callback'),
+	    //     "redirectMode" => "POST",
+	    //     "callbackUrl" => url('/api/payment/webhook'),
+	    //     "mobileNumber" => $entry->mobile_no,
+	    //     "paymentInstrument" => [
+	    //         "type" => "PAY_PAGE"
+	    //     ]
+	    // ];
+
+	    // $base64 = base64_encode(json_encode($payload));
+	    // $checksum = hash(
+	    //     'sha256',
+	    //     $base64 . "/pg/v1/pay" . env('PHONEPE_SALT_KEY')
+	    // ) . "###" . env('PHONEPE_SALT_INDEX');
+
+	    // $response = Http::withHeaders([
+	    //     "Content-Type" => "application/json",
+	    //     "X-VERIFY" => $checksum
+	    // ])->post(env('PHONEPE_BASE_URL') . "/pg/v1/pay", [
+	    //     "request" => $base64
+	    // ])->json();
+
+	    $order_id = DB::table("orders")->insertGetId([
+	        "txn_id" => $txnId,
+	        "room_entry_id" => $entry_id,
+	        "name" => ($entry->name)?$entry->name:'',
+	        "type" => ($entry->type)?$entry->type:0,
+	        "client_id" => ($entry->client_id)?$entry->client_id:0,
+	        "status" => 0, // pending
+	        "created_at" => now()
+	    ]);
+
+
+        $data['success'] = true;
+        $data["redirect_url"] = "https://hotel.aadhyasriwebsolutions.com/thank-you/";
+        // $data["redirect_url"] = $response['data']['instrumentResponse']['redirectInfo']['url'];
+        $data['order_id'] = $order_id;
+        return Response::json($data,200,[]);
+
+        // This will be remove in after
+
+	    // return response()->json([
+	    //     "success" => true,
+	    //     "redirect_url" => $response['data']['instrumentResponse']['redirectInfo']['url'],
+	    //     "order_id" => $order_id
+	    // ]);
+	}
+
+	public function callback(Request $request){
+        return redirect('https://hotel.aadhyasriwebsolutions.com/payment-success');
+    }
+
+    public function webhook(Request $request){
+	    // $decoded = json_decode(base64_decode($request->response), true);
+
+    	$decoded = [
+		    "merchantId" => "PGTESTPAYUAT",
+		    "merchantTransactionId" => "TXN1768204733",
+		    "amount" => 50000,
+		    "state" => "COMPLETED",
+		    "responseCode" => "SUCCESS",
+		    "paymentInstrument" => [
+		        "type" => "UPI"
+		    ]
+		];
+
+	    $txnId = isset($decoded['merchantTransactionId']) ? $decoded['merchantTransactionId']: null;
+	    $state = isset($decoded['state']) ? $decoded['state'] : '';
+	    $responseCode = isset($decoded['responseCode']) ? $decoded['responseCode'] : '';
+
+	    if ($txnId && $state === 'COMPLETED' && $responseCode === 'SUCCESS') {
+
+	        DB::table('orders')
+				->where('txn_id', $txnId)
+			  	->where('status', 0)   // pending only
+			  	->update([
+			   		'status' => 1,
+			  	]);
+
+			$order = DB::table('orders')->where('txn_id', $txnId)->where('status',1)->first();
+
+			if($order){
+				DB::table('room_entries')->where('id',$order->room_entry_id)->update(['status'=>1,'payment_status'=>1]);
+
+				DB::table('room_availability')->update([
+		            'booking_id' => $order->room_entry_id,
+		            'status' => 1,
+		        ]);
+			}
+	    }
+
+	    return response()->json(['status' => 'OK']);
+	}
 
 }

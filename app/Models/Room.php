@@ -85,7 +85,14 @@ class Room extends Model
         
         return $ar;
     }
+    public static function types(){
+        $ar = [];
+        $ar[] = ["value"=>1,"label"=>"Pods"];
+        $ar[] = ["value"=>2,"label"=>"Single Cabins"];
+        $ar[] = ["value"=>3,"label"=>"Double Beds"];
 
+        return $ar;
+    }
     public static function getAmount($type,$hour,$size){
         $balance= 0;
         if($type == 1){

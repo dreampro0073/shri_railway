@@ -102,6 +102,10 @@ class User extends Authenticatable {
             }
         }
     }
+
+    public static function systemCreatedId(){
+        return 1000;
+    }
     
 
         

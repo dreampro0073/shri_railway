@@ -6,7 +6,7 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Auth;
 use Redirect, Validator, Hash, Response, Session, DB;
 use App\Models\User;
-use App\Models\Room,use App\Models\Room1;
+use App\Models\Room,App\Models\Room1;
 use App\Models\Entry;
 
 class RoomController extends Controller {	

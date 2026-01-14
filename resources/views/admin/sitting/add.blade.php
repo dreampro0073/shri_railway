@@ -53,7 +53,7 @@
 
                         <div class="col-md-3 form-group">
                             <label>Hour Occ</label>
-                            <select ng-model="formData.hours_occ" class="form-control" ng-change="changeAmount()" ng-disabled="checkout_process" required >
+                            <select ng-model="formData.hours_occ" class="form-select" ng-change="changeAmount()" ng-disabled="checkout_process" required >
                                 <option value="">--select--</option>
                                 <option ng-disabled="entry_id > 0 && old_hr > item.value" ng-repeat="item in hours" ng-value=@{{item.value}}>@{{ item.label}}</option>
                             </select>
@@ -102,7 +102,7 @@
                         </div>
                     </div>
                     <div class="pt-4">
-                        <button type="submit" class="btn btn-primary" ng-disabled="loading">
+                        <button type="submit" class="btn btn-primary-600 border border-primary-600 text-md btn-sm radius-8" ng-disabled="loading">
                             <span ng-if="!loading">Submit</span>
                             <span ng-if="loading">Loading...</span>
                         </button> 

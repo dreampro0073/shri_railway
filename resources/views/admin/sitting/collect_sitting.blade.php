@@ -6,7 +6,7 @@
             <div class="filters" style="margin:24px 0;">
                 <form name="filterForm"  novalidate>
                     <div class="row" style="font-size: 14px">
-                        <div class="col-md-9">
+                        <div class="col-md-8">
                             <div class="row">
                                 <div class="col-md-2 form-group">
                                     <label class="label-control">Slip ID</label>
@@ -26,7 +26,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3 text-right" style="margin-top: 25px;" class="mb-2">
+                        <div class="col-md-4 text-right" style="margin-top: 25px;" class="mb-2">
                             <button type="button" ng-click="init()" class="btn  btn-primary" style="width: 70px;">Search</button>
                             <button type="button" ng-click="filterClear()" class="btn  btn-warning" style="width: 70px;">Clear</button>
                         </div>

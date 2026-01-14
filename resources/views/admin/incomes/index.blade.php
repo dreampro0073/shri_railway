@@ -12,9 +12,9 @@
 		
         <div class="row mt-3 mb-3">
             <div class="col-md-6">
-                <h2 class="page-title">Income</h2>
+                <h5 class="fw-semibold mb-3">Income</h5>
             </div>
-            <div class="col-md-6 text-right mt-3">
+            <div class="col-md-6 text-end mt-3">
                 <a href="{{url('admin/income/add')}}" class="btn btn-info">Add</a>
             </div>
         </div>

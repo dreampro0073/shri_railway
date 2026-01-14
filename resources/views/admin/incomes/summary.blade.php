@@ -37,7 +37,7 @@
 
         <div ng-if="!loading" class="row mt-3 mb-3">
             <div class="col-md-4">
-                <h2 class="page-title">Summary</h2>
+                <h5 class="fw-semibold">Summary</h5>
             </div>
         </div>
         <div class="text-right">
@@ -76,10 +76,10 @@
 
         <div ng-if="!loading" class="row mt-3 mb-3">
             <div class="col-md-6">
-                <h2 class="page-title">Income</h2>
+                <h5 class="fw-semibold">Income</h5>
             </div>  
             <div class="col-md-6">
-                <h2 class="page-title text-right">Total Income : @{{income.total_amount}} </h2>
+                <h5 class="fw-semibold mb-3">Total Income : @{{income.total_amount}}</h5>
             </div>          
         </div>
 
@@ -108,13 +108,13 @@
         </table>
         <hr>
         <div ng-if="!income.multiple_income && !loading" class="alert alert-warning">Data Not Available !</div>
-        <span ng-if="!loading">
+        <div ng-if="!loading">
             <div class="row mt-3 mb-3">
                 <div class="col-md-6">
-                    <h2 class="page-title">Expense </h2>
+                    <h5 class="fw-semibold">Expense </h5>
                 </div>
                 <div class="col-md-6">
-                    <h2 class="page-title text-right">Total Expense : @{{total_expenses}} </h2>
+                    <h5 class="fw-semibold">Total Expense : @{{total_expenses}}</h5>
                 </div>
             </div>
 
@@ -166,7 +166,7 @@
 
             </table>
             <div ng-if="expenses.length == 0 && !loading" class="alert alert-warning">Data Not Available !</div>
-        </span>
+        </div>
         
     </div>
 @endsection

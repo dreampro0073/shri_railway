@@ -9,9 +9,9 @@
 @section('main')
 	<div class="row mt-3 mb-3">
         <div class="col-md-6">
-            <h2 class="page-title">{{($income_id == 0)?'Add Income':'Update Income'}}</h2>
+            <h5 class="fw-semibold mb-3">{{($income_id == 0)?'Add Income':'Update Income'}}</h5>
         </div>
-        <div class="col-md-6 text-right" style="padding-top: 23px;">
+        <div class="col-md-6 text-end" style="padding-top: 23px;">
             <a href="{{url('/admin/income')}}" class="btn btn-success" >Go Back</a>
         </div>
     </div>

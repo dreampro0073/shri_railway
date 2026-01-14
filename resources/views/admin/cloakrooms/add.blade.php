@@ -44,7 +44,7 @@
                         </div>                        
                         <div class="col-md-3 form-group">
                             <label>Time Duration</label>
-                            <select ng-model="formData.no_of_day" class="form-control" ng-change="changeAmount()" required >
+                            <select ng-model="formData.no_of_day" class="form-select" ng-change="changeAmount()" required >
                                 <option value="">--select--</option>
                                 <option ng-repeat="item in days" value="@{{item.value}}">@{{ item.label}}</option>
                             </select>
@@ -52,7 +52,7 @@
 
                         <div class="col-md-3 form-group">
                             <label>Pay Type</label>
-                            <select ng-model="formData.pay_type" class="form-control" required  convert-to-number>
+                            <select ng-model="formData.pay_type" class="form-select" required  convert-to-number>
                                 <option value="">--select--</option>
                                 <option ng-repeat="item in pay_types" value="@{{item.value}}">@{{ item.label}}</option>
                             </select>

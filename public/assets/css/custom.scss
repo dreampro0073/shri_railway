@@ -1,19 +1,5 @@
 $c_grey:rgb(133, 135, 150);
 
-@font-face {
-  font-family: myFirstFont;
-  src: url('../Nunito_Sans/NunitoSans-VariableFont_YTLC,opsz,wdth,wght.ttf');
-}
-html,body{
-	background-color:#fff;
-
-}
-body{
-	background-color:#fff !important;
-
-	color: #000 !important;
-	font-family: myFirstFont;
-}
 
 .bg-gradient-primary {
     background-color: #4e73df;
@@ -22,6 +8,19 @@ body{
 }
 .name{
 	color: #000;
+}
+
+.sidebar-menu-area{
+	height: calc(100vh - 100px);
+}
+a.no-dec{
+	display: block;
+	height: 100%;
+}
+input[type="radio"],input[type="checkbox"] {
+    appearance: auto;
+    -webkit-appearance: radio;
+    -moz-appearance: radio;
 }
 .table-div{
 	width: 100%;
@@ -32,69 +31,35 @@ body{
 		vertical-align: middle;
 	}
 }
-.pro-div{
-	.image{
-		width: 150px;
-	}
-}
-.profile-div{
-	margin-bottom: 30px;
-	padding-bottom:5px;
-	border-bottom:1px solid rgba($c_grey, 0.4);
-	span{
-		display: block;
-		font-style: italic;
-	}
-	label{
-		color: #000;
-		display: block;
-		font-weight: bold;
-		font-size: 15px;
-	}
-}
 
+
+// .modal-header{
+// 	.row{
+// 		width: 100% ;
+// 	}
+// }
+.modal-header{
+	.row{
+		width: 100%;	
+	}
+	
+}
+.form-group{
+	margin-bottom: 16px !important;
+}
+.modal-title{
+	font-size: 18px !important;
+}
+.p-4 {
+    padding: 1.5rem!important;
+}
 .no-dec{
 	&:hover{
 		text-decoration: none;
 	}
-	.card{
-		position:relative;
-		overflow: hidden;
-		.icon{
-			position:absolute;
-			bottom:-5px;
-			right: -2px;
-			opacity: 0.7;
-			i{
-				font-size:32px;
-			}
-		}
-		p,i{
-			color: #000 !important;
-		}
-		i{
-			opacity: 0.7;
-		}
-		.fs-30{
-			font-size: 18px;
-		}
-	}
 }
-
-.ui-widget.ui-widget-content {
-    border: 1px solid #c5c5c5;
-	width: 262px;
-	list-style: none;
-	padding-left: 0;
-	li{
-		padding:0 15px;
-	}
-}
-.at-tag{
-	display: inline-block;
-	padding:5px 10px;
-	border: 1px solid #d1d3e2;
-    margin-right: 10px;
+.btn{
+	font-weight: 300 !important;
 }
 .n_paid{
 	background-color:#ff000038;
@@ -104,6 +69,18 @@ body{
 }
 .f_paid{
 	background:transparent;
+}
+.close{
+	width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    right: 16px;
+	span{
+		font-size: 30px;
+	}
 }
 span{
 	&.error-msg{
@@ -226,15 +203,43 @@ tr.not_checkout{
 	background-color: #e08080 !important;
 }
 .t-danger{
-	background-color: #AB2E3C !important;
+	td{
+		background-color: #f045586b !important;
+    	color: #000 !important;
+	}
 }
 .t-warning{
-	background-color: #FFC107 !important;
+	td{
+		background-color: #FFC107 !important;
+		color: #000 !important;
+	}
 }
-
-
+td{
+	font-size: 14px !important;
+}
+td.active{
+	&.day{
+		color: #fff !important;
+	}
+}
+.btn-sm{
+	font-size: 14px !important;
+	padding: 6px 12px !important;
+}
+.radius-8{
+	border-radius: 4px !important;
+}
+.ov-x{
+	overflow-x:scroll;
+}
+td{
+	color: #000 !important;
+}
 .t-info{
-	background-color: #9FCC2E !important;
+	td{
+		background-color: #9FCC2E !important;
+		color: #000 !important;
+	}
 }
 .gj-datepicker-bootstrap{
 	width: 85%;
@@ -321,11 +326,7 @@ input[type="file"] {
 		margin-right: 1em;
 	}
 }
-.t-btn{
-	border-radius:30px;
-	padding: 10px 40px;
-	width: 180px !important;
-}
+
 .hi-auto{
 	min-height: auto !important;
 }

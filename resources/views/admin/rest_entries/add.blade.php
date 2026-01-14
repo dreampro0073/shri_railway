@@ -4,11 +4,11 @@
         <div class="row">
             <div class="col-md-3 form-group">
                 <label>No of Hours</label>
-                <input ng-change="calAmount()" type="text" min="1" ng-model="formData.no_of_hours" class="form-control" required />
+                <input ng-change="calAmount()" type="number" min="1" ng-model="formData.no_of_hours" class="form-control" required />
             </div>
             <div class="col-md-3 form-group">
                 <label>No of People</label>
-                <input ng-change="calAmount()" type="text" min="1" ng-model="formData.no_of_people" class="form-control" required />
+                <input ng-change="calAmount()" type="number" min="1" ng-model="formData.no_of_people" class="form-control" required />
             </div>
             <div class="col-md-2">
                 <div class="form-group">

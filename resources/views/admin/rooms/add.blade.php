@@ -45,14 +45,14 @@
                         </div>                        
                         <div class="col-md-3 form-group">
                             <label>Hours</label>
-                            <select ng-model="formData.hours_occ" class="form-control" ng-change="changeAmount()" required convert-to-number >
+                            <select ng-model="formData.hours_occ" class="form-select" ng-change="changeAmount()" required convert-to-number >
                                 <option value="">--select--</option>
                                 <option ng-repeat="item in hours" value="@{{item.value}}">@{{ item.label}}</option>
                             </select>
                         </div>
                         <div class="col-md-3 form-group">
                             <label>Pay Type</label>
-                            <select ng-model="formData.pay_type" class="form-control" required  convert-to-number>
+                            <select ng-model="formData.pay_type" class="form-select" required  convert-to-number>
                                 <option value="">--select--</option>
                                 <option ng-repeat="item in pay_types" value="@{{item.value}}">@{{ item.label}}</option>
                             </select>

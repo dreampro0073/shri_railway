@@ -11,9 +11,9 @@
 	<div ng-controller="ExpenseCtrl" ng-init="init();" >
         <div class="row mt-3 mb-3">
             <div class="col-md-6">
-                <h2 class="page-title">Expenses</h2>
+                <h5 class="fw-semibold mb-3">Expenses</h5>
             </div>
-            <div class="col-md-6 text-right mt-3">
+            <div class="col-md-6 text-end mt-3">
                 <a href="{{url('admin/expenses/add')}}" class="btn btn-info">Add</a>
             </div>
         </div>

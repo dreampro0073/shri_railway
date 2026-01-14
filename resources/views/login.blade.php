@@ -1,87 +1,106 @@
 <!DOCTYPE html>
-<html>
-<head>
+<html style="height:100%;">
+<head >
+    <!-- Basic Meta -->
     <meta charset="utf-8">
-    <title>Aadhyasri Web Solutions</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Aadhyasri Web Solutions | Web Development & Digital Services</title>
+    <meta name="description" content="Aadhyasri Web Solutions provides professional web development, website design, SEO and digital solutions for businesses.">
+    <meta name="keywords" content="Aadhyasri Web Solutions, web development, website design, SEO services, digital marketing">
+    <meta name="author" content="Aadhyasri Web Solutions">
     <link rel="icon" sizes="32x32" type="image/x-icon" href="{{url('assets/img/favicon.png')}}" >
-    <link rel="stylesheet" type="text/css" href="{{url('bootstrap3/css/bootstrap.min.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{url('assets/css/custom.css')}}">
+
+    <link rel="stylesheet" type="text/css" href="{{url('assets1/css/lib/bootstrap.min.css')}}">
+
+
+    <link rel="stylesheet" type="text/css" href="{{url('assets1/css/style.css')}}">
+    <style>
+        .min-wid{
+            min-width: 400px;
+        }
+        @media only screen and (max-width: 668px) {
+            .min-wid{
+                min-width: 80%;
+            }
+        }
+        label.error{
+            color: #f00 !important;
+            font-size: 14px !important;
+        }
+    </style>
 </head>
-<body>
+<body class="h-100">
 
-<div style="height: 100vh;display: flex;align-content: center;justify-content:center;background: url('assets/img/indianrailway1.jpeg');no-repeat;background-size: cover;background-blend-mode: multiply;">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-6 col-md-offset-3 login-box">
-                <div>
-                    <span style="font-size: 32px;font-weight: bold;margin-bottom: 2px;text-align: center;display: block;">Aadhyasri Web Solutions</span> 
-                    
-                    <div class="panel panel-default">
-                        <div class="panel-body" style="box-shadow:0 1px 6px 0 rgba(0, 0, 0, 0.3);padding: 28px;width: 500px;">
-                            <div class="">
-                                <div class="text-center">
-                                    <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
-                                </div>
-                                {{ Form::open(array('url' => '/login','class' => 'user check-form',"method"=>"POST")) }}
 
-                                    @if(Session::has('failure'))
-                                        <div class="alert alert-danger" style="margin-top: 10px;">
-                                            <i class="fa fa-ban-circle"></i><strong>Failure!</strong> {{Session::get('failure')}}
-                                        </div>
-                                    @endif
+<div class="d-lg-flex bg-white h-100">
+    <div class="w-50 d-lg-flex d-none overflow-hidden h-100">
+        <img src="{{url('assets/img/railway1.jpg')}}" alt="Login Image" class="w-100 h-100 object-fit-cover">
+    </div>
+    <div class="lg-w-50 px-24 py-32 d-flex justify-content-center align-items-center h-100">
+        <div class="max-w-540-px min-wid mx-auto">
+            <a href="{{url('/')}}" class="">
+                <img src="{{url('assets/img/aadh_new.png')}}" style="height:50px;width: auto;">
+            </a>
+            <div class="mt-32 mb-32">
+                <h1 class="h6 fw-bold text-primary-light mb-8">
+                    Welcome Back 👋
+                </h1>
+                <p class="text-sm text-secondary-light mb-0">
+                    Log in to your account to continue
+                </p>
+            </div>
+            {{ Form::open(array('url' => '/login','class' => 'submit-form check-form',"method"=>"POST")) }}
 
-                                    @if(Session::has('success'))
-                                        <div class="alert alert-success">
-                                           <i class="fa fa-ban-circle"></i><strong>success!</strong> {{Session::get('success')}}
-                                         </div>    
-                                    @endif
+                @if(Session::has('failure'))
+                    <div class="alert alert-danger" style="margin-top: 10px;">
+                        <i class="fa fa-ban-circle"></i><strong>Failure!</strong> {{Session::get('failure')}}
+                    </div>
+                @endif
 
-                                
-                                    <div class="form-group">
-                                        <label>Email</label>
-                                        {{Form::text('email','',["class"=>"form-control form-control-user","id"=>"exampleInputEmail","autocomplete"=>"off","placeholder"=>"Enter Email Address...",'required'=>"required"])}}
-                                        <span class="error">{{$errors->first('email')}}</span>
-                                    </div>
+                @if(Session::has('success'))
+                    <div class="alert alert-success">
+                       <i class="fa fa-ban-circle"></i><strong>success!</strong> {{Session::get('success')}}
+                     </div>    
+                @endif
+                <div class="d-flex flex-column">
+                    <div>
+                        <label for="email" class="text-sm fw-semibold text-primary-light d-inline-block mb-8">
+                            Email Address
+                            <span class="text-danger-600">*</span>
+                        </label>
+                        
 
-                                    <div class="form-group">
-                                        <label>Password</label>
-                                        {{Form::password('password',["class"=>"form-control form-control-user","required"=>"true","id"=>"exampleInputPassword","placeholder"=>"Enter Password"])}}
-                                    </div>
+                        {{Form::text('email','',["class"=>"form-control form-control-user","id"=>"email","autocomplete"=>"off","placeholder"=>"Enter your email Address...",'required'=>"required"])}}
+                        
+                    </div>
 
-                                    <div class="form-group">
-                                        <label>Login Mode</label> 
-                                        <label class="btn btn-secondary active">
-                                           <input type="radio" name="login_mode" id="option1" value="1" autocomplete="off" checked> Oprator
-                                       </label>
-                                       <label class="btn btn-secondary">
-                                           <input type="radio" name="login_mode" id="option2" value="2" autocomplete="off">  Checker
-                                       </label>
-                                        <span class="error">{{$errors->first('login_mode')}}</span>
-                                    </div>
-                                   
-                                    <div class="text-center">
-                                        <button type="submit" class="btn btn-primary btn-user btn-block" style="margin:auto;">Login</button>
-                                    </div>
-                                   
-                                {{Form::close()}}
-                                
+                    <div class="mt-3">
+                        <label for="password" class="text-sm fw-semibold text-primary-light d-inline-block mb-8">
+                            Password
+                            <span class="text-danger-600">*</span>
+                        </label>
+                        <div class="position-relative">
                             
-                            </div> 
+                            {{Form::password('password',["class"=>"password-field form-control","required"=>"true","id"=>"password","placeholder"=>"Enter Password"])}}
+                            <!-- <button type="button"
+                                class="toggle-password btn p-0 border-0 bg-transparent position-absolute end-0 top-50 translate-middle-y me-16 text-secondary-light cursor-pointer ri-eye-line"
+                                data-toggle="#password" aria-label="Toggle password visibility">
+                            </button> -->
                         </div>
                     </div>
+
+                    <div class="text-center mt-5">
+                        <button type="submit" class="btn btn-success btn-user btn-block min-wid" style="margin:auto;">Login</button>
+                    </div>
                 </div>
-
-            </div>
-
+              
+                
+            {{Form::close()}}
+            
         </div>
-
     </div>
-    <span style="position: absolute;top: 10px;right: 10px;text-align: right;">
-        <img src="{{url('assets/img/aadh_new.png')}}" style="height:50px;width: auto;">
-        <br>
-        <a href="mailto:aadhyasriwebsolutions@gmail.com" style="text-align:right;">aadhyasriwebsolutions@gmail.com</a>
-
-    </span>
 </div>
 
 <script type="text/javascript">

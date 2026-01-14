@@ -1,4 +1,4 @@
-<div style="margin-top:20px;">
+<div class="card shadow mb-4 p-4">
     <form name="myForm">
         <div class="row">
             <div class="col-md-6">
@@ -102,8 +102,7 @@
                </table>
             </div>
         </div>
-       
-       
+        
         <div class="pt-4">
             <button type="button" ng-click="onSubmit()" class="btn btn-primary" ng-disabled="loading">
                 <span ng-if="!loading">Submit</span>
@@ -113,6 +112,5 @@
         
     </form>
 </div>
-<div style="margin-top:20px;border: 2px solid #E6E6E6;">
-    
-</div>
+
+<div style="margin-bottom:16px;"></div>

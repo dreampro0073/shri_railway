@@ -28,7 +28,7 @@
                 </div>
             </div>
         </form>
-        <hr>
+
         <div class="card shadow mb-4 p-4">
             
             <div class="filters" style="margin:24px 0;">

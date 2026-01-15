@@ -1,5 +1,5 @@
 <button type="button" class="sidebar-close-btn">
-    <iconify-icon icon="radix-icons:cross-2"></iconify-icon>
+   <i class="ri-close-large-line"></i>
 </button>
 <div class="">
     <div class="sidebar-logo d-flex align-items-center justify-content-between">

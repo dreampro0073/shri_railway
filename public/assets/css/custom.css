@@ -215,6 +215,9 @@ td {
   padding: 10px 15px;
   text-decoration: none; }
 
+.sidebar-mobile-toggle i {
+  font-size: 28px; }
+
 .nav-link {
   position: relative; }
   .nav-link .ab {

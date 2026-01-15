@@ -57,7 +57,7 @@
                 <div class="col-6">
                     <div class="d-flex flex-wrap align-items-center gap-4">
                         <button type="button" class="sidebar-mobile-toggle" aria-label="Sidebar Mobile Toggler Button" style="margin-top:8px;">
-                          <iconify-icon icon="heroicons:bars-3-solid" class="icon"></iconify-icon>
+                          <i class="ri-menu-line"></i>
                         </button>
                         
                     </div>

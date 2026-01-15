@@ -11,16 +11,6 @@ $(document).ready(function(){
         animateIn: 'fadeIn', // add this
         animateOut: 'fadeOut' // and this
 	});
-	// $(".tours-slider").owlCarousel({
-	// 	loop: true,
-	// 	nav: true,
-	// 	dots: true,
-	// 	margin:16,
-	// 	autoplay: true,
-	// 	autoplayTimeout: 5000,
-	// 	navText: ['', ''],
-	// 	items: 3,
-	// });
 	$(".testimonials-slider").owlCarousel({
 		loop: true,
 		nav: true,
@@ -62,6 +52,9 @@ $("a.scroll-link").click(function (e) {
             scrollTop: target.offset().top - 30
         }, 800);
     }
-    $("header ul.menu").slideUp();
-    $(".toggle-menu").toggleClass("open-menu");
+    if(mobile_site){
+    	$("header ul.menu").slideUp();
+    	$(".toggle-menu").toggleClass("open-menu");
+    }
+   
 });

@@ -18,7 +18,7 @@
     <link rel="stylesheet" type="text/css" href="{{url('assets/font-awesome/css/font-awesome.min.css')}}">
     <link rel="stylesheet" type="text/css" href="{{url('plugins/bootstrap-datepicker/css/datepicker3.css')}}">
     <link href="{{url('assets/css/selectize.css')}}" rel="stylesheet" type="text/css"/>
-    <link rel="stylesheet" type="text/css" href="{{url('assets/css/custom.css?v='.$version)}}">
+    <link rel="stylesheet" type="text/css" href="{{url('assets/css/custom_old.css?v='.$version)}}">
     <!-- Google tag (gtag.js) -->
     <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-WEC6NN0XE0"></script>
     <script>
@@ -31,7 +31,7 @@
 </head>
 <!-- <body  ng-app="app" oncontextmenu="return false;"> -->
 <body  ng-app="app">
-	<div id="wrapper">
+    <div id="wrapper">
         <div class="container-fluid">
             <div id="content" style="display: flex;">
                 <div class="ul" style="width:250px;background-color: #ececec59;position: fixed;top: 0;left: 0;height: calc(100vh - 67px);overflow-y: scroll;padding:0;">
@@ -252,7 +252,7 @@
             <!-- <a href="mailto:aadhyasriwebsolutions@gmail.com">aadhyasriwebsolutions@gmail.com</a> -->
 
         </span>
-		
+        
     </div>
     
     <!-- <div ng-controller="checkoutAlertCtrl">

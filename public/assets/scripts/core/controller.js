@@ -2161,6 +2161,8 @@ app.controller('entryRoomCtrl', function($scope , $http, $timeout , DBService,$i
     $scope.total_amount = 0;
     $scope.paid_amount = 0;
     $scope.balance_amount = 0;
+
+    $scope.old_hr = 0;
     
     $scope.init = function () {
         DBService.postCall($scope.filter, '/api/rooms/init/'+$scope.type).then((data) => {
@@ -2190,6 +2192,8 @@ app.controller('entryRoomCtrl', function($scope , $http, $timeout , DBService,$i
                 console.log(data.l_entry.discount_amount+'hhhhh');
                 $scope.formData = data.l_entry;
                 $scope.total_amount = data.l_entry.total_amount;
+
+                $scope.old_hr = data.l_entry.hours_occ;
 
                 $scope.sl_pods = data.sl_pods;
                 $scope.sl_cabins = data.sl_cabins;
@@ -2253,6 +2257,8 @@ app.controller('entryRoomCtrl', function($scope , $http, $timeout , DBService,$i
         $scope.sl_pods = [];
         $scope.sl_beds = [];
         $scope.sl_cabins = [];
+
+        $scope.old_hr = 0;
     }
 
     $scope.onSubmit = function () {

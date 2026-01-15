@@ -47,7 +47,7 @@
                             <label>Hours</label>
                             <select ng-model="formData.hours_occ" class="form-select" ng-change="changeAmount()" required convert-to-number >
                                 <option value="">--select--</option>
-                                <option ng-repeat="item in hours" value="@{{item.value}}">@{{ item.label}}</option>
+                                <option ng-disabled="entry_id > 0 && old_hr > item.value" ng-repeat="item in hours" value="@{{item.value}}">@{{ item.label}}</option>
                             </select>
                         </div>
                         <div class="col-md-3 form-group">
@@ -239,7 +239,7 @@
                         </div> 
                         <div class="col-md-4 form-group">
                             <label>Collect Amount</label>
-                            <input type="number" ng-model="formData.collect_amount" class="form-control" />
+                            <input type="number" ng-model="formData.collect_amount" class="form-control" min="0" />
                         </div>                        
                         
                         

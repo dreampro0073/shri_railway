@@ -107,7 +107,7 @@
                         @if(Auth::user()->priv == 2)
                             <div class="col-md-3 form-group">
                                 <label>Checkout By</label>
-                                <select ng-model="formData.checkout_by" class="form-control">
+                                <select ng-model="formData.checkout_by" class="form-select">
                                     <option value="">--select--</option>
                                     <option ng-repeat="(key, value) in users" value="@{{key}}">@{{value}}</option>
                                 </select>
@@ -164,7 +164,7 @@
                     <div class="row">  
                         <div class="col-md-3 form-group">
                             <label>Pay Type</label>
-                            <select ng-model="formData.pay_type" class="form-control"   convert-to-number>
+                            <select ng-model="formData.pay_type" class="form-select"   convert-to-number>
                                 <option value="">--select--</option>
                                 <option ng-repeat="item in pay_types" value="@{{item.value}}">@{{ item.label}}</option>
                             </select>

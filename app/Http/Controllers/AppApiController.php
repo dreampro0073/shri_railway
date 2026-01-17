@@ -226,8 +226,8 @@ class AppApiController extends Controller {
 
     public function storeUser(Request $request){
         $user = User::AuthenticateUser($request->header("apiToken"));
-
-        $user_id = $user->id;
+        
+        $user_id = $user->id;   
         $cre = [
             'name'=>$request->name,
             'mobile'=>$request->mobile,
@@ -273,7 +273,7 @@ class AppApiController extends Controller {
             $user->mobile = $request->mobile;    
             $user->priv = $request->priv;    
             $user->client_id = $user->client_id;    
-            $user->added_by = $user_id;    
+            // $user->added_by = $user_id;    
             
             $user->save();
             $data['success'] = true;

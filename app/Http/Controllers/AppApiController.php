@@ -192,18 +192,15 @@ class AppApiController extends Controller {
     public function initUsers(Request $request){
 
         $user = User::AuthenticateUser($request->header("apiToken"));
-        $canteen_id = $request->canteen_id;
         $users = DB::table('users')->select('id','name','email','mobile','priv');
 
         if($request->name){
             $users = $users->where('name','LIKE','%'.$request->name.'%');
         }
 
-        if($request->has('canteen_id')){
-            $users = $users->where('canteen_id',$canteen_id);
-        }
+        // $users = $users->where('client_id',$client_id);
 
-        $users = $users->orderBy('id', 'DESC')->get();
+        $users = $users->where('client_id',$client_id)->orderBy('id', 'DESC')->get();
         $data['success'] = true;
         $data['users'] = $users;
         
@@ -214,7 +211,8 @@ class AppApiController extends Controller {
 
         $user = User::AuthenticateUser($request->header("apiToken"));
 
-        $user = User::select('id','name','mobile','email','canteen_id','priv')->where('canteen_id', $request->canteen_id)->where('id', $request->user_id)->first();
+        $user = User::select('id','name','mobile','email','client_id','priv')->where('client_id', $request->client_id)->where('id', $request->user_id)->first();
+
         if($user){
             $user->mobile = $user->mobile*1;
         }
@@ -229,7 +227,7 @@ class AppApiController extends Controller {
     public function storeUser(Request $request){
         $user = User::AuthenticateUser($request->header("apiToken"));
 
-        $user_id = 1;
+        $user_id = $user->id;
         $cre = [
             'name'=>$request->name,
             'mobile'=>$request->mobile,
@@ -274,7 +272,7 @@ class AppApiController extends Controller {
             $user->email = $request->email;
             $user->mobile = $request->mobile;    
             $user->priv = $request->priv;    
-            $user->canteen_id = $request->canteen_id;    
+            $user->client_id = $user->client_id;    
             $user->added_by = $user_id;    
             
             $user->save();

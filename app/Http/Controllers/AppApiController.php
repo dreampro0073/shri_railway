@@ -200,7 +200,7 @@ class AppApiController extends Controller {
 
         // $users = $users->where('client_id',$client_id);
 
-        $users = $users->where('client_id',$client_id)->orderBy('id', 'DESC')->get();
+        $users = $users->where('client_id',$user->client_id)->orderBy('id', 'DESC')->get();
         $data['success'] = true;
         $data['users'] = $users;
         
@@ -211,7 +211,7 @@ class AppApiController extends Controller {
 
         $user = User::AuthenticateUser($request->header("apiToken"));
 
-        $user = User::select('id','name','mobile','email','client_id','priv')->where('client_id', $request->client_id)->where('id', $request->user_id)->first();
+        $user = User::select('id','name','mobile','email','client_id','priv')->where('client_id', $user->client_id)->where('id', $request->user_id)->first();
 
         if($user){
             $user->mobile = $user->mobile*1;

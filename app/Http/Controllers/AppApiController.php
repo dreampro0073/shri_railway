@@ -15,6 +15,7 @@ use App\Models\AppCanteen;
 use App\Models\AppItem;
 use App\Models\AppCanteenItem;
 use App\Models\AppDailyEntry;
+use App\Models\CanteenItem;
 
 
 class AppApiController extends Controller {
@@ -288,11 +289,27 @@ class AppApiController extends Controller {
         return Response::json($data, 200, []);
 
     } 
+
+
+
     public function initCanteenItems(Request $request){
         $user = User::AuthenticateUser($request->header("apiToken"));
-        $canteen_id = $request->canteen_id;
 
-        $canteen_items = DB::table('canteen_items')->where('canteen_id',$canteen_id)->get();
+        $client_id = $user->client_id;
+
+        $canteen_items = DB::table('canteen_items');
+        if($request->has('item_name')){
+            $canteen_items = $canteen_items->where('item_name','LIKE','%'.$request->item_name.'%');
+        }
+        // if($request->has('item_name')){
+        //     $canteen_items = $canteen_items->where('item_short_name','LIKE','%'.$request->item_name.'%');
+        // }
+
+         if($request->has('barcodevalue_search')){
+            $canteen_items = $canteen_items->where('barcodevalue','LIKE','%'.$request->barcodevalue_search.'%');
+        }
+
+        $canteen_items = $canteen_items->where('client_id',$client_id)->orderBy('id','DESC')->get();
 
         $data["success"] = true;
         $data["canteen_items"] = $canteen_items;
@@ -300,7 +317,10 @@ class AppApiController extends Controller {
     }
     public function editCanteenItem(Request $request){
         $user = User::AuthenticateUser($request->header("apiToken"));
+        $client_id = $user->client_id;
+
         $canteen_item = CanteenItem::find($request->canteen_item_id);
+
         if($canteen_item){
             $canteen_item->price = $canteen_item->price*1;
         }
@@ -311,21 +331,36 @@ class AppApiController extends Controller {
     }
     public function storeCanteenItem(Request $request){
         $user = User::AuthenticateUser($request->header("apiToken"));
+
+        $client_id = $user->client_id;
         
         $cre = [
             'item_name'=>$request->item_name,
             'item_short_name'=>$request->item_short_name,
             'price'=>$request->price,
-            'canteen_id'=>$request->canteen_id,
+            'barcodevalue'=>$request->barcodevalue,
         ];
 
         $rules = [
             'item_name'=>'required',
             'item_short_name'=>'required',
             'price'=>'required',
-            'canteen_id'=>'required',
+            
         ];
+        if($request->has('id')){
+            $rules['barcodevalue'] = 'required';
+
+        }else{
+            $c_item = CanteenItem::where('barcodevalue', $request->barcodevalue)->where('client_id', $client_id)->first();
+            if($c_item){
+                $rules['barcodevalue'] = 'required|unique:canteen_items';
+            }else{
+                $rules['barcodevalue'] = 'required';
+            }
+        }
+
         $validator = Validator::make($cre,$rules);
+
         if($validator->passes()){
 
             $canteen_item = CanteenItem::find($request->id);
@@ -337,10 +372,11 @@ class AppApiController extends Controller {
             $canteen_item->item_name = $request->item_name; 
             $canteen_item->item_short_name = $request->item_short_name; 
             $canteen_item->price = $request->price; 
-            $canteen_item->canteen_id = $request->canteen_id; 
             $canteen_item->added_by = $user->id; 
+            $canteen_item->client_id = $user->client_id; 
+            // $canteen_item->godwon_id = $user->godwon_id; 
+            $canteen_item->barcodevalue = $request->barcodevalue; 
 
-            
             $canteen_item->save();
             $data['success'] = true;
             
@@ -354,9 +390,10 @@ class AppApiController extends Controller {
     }
     public function initCanteenItemsDrop(Request $request){
         $user = User::AuthenticateUser($request->header("apiToken"));
-        $canteen_id = $request->canteen_id;
 
-        $canteen_items = DB::table('canteen_items')->select('id as canteen_item_id','price','item_name')->where('canteen_id',$canteen_id)->get();
+        $client_id = $user->client_id;
+
+        $canteen_items = DB::table('canteen_items')->select('id as canteen_item_id','price','item_name','barcodevalue')->where('status',0)->where('stock','>',0)->where('client_id',$client_id)->get();
 
         foreach ($canteen_items as $key => $canteen_item) {
             $canteen_item->quantity  = 1;
@@ -371,13 +408,11 @@ class AppApiController extends Controller {
     public function initCanteenItemStocks (Request $request){
         $user = User::AuthenticateUser($request->header("apiToken"));
 
-        $canteen_id = $request->canteen_id;
+        $client_id = $user->client_id;
+
         $canteen_item_id = $request->canteen_item_id;
-        $item_stocks = DB::table('canteen_item_stocks')->where('canteen_item_stocks.canteen_item_id',$canteen_item_id)->where('canteen_item_stocks.canteen_id',$canteen_id)->get();
-    
-        foreach($item_stocks as $item_stock){
-            // $item->show_date = date("d M y",strtotime($item_stock->date));
-        }
+        $item_stocks = DB::table('canteen_item_stocks')->where('canteen_item_stocks.canteen_item_id',$canteen_item_id)->where('canteen_item_stocks.client_id',$client_id)->orderBy('id','DESC')->get();
+
         
         $data["success"] = true;
         $data["item_stocks"] = $item_stocks;
@@ -385,7 +420,10 @@ class AppApiController extends Controller {
     }
     public function editCanteenItemStocks(Request $request){
         $user = User::AuthenticateUser($request->header("apiToken"));
-        $canteen_id = $request->canteen_id;
+
+        $client_id = $user->client_id;
+
+
         $canteen_item_stock_id = $request->canteen_item_stock_id;
         $item_stock = DB::table('canteen_item_stocks')->where('id',$canteen_item_stock_id)->first();
 
@@ -395,16 +433,16 @@ class AppApiController extends Controller {
     }
     public function storeCanteenItemStock(Request $request){
         $user = User::AuthenticateUser($request->header("apiToken"));
+
+        $client_id = $user->client_id;
         
         $cre = [
             'canteen_item_id'=>$request->canteen_item_id,
-            'canteen_id'=>$request->canteen_id,
             'stock'=>$request->stock,
         ];
 
         $rules = [
             'canteen_item_id'=>'required',
-            'canteen_id'=>'required',
             'stock'=>'required',
         ];
 
@@ -412,17 +450,16 @@ class AppApiController extends Controller {
         if($validator->passes()){
 
             $ins_data = [
-                'canteen_id' => $request->canteen_id,
+                'client_id' => $client_id,
                 'canteen_item_id' => $request->canteen_item_id,
                 'stock' => $request->stock,
                 'added_by' => $user->id,
 
             ];
             $canteen_item = CanteenItem::find($request->canteen_item_id);
-            $current_item_stock = ($canteen_item->stock)?$canteen_item->stock:0;
+            $current_item_stock = (isset($canteen_item->stock))?$canteen_item->stock:0;
 
-            if($request->id){
-                
+            if($request->id){  
 
                 $canteen_item_stock = DB::table('canteen_item_stocks')->where('id',$request->id)->first();
                 $added_stock = $canteen_item->stock  - $canteen_item_stock->stock;
@@ -452,18 +489,170 @@ class AppApiController extends Controller {
         return Response::json($data, 200, []);
     }
 
-    public function canteenItemList(Request $request,$canteen_id=0){   
-        $user = User::AuthenticateUser($request->header("apiToken"));
-        $canteen_id = $request->canteen_id;
-      
-        $canteen_items = DailyEntry::canteenItemList($canteen_id);
+    // public function initCanteenItems(Request $request){
+    //     $user = User::AuthenticateUser($request->header("apiToken"));
+    //     $canteen_id = $request->canteen_id;
 
-        $data['success'] = true;
-        $data['canteen_items'] = $canteen_items;
-       
-        return Response::json($data,200,array());
+    //     $canteen_items = DB::table('canteen_items')->where('canteen_id',$canteen_id)->get();
 
-    }
+    //     $data["success"] = true;
+    //     $data["canteen_items"] = $canteen_items;
+    //     return Response::json($data,200,array());
+    // }
+    // public function editCanteenItem(Request $request){
+    //     $user = User::AuthenticateUser($request->header("apiToken"));
+    //     $canteen_item = CanteenItem::find($request->canteen_item_id);
+    //     if($canteen_item){
+    //         $canteen_item->price = $canteen_item->price*1;
+    //     }
+    //     $data["success"] = true;
+    //     $data["canteen_item"] = $canteen_item;
+
+    //     return Response::json($data,200,array());
+    // }
+    // public function storeCanteenItem(Request $request){
+    //     $user = User::AuthenticateUser($request->header("apiToken"));
+        
+    //     $cre = [
+    //         'item_name'=>$request->item_name,
+    //         'item_short_name'=>$request->item_short_name,
+    //         'price'=>$request->price,
+    //         'canteen_id'=>$request->canteen_id,
+    //     ];
+
+    //     $rules = [
+    //         'item_name'=>'required',
+    //         'item_short_name'=>'required',
+    //         'price'=>'required',
+    //         'canteen_id'=>'required',
+    //     ];
+    //     $validator = Validator::make($cre,$rules);
+    //     if($validator->passes()){
+
+    //         $canteen_item = CanteenItem::find($request->id);
+    //         $data['message'] = 'This item is updated successfully to the canteen';
+    //         if(!$canteen_item){
+    //             $canteen_item = new CanteenItem;
+    //             $data['message'] = 'This item is added successfully to the canteen';
+    //         }
+    //         $canteen_item->item_name = $request->item_name; 
+    //         $canteen_item->item_short_name = $request->item_short_name; 
+    //         $canteen_item->price = $request->price; 
+    //         $canteen_item->canteen_id = $request->canteen_id; 
+    //         $canteen_item->added_by = $user->id; 
+
+            
+    //         $canteen_item->save();
+    //         $data['success'] = true;
+            
+    //     } else {
+    //         $message = $validator->errors()->first();
+    //         $data['success'] = false;
+    //         $data['message'] = $message;
+            
+    //     }
+    //     return Response::json($data, 200, []);
+    // }
+    // public function initCanteenItemsDrop(Request $request){
+    //     $user = User::AuthenticateUser($request->header("apiToken"));
+    //     $canteen_id = $request->canteen_id;
+
+    //     $canteen_items = DB::table('canteen_items')->select('id as canteen_item_id','price','item_name')->where('canteen_id',$canteen_id)->get();
+
+    //     foreach ($canteen_items as $key => $canteen_item) {
+    //         $canteen_item->quantity  = 1;
+    //         $canteen_item->paid_amount = $canteen_item->price * $canteen_item->quantity; 
+    //     }
+
+    //     $data["success"] = true;
+    //     $data["canteen_items"] = $canteen_items;
+    //     return Response::json($data,200,array());
+    // }
+
+    // public function initCanteenItemStocks (Request $request){
+    //     $user = User::AuthenticateUser($request->header("apiToken"));
+
+    //     $canteen_id = $request->canteen_id;
+    //     $canteen_item_id = $request->canteen_item_id;
+    //     $item_stocks = DB::table('canteen_item_stocks')->where('canteen_item_stocks.canteen_item_id',$canteen_item_id)->where('canteen_item_stocks.canteen_id',$canteen_id)->get();
+    
+    //     foreach($item_stocks as $item_stock){
+    //         // $item->show_date = date("d M y",strtotime($item_stock->date));
+    //     }
+        
+    //     $data["success"] = true;
+    //     $data["item_stocks"] = $item_stocks;
+    //     return Response::json($data,200,array());
+    // }
+    // public function editCanteenItemStocks(Request $request){
+    //     $user = User::AuthenticateUser($request->header("apiToken"));
+    //     $canteen_id = $request->canteen_id;
+    //     $canteen_item_stock_id = $request->canteen_item_stock_id;
+    //     $item_stock = DB::table('canteen_item_stocks')->where('id',$canteen_item_stock_id)->first();
+
+    //     $data["success"] = true;
+    //     $data["item_stock"] = $item_stock;
+    //     return Response::json($data,200,array());
+    // }
+    // public function storeCanteenItemStock(Request $request){
+    //     $user = User::AuthenticateUser($request->header("apiToken"));
+        
+    //     $cre = [
+    //         'canteen_item_id'=>$request->canteen_item_id,
+    //         'canteen_id'=>$request->canteen_id,
+    //         'stock'=>$request->stock,
+    //     ];
+
+    //     $rules = [
+    //         'canteen_item_id'=>'required',
+    //         'canteen_id'=>'required',
+    //         'stock'=>'required',
+    //     ];
+
+    //     $validator = Validator::make($cre,$rules);
+    //     if($validator->passes()){
+
+    //         $ins_data = [
+    //             'canteen_id' => $request->canteen_id,
+    //             'canteen_item_id' => $request->canteen_item_id,
+    //             'stock' => $request->stock,
+    //             'added_by' => $user->id,
+
+    //         ];
+    //         $canteen_item = CanteenItem::find($request->canteen_item_id);
+    //         $current_item_stock = ($canteen_item->stock)?$canteen_item->stock:0;
+
+    //         if($request->id){
+                
+
+    //             $canteen_item_stock = DB::table('canteen_item_stocks')->where('id',$request->id)->first();
+    //             $added_stock = $canteen_item->stock  - $canteen_item_stock->stock;
+            
+    //             DB::table('canteen_item_stocks')->where('id',$request->id)->update($ins_data);
+    //             $data['message'] = "Successfully Updated";
+    //         }else{
+    //             $ins_data['date'] = date("Y-m-d");
+    //             $ins_data['created_at'] = date("Y-m-d H:i:s");
+    //             DB::table('canteen_item_stocks')->insert($ins_data);
+    //             $data['message'] = "Successfully Added";
+
+    //             $added_stock= $current_item_stock;
+    //         }
+    //         $added_stock = $added_stock+$request->stock;
+    //         $canteen_item->stock = $added_stock;
+    //         $canteen_item->save();
+    //         $data['success'] = true;
+
+            
+    //     } else {
+    //         $message = $validator->errors()->first();
+    //         $data['success'] = false;
+    //         $data['message'] = $message;
+            
+    //     }
+    //     return Response::json($data, 200, []);
+    // }
+
 
     
    

@@ -385,34 +385,34 @@ Route::group(['prefix'=>"api"], function(){
 		});
 	});
 
-	Route::group(['prefix'=>"godown-canteen"], function(){
-		Route::group(['prefix'=>"daily-entries"], function(){
-			Route::post('/init',[GodownCanteenController::class,'initEntries']);
-			Route::post('/edit-init',[GodownCanteenController::class,'editEntry']);
-			Route::post('/store',[GodownCanteenController::class,'store']);
-		});
+	// Route::group(['prefix'=>"godown-canteen"], function(){
+	// 	Route::group(['prefix'=>"daily-entries"], function(){
+	// 		Route::post('/init',[GodownCanteenController::class,'initEntries']);
+	// 		Route::post('/edit-init',[GodownCanteenController::class,'editEntry']);
+	// 		Route::post('/store',[GodownCanteenController::class,'store']);
+	// 	});
 
-		Route::group(['prefix'=>"canteen-items"], function(){
-			Route::post('/init',[GodownCanteenController::class,'initCanteenItems']);
-			Route::post('/edit',[GodownCanteenController::class,'editCanteenItem']);
-			Route::post('/store',[GodownCanteenController::class,'storeCanteenItem']);
-			Route::post('/drop-list',[GodownCanteenController::class,'initCanteenItemsDrop']);
-			Route::group(['prefix'=>"stocks"], function(){
-				Route::post('/init',[GodownCanteenController::class,'initCanteenItemStocks']);
-				Route::post('/edit',[GodownCanteenController::class,'editCanteenItemStocks']);
-				Route::post('/store',[GodownCanteenController::class,'storeCanteenItemStock']);
-			});
-		});
-	});
+	// 	Route::group(['prefix'=>"canteen-items"], function(){
+	// 		Route::post('/init',[GodownCanteenController::class,'initCanteenItems']);
+	// 		Route::post('/edit',[GodownCanteenController::class,'editCanteenItem']);
+	// 		Route::post('/store',[GodownCanteenController::class,'storeCanteenItem']);
+	// 		Route::post('/drop-list',[GodownCanteenController::class,'initCanteenItemsDrop']);
+	// 		Route::group(['prefix'=>"stocks"], function(){
+	// 			Route::post('/init',[GodownCanteenController::class,'initCanteenItemStocks']);
+	// 			Route::post('/edit',[GodownCanteenController::class,'editCanteenItemStocks']);
+	// 			Route::post('/store',[GodownCanteenController::class,'storeCanteenItemStock']);
+	// 		});
+	// 	});
+	// });
 
 	
 
-	Route::group(['prefix'=>"godowns"], function(){
-		Route::post('/init',[GodownsController::class,'init']);
-		Route::post('/edit',[GodownsController::class,'edit']);
-		Route::post('/store',[GodownsController::class,'store']);
-		Route::post('/init-history/{g_stock_id}',[GodownsController::class,'initHistory']);
-	});
+	// Route::group(['prefix'=>"godowns"], function(){
+	// 	Route::post('/init',[GodownsController::class,'init']);
+	// 	Route::post('/edit',[GodownsController::class,'edit']);
+	// 	Route::post('/store',[GodownsController::class,'store']);
+	// 	Route::post('/init-history/{g_stock_id}',[GodownsController::class,'initHistory']);
+	// });
 
 	Route::group(['prefix'=>"massage"], function(){
 		Route::post('/init',[MassageController::class,'initMassage']);

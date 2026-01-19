@@ -336,7 +336,7 @@ class AppApiController extends Controller {
             'item_name'=>$request->item_name,
             'item_short_name'=>$request->item_short_name,
             'price'=>$request->price,
-            'barcodevalue'=>$request->barcodevalue,
+            // 'barcodevalue'=>$request->barcodevalue,
         ];
 
         $rules = [

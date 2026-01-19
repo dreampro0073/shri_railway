@@ -11,22 +11,6 @@ use App\Models\DailyEntry, App\Models\User;
 
 class AppDailyEntryContoller extends Controller {
 
-	// public function inst(){
-	// 	$canteens = DB::table('canteens')->get();
-
-	// 	foreach ($canteens as $key => $canteen) {
-	// 		$items = DB::table('items')->get();
-
-	// 		foreach ($items as $key => $item) {
-	// 			DB::table('canteen_items')->insert([
-	// 				'canteen_id' => $canteen->id,
-	// 				'item_id' => $item->id,
-	// 				'stock' => 0
-	// 			]);
-	// 		}
-	// 	}
-	// }
-
 	public function dailyEntries(){
 		$sidebar = "daily-entries";
 		return view('admin.daily_entries.index',compact('sidebar'));
@@ -39,8 +23,7 @@ class AppDailyEntryContoller extends Controller {
 		$date = $request->date;
 		$max_per_page = 10;
 
-		$entries = DailyEntry::select('daily_entries.*')->where('canteen_id',$user->canteen_id);
-
+		$entries = DailyEntry::select('daily_entries.*')->where('client_id',$user->client_id);
 
 		if($request->search_field){
 
@@ -52,7 +35,7 @@ class AppDailyEntryContoller extends Controller {
             });
         }
 		
-		$entries = $entries->skip(($page_no-1)*$max_per_page)->take($max_per_page)->orderBy('id','DESC')->where('canteen_id',$user->canteen_id)->get();
+		$entries = $entries->skip(($page_no-1)*$max_per_page)->take($max_per_page)->orderBy('id','DESC')->where('client_id',$user->client_id)->get();
 
 		foreach ($entries as $key => $entry) {
 			$entry->time = date("h:i a,d M",strtotime($entry->created_at));
@@ -119,7 +102,7 @@ class AppDailyEntryContoller extends Controller {
 			$unique_id = strtotime("now");
 			$ins_data = [
 				'unique_id' => strtotime("now"),
-				'canteen_id' => $user->canteen_id,
+				'client_id' => $user->client_id,
 				'added_by' => $user->id,
 				'name' => $request->has('name')?$request->name:null,
 				'mobile' => $request->has('mobile')?$request->mobile:null,

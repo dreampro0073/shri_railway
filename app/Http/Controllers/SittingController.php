@@ -151,10 +151,18 @@ class SittingController extends Controller {
 		if($request->pnr_uid){
 			$entries = $entries->where('sitting_entries.pnr_uid', 'LIKE', '%'.$request->pnr_uid.'%');
 		}		
+		if($request->from_date){
+			$entries = $entries->where('sitting_entries.date', '>=', date("Y-m-d", strtotime($request->from_date)));
+		}		
+		if($request->to_date){
+			$entries = $entries->where('sitting_entries.date', "<=", date("Y-m-d", strtotime($request->to_date)));
+		}		
+		if($request->added_by){
+			$entries = $entries->where('sitting_entries.added_by', $request->added_by);
+		}		
 		
 		
-		$entries = $entries->orderBy("checkout_status", 'ASC')->orderBy('id', "DESC");
-		$entries = $entries->take(80);
+		$entries = $entries->orderBy("checkout_status", 'ASC')->orderBy('id', "DESC")->take(100);
 		$entries = $entries->get();
 		foreach ($entries as $item) {
 			$item->show_time = date("h:i A",strtotime($item->check_in)).' - '.date("h:i A",strtotime($item->check_out));
@@ -174,6 +182,7 @@ class SittingController extends Controller {
 		$data['pay_types'] = $pay_types;
 		$data['hours'] = $hours;
 		$data['rate_list'] = $rate_list;
+		$data['users'] = DB::table('users')->select('id','name')->where('priv','!=',4)->where("client_id", Auth::user()->client_id)->get();
 		return Response::json($data, 200, []);
 	}	
 	

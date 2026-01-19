@@ -14,10 +14,6 @@ use App\Models\CloakRoom, App\Models\Sitting, App\Models\Canteen, App\Models\Mas
 use App\Models\Shift;
 use App\Models\CollectedPenalities;
 
-
-
-
-
 class ShiftController extends Controller {	
 	public function index(){
 

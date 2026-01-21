@@ -19,7 +19,7 @@ use App\Models\CanteenItem;
 
 
 class AppApiController extends Controller {
-        public function getApiVersion($app_version){
+        public function getApiVersion(Request $request,$app_version){
         
         // $platform = (Input::get("type") == "ios")?"ios":"android";
 

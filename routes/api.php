@@ -27,6 +27,7 @@ Route::group(['prefix'=>"payment"], function(){
 
 Route::group(['prefix'=>"app/v2"], function(){
 
+    Route::get('api_version',[AppApiController::class,'getApiVersion']);
     Route::post('login',[AppApiController::class,'login']);
     Route::post('mobile-login',[AppApiController::class,'mLogin']);
 

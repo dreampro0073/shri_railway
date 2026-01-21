@@ -19,7 +19,34 @@ use App\Models\CanteenItem;
 
 
 class AppApiController extends Controller {
+        public function getApiVersion($app_version){
+        
+        // $platform = (Input::get("type") == "ios")?"ios":"android";
 
+        // $version = ($platform == "ios") ? 55 : 55; //ios , android
+        
+        // if($app_version >= $version){
+        //     $data['success'] = true;
+        // } else {
+            
+        //     $data['success'] = false;
+
+        //     if($platform == "ios"){
+        //         $data['url'] = "https://apps.apple.com/us/app/bbfs-dugout/id1502992022";
+        //         $data['force_login'] = true;
+        //     } else {
+        //         $data['url'] = "https://play.google.com/store/apps/details?id=com.bbfs.bbfs_coach&hl=en";
+        //         $data['force_login'] = true;
+        //     }
+            
+        // }
+
+        $data['success'] = true;
+        $data['url'] = "https://play.google.com/store/apps/details?id=com.bbfs.bbfs_coach&hl=en";
+        $data['force_login'] = true;
+
+        return Response::json($data,200,array());
+    }
 	public function login(Request $request){
 
 		$cre = ["email"=>$request->input("email"),"password"=>$request->input("password")];

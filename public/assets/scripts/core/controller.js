@@ -727,6 +727,7 @@ app.controller('sittingCtrl', function($scope , $http, $timeout , DBService, $in
     $scope.productName= '';
     $scope.old_hr = 0;
     $scope.checkout_th = 0;
+    $scope.users = [];
 
     // $scope.newEditCheckout = function(new_checkout_id){
     //     $scope.entry_id = new_checkout_id;
@@ -775,6 +776,7 @@ app.controller('sittingCtrl', function($scope , $http, $timeout , DBService, $in
                 $scope.hours = data.hours;
                 $scope.entries = data.entries;
                 $scope.rate_list = data.rate_list;
+                $scope.users = data.users;
                 $scope.updateCheckoutClass();
             }
             $("#productName").focus();

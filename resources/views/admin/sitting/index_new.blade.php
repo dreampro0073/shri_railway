@@ -17,30 +17,43 @@
                 </div>
                 <form name="filterForm"  novalidate>
                     <div class="row" style="font-size: 14px">
-
-                        <div class="col-md-8">
-                            <div class="row">
-                                <div class="col-md-2 form-group">
-                                    <label class="label-control">Slip ID</label>
-                                    <input type="text" class="form-control" ng-model="filter.slip_id" />
-                                </div>                    
-                                               
-                                <div class="col-md-3 form-group">
-                                    <label class="label-control">Name</label>
-                                    <input type="text" class="form-control" ng-model="filter.name" />
-                                </div>                    
-                                <div class="col-md-3 form-group">
-                                    <label class="label-control">Mobile</label>
-                                    <input type="text" class="form-control" ng-model="filter.mobile_no" />
-                                </div>
-                                <div class="col-md-2 form-group">
-                                    <label class="label-control">PNR</label>
-                                    <input type="text" class="form-control" ng-model="filter.pnr_uid" />
-                                </div>
-                              
-                            </div>
+                        <div class="col-md-3 form-group">
+                            <label class="label-control">Slip ID</label>
+                            <input type="text" class="form-control" ng-model="filter.slip_id" />
+                        </div>                    
+                                       
+                        <div class="col-md-3 form-group">
+                            <label class="label-control">Name</label>
+                            <input type="text" class="form-control" ng-model="filter.name" />
+                        </div>                    
+                        <div class="col-md-3 form-group">
+                            <label class="label-control">Mobile</label>
+                            <input type="text" class="form-control" ng-model="filter.mobile_no" />
                         </div>
-                        <div class="col-md-4 text-right" style="margin-top: 25px;" class="mb-2">
+                        <div class="col-md-3 form-group">
+                            <label class="label-control">PNR</label>
+                            <input type="text" class="form-control" ng-model="filter.pnr_uid" />
+                        </div>
+                        
+                        <div class="col-md-2 form-group">
+                            <label class="label-control">From Date</label>
+                            <input type="text" class="form-control datepicker" ng-model="filter.from_date" />
+                        </div>                                
+                        <div class="col-md-2 form-group">
+                            <label class="label-control">To Date</label>
+                            <input type="text" class="form-control datepicker" ng-model="filter.to_date" />
+                        </div>                                
+                        @if(Auth::user()->priv == 2)
+                            <div class="col-md-3 form-group">
+                                <label class="label-control">Added By</label>
+                                <select class="form-control" ng-model="filter.added_by">
+                                    <option value="">All</option>
+                                    <option value="@{{user.id}}" ng-repeat="user in users">@{{user.name}}</option>
+                                </select>
+                            </div>
+                        @endif
+
+                        <div class="col-md-5 text-right mb-2" style="margin-top: 32px;">
                             <button type="button" ng-click="init()" class="btn btn-primary-600 border border-primary-600 text-md btn-sm radius-8" >Search</button>
                             <button type="button" ng-click="filterClear()" class="btn btn-secondary-600 border border-primary-600 text-md btn-sm radius-8" >Clear</button>
                             @if(Auth::user()->priv !=4)

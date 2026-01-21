@@ -26,6 +26,10 @@ Route::group(['prefix'=>"payment"], function(){
 });
 
 Route::group(['prefix'=>"app/v2"], function(){
+
+    Route::post('login',[AppApiController::class,'login']);
+    Route::post('mobile-login',[AppApiController::class,'mLogin']);
+
     Route::group(['prefix'=>"daily-entries"], function(){
         Route::post('/init',[AppDailyEntryContoller::class,'initEntries']);
         Route::post('/edit-init',[AppDailyEntryContoller::class,'editEntry']);

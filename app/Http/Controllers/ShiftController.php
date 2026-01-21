@@ -47,6 +47,12 @@ class ShiftController extends Controller {
 
 		$input_date = isset($request->input_date) ? date("Y-m-d",strtotime($request->input_date)) : date("Y-m-d");
 
+		if(in_array(!$user->priv, [2] )){
+            $user_id = $user->id;
+        } else{
+            $user_id = $request->has('user_id')?$request->user_id:0;
+        }
+
 		$daily_data = Canteen::totalShiftData($input_date,$user_id,$client_id);
       
         $data['success'] = true;

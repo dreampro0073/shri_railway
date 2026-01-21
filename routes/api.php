@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\AppApiController;
 use App\Http\Controllers\AppDailyEntryContoller;
+use App\Http\Controllers\ShiftController;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();

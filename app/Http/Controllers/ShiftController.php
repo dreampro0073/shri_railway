@@ -58,6 +58,8 @@ class ShiftController extends Controller {
         $data['success'] = true;
 		$data['users'] = DB::table('users')->select('id as value','name as label')->where('priv','!=',4)->where("client_id", $client_id)->where('active',1)->get();
 
+		$data['shift_date'] = date("d-m-Y",strtotime($input_date));
+
 		$data['daily_data'] = $daily_data;
 		return Response::json($data, 200, []);
 

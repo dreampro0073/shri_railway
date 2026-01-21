@@ -40,7 +40,7 @@ class ShiftController extends Controller {
 		return Response::json($data, 200, []);
 	}
 
-	public function AppShiftinit(Request $request){
+	public function AppShiftInit(Request $request){
 		$apiToken =$request->header("apiToken");
 		$user = User::AuthenticateUser($apiToken);
 		$client_id = $user->client_id;

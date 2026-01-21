@@ -40,20 +40,21 @@ class ShiftController extends Controller {
 		return Response::json($data, 200, []);
 	}
 
-	public function Appinit(Request $request){
+	public function AppShiftinit(Request $request){
 		$apiToken =$request->header("apiToken");
 		$user = User::AuthenticateUser($apiToken);
-		$client_id = isset($request->client_id) ? $request->client_id : $user->client_id;
-		if($user->priv == 2){
-			CollectedPenalities::setCheckStatus();
-		}
-		$service_ids = Entry::getServiceIds($client_id);
-		$data = $this->getStatus($request->all(), $client_id, $service_ids);
-		$data['success'] = true;
+		$client_id = $user->client_id;
+
+		$input_date = isset($request->input_date) ? date("Y-m-d",strtotime($request->input_date)) : date("Y-m-d");
+
+		$daily_data = Canteen::totalShiftData($input_date,$user_id,$client_id);
+      
+        $data['success'] = true;
 		$data['users'] = DB::table('users')->select('id','name')->where('priv','!=',4)->where("client_id", $client_id)->where('active',1)->get();
-		$data['service_ids'] = $service_ids;
-		$data['clients'] = Sitting::getBranches();
+
+		$data['daily_data'] = $daily_data;
 		return Response::json($data, 200, []);
+
 	}
 	
 	public function print(Request $request, $type = 1){

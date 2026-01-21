@@ -50,10 +50,10 @@ class ShiftController extends Controller {
 		if(in_array(!$user->priv, [2] )){
             $user_id = $user->id;
         } else{
-            $user_id = $request->has('user_id')?$request->user_id:0;
+            $user_id = $request->has('user_id')?$request->user_id:$user->id;
         }
 
-		$daily_data = Canteen::totalShiftData($input_date,$user_id,$client_id);
+		$daily_data = Canteen::totalShiftData($input_date,$user_id,$client_id,'app');
       
         $data['success'] = true;
 		$data['users'] = DB::table('users')->select('id','name')->where('priv','!=',4)->where("client_id", $client_id)->where('active',1)->get();

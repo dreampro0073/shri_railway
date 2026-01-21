@@ -37,8 +37,8 @@ Route::group(['prefix'=>"app/v2"], function(){
         Route::post('/store',[AppDailyEntryContoller::class,'store']);
     });
     Route::group(['prefix'=>"shift"], function(){
-        Route::post('/init',[ShiftController::class,'init']);
-        Route::post('/prev-init',[ShiftController::class,'prevInit']);
+        Route::post('/init',[ShiftController::class,'Appinit']);
+        // Route::post('/prev-init',[ShiftController::class,'prevInit']);
 
     });
     Route::group(['prefix'=>"users"], function(){

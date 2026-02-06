@@ -119,6 +119,8 @@
                                        <a href="javascript:;" ng-if="item.checkout_status != 1 " ng-click="newEditCheckout(item.id)" class="btn btn-danger-600 border border-danger-600 text-md btn-sm radius-8">Checkout</a>
                                     @endif 
 
+                                    <!-- <a href="javascript:;" ng-if="item.checkout_status != 1 " ng-click="newEditCheckout(item.id)" class="btn btn-danger-600 border border-danger-600 text-md btn-sm radius-8">Checkout</a> -->
+
                                     @if(Auth::user()->priv == 2)
                                        <a onclick="return confirm('Are you sure?')" href="{{url('/admin/sitting/checkout-without-penalty')}}/@{{item.id}}" ng-if="item.checkout_status != 1 && item.check_class == 't-danger'" class="btn btn-warning-600 border border-warning-600 text-md btn-sm radius-8 mb-2">Checkout WP</a>
                                     @endif

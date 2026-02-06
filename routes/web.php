@@ -327,7 +327,7 @@ Route::group(['prefix'=>"api"], function(){
 		Route::post('/edit-init',[SittingController::class,'editEntry']);
 		Route::post('/store',[SittingController::class,'store']);
 		Route::post('/cal-check',[SittingController::class,'calCheck']);
-		Route::post('/checkout-init/{type}',[SittingController::class,'checkoutInit']);	
+		// Route::post('/checkout-init/{type}',[SittingController::class,'checkoutInit']);	
 		Route::post('/checkout-store',[SittingController::class,'checkoutStore']);
 		Route::post('/checkout-new/{type}',[SittingController::class,'newCheckout']);
 		Route::post('/checkout-alert',[SittingController::class,'checkoutAlert']);

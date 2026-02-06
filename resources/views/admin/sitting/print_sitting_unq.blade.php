@@ -56,10 +56,26 @@
             <b style="font-size: 18px;">Slip ID : {{ $print_data->slip_id }}</b>
         </div>
 
-        @if($type == 1)
+        @if($type == 1 && Auth::user()->client_id !=8)
         <div style="text-align:center;">
             <svg id="barcode"></svg>
         </div>
+        @endif
+
+        @if($type == 1 && Auth::user()->client_id == 8)
+        <div class="table-div">
+            <div class="w-50">
+                <div style="text-align:left;">
+                    <svg id="barcode"></svg>
+                </div>
+
+            </div>
+        <div class="w-50">
+            <div style="text-align:left;">
+                <svg id="barcode1"></svg>
+            </div>
+        </div>
+
         @endif
 
         <div class="table-div">
@@ -156,6 +172,13 @@
     <script>
         var bill_no = "{{ $print_data->unique_id }}";
         JsBarcode("#barcode", bill_no, {
+            lineColor: "#000",
+            width: 1,
+            height: 40,
+            displayValue: false
+        });
+
+        JsBarcode("#barcode1", bill_no, {
             lineColor: "#000",
             width: 1,
             height: 40,

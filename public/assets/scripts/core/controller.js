@@ -2348,7 +2348,20 @@ app.controller('entryRoomCtrl', function($scope , $http, $timeout , DBService,$i
         });
     }
 
+    $scope.markCheckin = (entry_id) => {
+        DBService.postCall({entry_id:entry_id}, '/api/rooms/markCheckin').then((data) => {
+            if (data.success) {
+                $scope.loading = false;
+                $scope.entry_id = 0;
+                $scope.init();
+                setTimeout(function(){
+                    window.open(base_url+'/admin/rooms/print/'+data.id,'_blank');
+                }, 800);
 
+            }
+            $scope.loading = false;
+        });
+    }
 
     $scope.changeAmount = () => {
         if($scope.type == 1){

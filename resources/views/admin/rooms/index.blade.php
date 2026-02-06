@@ -80,19 +80,21 @@
                                 <td>@{{item.discount_amount }}</td>
                                 
                                 <td>
-                                    <a href="javascript:;" ng-click="checkoutLoker(item.id)" class="btn btn-danger btn-sm">Checkout</a>
+                                    <a ng-if="item.status == 1" href="javascript:;" ng-click="checkoutLoker(item.id)" class="btn btn-danger btn-sm">Checkout</a>
                                     @if(Auth::user()->priv == 1)
                                     
                                     @endif
 
-                                    <a href="javascript:;" ng-click="edit(item.id)" class="btn btn-warning btn-sm">Edit</a>
+                                    <a ng-if="item.status == 1" href="javascript:;" ng-click="edit(item.id)" class="btn btn-warning btn-sm">Edit</a>
 
 
                                     @if(Auth::user()->priv == 2)
-                                       <a onclick="return confirm('Are you sure?')" href="{{url('/admin/rooms/checkout-without-penalty')}}/@{{item.id}}" ng-if="item.checkout_status != 1 && item.check_class == 't-danger'" class="btn btn-warning btn-sm">Checkout WP</a>
+                                       <a onclick="return confirm('Are you sure?')" href="{{url('/admin/rooms/checkout-without-penalty')}}/@{{item.id}}" ng-if="item.checkout_status != 1 && item.status == 1" ng-class="item.check_class == 't-danger' " class="btn btn-warning btn-sm">Checkout WP</a>
                                     @endif
 
-                                    
+                                    <a ng-click="markCheckin(item.id)" ng-if="item.online_booking == 1 && item.status == 0" href="javascript:;" class="btn btn-sm btn-primary">
+                                        Mark CheckIn
+                                    </a>
 
                                     <a href="{{url('/admin/rooms/print')}}/@{{item.id}}" class="btn btn-success btn-sm" target="_blank">Print</a>
                                 </td>

@@ -42,6 +42,12 @@
                         <i class="ri-hotel-bed-line"></i><span>Double Beds</span>
                     </a>
                 </li>
+
+                <li class="@if(isset($sidebar)) @if($sidebar == 'beds') active @endif @endif">
+                    <a href="{{url('/admin/rooms/4')}}">
+                        <i class="ri-hotel-bed-line"></i><span>Online Booking</span>
+                    </a>
+                </li>
             @endif
             @if(in_array(8, $service_ids) && Auth::user()->priv == 2)
                 <li class="@if(isset($sidebar)) @if($sidebar == 'all-entries') active @endif @endif">

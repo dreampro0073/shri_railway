@@ -3,9 +3,9 @@
 </button>
 <div class="">
     <div class="sidebar-logo d-flex align-items-center justify-content-between">
-        <a href="javascript:;" class="">
+        <!-- <a href="javascript:;" class="">
             <span>{{Session::get('client_name')}}</span>
-        </a>
+        </a> -->
         <button type="button" class="text-xxl d-xl-flex d-none line-height-1 sidebar-toggle text-neutral-500" aria-label="Collapse Sidebar">
             <i class="ri-contract-left-line"></i>
         </button>

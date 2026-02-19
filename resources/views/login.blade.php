@@ -41,7 +41,7 @@
     <div class="lg-w-50 px-24 py-32 d-flex justify-content-center align-items-center h-100">
         <div class="max-w-540-px min-wid mx-auto">
             <a href="{{url('/')}}" class="">
-                <img src="{{url('assets/img/aadh_new.png')}}" style="height:50px;width: auto;">
+                <img src="{{url('front-end/images/AashyaFinal1.png')}}" style="height:50px;width: auto;">
             </a>
             <div class="mt-32 mb-32">
                 <h1 class="h6 fw-bold text-primary-light mb-8">

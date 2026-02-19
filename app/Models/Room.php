@@ -281,5 +281,13 @@ class Room extends Model
        
     }
 
+    public static function updateAvailRoomStatus($type,$entry_id){
+        DB::table('room_availability')->where('room_type','=',$type)->where('booking_id',$entry_id)->update([
+                'status' => 2,
+            ]);
+        return 'done';
+       
+    }
+
     
 }

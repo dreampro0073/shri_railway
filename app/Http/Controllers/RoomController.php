@@ -59,15 +59,17 @@ class RoomController extends Controller {
 			$entries = $entries->where('room_entries.pnr_uid', 'LIKE', '%'.$request->pnr_uid.'%');
 		}		
 		
-		$entries = $entries->where('checkout_status',0)->where('status',1)->where('client_id',$client_id)->where('type',$type);
+		// $entries = $entries->where('checkout_status',0)->where('status',1)->where('client_id',$client_id)->where('type',$type);
 
-		// $entries = $entries->where('checkout_status',0)->where('client_id',$client_id);
+		$entries = $entries->where('checkout_status',0)->where('client_id',$client_id);
 
-		// if($type != 4){
-		// 	$entries = $entries->where('type',$type)->where('status',1);
-		// }else{
-		// 	$entries = $entries->where('online_booking',1)->where('status',0);
-		// }
+		if($type != 4){
+
+
+			$entries = $entries->where('type',$type)->where('status',1);
+		}else{
+			$entries = $entries->where('online_booking',1)->where('status',0);
+		}
 
 		$entries = $entries->orderBy('id', "DESC")->get();
 
@@ -208,6 +210,61 @@ class RoomController extends Controller {
 		$data['sl_beds'] = $sl_beds;
 		return Response::json($data, 200, []);
 	}
+
+	public function checkInit(Request $request){
+		$l_entry = Room::where('id', $request->entry_id)->where('client_id','=',Auth::user()->client_id)->first();
+
+		$sl_pods = [];
+		$sl_cabins = [];
+		$sl_beds = [];
+
+		if($l_entry){
+			$l_entry->mobile_no = $l_entry->mobile_no*1;
+			$l_entry->train_no = $l_entry->train_no*1;
+			$l_entry->pnr_uid = $l_entry->pnr_uid;
+			$l_entry->paid_amount = $l_entry->paid_amount*1;
+			$l_entry->total_amount = $l_entry->total_amount*1;
+			$l_entry->discount_amount = $l_entry->discount_amount*1;
+
+			$l_entry->check_in = date("h:i A",strtotime($l_entry->check_in));
+			$l_entry->check_out =date("h:i A",strtotime($l_entry->check_out));
+
+			$l_entry->show_e_ids = Room::getEnos($l_entry->type,$l_entry->e_ids);
+
+
+
+			$e_ids =  explode(',', $l_entry->e_ids);
+			
+			if($l_entry->type == 1){
+				$sl_pods = $e_ids;
+
+			}else if($l_entry->type == 2){
+				$sl_cabins = $e_ids;
+
+			}else{
+				$sl_beds = $e_ids;
+			}
+
+			$bm_amount = DB::table('room_e_entries')->where('client_id','=',Auth::user()->client_id)->where('status',0)->where('entry_id','=',$l_entry->id)->sum('paid_amount');
+			$l_entry->paid_amount = $l_entry->paid_amount + $bm_amount;
+			$l_entry->bm_amount = $bm_amount;
+		}
+
+		$balance = Room::getAmount($l_entry->type,$l_entry->hours_occ,sizeof($e_ids));
+		
+		$l_entry->total_amount = $balance;
+		$l_entry->balance_amount = $balance;
+		$l_entry->collect_amount = $balance;
+		$l_entry->total_balance = $l_entry->paid_amount+$l_entry->balance;
+
+		$data['success'] = true;
+		$data['l_entry'] = $l_entry;
+		$data['sl_pods'] = $sl_pods;
+		$data['sl_cabins'] = $sl_cabins;
+		$data['sl_beds'] = $sl_beds;
+		return Response::json($data, 200, []);
+	}
+
 	public function calCheck(Request $request){
 		
 		$check_in = $request->check_in;
@@ -324,6 +381,117 @@ class RoomController extends Controller {
 				DB::table("double_beds")->where('client_id','=',$client_id)->whereIn('id',$sl_beds)->update(['status'=>1]);
 			}
 			$entry->status = 1;
+
+			$entry->save();
+
+			$data['id'] = $entry->id;
+			$data['success'] = true;
+		} else {
+			$data['success'] = false;
+			$message = $validator->errors()->first();
+		}
+
+		return Response::json($data, 200, []);
+
+	}
+
+	public function markCheckin(Request $request,$type){
+
+		$user_id = Auth::id();
+		$client_id = Auth::user()->client_id;
+		$date = Entry::getPDate();
+
+		$cre = [
+			'name'=>$request->name,
+		];
+
+		$rules = [
+			'name'=>'required',
+		];
+		$validator = Validator::make($cre,$rules);
+		if($validator->passes()){
+			$total_amount = $request->total_amount;
+			$paid_amount = $request->paid_amount;
+			$balance_amount = $request->balance_amount;
+			if($request->id){
+				$entry = Room::find($request->id);
+				$message = "Updated Successfully!";
+				if($user_id != $entry->added_by){
+					DB::table('room_e_entries')->insert([
+						'entry_id' => $entry->id,
+						'added_by' => $user_id,
+						'client_id' => $client_id,
+						'date' => $date,
+						'pay_type' => $request->pay_type,
+						'type' => $type,
+						'shift' => $check_shift,
+						'paid_amount' => $request->balance_amount,
+						'created_at' => date("Y-m-d H:i:s"),
+						'current_time' => date("H:i:s"),
+					]);
+				}else{
+					$paid_amount = $paid_amount + $balance_amount;
+					$entry->paid_amount = $paid_amount;
+				}
+			} else {
+				$entry = new Room;
+				$message = "Stored Successfully!";
+				$entry->unique_id = strtotime('now');
+				$entry->paid_amount = $paid_amount;
+				$entry->added_by = $user_id;
+				$entry->pay_type = $request->pay_type;
+				$entry->created_at = date('Y-m-d H:i:s');
+				$entry->date = $date;
+				$entry->client_id = $client_id;
+
+			}
+
+			$entry->name = $request->name;
+			$entry->pnr_uid = $request->pnr_uid;
+			$entry->mobile_no = $request->mobile_no;
+			
+			$entry->hours_occ = $request->hours_occ ? $request->hours_occ : 0;
+
+			if($request->id){
+				$entry->check_in = date("H:i:s",strtotime($request->check_in));
+			}else{
+				$entry->check_in = date("H:i:s");
+			}
+			
+			$entry->total_amount = $total_amount;
+			$entry->discount_amount = $request->has('discount_amount')?$request->discount_amount:0;
+
+			$entry->remarks = $request->remarks;
+			$entry->shift = $check_shift;
+			$entry->type = $type;
+			$entry->save();
+			$no_of_min = $request->hours_occ*60;
+			$no_of_min = $no_of_min - 1;
+
+			$entry->check_out = date("H:i:s",strtotime("+".$no_of_min." minutes",strtotime($entry->check_in)));
+
+	        
+			$checkin_date = $date." ".$entry->check_in;
+			$checkout_date = date("Y-m-d H:i:s",strtotime("+".$no_of_min.' minutes',strtotime($checkin_date)));
+
+	        $entry->checkout_date = $checkout_date;
+			if($type ==1){
+				$sl_pods = $request->sl_pods;
+				$entry->e_ids = implode(',', $sl_pods);
+				DB::table("pods")->where('client_id','=',$client_id)->whereIn('id',$sl_pods)->update(['status'=>1]);
+			}
+			if($type == 2){
+				$sl_cabins = $request->sl_cabins;
+				$entry->e_ids = implode(',', $sl_cabins);
+				DB::table("single_cabins")->where('client_id','=',$client_id)->whereIn('id',$sl_cabins)->update(['status'=>1]);
+			}
+
+			if($type == 3){
+				$sl_beds = $request->sl_beds;
+				$entry->e_ids = implode(',', $sl_beds);
+				DB::table("double_beds")->where('client_id','=',$client_id)->whereIn('id',$sl_beds)->update(['status'=>1]);
+			}
+			$entry->status = 1;
 			$entry->save();
 
 			$data['id'] = $entry->id;
@@ -345,7 +513,7 @@ class RoomController extends Controller {
        
         $e_total = DB::table('room_e_entries')->select('paid_amount')->where('status',0)->where('entry_id', $print_data->id)->sum('paid_amount');
 
-       	$total_amount =  ($print_data->total_amount + $e_total) - $print_data->discount_amount;
+       	$total_amount =  ($total_amount + $e_total) - $print_data->discount_amount;
 
 
         if($print_data){
@@ -373,7 +541,12 @@ class RoomController extends Controller {
 
 			$e_ids = explode(',', $l_entry->e_ids);
 
-			Room::updateAvailStatus($l_entry->type,$e_ids);    
+			Room::updateAvailStatus($l_entry->type,$e_ids);  
+
+			if($l_entry->online_booking == 1)  {
+				
+				Room::updateAvailRoomStatus($l_entry->type,$l_entry->id); 
+			} 
     	} else {
     		$hour = round(($now_time - $checkout_time)/(60 * 60));
 
@@ -432,6 +605,10 @@ class RoomController extends Controller {
 		$e_ids = explode(',', $request->e_ids);
 		Room::updateAvailStatus($entry->type,$e_ids);
 
+		if($entry->online_booking == 1)  {
+			Room::updateAvailRoomStatus($entry->type,$entry->id); 
+		} 
+
 		$data['success'] = true;
 		$data['entry_id'] = $entry->id;
 		
@@ -449,7 +626,10 @@ class RoomController extends Controller {
 
 			$e_ids = explode(',', $entry->e_ids);
 
-			Room::updateAvailStatus($entry->type,$e_ids);   
+			Room::updateAvailStatus($entry->type,$e_ids); 
+			if($entry->online_booking == 1)  {
+				Room::updateAvailRoomStatus($entry->type,$entry->id); 
+			}
 		} 
 
 		return Redirect::back();
@@ -600,9 +780,14 @@ class RoomController extends Controller {
 	        ]);
 	    }
 
+	    $entry->show_e_ids = Room::getEnos($entry->type,$entry->e_ids);
+	    $entry->show_time = date("h:i A d-m-Y",strtotime($entry->checkin_date))." - ".date("h:i A d-m-Y",strtotime($entry->checkout_date));
+
 		$data['success'] = true;
 		$data['message'] = "Successfully Saved";
 		$data['entry_id'] = $entry->id;
+
+		$data['booked_entry'] = $entry;
 		return Response::json($data,200,[]);
 	}
 

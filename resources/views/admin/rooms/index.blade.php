@@ -31,7 +31,7 @@
                         <div class="col-md-4 text-right" style="margin-top: 25px;" class="mb-2">
                             <button type="button" ng-click="init()" class="btn  btn-primary btn-sm" >Search</button>
                             <button type="button" ng-click="filterClear()" class="btn  btn-warning btn-sm" >Clear</button>
-                            <button type="button" ng-click="add()" class="btn  btn-primary btn-sm" >Add</button>
+                            <button type="button" ng-if="type !=4" ng-click="add()" class="btn  btn-primary btn-sm" >Add</button>
                         </div>
                     </div>
                 </form>
@@ -48,6 +48,7 @@
                                     <span ng-if="type == 1">Pod</span>
                                     <span ng-if="type == 2">Cabin</span>
                                     <span ng-if="type == 3">Bed</span>
+                                    <span ng-if="type == 4">Online</span>
                                 </th>
                                 <th>Name</th>
                                 <th>Mobile No</th>

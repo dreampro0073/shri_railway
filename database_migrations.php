@@ -309,5 +309,7 @@ ALTER TABLE `orders` ADD `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTA
 ALTER TABLE `orders` CHANGE `created_at` `created_at` TIMESTAMP NULL DEFAULT NULL;
 
 
+ALTER TABLE `room_availability` ADD `client_id` INT NOT NULL DEFAULT '0' AFTER `id`;
+
 
 ?>

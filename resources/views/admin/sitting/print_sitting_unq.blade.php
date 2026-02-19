@@ -63,18 +63,19 @@
         @endif
 
         @if($type == 1 && Auth::user()->client_id == 8)
-        <div class="table-div">
-            <div class="w-50">
-                <div style="text-align:left;">
-                    <svg id="barcode"></svg>
-                </div>
+            <div class="table-div">
+                <div class="w-50">
+                    <div style="text-align:left;">
+                        <svg id="barcode"></svg>
+                    </div>
 
+                </div>
+                <div class="w-50">
+                    <div style="text-align:left;">
+                        <svg id="barcode1"></svg>
+                    </div>
+                </div>
             </div>
-        <div class="w-50">
-            <div style="text-align:left;">
-                <svg id="barcode1"></svg>
-            </div>
-        </div>
 
         @endif
 

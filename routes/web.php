@@ -463,6 +463,7 @@ Route::group(['prefix'=>"api"], function(){
 		Route::post('/init/{type}',[RoomController::class,'initEntry']);
 		Route::post('/init-all',[RoomController::class,'initAllEntry']);
 		Route::post('/edit-init',[RoomController::class,'editEntry']);
+		Route::post('/check-init',[RoomController::class,'checkInit']);
 		Route::post('/store/{type}',[RoomController::class,'store']);
 		Route::post('/cal-check',[RoomController::class,'calCheck']);
 		Route::post('/checkout-init',[RoomController::class,'checkoutInit']);

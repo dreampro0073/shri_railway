@@ -562,11 +562,11 @@ class SittingController extends Controller {
             ]);
         }
 
-        if ($type == 1 && Auth::user()->priv == 2 && $print_data->print_count >= $print_data->max_print) {
-            return view('admin.sitting.print_blocked', [
-                'message' => "Printing not allowed. Already printed {$print_data->print_count} time(s). Max: {$print_data->max_print}."
-            ]);
-        }
+        // if ($type == 1 && Auth::user()->priv == 2 && $print_data->print_count >= $print_data->max_print) {
+        //     return view('admin.sitting.print_blocked', [
+        //         'message' => "Printing not allowed. Already printed {$print_data->print_count} time(s). Max: {$print_data->max_print}."
+        //     ]);
+        // }
         
         $print_data->total_member = $print_data->no_of_adults + $print_data->no_of_children + $print_data->no_of_baby_staff;
         $print_data->adult_amount = 0;

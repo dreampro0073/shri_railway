@@ -604,6 +604,12 @@ footer {
   .mob-pt-0 {
     padding-top: 0; }
 
+  .logo {
+    padding: 9px 0; }
+    .logo img {
+      height: 40px !important;
+      width: auto; }
+
   header .menu {
     display: none; }
     header .menu li {

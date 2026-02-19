@@ -77,9 +77,11 @@ header {
   .login-btn:hover:after {
     display: none; }
 
-.logo img {
-  height: 60px;
-  width: auto; }
+.logo {
+  padding: 5px 0; }
+  .logo img {
+    height: 50px !important;
+    width: auto; }
 
 .home-slider .owl-item .item .image {
   position: relative; }

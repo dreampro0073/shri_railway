@@ -82,9 +82,6 @@
                                 
                                 <td>
                                     <a ng-if="item.status == 1" href="javascript:;" ng-click="checkoutLoker(item.id)" class="btn btn-danger btn-sm">Checkout</a>
-                                    @if(Auth::user()->priv == 1)
-                                    
-                                    @endif
 
                                     <a ng-if="item.status == 1" href="javascript:;" ng-click="edit(item.id)" class="btn btn-warning btn-sm">Edit</a>
 

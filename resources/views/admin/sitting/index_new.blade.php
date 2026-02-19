@@ -127,6 +127,7 @@
                                     <a ng-if="item.checkout_status != 1" href="javascript:;" ng-click="edit(item.id)" class="btn btn-primary-600 border border-primary-600 text-md btn-sm radius-8">Edit</a>
                                     
                                     <a ng-if="item.checkout_status != 1" href="{{url('/admin/sitting/print-unq/2/')}}/@{{item.barcodevalue}}"class="btn btn-seconday-600 border border-seconday-600 text-md btn-sm radius-8" target="_blank">Print</a>
+                                </td>
                             </tr>
                         </tbody>
                     </table>

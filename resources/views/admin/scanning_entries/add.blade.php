@@ -53,6 +53,9 @@
                                 <label>
                                     <input ng-click="calAmount()" type="radio" ng-model="formData.item_type_id" ng-value="2" required>&nbsp;Leased Items
                                 </label>
+                                <label>
+                                    <input ng-click="calAmount()" type="radio" ng-model="formData.item_type_id" ng-value="3" required>&nbsp;Leased Items II
+                                </label>
                             </div>
                         </div>
                         <div class="col-md-4">

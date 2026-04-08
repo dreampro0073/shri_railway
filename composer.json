@@ -5,29 +5,27 @@
     "keywords": ["framework", "laravel"],
     "license": "MIT",
     "require": {
-        "php": "^7.3|^8.0",
-        "barryvdh/laravel-dompdf": "^1.0",
+        "php": "^8.2",
+        "barryvdh/laravel-dompdf": "^3.0",
         "barryvdh/laravel-snappy": "^1.0",
-        "fruitcake/laravel-cors": "^2.0",
-        "guzzlehttp/guzzle": "^7.0.1",
-        "jgrossi/corcel": "^5.1",
-        "laravel/framework": "^8.65",
-        "laravel/sanctum": "^2.11",
-        "laravel/socialite": "^5.6",
-        "laravel/tinker": "^2.5",
-        "laravelcollective/html": "^6.3",
-        "mews/captcha": "^3.2",
-        "phpoffice/phpspreadsheet": "^1.23",
-        "picqer/php-barcode-generator": "^2.2",
-        "simplesoftwareio/simple-qrcode": "^1.5"
+        "guzzlehttp/guzzle": "^7.8",
+        "jgrossi/corcel": "^8.0",
+        "laravel/framework": "^11.0",
+        "laravel/sanctum": "^4.0",
+        "laravel/socialite": "^5.10",
+        "laravel/tinker": "^2.9",
+        "mews/captcha": "^3.4",
+        "mfonte/laravel-collective-html": "^1.0",
+        "phpoffice/phpspreadsheet": "^1.29",
+        "picqer/php-barcode-generator": "^2.3",
+        "simplesoftwareio/simple-qrcode": "^4.0"
     },
     "require-dev": {
-        "facade/ignition": "^2.5",
-        "fakerphp/faker": "^1.9.1",
-        "laravel/sail": "^1.0.1",
-        "mockery/mockery": "^1.4.4",
-        "nunomaduro/collision": "^5.10",
-        "phpunit/phpunit": "^9.5.10"
+        "fakerphp/faker": "^1.23",
+        "laravel/sail": "^1.25",
+        "mockery/mockery": "^1.6",
+        "nunomaduro/collision": "^8.0",
+        "phpunit/phpunit": "^11.0"
     },
     "autoload": {
         "psr-4": {
@@ -62,6 +60,9 @@
         }
     },
     "config": {
+        "platform": {
+            "php" : "8.2.0"
+        },
         "optimize-autoloader": true,
         "preferred-install": "dist",
         "sort-packages": true

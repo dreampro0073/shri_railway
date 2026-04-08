@@ -310,6 +310,6 @@ ALTER TABLE `orders` CHANGE `created_at` `created_at` TIMESTAMP NULL DEFAULT NUL
 
 
 ALTER TABLE `room_availability` ADD `client_id` INT NOT NULL DEFAULT '0' AFTER `id`;
-
+ALTER TABLE `users` ADD `deleted` TINYINT NOT NULL DEFAULT '0' AFTER `active`;
 
 ?>

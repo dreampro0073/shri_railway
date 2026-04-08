@@ -15,9 +15,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Aadhyasri Web Solutions</title>
-
     
-
     <link rel="icon" sizes="32x32" type="image/x-icon" href="{{url('assets/img/favicon.png')}}" >
 
     <link rel="stylesheet" type="text/css" href="{{url('assets1/css/remixicon.css')}}">
@@ -121,7 +119,6 @@
     <!-- <script type="text/javascript" src="{{url('assets1/js/lib/dataTables.min.js')}}"></script> -->
     <!-- <script type="text/javascript" src="{{url('assets1/js/lib/jquery-ui.min.js')}}"></script> -->
     <script type="text/javascript" src="{{url('assets1/js/app.js')}}"></script>
-
     <script type="text/javascript" src="{{url('plugins/bootstrap-datepicker/js/bootstrap-datepicker.js')}}"></script>
     <script type="text/javascript" src="{{url('assets/scripts/selectize.min.js')}}" ></script>
     <script type="text/javascript" src="{{url('assets/scripts/angular.min.js')}}" ></script>

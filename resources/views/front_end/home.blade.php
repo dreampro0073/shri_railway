@@ -12,7 +12,7 @@
 						<div class="container">
 							<div class="banner-heading">
 								<span>IT Business Consulting</span>
-								We are provide the<br> best IT Solutions
+								We Deliver Smart & Scalable<br> IT Solutions
 							</div>
 						</div>
 					</div>
@@ -24,8 +24,8 @@
 					<div class="content">
 						<div class="container">
 							<div class="banner-heading">
-								<span>IT Business Consulting</span>
-								We are provide the<br> best IT Solutions
+								<span>Digital Transformation & Technology Services</span>
+								Build Better Software.<br>Grow Your Business.
 							</div>
 						</div>
 					</div>

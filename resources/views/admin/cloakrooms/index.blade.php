@@ -133,7 +133,7 @@
                                     @endif
                                     
                                     @if(Auth::user()->priv == 2)
-                                       <a onclick="return confirm('Are you sure?')" href="{{url('/admin/cloak-rooms/checkout-without-penalty')}}/@{{item.id}}" ng-if="item.checkout_status != 1 && item.check_class == 't-danger'" class="btn btn-warning-600 border border-warning-600 text-md btn-sm radius-8 mb-2">Checkout WP</a>
+                                       <a onclick="return confirm('Are you sure?')" href="{{url('/admin/cloak-rooms/checkout-without-penalty')}}/@{{item.id}}" ng-if="item.checkout_status == 0" class="btn btn-warning-600 border border-warning-600 text-md btn-sm radius-8 mb-2">Checkout WP</a>
                                     @endif
                                     <a  href="{{url('/admin/cloak-rooms/print-unq/2')}}/@{{item.barcodevalue}}" class="btn mt-2 btn-success btn-sm" target="_blank">Print</a>
                                     

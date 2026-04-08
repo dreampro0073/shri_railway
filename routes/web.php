@@ -168,6 +168,8 @@ Route::group(['middleware'=>'auth'],function(){
 				Route::get('/print/{id?}', [CloakRoomController::class,'printPost']);
 				Route::get('/export', [CloakRoomController::class,'export']);
 				Route::get('/print-begs', [CloakRoomController::class,'printBegs']);
+
+				Route::get('/checkout-without-penalty/{id?}', [CloakRoomController::class,'checkoutWithoutPenalty']);
 			});	
 		});
 

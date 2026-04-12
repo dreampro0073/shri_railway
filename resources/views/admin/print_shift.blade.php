@@ -103,6 +103,11 @@
                     <td>
                         {{$data['total_shift_cash']}}
                     </td>
+                    @if(Auth::user()->client_id == 11)
+                    	<td>
+                        	{{$data['total_shift_dues']}}
+                    	</td>
+                    @endif
                     <td>
                         {{$data['total_collection']}}
                     </td>

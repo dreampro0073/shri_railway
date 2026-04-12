@@ -71,7 +71,7 @@ class ShiftController extends Controller {
 		$data = $this->getStatus($request->all(), $client_id, $service_ids);
 		// $data = Shift::getStatus($request->all(), $client_id, $service_ids);
 
-		dd($data);
+		// dd($data);
 		$current_shift = Entry::checkShift();
 		
         return view('admin.print_shift',[

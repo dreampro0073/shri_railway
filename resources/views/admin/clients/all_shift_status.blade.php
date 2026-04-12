@@ -12,6 +12,7 @@
                         <th>Name</th>
                         <th>UPI</th>
                         <th>Cash</th>
+                        <th>Dues</th>
                         <th>Total</th>
                     </tr>
                 </thead>
@@ -20,6 +21,7 @@
                         <td>@{{item.client_name}}</td>
                         <td>@{{item.total_shift_upi}}</td>
                         <td>@{{item.total_shift_cash}}</td>
+                        <td>@{{item.total_shift_dues}}</td>
                         <td>@{{item.total_collection}}</td>
                     </tr>
                 </tbody>

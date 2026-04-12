@@ -205,7 +205,7 @@ class ShiftController extends Controller {
 		$data['total_collection'] += $total_data['total_collection'];
 		$data['last_hour_upi_total'] += $total_data['last_hour_upi_total'];
 		$data['last_hour_cash_total'] += $total_data['last_hour_cash_total'];
-		$data['last_hour_cash_total'] += isset($total_data['last_hour_dues_total'])?$total_data['last_hour_dues_total']:0;
+		$data['last_hour_dues_total'] += isset($total_data['last_hour_dues_total'])?$total_data['last_hour_dues_total']:0;
 		$data['last_hour_total'] += $total_data['last_hour_total'];
 		return $data;
 

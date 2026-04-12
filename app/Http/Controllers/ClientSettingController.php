@@ -74,6 +74,7 @@ class ClientSettingController extends Controller {
         $grand_total->total_collection = 0;
         $grand_total->total_shift_cash = 0;
         $grand_total->total_shift_upi = 0;
+        $grand_total->total_shift_dues = 0;
 
         foreach ($clients as $key => $client) {
             $service_ids = DB::table('client_services')->where('client_id',$client->id)->where('services_id','!=',3)->pluck('services_id')->toArray();
@@ -90,11 +91,13 @@ class ClientSettingController extends Controller {
                 $client->total_shift_cash = ($c_shift['total_shift_cash'] > $client->hide_amount)?$c_shift['total_shift_cash'] - $client->hide_amount : $c_shift['total_shift_cash'];
                 
                 $client->total_shift_upi = $c_shift['total_shift_upi'];
+                $client->total_shift_dues = $c_shift['total_shift_dues'];
             }
 
             $grand_total->total_collection += $client->total_collection;
             $grand_total->total_shift_cash += $client->total_shift_cash;
             $grand_total->total_shift_upi += $client->total_shift_upi;
+            $grand_total->total_shift_dues += $client->total_shift_dues;
 
 
             array_push($shift_rows,$client);

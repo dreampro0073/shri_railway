@@ -26,9 +26,11 @@ class Shift extends Model
 
         $data['total_shift_upi'] = 0;
         $data['total_shift_cash'] = 0;
+        $data['total_shift_dues'] = 0;
         $data['total_collection'] = 0;
         $data['last_hour_upi_total'] = 0;
         $data['last_hour_cash_total'] = 0;
+        $data['last_hour_dues_total'] = 0;
         $data['last_hour_total'] = 0;
 
         $data_rows = [];
@@ -119,12 +121,13 @@ class Shift extends Model
 
         $data['total_shift_upi'] += $total_data['total_shift_upi'];
         $data['total_shift_cash'] += $total_data['total_shift_cash'];
+        $data['total_shift_dues'] += isset($total_data['total_shift_dues'])?$total_data['total_shift_dues']:0;
         $data['total_collection'] += $total_data['total_collection'];
         $data['last_hour_upi_total'] += $total_data['last_hour_upi_total'];
         $data['last_hour_cash_total'] += $total_data['last_hour_cash_total'];
+        $data['last_hour_dues_total'] += isset($total_data['last_hour_dues_total'])?$total_data['last_hour_dues_total']:0;
         $data['last_hour_total'] += $total_data['last_hour_total'];
         return $data;
-
     }
     
 }

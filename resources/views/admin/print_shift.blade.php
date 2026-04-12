@@ -59,6 +59,9 @@
                 	<th>#</th>
                     <th>UPI</th>
                     <th>Cash</th>
+                    @if(Auth::user()->client_id == 11)
+                    	<th>Dues</th>
+                    @endif
                     <th>Total</th>
                    
                 </tr>
@@ -77,6 +80,10 @@
                         <td>
                             {{$item['total_shift_cash']}}
                         </td>
+                        @if(Auth::user()->client_id == 11)
+	                    	<td> {{$item['total_shift_dues']}}</td>
+	                    @endif
+                        
                         <td>
                             {{$item['total_collection']}}
                         </td>

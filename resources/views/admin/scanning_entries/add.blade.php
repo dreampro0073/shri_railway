@@ -41,6 +41,7 @@
                                 <label>Pay Type</label><br>
                                 <label><input tabindex="-1" type="radio" ng-model="formData.pay_type" ng-value="1" required>&nbsp;Cash</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 <label><input type="radio" ng-model="formData.pay_type" ng-value="2" required>&nbsp;UPI</label>
+                                <label><input type="radio" ng-model="formData.pay_type" ng-value="3" required>&nbsp;Dues</label>
                             </div>
                         </div>
 

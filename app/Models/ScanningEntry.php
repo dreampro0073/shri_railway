@@ -59,9 +59,11 @@ class ScanningEntry extends Model
         
         $total_shift_cash = 0;
         $total_shift_upi = 0;       
+        $total_shift_dues = 0;       
 
         $last_hour_cash_total = 0;
         $last_hour_upi_total = 0;
+        $last_hour_dues_total = 0;
 
         $from_time = date('H:00:00');
         $to_time = date('H:59:59');
@@ -82,9 +84,13 @@ class ScanningEntry extends Model
 
             $total_shift_cash = ScanningEntry::where('client_id', $client_id)->where('date',$input_date)->where('pay_type',1)->sum("paid_amount");
 
+            $total_shift_dues = ScanningEntry::where('client_id', $client_id)->where('date',$input_date)->where('pay_type',3)->sum("paid_amount");
+
             $last_hour_upi_total = ScanningEntry::where('client_id', $client_id)->where('date',$input_date)->where('pay_type',2)->whereBetween('created_at', [date('Y-m-d H:00:00'), date("Y-m-d H:i:s")])->sum("paid_amount"); 
 
             $last_hour_cash_total = ScanningEntry::where('client_id', $client_id)->where('date',$input_date)->where('pay_type',1)->whereBetween('created_at', [date('Y-m-d H:00:00'), date("Y-m-d H:i:s")])->sum("paid_amount");
+
+            $last_hour_dues_total = ScanningEntry::where('client_id', $client_id)->where('date',$input_date)->where('pay_type',3)->whereBetween('created_at', [date('Y-m-d H:00:00'), date("Y-m-d H:i:s")])->sum("paid_amount");
         }else{
             
 
@@ -94,20 +100,29 @@ class ScanningEntry extends Model
 
             $total_shift_cash = ScanningEntry::where('client_id', $client_id)->where('added_by',$user_id)->where('date',$input_date)->where('pay_type',1)->sum("paid_amount");
 
+            $total_shift_dues = ScanningEntry::where('client_id', $client_id)->where('added_by',$user_id)->where('date',$input_date)->where('pay_type',3)->sum("paid_amount");
+
 
             $last_hour_upi_total = ScanningEntry::where('client_id', $client_id)->where('added_by',$user_id)->where('date',$input_date)->where('pay_type',2)->whereBetween('created_at', [date('Y-m-d H:00:00'), date("Y-m-d H:i:s")])->sum("paid_amount"); 
+
+            $last_hour_cash_total = ScanningEntry::where('client_id', $client_id)->where('added_by',$user_id)->where('date',$input_date)->where('pay_type',1)->whereBetween('created_at', [date('Y-m-d H:00:00'), date("Y-m-d H:i:s")])->sum("paid_amount"); 
+
+            $last_hour_dues_total = ScanningEntry::where('client_id', $client_id)->where('added_by',$user_id)->where('date',$input_date)->where('pay_type',3)->whereBetween('created_at', [date('Y-m-d H:00:00'), date("Y-m-d H:i:s")])->sum("paid_amount"); 
 
         }
     
 
         $total_collection = $total_shift_upi + $total_shift_cash;
-        $last_hour_total = $last_hour_upi_total + $last_hour_cash_total;
+        $total_collection = $total_shift_upi + $total_shift_cash + $total_shift_dues;
+        $last_hour_total = $last_hour_upi_total + $last_hour_cash_total + $last_hour_dues_total;
 
         $data['total_shift_upi'] = $total_shift_upi;
         $data['total_shift_cash'] = $total_shift_cash;
+        $data['total_shift_dues'] = $total_shift_dues;
         $data['total_collection'] = $total_collection;
         $data['last_hour_upi_total'] = $last_hour_upi_total;
         $data['last_hour_cash_total'] = $last_hour_cash_total;
+        $data['last_hour_dues_total'] = $last_hour_dues_total;
         $data['last_hour_total'] = $last_hour_total;
         $data['check_shift'] = $check_shift;
         $data['shift_date'] = $shift_date;

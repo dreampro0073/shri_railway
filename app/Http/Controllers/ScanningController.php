@@ -39,7 +39,7 @@ class ScanningController extends Controller {
 		$entries = $entries->take(500);
 		$entries = $entries->orderBy('id','DESC')->get();
 
-		$show_pay_types = Entry::showPayTypes();
+		$show_pay_types = Entry::showPayTypes1();
 
 
 		foreach ($entries as $key => $entry) {
@@ -49,7 +49,7 @@ class ScanningController extends Controller {
 		}
 
 		$rate_list = ScanningEntry::rateList();
-		$pay_types = Entry::payTypes();
+		$pay_types = Entry::payTypes1();
 		$incoming_types = ScanningEntry::showIncomingTypes();
 		$item_types = ScanningEntry::itemTypes();
 
@@ -144,7 +144,7 @@ class ScanningController extends Controller {
 		$print_data->incoming_type = "NA";
     	$show_incoming_types = ScanningEntry::showIncomingTypes();
 
-    	$show_pay_types  = Entry::showPayTypes();
+    	$show_pay_types  = Entry::showPayTypes1();
 
 		if($print_data){
 			$print_data->incoming_type = (isset($print_data->incoming_type_id))?$show_incoming_types[$print_data->incoming_type_id]:'NA';

@@ -46,48 +46,105 @@
     
             </div>
             @endif
-            <div class="dt-layout-row dt-layout-table">
-                <div class="dt-layout-cell">
-                    <table class="table table-bordered table-striped" style="width:100%;">
-                        <thead>
-                            <tr>
-                                <th rowspan="2"></th>
-                                <th colspan="3">Last Hour</th>
-                                <th colspan="3">Shift Collection</th>
-                            </tr>
-                            <tr>
-                                <th>UPI</th>
-                                <th>Cash</th>
-                                <th>Total</th>
-                                <th>UPI</th>
-                                <th>Cash</th>
-                                <th>Total</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr ng-repeat="item in data_rows">
-                                <td>@{{item.label}}</td> 
-                                <td>@{{item.last_hour_upi_total}}</td>
-                                <td>@{{item.last_hour_cash_total}}</td>
-                                <td>@{{item.last_hour_total}}</td>
-                                <td>@{{item.total_shift_upi}}</td>
-                                <td>@{{item.total_shift_cash}}</td>
-                                <td>@{{item.total_collection}}</td>
-                            </tr>                   
-                            <tr>
-                                <td><b>Grand Total</b></td> 
-                                <td><b>@{{last_hour_upi_total}}</b></td>
-                                <td><b>@{{last_hour_cash_total}}</b></td>
-                                <td><b>@{{last_hour_total}}</b></td>
-                                <td><b>@{{total_shift_upi}}</b></td>
-                                <td><b>@{{total_shift_cash}}</b></td>
-                                <td><b>@{{total_collection}}</b></td>
-                            </tr>
-                        
-                        </tbody>
-                    </table> 
-                </div> 
-            </div>
+
+            @if(Auth::user()->client_id != 11)
+                <div class="dt-layout-row dt-layout-table">
+                    <div class="dt-layout-cell">
+                        <table class="table table-bordered table-striped" style="width:100%;">
+                            <thead>
+                                <tr>
+                                    <th rowspan="2"></th>
+                                    <th colspan="3">Last Hour</th>
+                                    <th colspan="3">Shift Collection</th>
+                                </tr>
+                                <tr>
+                                    <th>UPI</th>
+                                    <th>Cash</th>
+                                   
+                                    <th>Total</th>
+                                    <th>UPI</th>
+                                    <th>Cash</th>
+                                    
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="item in data_rows">
+                                    <td>@{{item.label}}</td> 
+                                    <td>@{{item.last_hour_upi_total}}</td>
+                                    <td>@{{item.last_hour_cash_total}}</td>
+                                   
+                                    <td>@{{item.last_hour_total}}</td>
+                                    <td>@{{item.total_shift_upi}}</td>
+                                    <td>@{{item.total_shift_cash}}</td>
+                                    
+                                    <td>@{{item.total_collection}}</td>
+                                </tr>                   
+                                <tr>
+                                    <td><b>Grand Total</b></td> 
+                                    <td><b>@{{last_hour_upi_total}}</b></td>
+                                    <td><b>@{{last_hour_cash_total}}</b></td>
+                                    
+                                    <td><b>@{{last_hour_total}}</b></td>
+                                    <td><b>@{{total_shift_upi}}</b></td>
+                                    <td><b>@{{total_shift_cash}}</b></td>
+                                    
+                                    <td><b>@{{total_collection}}</b></td>
+                                </tr>
+                            </tbody>
+                        </table> 
+                    </div> 
+                </div>
+            @else
+                <div class="dt-layout-row dt-layout-table">
+                    <div class="dt-layout-cell">
+                        <table class="table table-bordered table-striped" style="width:100%;">
+                            <thead>
+                                <tr>
+                                    <th rowspan="2"></th>
+                                    <th colspan="3">Last Hour</th>
+                                    <th colspan="3">Shift Collection</th>
+                                </tr>
+                                <tr>
+                                    <th>UPI</th>
+                                    <th>Cash</th>
+                                    <th>Dues</th>
+                                    <th>Total</th>
+                                    <th>UPI</th>
+                                    <th>Cash</th>
+                                    <th>Dues</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="item in data_rows">
+                                    <td>@{{item.label}}</td> 
+                                    <td>@{{item.last_hour_upi_total}}</td>
+                                    <td>@{{item.last_hour_cash_total}}</td>
+                                    <td>@{{item.last_hour_dues_total}}</td>
+                                    <td>@{{item.last_hour_total}}</td>
+                                    <td>@{{item.total_shift_upi}}</td>
+                                    <td>@{{item.total_shift_cash}}</td>
+                                    <td>@{{item.total_shift_dues}}</td>
+                                    <td>@{{item.total_collection}}</td>
+                                </tr>                   
+                                <tr>
+                                    <td><b>Grand Total</b></td> 
+                                    <td><b>@{{last_hour_upi_total}}</b></td>
+                                    <td><b>@{{last_hour_cash_total}}</b></td>
+                                    <td><b>@{{last_hour_dues_total}}</b></td>
+                                    <td><b>@{{last_hour_total}}</b></td>
+                                    <td><b>@{{total_shift_upi}}</b></td>
+                                    <td><b>@{{total_shift_cash}}</b></td>
+                                    <td><b>@{{total_shift_dues}}</b></td>
+                                    <td><b>@{{total_collection}}</b></td>
+                                </tr>
+                            </tbody>
+                        </table> 
+                    </div> 
+                </div>
+            @endif
+           
             
         </div>
     </div>

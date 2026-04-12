@@ -1403,10 +1403,12 @@ app.controller('shiftCtrl', function($scope , $http, $timeout , DBService) {
                
                 $scope.total_shift_upi = data.total_shift_upi ; 
                 $scope.total_shift_cash = data.total_shift_cash ; 
+                $scope.total_shift_dues = data.total_shift_dues ; 
                 $scope.total_collection = data.total_collection ; 
 
                 $scope.last_hour_upi_total = data.last_hour_upi_total ; 
                 $scope.last_hour_cash_total = data.last_hour_cash_total ; 
+                $scope.last_hour_dues_total = data.last_hour_dues_total ; 
                 $scope.last_hour_total = data.last_hour_total ;
                 $scope.change_data = data.chage_pay_type_data ;
                 

@@ -37,13 +37,28 @@ class Entry extends Model
         return $ar;
     }
 
+    public static function showPayTypes(){
+        return [1=>'Cash',2=>"UPI"];
+    }
+
+    public static function payTypes1(){
+        $ar = [];
+        $ar[] = ['value'=>1,'label'=>'Cash'];
+        $ar[] = ['value'=>2,'label'=>'UPI'];
+        $ar[] = ['value'=>3,'label'=>'Dues'];
+
+        return $ar;
+    }
+
+    public static function showPayTypes1(){
+        return [1=>'Cash',2=>"UPI",3=>"Dues"];
+    }
+
     public static function getAvailLockers(){
         return DB::table('lockers')->where('status',0)->get();
     }
 
-    public static function showPayTypes(){
-        return [1=>'Cash',2=>"UPI"];
-    }
+    
 
     public static function hours(){
         $ar = [];

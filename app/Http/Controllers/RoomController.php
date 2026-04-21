@@ -513,7 +513,7 @@ class RoomController extends Controller {
        
         $e_total = DB::table('room_e_entries')->select('paid_amount')->where('status',0)->where('entry_id', $print_data->id)->sum('paid_amount');
 
-       	$total_amount =  ($total_amount + $e_total) - $print_data->discount_amount;
+       	$total_amount =  ($total_amount + $e_total);
 
 
         if($print_data){

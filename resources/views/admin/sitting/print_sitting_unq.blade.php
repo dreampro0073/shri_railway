@@ -193,7 +193,7 @@
         
         window.onload = function() {
             var slipId = "{{ $print_data->id }}";
-            if(client_id == 1){
+            if(client_id == 1 || client_id == 2 || client_id == 3){
                 if (sessionStorage.getItem("printed_" + slipId)) {
                     alert("This slip has already been printed. Only 1 copy is allowed.");
                     return;

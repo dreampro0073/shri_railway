@@ -49,7 +49,7 @@
                                
                                 <td>@{{ item.unique_id }}</td>
                                 <td>@{{ item.name }}</td>
-                                <td>@{{ item.checkin_date }}</td>
+                                <td>@{{ item.show_date }}</td>
                                 <td>
                                     <span ng-if="item.pay_type == 1">Cash</span>
                                     <span ng-if="item.pay_type == 2">UPI</span>

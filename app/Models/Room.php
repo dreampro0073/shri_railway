@@ -135,7 +135,6 @@ class Room extends Model
             }
         }
         return $balance;
-       
     }
 
     public static function days(){

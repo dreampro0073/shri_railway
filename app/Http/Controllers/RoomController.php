@@ -688,7 +688,8 @@ class RoomController extends Controller {
 	}
 
 	public function bookRoom(Request $request){
-		$client_id = 1;
+		$client_id = 10;
+
 
 		$hours_occ = $request->hours_occ;
 		$type = $request->type;
@@ -696,8 +697,11 @@ class RoomController extends Controller {
 		$date = date("Y-m-d",strtotime($request->date));
 		$check_in = date("H:i:s",strtotime($request->check_in));
 
+
+
 		$no_of_min = $hours_occ*60 - 1;
 		$check_out = date("H:i:s",strtotime("+".$no_of_min." minutes",strtotime($check_in)));
+
 
 		$checkin_date = $date." ".$check_in;
 		$checkout_date = date("Y-m-d H:i:s",strtotime("+".$no_of_min.' minutes',strtotime($checkin_date)));
@@ -723,7 +727,9 @@ class RoomController extends Controller {
 	        ->limit($no_of_rooms)
 	        ->pluck('id');
 
-	    if ($availableIds->count() < $no_of_rooms) {
+	    $count = $availableIds->count();
+	    // dd($count);
+	    if ($count < $no_of_rooms) {
 	        DB::rollBack();
 	        return response()->json([
 	            'success' => false,

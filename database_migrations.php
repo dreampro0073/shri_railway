@@ -312,4 +312,9 @@ ALTER TABLE `orders` CHANGE `created_at` `created_at` TIMESTAMP NULL DEFAULT NUL
 ALTER TABLE `room_availability` ADD `client_id` INT NOT NULL DEFAULT '0' AFTER `id`;
 ALTER TABLE `users` ADD `deleted` TINYINT NOT NULL DEFAULT '0' AFTER `active`;
 
+ALTER TABLE `room_entries` ADD `no_of_rooms` INT NOT NULL DEFAULT '0' AFTER `nos`;
+
+
+//Deployed To PROD
+ALTER TABLE `massage_entries` ADD `checkin_date` DATE NULL DEFAULT NULL AFTER `date`;ALTER TABLE `massage_entries` CHANGE `checkin_date` `checkin_date` DATETIME NULL DEFAULT NULL;
 ?>

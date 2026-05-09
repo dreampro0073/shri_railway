@@ -32,6 +32,9 @@ class MassageController extends Controller {
 		$m_entries = $m_entries->where('client_id',Auth::user()->client_id)->take(200);
 
 		$m_entries = $m_entries->get();
+		foreach ($m_entries as $key => $entry) {
+			$entry->show_date = date("d-m-Y H:i A",strtotime($entry->created_at));
+		}
 		$show_pay_types = Entry::showPayTypes();
 		$pay_types = Entry::payTypes();
 
@@ -101,6 +104,7 @@ class MassageController extends Controller {
 
 			$date = Entry::getPDate();
 	        $entry->date = $date;
+	        $entry->checkin_date = date("Y-m-d H:i:s");
 			$entry->save();
 	
 			$data['id'] = $entry->id;

@@ -82,7 +82,7 @@
 			</div>
 			
 			<div class="w-50">
-				<span class="text">Date: <b><?php echo date("d-m-Y H:i:s",strtotime($print_data->checkin_date)); ?></b></span>
+				<span class="text">Date: <b><?php echo date("d-m-Y H:i A",strtotime($print_data->checkin_date)); ?></b></span>
 			</div>
 		</div>
 		<div class="table-div" style="margin-bottom:2px;">

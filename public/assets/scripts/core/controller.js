@@ -2385,6 +2385,18 @@ app.controller('entryRoomCtrl', function($scope , $http, $timeout , DBService,$i
         });
     }  
 
+    $scope.deleteBooking = function(entry_id){
+
+        $scope.entry_id = entry_id;
+      
+        DBService.postCall({entry_id : $scope.entry_id}, '/api/rooms/delete-room-entery').then((data) => {
+            if (data.success) {
+                $scope.init();
+            }
+            
+        });
+    }  
+
     $scope.changeAmount = () => {
         if($scope.formData.type == 1){
             $scope.changeAmountPod();

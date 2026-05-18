@@ -317,4 +317,12 @@ ALTER TABLE `room_entries` ADD `no_of_rooms` INT NOT NULL DEFAULT '0' AFTER `nos
 
 //Deployed To PROD
 ALTER TABLE `massage_entries` ADD `checkin_date` DATE NULL DEFAULT NULL AFTER `date`;ALTER TABLE `massage_entries` CHANGE `checkin_date` `checkin_date` DATETIME NULL DEFAULT NULL;
+
+ALTER TABLE `room_availability` CHANGE `status` `status` TINYINT(4) NULL DEFAULT '1' COMMENT '1--> Deleted';
+
+ALTER TABLE `room_entries` ADD `deleted` TINYINT NOT NULL DEFAULT '0' AFTER `status`;
+
+ALTER TABLE `room_entries` CHANGE `deleted` `deleted` TINYINT(4) NOT NULL DEFAULT '0' COMMENT '1-->deleted';
+
+ALTER TABLE `room_availability` CHANGE `status` `status` TINYINT(4) NULL DEFAULT '0' COMMENT '1--> Deleted';
 ?>

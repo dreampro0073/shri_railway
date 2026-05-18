@@ -110,7 +110,7 @@
 			</div>
 		</div>
 		<div>
-			<span class="text">In Time: <b>{{date("h:i A, d M y",strtotime($print_data->created_at))}}</b></span>
+			<span class="text">In Time: <b>{{date("h:i A, d M y",strtotime($print_data->checkin_date))}}</b></span>
 		</div>
 		<div>
 			

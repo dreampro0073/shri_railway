@@ -18,6 +18,7 @@ Route::group(['prefix'=>"rooms"], function(){
     Route::post('/get-checkout-time',[RoomController::class,'getCheckoutTime']);
     Route::post('/book-room',[RoomController::class,'bookRoom']);
     Route::post('/markCheckin',[RoomController::class,'markCheckin']);
+    Route::post('/delete-room-entery',[RoomController::class,'deleteRoomEntery']);
 
 });
 

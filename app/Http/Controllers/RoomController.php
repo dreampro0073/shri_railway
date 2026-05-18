@@ -51,6 +51,9 @@ class RoomController extends Controller {
 
 		if($request->name){
 			$entries = $entries->where('room_entries.name', 'LIKE', '%'.$request->name.'%');
+		}	
+		if($request->id){
+			$entries = $entries->where('room_entries.id','=',$request->id);
 		}		
 		if($request->mobile_no){
 			$entries = $entries->where('room_entries.mobile_no', 'LIKE', '%'.$request->mobile_no.'%');
@@ -71,7 +74,7 @@ class RoomController extends Controller {
 			$entries = $entries->where('online_booking',1)->where('status',0);
 		}
 
-		$entries = $entries->orderBy('id', "DESC")->get();
+		$entries = $entries->where('deleted',0)->orderBy('id', "DESC")->get();
 
 		foreach ($entries as $key => $item) {
 			$bm_amount = DB::table('room_e_entries')->where('status',0)->where('entry_id','=',$item->id)->sum('paid_amount');
@@ -282,7 +285,7 @@ class RoomController extends Controller {
 
 
 	public function store(Request $request,$type){
-
+		// dd($request->all());
 		$user_session_id = Auth::user()->session_id;
 		$user_id = Auth::id();
 		$client_id = Auth::user()->client_id;
@@ -342,7 +345,16 @@ class RoomController extends Controller {
 			$entry->hours_occ = $request->hours_occ ? $request->hours_occ : 0;
 
 			if($request->id){
-				$entry->check_in = date("H:i:s",strtotime($request->check_in));
+				if($request->online_booking == 1 && $request->status == 0){
+					$entry->check_in = date("H:i:s");
+					$entry->added_by = $user_id;
+					$entry->date = $date;
+					$entry->pay_type = $request->pay_type;
+
+					 
+				}else{
+					$entry->check_in = date("H:i:s",strtotime($request->check_in));
+				}
 			}else{
 				$entry->check_in = date("H:i:s");
 			}
@@ -360,9 +372,10 @@ class RoomController extends Controller {
 			$entry->check_out = date("H:i:s",strtotime("+".$no_of_min." minutes",strtotime($entry->check_in)));
 
 	        
-			$checkin_date = $date." ".$entry->check_in;
+			$checkin_date = $entry->date." ".$entry->check_in;
 			$checkout_date = date("Y-m-d H:i:s",strtotime("+".$no_of_min.' minutes',strtotime($checkin_date)));
 
+			$entry->checkin_date = $checkin_date;
 	        $entry->checkout_date = $checkout_date;
 			if($type ==1){
 				$sl_pods = $request->sl_pods;
@@ -396,9 +409,11 @@ class RoomController extends Controller {
 	}
 
 	public function markCheckin(Request $request,$type){
+		dd($request->all());
+		$user = User::AuthenticateUser($request->header("apiToken"));
+        $user_id = $user->id;
 
-		$user_id = Auth::id();
-		$client_id = Auth::user()->client_id;
+		$client_id =$user->client_id;
 		$date = Entry::getPDate();
 
 		$cre = [
@@ -499,6 +514,33 @@ class RoomController extends Controller {
 		} else {
 			$data['success'] = false;
 			$message = $validator->errors()->first();
+		}
+
+		return Response::json($data, 200, []);
+
+	}
+
+	public function deleteRoomEntery(Request $request){
+		$user = User::AuthenticateUser($request->header("apiToken"));
+        $user_id = $user->id;
+
+		$client_id =$user->client_id;
+		
+		$date = Entry::getPDate();
+		$entry_id = $request->entry_id;
+
+		$entry = Room::find($entry_id);
+
+		if($entry){
+
+			DB::table('room_availability')->where('booking_id',$entry_id)->update(['status'=>1]);
+			DB::table('room_entries')->where('id',$entry_id)->update(['deleted'=>1]);
+
+			$data['success'] = true;
+			$data['message'] = "Successfully Deleted";
+		}else{
+			$data['success'] = false;
+			$data['message'] = "Someting went to Wrong";
 		}
 
 		return Response::json($data, 200, []);
@@ -722,7 +764,7 @@ class RoomController extends Controller {
 	              ->where('room_type', $type)
 	              ->where('from_datetime', '<', $checkout_date)
 	              ->where('to_datetime', '>', $checkin_date)
-	              ->where('status', 1);
+	              ->where('status', 0);
 	        })
 	        ->limit($no_of_rooms)
 	        ->pluck('id');
@@ -750,6 +792,7 @@ class RoomController extends Controller {
 		$entry->client_id = $client_id;
 		$entry->added_by = User::systemCreatedId();
 		$entry->online_booking = 1;
+		$entry->unique_id = strtotime('now');
 		$entry->save();
 
 		// if($entry->full_payment == 1){
@@ -780,7 +823,7 @@ class RoomController extends Controller {
 	            'booking_id' => $entry->id,
 	            'from_datetime' => $entry->checkin_date,
 	            'to_datetime' => $entry->checkout_date,
-	            'status' => 1,
+	            'status' => 0,
 	            'created_at' => now(),
 	            'updated_at' => now()
 	        ]);

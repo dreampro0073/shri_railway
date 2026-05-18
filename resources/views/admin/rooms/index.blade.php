@@ -10,6 +10,10 @@
                         <div class="col-md-8">
                             <div class="row">
                                 <div class="col-md-3 form-group">
+                                    <label class="label-control">Booking Id</label>
+                                    <input type="text" class="form-control" ng-model="filter.id" />
+                                </div>  
+                                <div class="col-md-3 form-group">
                                     <label class="label-control">Bill Number</label>
                                     <input type="text" class="form-control" ng-model="filter.unique_id" />
                                 </div>                    
@@ -64,7 +68,20 @@
                             <tr ng-repeat="item in entries " ng-class="item.check_class">
                                 <td>@{{ $index+1 }}</td>
                                 <td>@{{ item.unique_id }}</td>
-                                <td>@{{ item.show_e_ids }}</td>
+                                <td>
+                                    <span ng-if="item.type == 1" style="font-size:12px;">
+                                        Pods -
+                                    </span>
+                                    <span ng-if="item.type == 2" style="font-size:12px;">
+                                        Single Cabin -
+                                    </span>
+                                    <span ng-if="item.type == 3" style="font-size:12px;">
+                                        Double Bed -
+                                    </span>
+                                    <span>
+                                        @{{ item.show_e_ids }}
+                                    </span>
+                                </td>
                                 <td>@{{ item.name }}</td>
                                 <td>@{{ item.mobile_no }}</td>
                                 <td>@{{ item.check_in }}/@{{ item.checkout_date }}</td>
@@ -95,6 +112,8 @@
                                     </a>
 
                                     <a href="{{url('/admin/rooms/print')}}/@{{item.id}}" class="btn btn-success btn-sm" target="_blank">Print</a>
+
+                                    <a ng-click="deleteBooking(item.id)" ng-if="type == 4" class="btn  btn-warning btn-sm" href="javascript:;">Delete</a>
                                 </td>
                             </tr>
                         </tbody>

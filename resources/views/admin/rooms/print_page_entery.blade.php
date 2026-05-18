@@ -73,6 +73,9 @@
 				Double Beds
 			@endif
 		</h5>
+		<div style="text-align:center;">
+			<span class="text">Booking Id: <b>{{ $print_data->id }}</b></span>
+		</div>
 		<div class="table-div">
 			<div class="w-50">
 				<span class="text">Bill No: <b>{{ $print_data->unique_id }}</b></span>

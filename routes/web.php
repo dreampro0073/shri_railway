@@ -40,7 +40,6 @@ use App\Http\Controllers\WebController;
 |
 */
 
-
 Route::get('/login', [UserController::class,'login'])->name("login");
 Route::get('/', [WebController::class,'home'])->name("home");
 Route::get('/webcam', [UserController::class,'webCam']);
@@ -585,5 +584,4 @@ Route::group(['prefix'=>"api"], function(){
 // 		Route::post('/edit-init',[ApiController::class,'editItem']);
 // 		Route::post('/store',[ApiController::class,'storeItem']);
 // 	});
-	
 // });

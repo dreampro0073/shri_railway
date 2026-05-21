@@ -126,9 +126,13 @@
                         </div>
                     </div>
                     <div class="pt-4">
-                        <button type="submit" class="btn btn-primary" ng-disabled="loading">
-                            <span ng-if="!loading">Submit</span>
-                            <span ng-if="loading">Loading...</span>
+                        <button type="submit" class=" btn btn-primary-600 align-items-center justify-content-center gap-6 d-inline-flex" ng-disabled="loading">
+                            <span>
+                                <span class="d-flex text-md">
+                                  <i class="ri-add-large-line"></i>
+                                </span>
+                            </span>
+                            Submit
                         </button> 
                     </div>  
                     
@@ -249,7 +253,7 @@
                         </div>
                     </div>
                     <div class="pt-4">
-                        <button type="submit" class="btn btn-primary" ng-disabled="loading">
+                        <button type="submit" class="btn btn-primary-600" ng-disabled="loading">
                             <span ng-if="!loading">Collect</span>
                             <span ng-if="loading">Loading...</span>
                         </button> 
@@ -385,9 +389,15 @@
                         </div>
                     </div>
                     <div class="pt-4">
-                        <button type="submit" class="btn btn-primary" ng-disabled="loading">
-                            <span ng-if="!loading">Submit</span>
-                            <span ng-if="loading">Loading...</span>
+                      
+                        <button type="submit" class=" btn btn-primary-600 align-items-center justify-content-center gap-6 d-inline-flex" ng-disabled="loading">
+                            <span>
+                                <span class="d-flex text-md">
+                                  <i class="ri-add-large-line"></i>
+                                </span>
+                            </span>
+                            Submit
+                           
                         </button> 
                     </div>  
                     

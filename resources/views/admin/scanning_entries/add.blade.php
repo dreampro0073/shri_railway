@@ -75,11 +75,11 @@
                        
                         <div class="col-md-8 form-group">
                             <label>Remarks</label>
-                            <textarea ng-model="formData.remarks" class="form-control"></textarea>
+                            <textarea ng-model="formData.remarks" class="form-control" rows="1"></textarea>
                         </div>
                     </div>
                     <div class="pt-4">
-                        <button type="submit" class="btn btn-primary" ng-disabled="processing">
+                        <button type="submit" class="btn btn-primary-600" ng-disabled="processing">
                             <span ng-if="!processing">Submit</span>
                             <span ng-if="processing">Loading...</span>
                         </button> 

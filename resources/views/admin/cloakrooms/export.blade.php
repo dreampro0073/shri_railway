@@ -14,8 +14,11 @@
 
                     <input type="text" class="datepicker1 form-control" ng-model="filter.to_date">      
                 </div>
-                <div class="col-md-3" style="margin-top:27px;">
-                    <button ng-click="export()" class="btn btn-primary">
+                <div class="col-md-3" style="margin-top:30px;">
+                    <button ng-click="export()" class="btn btn-primary-600 d-flex align-items-center gap-6">
+                        <span class="d-flex text-md">
+                            <i class="ri-search-line"></i>
+                        </span>
                         Search
                     </button>
                     

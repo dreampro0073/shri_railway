@@ -21,10 +21,20 @@
                             <label class="label-control">Mobile</label>
                             <input type="text" class="form-control" ng-model="filter.mobile" />
                         </div>
-                        <div class="col-md-3 text-right" style="margin-top: 25px;" class="mb-2">
-                            <button type="button" ng-click="init()" class="btn btn-sm btn-primary">Search</button>
-                            <button type="button" ng-click="filterClear()" class="btn btn-sm  btn-warning">Clear</button>
-                        
+                        <div class="col-md-3 text-right" style="margin-top: 28px;" class="mb-2">
+                            <button type="button" ng-click="init()" class="btn btn-sm btn-primary-600 align-items-center gap-6 d-inline-flex">
+                                <span class="d-flex text-md">
+                                  <i class="ri-search-line"></i>
+                                </span>
+                                Search
+                            </button>
+                            <button type="button" ng-click="filterClear()" class="btn btn-sm  btn-warning-600 align-items-center gap-6 d-inline-flex">
+                                <span class="d-flex text-md">
+                                    <i class="ri-blur-off-line"></i>
+                                </span>
+                                Clear
+                            </button>
+
                         </div>
                       
                     </div>

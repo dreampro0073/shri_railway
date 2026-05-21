@@ -6,12 +6,17 @@
 @section('main')
     <div class="main" ng-controller="shiftCtrl" ng-init="init();"> 
         <div class="card shadow mb-4 p-4">    
-            <div class="row">
+            <div class="row mb-3">
                 <div class="col-6">
                     <h5 class="fw-semibold mb-3">Total Shift Collection (<?php echo date("d-m-Y"); ?>)</h5>
                 </div>
-                 <div class="col-6 text-end" style="padding-top: 25px;">
-                    <a href="{{url('/admin/shift/print/1?input_date=')}}@{{filter.input_date}}{{'&client_id='}}@{{filter.client_id}}{{'&user_id='}}@{{filter.user_id}}" class="btn btn-sm btn-warning"  target="_blank"> Print </a>
+                <div class="col-6 text-end" style="padding-top: 15px;">
+                    <a href="{{url('/admin/shift/print/1?input_date=')}}@{{filter.input_date}}{{'&client_id='}}@{{filter.client_id}}{{'&user_id='}}@{{filter.user_id}}" class="btn btn-warning-600  btn-sm align-items-center gap-6 d-inline-flex"  target="_blank"> 
+                        <span class="d-flex text-md">
+                          <i class="ri-printer-line"></i>
+                        </span>
+                        Print
+                    </a>
                 </div>
             </div>
           
@@ -29,10 +34,16 @@
                     
                 </div>
                 <div class="col-md-3">
-                    <button ng-click="serach()" class="btn btn-sm btn-primary">
+                    <button ng-click="serach()" class="btn  btn-primary-600 gap-6 d-inline-flex">
+                        <span class="d-flex text-md">
+                          <i class="ri-search-line"></i>
+                        </span>
                         Search
                     </button>
-                    <button ng-click="clear()" class="btn btn-sm btn-warning">
+                    <button ng-click="clear()" class="btn  btn-warning-600 gap-6 d-inline-flex">
+                        <span class="d-flex text-md">
+                            <i class="ri-blur-off-line"></i>
+                        </span>
                         Clear
                     </button>
                 </div>

@@ -15,14 +15,27 @@
                                     <input type="text" class="form-control" ng-model="filter.unique_id" />
                                 </div>                    
                                 <div class="col-md-4 text-right" style="margin-top: 28px;" class="mb-2">
-                                    <button type="button" ng-click="init()" class="btn btn-sm btn-primary" >Search</button>
-                                    <button type="button" ng-click="filterClear()" class="btn btn-sm btn-warning" >Clear</button>
+                                    <button type="button" ng-click="init()" class="btn btn-warning-600  align-items-center gap-6 d-inline-flex" >
+                                        <span class="d-flex text-md">
+                                          <i class="ri-search-line"></i>
+                                        </span>
+                                        Search
+                                    </button>
+                                    <button type="button" ng-click="filterClear()" class="btn btn-danger-600  align-items-center gap-6 d-inline-flex" >
+                                        <span class="d-flex text-md">
+                                          <i class="ri-blur-off-line"></i>
+                                        </span>
+                                        Clear
+                                    </button>
                                 </div>
                             </div>
                         </form>
                     </div>
                     <div class="col-md-4 text-end">
-                        <button type="button" ng-click="add()" class="btn  btn-secondary btn-sm" style="width: 70px;margin-top:28px;">Add</button>
+                        <button type="button" ng-click="add()" class="btn btn-primary-600  align-items-center gap-6 d-inline-flex" style="margin-top:35px;">
+                        <span class="d-flex text-md">
+                          <i class="ri-add-large-line"></i>
+                        </span>Add</button>
                     </div>
                 </div>
             </div>
@@ -57,8 +70,10 @@
                                 <td>@{{ item.paid_amount }}</td>
                                 
                                 <td>
-                                    <a href="{{url('/admin/massage/print')}}/@{{item.id}}" class="btn btn-secondary btn-sm" target="_blank">Print</a>
+                                    <a href="{{url('/admin/massage/print')}}/@{{item.id}}" class="btn btn-primary-600  btn-sm" target="_blank">Print</a>
                                   
+
+
                                 </td>
                             </tr>
                         </tbody>

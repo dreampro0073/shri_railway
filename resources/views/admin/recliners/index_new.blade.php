@@ -41,11 +41,25 @@
                             </div>
                         </div>
                         <div class="col-md-4 text-right" style="margin-top: 25px;" class="mb-2">
-                            <button type="button" ng-click="init()" class="btn  btn-primary btn-sm">Search</button>
-                            <button type="button" ng-click="filterClear()" class="btn  btn-secondary btn-sm">Clear</button>
-                            @if(Auth::user()->priv !=4)
-                            <button type="button" ng-click="add()" class="btn  btn-warning btn-sm">Add</button>
-                            @endif
+                            <button type="button" ng-click="init()" class="btn btn-warning-600  align-items-center gap-6 d-inline-flex">
+                                <span class="d-flex text-md">
+                                    <i class="ri-search-line"></i>
+                                </span>
+                                Search
+                            </button>
+                            <button type="button" ng-click="filterClear()" class="btn btn-danger-600  align-items-center gap-6 d-inline-flex">
+                                <span class="d-flex text-md">
+                                  <i class="ri-blur-off-line"></i>
+                                </span>
+                                Clear
+                            </button>
+                        
+                            <button type="button" ng-click="add()" class="btn btn-primary-600  align-items-center gap-6 d-inline-flex">
+                                <span class="d-flex text-md">
+                                    <i class="ri-add-large-line"></i>
+                                </span>
+                                Add
+                            </button>
                         </div>
                     </div>
                 </form>
@@ -104,14 +118,14 @@
                                     @if(Auth::user()->client_id == 3 && (Auth::user()->priv == 2 || Auth::user()->priv == 1))
                                        
                                     @endif
-                                    <a href="javascript:;" ng-if="item.checkout_status != 1 " ng-click="newEditCheckout(item.id)" class="btn btn-danger btn-sm">Checkout</a>
+                                    <a href="javascript:;" ng-if="item.checkout_status != 1 " ng-click="newEditCheckout(item.id)" class="btn btn-danger-600 btn-sm">Checkout</a>
                                     @if(Auth::user()->priv ==  2 )
-                                       <a onclick="return confirm('Are you sure?')" href="{{url('/admin/recliners/checkout-without-penalty')}}/@{{item.id}}" ng-if="item.checkout_status != 1 && item.check_class == 't-danger'" class="btn btn-warning btn-sm">Checkout without penalty</a>
+                                       <a onclick="return confirm('Are you sure?')" href="{{url('/admin/recliners/checkout-without-penalty')}}/@{{item.id}}" ng-if="item.checkout_status != 1 && item.check_class == 't-danger'" class="btn btn-warning-600 btn-sm mt-2 mb-2">Checkout without penalty</a>
                                     @endif
 
-                                    <a ng-if="item.checkout_status != 1" href="javascript:;" ng-click="edit(item.id)" class="btn btn-warning btn-sm">Edit</a>
+                                    <a ng-if="item.checkout_status != 1" href="javascript:;" ng-click="edit(item.id)" class="btn btn-warning-600 btn-sm">Edit</a>
                                     
-                                    <a ng-if="item.checkout_status != 1" href="{{url('/admin/recliners/print-unq/2/')}}/@{{item.barcodevalue}}" class="btn btn-success btn-sm" target="_blank">Print</a>
+                                    <a ng-if="item.checkout_status != 1" href="{{url('/admin/recliners/print-unq/2/')}}/@{{item.barcodevalue}}" class="btn btn-primary-600 btn-sm" target="_blank">Print</a>
                                 </td>
                            
                             </tr>

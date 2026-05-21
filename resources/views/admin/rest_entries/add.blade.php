@@ -23,7 +23,7 @@
             </div>     
         </div>
         <div class="pt-4">
-            <button type="submit" class="btn btn-primary" ng-disabled="processing">
+            <button type="submit" class="btn btn-primary-600" ng-disabled="processing">
                 <span ng-if="!processing">Submit</span>
                 <span ng-if="processing">Loading...</span>
             </button> 

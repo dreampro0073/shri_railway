@@ -1,3 +1,11 @@
+:root {
+  --web-black-color:#000;
+  --web-white-color:#fff; }
+
+[data-theme="dark"] {
+  --web-black-color:#fff;
+  --web-white-color:#000; }
+
 .bg-gradient-primary {
   background-color: #4e73df;
   background-image: linear-gradient(180deg, #4e73dfa1 10%, #224abea3 100%);
@@ -38,10 +46,14 @@ input[type="radio"], input[type="checkbox"] {
   padding: 1.5rem !important; }
 
 label {
-  color: #000;
+  color: var(--web-black-color);
   font-weight: 500;
   font-size: 14px;
   margin-bottom: 5px !important; }
+
+.form-control:disabled {
+  background-color: transparent !important;
+  opacity: 0.8; }
 
 .no-dec:hover {
   text-decoration: none; }
@@ -266,5 +278,11 @@ input[type="file"] {
 
 .hi-auto {
   min-height: auto !important; }
+
+.table thead tr th {
+  color: var(--web-black-color); }
+
+.form-group label {
+  color: var(--web-black-color); }
 
 /*# sourceMappingURL=custom.css.map */

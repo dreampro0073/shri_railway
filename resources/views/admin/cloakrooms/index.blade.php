@@ -4,7 +4,6 @@
     <div class="main" ng-controller="cloackCtrl" ng-init="type = {{$type}};init();"> 
         @if(!in_array(Auth::user()->client_id, [9]))
             @include('admin.cloakrooms.add_aadhar')
-
         @else
             @include('admin.cloakrooms.add')
         
@@ -19,7 +18,7 @@
                 <form name="filterForm"  novalidate>
                     <div class="row" style="font-size: 14px">
 
-                        <div class="col-md-7">
+                        <div class="col-md-6">
                             <div class="row">
                                 <div class="col-md-3 form-group">
                                     <label class="label-control">Slip ID</label>
@@ -41,15 +40,35 @@
                                
                             </div>
                         </div>
-                        <div class="col-md-5 text-right" style="margin-top: 25px;" class="mb-2">
-                            <button type="button" ng-click="init()" class="btn btn-sm btn-primary">Search</button>
-                            <button type="button" ng-click="filterClear()" class="btn btn-sm btn-warning">Clear</button>
-                            <a target="_blank" href="{{url('admin/cloak-rooms/print-begs')}}" class="btn btn-sm btn-success">
+                        <div class="col-md-6 text-right" style="margin-top: 28px;" class="mb-2">
+                            <button type="button" ng-click="init()" class="btn btn-warning-600  align-items-center gap-6 d-inline-flex">
+                                <span class="d-flex text-md">
+                                    <i class="ri-search-line"></i>
+                                </span>
+                                Search
+                            </button>
+                            <button type="button" ng-click="filterClear()" class="btn btn-danger-600  align-items-center gap-6 d-inline-flex">
+                                <span class="d-flex text-md">
+                                  <i class="ri-blur-off-line"></i>
+                                </span>
+                                Clear
+                            </button>
+                            <a target="_blank" href="{{url('admin/cloak-rooms/print-begs')}}" class="btn btn-light-600  align-items-center gap-6 d-inline-flex text-dark">
+                                <span class="d-flex text-md ">
+                            
+                                    <i class="ri-printer-line"></i>
+                                </span>
                                 Print Begs
                             </a>
-                            @if($type == 0 && Auth::user()->priv !=4)
-                            <button type="button" ng-click="add()" class="btn btn-sm btn-primary">Add</button>
-                            @endif
+                        
+                            <button type="button" ng-click="add()" class="btn btn-primary-600  align-items-center gap-6 d-inline-flex">
+                                <span class="d-flex text-md">
+                                  <i class="ri-add-large-line"></i>
+                                </span>
+                                Add
+                            </button>
+                        
+
                         </div>
                     </div>
                 </form>
@@ -127,15 +146,15 @@
 
                                 <td>
                                     @if(Auth::user()->priv == 1 || Auth::user()->priv == 2 || Auth::user()->client_id == 9 || Auth::user()->client_id == 7)
-                                        <a ng-if="type == 0" href="javascript:;" ng-click="checkoutCloak(item.id)" class="btn btn-danger btn-sm">Checkout</a> 
+                                        <a ng-if="type == 0" href="javascript:;" ng-click="checkoutCloak(item.id)" class="btn btn-danger-600 btn-sm">Checkout</a> 
                                         <!-- <div style="margin-top:4px;"></div>
                                         <a ng-if="item.barcodevalue" href="{{url('/admin/cloak-rooms/print-unq/1')}}/@{{item.barcodevalue}}" class="btn btn-success btn-sm" target="_blank">Print Slip</a> -->
                                     @endif
                                     
                                     @if(Auth::user()->priv == 2)
-                                       <a onclick="return confirm('Are you sure?')" href="{{url('/admin/cloak-rooms/checkout-without-penalty')}}/@{{item.id}}" ng-if="item.checkout_status == 0" class="btn btn-warning-600 border border-warning-600 text-md btn-sm radius-8 mb-2">Checkout WP</a>
+                                       <a onclick="return confirm('Are you sure?')" href="{{url('/admin/cloak-rooms/checkout-without-penalty')}}/@{{item.id}}" ng-if="item.checkout_status == 0" class="btn btn-warning-600 mb-2">Checkout WP</a>
                                     @endif
-                                    <a  href="{{url('/admin/cloak-rooms/print-unq/2')}}/@{{item.barcodevalue}}" class="btn mt-2 btn-success btn-sm" target="_blank">Print</a>
+                                    <a  href="{{url('/admin/cloak-rooms/print-unq/2')}}/@{{item.barcodevalue}}" class="btn mt-2 btn-primary-600 btn-sm" target="_blank">Print</a>
                                     
                                 </td>
                             </tr>

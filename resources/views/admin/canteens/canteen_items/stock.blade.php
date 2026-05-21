@@ -35,7 +35,12 @@
             <hr> -->
             <div>
                 <div class="text-end mb-3">
-                    <button type="button" ng-click="addStock()" class="btn btn-secondary btn-sm">Add</button>
+                    <button type="button" ng-click="addStock()" class="btn btn-primary-600  align-items-center gap-6 d-inline-flex">
+                        <span class="d-flex text-md">
+                          <i class="ri-add-large-line"></i>
+                        </span>
+                        Add
+                    </button>
                 </div>
                 <div class="dt-layout-row dt-layout-table">
                     <div class="dt-layout-cell">
@@ -55,7 +60,7 @@
                                     <td>@{{ item.stock }}</td>
                                     <td>@{{ item.date }}</td>
                                     <td>
-                                        <a href="javascript:;" class="btn btn-sm btn-warning" ng-click="editStock(item.id)">Edit</a>
+                                        <a href="javascript:;" class="btn btn-sm btn-warning-600" ng-click="editStock(item.id)">Edit</a>
                                     </td>   
                                 </tr>
                             </tbody>

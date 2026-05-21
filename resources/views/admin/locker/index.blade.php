@@ -29,11 +29,28 @@
                                
                             </div>
                         </div>
-                        <div class="col-md-4 text-right" style="margin-top: 25px;" class="mb-2">
-                            <button type="button" ng-click="init()" class="btn  btn-primary btn-sm">Search</button>
-                            <button type="button" ng-click="filterClear()" class="btn  btn-warning btn-sm">Clear</button>
-                            <button type="button" ng-click="add()" class="btn  btn-primary btn-sm">Add</button>
+                        <div class="col-md-4 text-right" style="margin-top: 30px;" class="mb-2">
+                            <button type="button" ng-click="init()" class="btn btn-warning-600  btn-sm align-items-center gap-6 d-inline-flex">
+                                <span class="d-flex text-md">
+                                  <i class="ri-search-line"></i>
+                                </span>
+                                Search
+                            </button>
+                            <button type="button" ng-click="filterClear()" class="btn btn-danger-600 btn-sm align-items-center gap-6 d-inline-flex">
+                                <span class="d-flex text-md">
+                                    <i class="ri-blur-off-line"></i>
+                                </span>
+                                Clear
+                            </button>
+                            <button type="button" ng-click="add()" class="btn btn-primary-600  btn-sm align-items-center gap-6 d-inline-flex">
+                                <span class="d-flex text-md">
+                                  <i class="ri-add-large-line"></i>
+                                </span>
+                                Add
+                            </button>
                         </div>
+
+
                     </div>
                 </form>
             </div>
@@ -68,7 +85,6 @@
                                 <td>@{{ item.mobile_no }}</td>
                                 <td>@{{ item.nos }}</td>
                                 <td>@{{ item.pnr_uid }}</td>
-                                
                                 <td>
                                     <span ng-if="item.pay_type == 1">Cash</span>
                                     <span ng-if="item.pay_type == 2">UPI</span>
@@ -85,13 +101,13 @@
                                 </td>
                                 @endif 
                                 <td>
-                                    <a href="javascript:;" ng-click="checkoutLoker(item.id, false)" class="btn btn-danger btn-sm mb-2">Checkout</a>
+                                    <a href="javascript:;" ng-click="checkoutLoker(item.id, false)" class="btn btn-danger-600 btn-sm mb-2">Checkout</a>
                                     @if(Auth::user()->priv == 2)
-                                        <a href="javascript:;" ng-click="checkoutLoker(item.id, true)" class="btn btn-danger btn-sm mb-2">Checkout WP</a>
+                                        <a href="javascript:;" ng-click="checkoutLoker(item.id, true)" class="btn btn-danger-600 btn-sm mb-2">Checkout WP</a>
                                     @endif
 
-                                    <a href="javascript:;" ng-click="edit(item.id)" class="btn btn-warning btn-sm">Edit</a>
-                                    <a href="{{url('/admin/locker/print')}}/@{{item.id}}" class="btn btn-success btn-sm" target="_blank">Print</a>
+                                    <a href="javascript:;" ng-click="edit(item.id)" class="btn btn-warning-600 btn-sm">Edit</a>
+                                    <a href="{{url('/admin/locker/print')}}/@{{item.id}}" class="btn btn-primary-600 btn-sm" target="_blank">Print</a>
                                     
                                 </td>
                             </tr>

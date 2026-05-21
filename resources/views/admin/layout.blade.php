@@ -43,7 +43,7 @@
 <!-- <body  ng-app="app" oncontextmenu="return false;"> -->
 <body  ng-app="app">
     <aside class="sidebar">
-       
+        @include('admin.theme_setting')
         @include('admin.sidebar')
     </aside>
   

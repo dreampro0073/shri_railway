@@ -24,13 +24,18 @@
                                 <input type="text" ng-model="formData.aadhar_no" class="form-control" ng-disabled="aadhar_fetch" required />
                             </div>
 
-                            <button  ng-if="!aadhar_fetch" type="button" ng-click="fetchAadhar()" class="btn btn-primary">Fetch</button>
+                            <button  ng-if="!aadhar_fetch" type="button" ng-click="fetchAadhar()" class="btn btn-primary-600 d-flex align-items-center gap-6">
+                                <span class="d-flex text-md">
+                                    <i class="ri-search-line"></i>
+                                </span>
+                                Fetch
+                            </button>
 
                             <div class="row" ng-if="aadhar_flag">
                                 <div class="col-md-6 form-group">
                                     <label>Fornt ID</label>
                                     <br>
-                                    <button type="button" ng-show="formData.aadhar_front == '' || formData.aadhar_front == null " class="btn btn-primary btn-sm" ngf-select="uploadFile($file,'aadhar_front',formData)">Select File</button>
+                                    <button type="button" ng-show="formData.aadhar_front == '' || formData.aadhar_front == null " class="btn btn-primary-600 btn-sm" ngf-select="uploadFile($file,'aadhar_front',formData)">Select File</button>
                                     <br>
                                     <small style="color: red" ng-show="formData.aadhar_front == '' || formData.aadhar_front == null ">
                                         * Maximum limit of 500KB *
@@ -47,7 +52,7 @@
                                 <div class="col-md-6 form-group">
                                     <label>Back Id</label>
                                     <br>
-                                    <button type="button" ng-show="formData.aadhar_back == '' || formData.aadhar_back == null " class="btn btn-primary btn-sm" ngf-select="uploadFile($file,'aadhar_back',formData)">Select File</button>
+                                    <button type="button" ng-show="formData.aadhar_back == '' || formData.aadhar_back == null " class="btn btn-primary-600 btn-sm" ngf-select="uploadFile($file,'aadhar_back',formData)">Select File</button>
                                     <br>
                                     <small style="color: red" ng-show="formData.aadhar_back == '' || formData.aadhar_back == null ">
                                         * Maximum limit of 500KB *
@@ -132,9 +137,8 @@
                             </div>
                         </div>
                         <div class="pt-4">
-                            <button type="submit" class="btn btn-primary" ng-disabled="loading">
-                                <span ng-if="!loading">Submit</span>
-                                <span ng-if="loading">Loading...</span>
+                            <button type="submit" class="btn btn-primary-600" ng-disabled="loading">
+                                <span>Submit</span>
                             </button> 
                         </div> 
                     </div> 
@@ -169,7 +173,7 @@
                          @if(Auth::user()->priv == 2)
                             <div class="col-md-3 form-group">
                                 <label>Checkout By</label>
-                                <select ng-model="formData.checkout_by" class="form-control">
+                                <select ng-model="formData.checkout_by" class="form-select">
                                     <option value="">--select--</option>
                                     <option ng-repeat="(key, value) in users" value="@{{key}}">@{{value}}</option>
                                 </select>
@@ -260,7 +264,7 @@
                         </div>
                     </div>
                     <div class="pt-4">
-                        <button type="submit" class="btn btn-primary" ng-disabled="loading">
+                        <button type="submit" class="btn btn-primary-600" ng-disabled="loading">
                             <span ng-if="!loading">Collect</span>
                             <span ng-if="loading">Loading...</span>
                         </button> 

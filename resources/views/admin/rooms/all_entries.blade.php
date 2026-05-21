@@ -29,9 +29,22 @@
                             </div>
                         </div>
                         <div class="col-md-4 text-end" style="margin-top: 25px;" class="mb-2">
-                            <button type="button" ng-click="init()" class="btn  btn-primary btn-sm" >Search</button>
-                            <button type="button" ng-click="filterClear()" class="btn  btn-warning btn-sm" >Clear</button>
+                            <button type="button" ng-click="init()" class="btn  btn-primary-600 align-items-center gap-6 d-inline-flex" >
+                                <span class="d-flex text-md">
+                                    <i class="ri-search-line"></i>
+                                </span>
+                                Search
+                            </button>
+                            <button type="button" ng-click="filterClear()" class="btn  btn-warning-600 align-items-center gap-6 d-inline-flex" >
+                                <span class="d-flex text-md">
+                                    <i class="ri-blur-off-line"></i>
+                                </span>
+                                Clear
+                            </button>
                             
+
+
+                          
                         </div>
                     </div>
                 </form>
@@ -87,9 +100,9 @@
                                
                                 <td >
                                    
-                                    <a href="{{url('/admin/rooms/print')}}/@{{item.id}}" class="btn btn-success btn-sm" target="_blank">Print</a>
+                                    <a href="{{url('/admin/rooms/print')}}/@{{item.id}}" class="btn btn-primary-600 btn-sm" target="_blank">Print</a>
 
-                                    <a href="javascript:;" ng-click="initSingleEntry(item.id)" class="btn btn-warning btn-sm">View</a>
+                                    <a href="javascript:;" ng-click="initSingleEntry(item.id)" class="btn btn-warning-600 btn-sm">View</a>
                             
                                 </td>
                             </tr>

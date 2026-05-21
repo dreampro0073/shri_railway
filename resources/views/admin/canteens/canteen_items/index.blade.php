@@ -4,7 +4,6 @@
     <div class="main" ng-controller="canteenItemsCtrl" ng-init="init();"> 
         <div class="card shadow mb-4 p-4">
             <form name="myForm" novalidate="novalidate" ng-submit="onSubmit(myForm.$valid)">
-
                 <div class="row">
                     <div class="col-md-3 form-group">
                         <label>Barcode</label>
@@ -28,7 +27,7 @@
                
                
                 <div class="pt-4">
-                    <button type="submit" class="btn btn-primary" ng-disabled="loading">
+                    <button type="submit" class="btn btn-primary-600" ng-disabled="loading">
                         <span ng-if="!loading">Submit</span>
                         <span ng-if="loading">Loading...</span>
                     </button> 
@@ -53,9 +52,19 @@
                                     <label class="label-control">Item Name Search</label>
                                     <input type="text" class="form-control" ng-model="filter.item_name" />
                                 </div>  
-                                <div class="col-md-4" style="margin-top: 23px;">
-                                    <button type="button" ng-click="init()" class="btn btn-primary btn-sm">Search</button>
-                                    <button type="button" ng-click="filterClear()" class="btn  btn-warning btn-sm">Clear</button>
+                                <div class="col-md-4" style="margin-top: 27px;">
+                                    <button type="button" ng-click="init()" class="btn btn-primary-600 align-items-center gap-6 d-inline-flex">
+                                        <span class="d-flex text-md">
+                                          <i class="ri-search-line"></i>
+                                        </span>
+                                        Search
+                                    </button>
+                                    <button type="button" ng-click="filterClear()" class="btn  btn-warning-600 align-items-center gap-6 d-inline-flex">
+                                        <span class="d-flex text-md">
+                                            <i class="ri-blur-off-line"></i>
+                                        </span>
+                                        Clear
+                                    </button>
                                 </div>         
                               
                             </div>
@@ -88,8 +97,8 @@
                                 <td>@{{ item.price }}</td>
                                 <td>@{{ item.stock }} <a href="{{url('admin/canteens/items/stock/')}}/@{{item.id}}" style="margin-left: 20px;text-decoration: underline;">View Stock</a></td>
                                 <td>
-                                    <a href="javascript:;" class="btn btn-sm btn-warning" ng-click="edit(item.id)">Edit</a>
-                                    <a target="_blank" href="{{url('admin/canteens/items/print-barcode/')}}/@{{item.id}}" class="btn btn-sm btn-primary mt-2">Print Barcode</a>
+                                    <a href="javascript:;" class="btn btn-sm btn-warning-600" ng-click="edit(item.id)">Edit</a>
+                                    <a target="_blank" href="{{url('admin/canteens/items/print-barcode/')}}/@{{item.id}}" class="btn btn-sm btn-primary-600 mt-2">Print Barcode</a>
                                 </td>
 
                                

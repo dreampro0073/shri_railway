@@ -40,7 +40,7 @@
                    
                    
                     <div class="pt-4">
-                        <button type="submit" class="btn btn-primary" ng-disabled="loading">
+                        <button type="submit" class="btn btn-primary-600" ng-disabled="loading">
                             <span ng-if="!loading">Submit</span>
                             <span ng-if="loading">Loading...</span>
                         </button> 

@@ -7,12 +7,12 @@
             <div class="filters" style="margin:24px 0;">
                 <form name="filterForm"  novalidate>
                     <div class="row" style="font-size: 14px;">
-                        <div class="col-md-8">
+                        <div class="col-md-7">
                             <div class="row">
-                                <div class="col-md-3 form-group">
+                               <!--  <div class="col-md-3 form-group">
                                     <label class="label-control">Booking Id</label>
                                     <input type="text" class="form-control" ng-model="filter.id" />
-                                </div>  
+                                </div>  --> 
                                 <div class="col-md-3 form-group">
                                     <label class="label-control">Bill Number</label>
                                     <input type="text" class="form-control" ng-model="filter.unique_id" />
@@ -32,10 +32,26 @@
                                
                             </div>
                         </div>
-                        <div class="col-md-4 text-right" style="margin-top: 25px;" class="mb-2">
-                            <button type="button" ng-click="init()" class="btn  btn-primary btn-sm" >Search</button>
-                            <button type="button" ng-click="filterClear()" class="btn  btn-warning btn-sm" >Clear</button>
-                            <button type="button" ng-if="type !=4" ng-click="add()" class="btn  btn-primary btn-sm" >Add</button>
+                        <div class="col-md-5 text-right align-content-end" style="margin-top: 27px;" class="mb-2">
+                            <button type="button" ng-click="init()" class="btn btn-warning-600  align-items-center gap-6 d-inline-flex" >
+                                <span class="d-flex text-md">
+                                  <i class="ri-search-line"></i>
+                                </span>
+                                Search
+                            </button>
+                            <button type="button" ng-click="filterClear()" class="btn btn-danger-600  align-items-center gap-6 d-inline-flex" >
+                                <span class="d-flex text-md">
+                                  <i class="ri-blur-off-line"></i>
+                                </span>
+                                Clear
+                            </button>
+                            <button type="button" ng-if="type !=4" ng-click="add()" class="btn btn-primary-600  align-items-center gap-6 d-inline-flex" >
+                                <span class="d-flex text-md">
+                                  <i class="ri-add-large-line"></i>
+                                </span>
+                                Add
+                            </button>
+
                         </div>
                     </div>
                 </form>
@@ -98,22 +114,36 @@
                                 <td>@{{item.discount_amount }}</td>
                                 
                                 <td>
-                                    <a ng-if="item.status == 1" href="javascript:;" ng-click="checkoutLoker(item.id)" class="btn btn-danger btn-sm">Checkout</a>
+                                    <a ng-if="item.status == 1" href="javascript:;" ng-click="checkoutLoker(item.id)" class="btn btn-danger-600  btn-sm align-items-center gap-6 d-inline-flex">
+                                        <span>Checkout</span>
+                                    </a>
 
-                                    <a ng-if="item.status == 1" href="javascript:;" ng-click="edit(item.id)" class="btn btn-warning btn-sm">Edit</a>
+                                    <a ng-if="item.status == 1" href="javascript:;" ng-click="edit(item.id)" class="btn btn-warning-600  btn-sm align-items-center gap-6 d-inline-flex">
+                                        <span>
+                                            Edit
+                                        </span>
+                                    </a>
 
 
                                     @if(Auth::user()->priv == 2)
-                                       <a onclick="return confirm('Are you sure?')" href="{{url('/admin/rooms/checkout-without-penalty')}}/@{{item.id}}" ng-if="item.checkout_status != 1 && item.status == 1" ng-class="item.check_class == 't-danger' " class="btn btn-warning btn-sm">Checkout WP</a>
+                                       <a onclick="return confirm('Are you sure?')" href="{{url('/admin/rooms/checkout-without-penalty')}}/@{{item.id}}" ng-if="item.checkout_status != 1 && item.status == 1" ng-class="item.check_class == 't-danger' " class="btn btn-warning-600  btn-sm align-items-center gap-6 d-inline-flex">
+                                           <span>
+                                               Checkout WP
+                                           </span>
+                                       </a>
                                     @endif
 
-                                    <a ng-click="markCheckin(item.id)" ng-if="item.online_booking == 1 && item.status == 0" href="javascript:;" class="btn btn-sm btn-primary">
-                                        Mark CheckIn
+                                    <a ng-click="markCheckin(item.id)" ng-if="item.online_booking == 1 && item.status == 0" href="javascript:;" class="btn btn-primary-600  btn-sm align-items-center gap-6 d-inline-flex">
+                                        <span>Mark CheckIn</span>
                                     </a>
 
-                                    <a href="{{url('/admin/rooms/print')}}/@{{item.id}}" class="btn btn-success btn-sm" target="_blank">Print</a>
+                                    <a href="{{url('/admin/rooms/print')}}/@{{item.id}}" class="btn btn-primary-600  btn-sm align-items-center gap-6 d-inline-flex" target="_blank">
+                                        <span>Print</span>
+                                    </a>
 
-                                    <a ng-click="deleteBooking(item.id)" ng-if="type == 4" class="btn  btn-warning btn-sm" href="javascript:;">Delete</a>
+                                    <a ng-click="deleteBooking(item.id)" ng-if="type == 4" class="btn btn-danger-600  btn-sm align-items-center gap-6 d-inline-flex" href="javascript:;">
+                                        <span>Delete</span>
+                                    </a>
                                 </td>
                             </tr>
                         </tbody>

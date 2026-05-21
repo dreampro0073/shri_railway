@@ -20,9 +20,26 @@
                             <input type="text" class="form-control" ng-model="filter.train_no" />
                         </div>   
                         <div class="col-md-4 text-right" style="margin-top: 25px;" class="mb-2">
-                            <button type="button" ng-click="init()" class="btn btn-sm btn-primary">Search</button>
-                            <button type="button" ng-click="filterClear()" class="btn btn-sm  btn-warning">Clear</button>
-                            <button type="button" ng-click="add()" class="btn btn-sm btn-secondary">Add</button>
+                            <button type="button" ng-click="init()" class="btn btn-warning-600  align-items-center gap-6 d-inline-flex">
+                                <span class="d-flex text-md">
+                                  <i class="ri-search-line"></i>
+                                </span>
+                                Search
+                            </button>
+                            <button type="button" ng-click="filterClear()" class="btn btn-danger-600  align-items-center gap-6 d-inline-flex">
+                                <span class="d-flex text-md">
+                                  <i class="ri-blur-off-line"></i>
+                                </span>
+                                Clear
+                            </button>
+                            <button type="button" ng-click="add()" class="btn btn-primary-600  align-items-center gap-6 d-inline-flex">
+                                <span class="d-flex text-md">
+                                  <i class="ri-add-large-line"></i>
+                                </span>
+                                Add
+                            </button>
+
+                            
                         </div>
                     </div>
                 </form>
@@ -64,12 +81,12 @@
                                 <td>@{{ item.incoming_type }}</td>
                                 <td>
                                     @if(Auth::user()->priv == 2)
-                                        <a target="_blank" ng- href="{{url('admin/scanning/print/')}}/@{{item.barcodevalue}}" class="btn btn-sm btn-warning">Print</a>
-                                        <a target="_blank" ng- href="{{url('admin/scanning/print-qr/')}}/@{{item.barcodevalue}}" class="btn btn-sm btn-secondary mt-2">Print QR</a>
+                                        <a target="_blank" ng- href="{{url('admin/scanning/print/')}}/@{{item.barcodevalue}}" class="btn btn-sm btn-warning-600">Print</a>
+                                        <a target="_blank" ng- href="{{url('admin/scanning/print-qr/')}}/@{{item.barcodevalue}}" class="btn btn-sm btn-primary-600 mt-2">Print QR</a>
                                     @endif
                                     @if(Auth::user()->priv == 3)
-                                        <a target="_blank" ng-if="item.print_count < 2" ng- href="{{url('admin/scanning/print/')}}/@{{item.barcodevalue}}" class="btn btn-sm btn-warning">Print</a>
-                                        <a target="_blank" ng-if="item.qr_print_count < 2" ng- href="{{url('admin/scanning/print-qr/')}}/@{{item.barcodevalue}}" class="btn btn-sm btn-secondary mt-2">Print QR</a>
+                                        <a target="_blank" ng-if="item.print_count < 2" ng- href="{{url('admin/scanning/print/')}}/@{{item.barcodevalue}}" class="btn btn-sm btn-warning-600">Print</a>
+                                        <a target="_blank" ng-if="item.qr_print_count < 2" ng- href="{{url('admin/scanning/print-qr/')}}/@{{item.barcodevalue}}" class="btn btn-sm btn-primary-600 mt-2">Print QR</a>
                                     @endif
                                 </td>
                             </tr>

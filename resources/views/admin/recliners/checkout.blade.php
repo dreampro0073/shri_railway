@@ -4,7 +4,7 @@
             <div class="modal-header">
                 <div class="row">
                     <div class="col-md-6">
-                        <h5 class="modal-title" id="exampleModalLongTitle">Checkout Sitting</h5>
+                        <h5 class="modal-title" id="exampleModalLongTitle">Checkout Recliner</h5>
                     </div>
                     <div class="col-md-6" style="text-align:right;">
                         <button type="button" class="close" ng-click="hideModal();" aria-label="Close">
@@ -88,7 +88,7 @@
                         </div>
                     </div>
                     <div class="pt-4">
-                        <button type="submit" class="btn btn-primary" ng-disabled="loading">
+                        <button type="submit" class="btn btn-primary-600" ng-disabled="loading">
                             <span ng-if="!loading">Submit</span>
                             <span ng-if="loading">Loading...</span>
                         </button> 

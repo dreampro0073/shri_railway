@@ -19,17 +19,31 @@
                                     <label class="label-control">Mobile</label>
                                     <input type="text" class="form-control" ng-model="filter.mobile" />
                                 </div>
-                                <div class="col-md-6" style="padding-top:23px;">
-                                    <button type="button" ng-click="init()" class="btn btn-sm btn-primary">Search</button>
-
-                                    <button type="button" ng-click="filterClear()" class="btn btn-sm btn-warning">Clear</button>
-
-                                    
+                                <div class="col-md-6" style="padding-top:27px;">
+                                 
+                                    <button ng-click="init()" class="btn  btn-primary-600 gap-6 d-inline-flex">
+                                        <span class="d-flex text-md">
+                                          <i class="ri-search-line"></i>
+                                        </span>
+                                        Search
+                                    </button>
+                                    <button ng-click="filterClear()" class="btn  btn-warning-600 gap-6 d-inline-flex">
+                                        <span class="d-flex text-md">
+                                            <i class="ri-blur-off-line"></i>
+                                        </span>
+                                        Clear
+                                    </button>
+                                    <button ng-if="add_new_flag" type="button" ng-click="add()" class="btn btn-primary-600  align-items-center gap-6 d-inline-flex">
+                                        <span class="d-flex text-md">
+                                            <i class="ri-add-large-line"></i>
+                                        </span>
+                                        Add
+                                    </button>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-4 end-text">
-                            <button ng-if="add_new_flag" type="button" ng-click="add()" class="btn btn-sm btn-primary">Add</button>
+                        <div class="col-md-4 end-text text-right" style="padding-top:27px;">
+                            
                         </div>
                         
                     </div>
@@ -56,9 +70,9 @@
                                 <td>@{{ item.email }}</td>
                                 <td><span ng-if="item.active == 1">Active</span><span ng-if="item.active == 0">Inactive</span></td>
                                 <td>
-                                    <a href="javascript:;" ng-click="edit(item.id)" class="btn btn-warning btn-sm">Edit</a>
-                                     <a ng-click="activeUser(item, $index)" ng-show="item.active == 0 && item.priv == 3" class="btn btn-success btn-sm">Active</a>
-                                     <a ng-click="activeUser(item, $index)" ng-show="item.active != 0 && item.priv == 3" class="btn btn-danger btn-sm">Inactive</a>
+                                    <a href="javascript:;" ng-click="edit(item.id)" class="btn btn-warning-600 btn-sm">Edit</a>
+                                     <a ng-click="activeUser(item, $index)" ng-show="item.active == 0 && item.priv == 3" class="btn btn-primary-600 btn-sm">Active</a>
+                                     <a ng-click="activeUser(item, $index)" ng-show="item.active != 0 && item.priv == 3" class="btn btn-danger-600 btn-sm">Inactive</a>
                                 </td>
                             </tr>
                         </tbody>

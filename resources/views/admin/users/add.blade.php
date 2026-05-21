@@ -47,7 +47,11 @@
                   
                     <div class="row">
                         <div class="col-md-4">
-                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <button type="submit" class="btn btn-primary-600 text-md radius-8" ng-disabled="loading">
+                                <span ng-if="!loading">Submit</span>
+                                <span ng-if="loading">Loading...</span>
+                            </button> 
+
                         </div>
                     </div>
                     

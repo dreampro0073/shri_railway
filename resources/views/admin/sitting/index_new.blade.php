@@ -53,11 +53,24 @@
                             </div>
                         @endif
 
-                        <div class="col-md-5 text-right mb-2" style="margin-top: 32px;">
-                            <button type="button" ng-click="init()" class="btn btn-primary-600 border border-primary-600 text-md btn-sm radius-8" >Search</button>
-                            <button type="button" ng-click="filterClear()" class="btn btn-secondary-600 border border-primary-600 text-md btn-sm radius-8" >Clear</button>
+                        <div class="col-md-5 text-right mb-2" style="margin-top: 27px;">
+                            <button type="button" ng-click="init()" class="btn btn-warning-600  align-items-center gap-6 d-inline-flex" >
+                                <span class="d-flex text-md">
+                                  <i class="ri-search-line"></i>
+                                </span>Search</button>
+                            <button type="button" ng-click="filterClear()" class="btn btn-danger-600  align-items-center gap-6 d-inline-flex" >
+                                 <span class="d-flex text-md">
+                                  <i class="ri-blur-off-line"></i>
+                                </span>
+                                Clear
+                            </button>
                             @if(Auth::user()->priv !=4)
-                            <button type="button" ng-click="add()" class="btn btn-warning-600 border border-warning-600 text-md btn-sm radius-8" >Add</button>
+                                <button type="button" ng-click="add()" class="btn btn-primary-600  align-items-center gap-6 d-inline-flex" >
+                                    <span class="d-flex text-md">
+                                        <i class="ri-add-large-line"></i>
+                                    </span>
+                                    Add
+                                </button>
                             @endif
                         </div>
                     </div>
@@ -78,7 +91,6 @@
                                 <th>Validity</th>
                                 <th>Paid Amount</th>
                                 <th>Pay Type</th>
-                              
                                 <th>#</th>
                             </tr>
                         </thead>
@@ -104,29 +116,16 @@
                                     </span>
                                     @endif
                                 </td>
-                               <!--  @if(Auth::user()->priv == 1)
-
-                                <td>
-                                    <div ng-if="item.deleted == 1">
-                                        <span >@{{item.username}},</span>
-                                        <span >@{{item.delete_time}}</span>
-                                    </div>
-                                </td>
-                                @endif -->
-                                
                                 <td>
                                     @if(Auth::user()->client_id != 1 && (Auth::user()->priv == 2 || Auth::user()->priv == 1))
-                                       <a href="javascript:;" ng-if="item.checkout_status != 1 " ng-click="newEditCheckout(item.id)" class="btn btn-danger-600 border border-danger-600 text-md btn-sm radius-8">Checkout</a>
+                                       <a href="javascript:;" ng-if="item.checkout_status != 1 " ng-click="newEditCheckout(item.id)" class="btn btn-danger-600  btn-sm">Checkout</a>
                                     @endif 
-
-                                    <!-- <a href="javascript:;" ng-if="item.checkout_status != 1 " ng-click="newEditCheckout(item.id)" class="btn btn-danger-600 border border-danger-600 text-md btn-sm radius-8">Checkout</a> -->
-
                                     @if(Auth::user()->priv == 2)
-                                       <a onclick="return confirm('Are you sure?')" href="{{url('/admin/sitting/checkout-without-penalty')}}/@{{item.id}}" ng-if="item.checkout_status != 1 && item.check_class == 't-danger'" class="btn btn-warning-600 border border-warning-600 text-md btn-sm radius-8 mb-2">Checkout WP</a>
+                                       <a onclick="return confirm('Are you sure?')" href="{{url('/admin/sitting/checkout-without-penalty')}}/@{{item.id}}" ng-if="item.checkout_status != 1 && item.check_class == 't-danger'" class="btn btn-danger-600  btn-sm mb-2">Checkout WP</a>
                                     @endif
-                                    <a ng-if="item.checkout_status != 1" href="javascript:;" ng-click="edit(item.id)" class="btn btn-primary-600 border border-primary-600 text-md btn-sm radius-8">Edit</a>
+                                    <a ng-if="item.checkout_status != 1" href="javascript:;" ng-click="edit(item.id)" class="btn btn-warning-600  btn-sm">Edit</a>
                                     
-                                    <a ng-if="item.checkout_status != 1" href="{{url('/admin/sitting/print-unq/2/')}}/@{{item.barcodevalue}}"class="btn btn-seconday-600 border border-seconday-600 text-md btn-sm radius-8" target="_blank">Print</a>
+                                    <a ng-if="item.checkout_status != 1" href="{{url('/admin/sitting/print-unq/2/')}}/@{{item.barcodevalue}}"class="btn btn-primary-600  btn-sm" target="_blank">Print</a>
                                 </td>
                             </tr>
                         </tbody>

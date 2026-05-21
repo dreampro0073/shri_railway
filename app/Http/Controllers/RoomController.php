@@ -638,6 +638,7 @@ class RoomController extends Controller {
 			'shift' => $check_shift,
 			'date' =>$date,
 			'added_by' =>Auth::id(),
+			'client_id' =>Auth::user()->client_id,
 			// 'user_session_id' => Auth::user()->session_id,
 			'current_time' => date("H:i:s"),
 			'created_at' => date('Y-m-d H:i:s'),
@@ -812,9 +813,7 @@ class RoomController extends Controller {
         $entry->checkout_date = $checkout_date;		
         $entry->checkin_date = $checkin_date;
 	    $entry->e_ids = implode(',', $availableIds->toArray());
-
 	    $entry->save();
-
 
 	    foreach ($availableIds as $rid) {
 	        DB::table('room_availability')->insert([

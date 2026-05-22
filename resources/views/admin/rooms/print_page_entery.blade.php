@@ -7,14 +7,7 @@
 		@page { margin: 0; }
 		body { margin: 0; }
 		.main{
-			width: 790px;
-			height: 1100px;
-			padding: 100px;
-			padding-top: 100px;
-		}
-		h4{
-			
-			font-size: 14px;
+			width: 300px;
 		}
 		h4,h5,p{
 			text-align: center;

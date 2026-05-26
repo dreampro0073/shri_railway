@@ -16,6 +16,7 @@
         "laravel/tinker": "^2.9",
         "mews/captcha": "^3.4",
         "mfonte/laravel-collective-html": "^1.0",
+        "phpmailer/phpmailer": "^7.1",
         "phpoffice/phpspreadsheet": "^1.29",
         "picqer/php-barcode-generator": "^2.3",
         "simplesoftwareio/simple-qrcode": "^4.0"

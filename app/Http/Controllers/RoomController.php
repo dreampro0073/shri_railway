@@ -839,6 +839,18 @@ class RoomController extends Controller {
 		return Response::json($data,200,[]);
 	}
 
+
+	public function bookRoom1(Request $request){
+		
+		$entry = DB::table('room_entries')->orderBy('id','DESC')->first();
+		$availableIds=[];
+		$body = view('mails.booking_success',compact('entry','availableIds'));
+		$subject = "Done";
+		User::sendEmail('dipanshuchauhan23@gmail.com','msnnhp11@gmail.com',$subject,$body);
+
+		return "Done";
+	}
+
 	public function createOrder(Request $request)
 	{
 	    $entry_id = $request->entry_id;

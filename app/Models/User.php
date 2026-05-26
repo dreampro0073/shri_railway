@@ -112,8 +112,7 @@ class User extends Authenticatable {
     }
 
 
-    public static function sendEmail($mailto, $mailcc, $subject, $body)
-    {
+    public static function sendEmail($mailto, $mailcc, $subject, $body){
         $mail = new PHPMailer(true);
 
         try {

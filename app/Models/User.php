@@ -9,6 +9,9 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 use App\Models\MailQueue;
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
 
 
 class User extends Authenticatable {
@@ -108,36 +111,68 @@ class User extends Authenticatable {
         return -1;
     }
 
-    public static function sendEmail($mailto,$mailcc,$subject,$body){
-        // echo app_path().'/libraries/mailer/PHPMailerAutoload.php';
-// die;
 
-        @include(app_path().'/libraries/mailer/PHPMailerAutoload.php');
+    public static function sendEmail($mailto, $mailcc, $subject, $body)
+    {
+        $mail = new PHPMailer(true);
 
-        // $mail = new PHPMailer(true);
+        try {
+            $mail->isSMTP();
+            $mail->Host       = 'mail.gorakhpursleepingpods.in';
+            $mail->SMTPAuth   = true;
+            $mail->Username   = 'support@gorakhpursleepingpods.in';
+            $mail->Password   = 'SFuJTMj;uMN]dgsm';
 
-        $mail = new \PHPMailer;
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+            $mail->Port       = 465;
 
-        $mail->isSMTP();
-        $mail->Host       = 'mail.gorakhpursleepingpods.in';
-        $mail->SMTPAuth   = true;
+            $mail->setFrom('support@gorakhpursleepingpods.in', 'Gorakhpur Sleeping Pods');
 
-        $mail->Username   = 'support@gorakhpursleepingpods.in';
-        $mail->Password   = 'SFuJTMj;uMN]dgsm';
+            $mail->addAddress($mailto);
 
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS; 
-        $mail->Port       = 465;
+            if (!empty($mailcc)) {
+                $mail->addCC($mailcc);
+            }
 
-        $mail->setFrom('support@gorakhpursleepingpods.in', 'Gorakhpur Sleeping Pods');
-        $mail->addAddress($mailto);
-        $mail->AddCC($mailcc);
+            $mail->isHTML(true);
+            $mail->Subject = $subject;
+            $mail->Body    = $body;
 
-        $mail->isHTML(true);
-        $mail->Subject = $subject;
-        $mail->Body    = $body;
+            return $mail->send();
 
-        $mail->send();
+        } catch (Exception $e) {
+            \Log::error($mail->ErrorInfo);
+            return false;
+        }
     }
+
+    // public static function sendEmail($mailto,$mailcc,$subject,$body){
+
+    //     @include(app_path().'/libraries/mailer/PHPMailerAutoload.php');
+    //     $mail = new \PHPMailer;
+
+    //     $mail->isSMTP();
+    //     $mail->Host       = 'mail.gorakhpursleepingpods.in';
+    //     $mail->SMTPAuth   = true;
+
+    //     $mail->Username   = 'support@gorakhpursleepingpods.in';
+    //     $mail->Password   = 'SFuJTMj;uMN]dgsm';
+
+    //     $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS; 
+    //     $mail->Port       = 465;
+
+    //     $mail->setFrom('support@gorakhpursleepingpods.in', 'Gorakhpur Sleeping Pods');
+    //     $mail->addAddress($mailto);
+    //     $mail->AddCC($mailcc);
+
+    //     $mail->isHTML(true);
+    //     $mail->Subject = $subject;
+    //     $mail->Body    = $body;
+
+    //     $mail->send();
+    // }
+
+
     
 
         

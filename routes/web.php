@@ -123,7 +123,7 @@ Route::get('/getHideAmount', function () {
     return;
 });
 
-Route::get('test-email',[RoomController::class,'bookRoom']);
+Route::get('test-email',[RoomController::class,'bookRoom1']);
 Route::group(['middleware'=>'auth'],function(){
 	
 	Route::group(['prefix'=>"superAdmin"], function(){

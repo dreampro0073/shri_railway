@@ -103,7 +103,7 @@ foreach ($l_entries as $row) {
 }
 
 
-$filename = 'day_book'.date("dmY",strtotime("today")).'.xls';
+$filename = 'day_book'.strtotime("now").'.xls';
 
 $writer = new Xls($spreadsheet);
 

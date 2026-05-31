@@ -34,9 +34,9 @@ $spreadsheet->setActiveSheetIndex(0);
 $activeSheet = $spreadsheet->getActiveSheet();
 $activeSheet->setTitle("Associations");
 
-$ar_names = array("SN","Date","From Date","To Date","Name", "Mobile","NO of Day", "No of Bag", "Paid Amount");
+$ar_names = array("SN","Slip Id","Date","From Date","To Date","Name", "Mobile","NO of Day", "No of Bag", "Paid Amount");
 
-$ar_fields = array("sn","date","checkin_date","checkout_date", "name", "mobile_no","no_of_day","no_of_bag" ,"sh_paid_amount");
+$ar_fields = array("sn","slip_id","date","checkin_date","checkout_date", "name", "mobile_no","no_of_day","no_of_bag" ,"sh_paid_amount");
 
 $ar_width = array("15","25","20","30","20","20","20","20","20","20","20","20","20","20","20","20","20","20");
 

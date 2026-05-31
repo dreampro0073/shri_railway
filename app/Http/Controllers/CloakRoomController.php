@@ -79,9 +79,10 @@ class CloakRoomController extends Controller {
 	        $query->where('cloakroom_entries.checkout_status', 0);
 	    }
 
-	    if ($type == 1) {
-	        $query->skip(($page_no - 1) * $max_per_page)->take($max_per_page);
-	    }
+	   if ($type == 1 && !($request->has('export') && $request->export == 1)) {
+		    $query->skip(($page_no - 1) * $max_per_page)
+		          ->take($max_per_page);
+		}
 
 	    if ($request->has('export') && $request->export == 1) {
 	        $from = date("Y-m-d", strtotime($request->from_date));

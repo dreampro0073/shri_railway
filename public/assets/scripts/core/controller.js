@@ -120,6 +120,7 @@ app.controller('cloackCtrl', function($scope , $http, $timeout , DBService, Uplo
         // console.log($scope.filter);
     }
     $scope.export = () => {
+
         $scope.type = 1;
         if($scope.filter.from_date !='' && $scope.filter.to_date !=''){
             $scope.filter.export = 1;
@@ -288,10 +289,33 @@ app.controller('cloackCtrl', function($scope , $http, $timeout , DBService, Uplo
         });
     }
 
-    $scope.changeAmount = function(){
-        var amount = $scope.cloak_first_rate;
-        
+    // $scope.changeAmount = function(){
 
+
+    //     var amount = $scope.cloak_first_rate;
+    //     if($scope.formData.no_of_day > 1){
+    //         amount  = (amount + (($scope.formData.no_of_day-1)*$scope.cloak_second_rate));
+    //         amount = amount*$scope.formData.no_of_bag;
+    //     } else {
+    //         amount = amount*$scope.formData.no_of_day*$scope.formData.no_of_bag;
+    //     }
+
+    //     if($scope.entry_id == 0){
+    //         $scope.formData.paid_amount = 0;
+    //         $scope.formData.paid_amount = amount;
+    //     }else{
+    //         $scope.formData.balance_amount = 0;
+    //         $scope.formData.balance_amount = amount - $scope.formData.paid_amount;
+    //     }
+    // }
+
+     $scope.changeAmount = function(){
+
+        var days = parseInt($scope.formData.no_of_day) || 0;
+        var bags = parseInt($scope.formData.no_of_bag) || 0;
+        var firstRate = parseFloat($scope.cloak_first_rate) || 0;
+        var secondRate = parseFloat($scope.cloak_second_rate) || 0;
+        var amount = $scope.cloak_first_rate;
         if($scope.formData.no_of_day > 1){
             amount  = (amount + (($scope.formData.no_of_day-1)*$scope.cloak_second_rate));
             amount = amount*$scope.formData.no_of_bag;
@@ -300,8 +324,10 @@ app.controller('cloackCtrl', function($scope , $http, $timeout , DBService, Uplo
         }
 
         if($scope.entry_id == 0){
+            $scope.formData.paid_amount = 0;
             $scope.formData.paid_amount = amount;
         }else{
+            $scope.formData.balance_amount = 0;
             $scope.formData.balance_amount = amount - $scope.formData.paid_amount;
         }
     }

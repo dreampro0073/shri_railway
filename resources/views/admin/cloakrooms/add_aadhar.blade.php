@@ -92,6 +92,13 @@
                             <div class="col-md-4 form-group">
                                 <label>No Of Bag</label>
                                 <input type="number" min="1" ng-model="formData.no_of_bag" class="form-control" required ng-keyup="changeAmount()" />
+                                <!-- <input type="number"
+                                   min="1"
+                                   ng-model="formData.no_of_bag"
+                                   class="form-control"
+                                   required
+                                   convert-to-number
+                                   ng-change="changeAmount()" /> -->
                             </div>    
 
                         </div>
@@ -103,11 +110,11 @@
                             </div>
                             <div class="col-md-3 form-group">
                                 <label>PNR/UID</label>
-                                <input type="number" ng-model="formData.pnr_uid" class="form-control" />
+                                <input type="text" ng-model="formData.pnr_uid" class="form-control" />
                             </div>                        
                             <div class="col-md-3 form-group">
                                 <label>Time Duration</label>
-                                <select ng-model="formData.no_of_day" class="form-control" ng-change="changeAmount()" required >
+                                <select ng-model="formData.no_of_day" class="form-select" ng-change="changeAmount()" required convert-to-number>
                                     <option value="">--select--</option>
                                     <option ng-repeat="item in days" value="@{{item.value}}">@{{ item.label}}</option>
                                 </select>
@@ -115,7 +122,7 @@
 
                             <div class="col-md-3 form-group">
                                 <label>Pay Type</label>
-                                <select ng-model="formData.pay_type" class="form-control" required  convert-to-number>
+                                <select ng-model="formData.pay_type" class="form-select" required  convert-to-number>
                                     <option value="">--select--</option>
                                     <option ng-repeat="item in pay_types" value="@{{item.value}}">@{{ item.label}}</option>
                                 </select>

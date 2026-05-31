@@ -16,3 +16,4 @@ temp
 gulp
 node_modules
 vendor_old
+public/temp

@@ -82,7 +82,7 @@ class CloakRoomController extends Controller {
 	    if ($type == 1) {
 	        $query->skip(($page_no - 1) * $max_per_page)->take($max_per_page);
 	    }
-
+	    
 	    if ($request->has('export') && $request->export == 1) {
 	        $from = date("Y-m-d", strtotime($request->from_date));
 	        $to   = date("Y-m-d", strtotime($request->to_date));

@@ -54,7 +54,7 @@
     }
     .hotel-name {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 42px;
+      font-size: 24px;
       font-weight: 300;
       color: #fffdf9;
       line-height: 1.1;
@@ -77,7 +77,7 @@
     /* ── CONFIRMATION BADGE ── */
     .badge-section {
       background: #c9a96e;
-      padding: 20px 40px;
+      padding: 20px 24px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -90,7 +90,7 @@
     }
     .badge-number {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 22px;
+      font-size: 16px;
       font-weight: 600;
       color: #1a1410;
       letter-spacing: 2px;
@@ -107,7 +107,7 @@
 
     /* ── BODY ── */
     .body-section {
-      padding: 48px 40px 40px;
+      padding: 30px 20px 20px;
     }
     .greeting {
       font-family: 'Cormorant Garamond', serif;
@@ -327,7 +327,7 @@
     }
     .footer-contact {
       font-size: 12px;
-      color: #5a5040;
+      color: #c9a96e;
       line-height: 1.8;
     }
     .footer-contact a {
@@ -337,7 +337,7 @@
     .footer-legal {
       margin-top: 20px;
       font-size: 10px;
-      color: #3d3530;
+      color: #c9a96e;
       line-height: 1.7;
     }
   </style>

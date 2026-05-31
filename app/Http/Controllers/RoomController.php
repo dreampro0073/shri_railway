@@ -841,10 +841,12 @@ class RoomController extends Controller {
 
 
 	public function bookRoom1(Request $request){
-		
+
 		$entry = DB::table('room_entries')->orderBy('id','DESC')->first();
 		$availableIds=[];
 		$body = view('mails.booking_success',compact('entry','availableIds'));
+
+		return $body;
 		$subject = "Done";
 		User::sendEmail('dipanshuchauhan23@gmail.com','msnnhp11@gmail.com',$subject,$body);
 

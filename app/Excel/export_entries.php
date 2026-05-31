@@ -34,9 +34,9 @@ $spreadsheet->setActiveSheetIndex(0);
 $activeSheet = $spreadsheet->getActiveSheet();
 $activeSheet->setTitle("Associations");
 
-$ar_names = array("SN","Year Serach","Date", "Bank","Department", "Contact", "Email");
+$ar_names = array("SN","Date","From Date","To Date","Name", "Mobile","NO of Day", "No of Bag", "Paid Amount");
 
-$ar_fields = array("sn","year_search_id", "bank_comp_id", "department_id","contact_no" ,"email");
+$ar_fields = array("sn","date","checkin_date","checkout_date", "name", "mobile_no","no_of_day","no_of_bag" ,"sh_paid_amount");
 
 $ar_width = array("15","25","20","30","20","20","20","20","20","20","20","20","20","20","20","20","20","20");
 
@@ -64,7 +64,7 @@ $spreadsheet->setActiveSheetIndex(0)->getStyle($this->getNameFromNumber(0).$seq.
 $seq++;
 $count = 0;
 
-foreach ($legal_opinion_data as $row) {
+foreach ($l_entries as $row) {
     
     $i = 0;
 
@@ -73,10 +73,27 @@ foreach ($legal_opinion_data as $row) {
         $cell = $i + $offset;
         $cell_val = $this->getNameFromNumber($cell);
 
-        if($ar == 'sn' ){
+        if ($ar == 'sn') {
+
             $var = ++$count;
-        }else {
-            $var = (isset($row->{$ar}))?$row->{$ar}:'';
+
+        } elseif ($ar == 'date') {
+
+            $var = isset($row->{$ar})
+                ? date("d-m-Y", strtotime($row->{$ar}))
+                : "";
+
+        } elseif ($ar == 'checkin_date' || $ar == 'checkout_date') {
+
+            $var = isset($row->{$ar})
+                ? date("d-m-Y h:i A", strtotime($row->{$ar}))
+                : "";
+
+        } else {
+
+            $var = isset($row->{$ar})
+                ? $row->{$ar}
+                : '';
         }
         $i++;
         $spreadsheet->getActiveSheet()->setCellValue($cell_val . $seq, $var);
@@ -86,12 +103,12 @@ foreach ($legal_opinion_data as $row) {
 }
 
 
-$filename = 'legal_opinion'.date("dmY",strtotime("today")).'.xls';
+$filename = 'day_book'.date("dmY",strtotime("today")).'.xls';
 
 $writer = new Xls($spreadsheet);
 
 if(env("FTP_STATUS") == 1){
-    $path = app_path()."/../";
+    $path = public_path('temp/');
     $writer->save($path.$filename);
 } else {
     header('Content-Type: application/vnd.ms-excel');
@@ -101,4 +118,4 @@ if(env("FTP_STATUS") == 1){
 
 }
 
-exit();
+// exit();

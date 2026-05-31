@@ -40,11 +40,11 @@
                         </div>
                         <div class="col-md-3 form-group">
                             <label>PNR/UID</label>
-                            <input type="number" ng-model="formData.pnr_uid" class="form-control" />
+                            <input type="text" ng-model="formData.pnr_uid" class="form-control" />
                         </div>                        
                         <div class="col-md-3 form-group">
                             <label>Time Duration</label>
-                            <select ng-model="formData.no_of_day" class="form-select" ng-change="changeAmount()" required >
+                            <select ng-model="formData.no_of_day" class="form-select" ng-change="changeAmount()" required convert-to-number>
                                 <option value="">--select--</option>
                                 <option ng-repeat="item in days" value="@{{item.value}}">@{{ item.label}}</option>
                             </select>

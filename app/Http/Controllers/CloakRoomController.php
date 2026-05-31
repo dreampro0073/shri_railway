@@ -42,7 +42,7 @@ class CloakRoomController extends Controller {
 	    ini_set('max_execution_time', 300);
 	    ini_set('memory_limit', '512M');
 
-	    $max_per_page = 100;
+	    $max_per_page = 500;
 	    $page_no = $request->page_no ?? 1;
 	    $client_id = Auth::user()->client_id;
 
@@ -82,7 +82,7 @@ class CloakRoomController extends Controller {
 	    if ($type == 1) {
 	        $query->skip(($page_no - 1) * $max_per_page)->take($max_per_page);
 	    }
-	    
+
 	    if ($request->has('export') && $request->export == 1) {
 	        $from = date("Y-m-d", strtotime($request->from_date));
 	        $to   = date("Y-m-d", strtotime($request->to_date));

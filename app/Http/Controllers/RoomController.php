@@ -834,7 +834,10 @@ class RoomController extends Controller {
 	    $content = view('mails.booking_success',compact('entry','availableIds'));
 
 		$subject = "Booking Confirm - Gorakhpur Sleeping Hotels";
-		User::sendEmail('dipanshuchauhan23@gmail.com','msnnhp11@gmail.com',$subject,$content);
+		if($entry->email_id){
+			User::sendEmail($entry->email_id,'msnnhp11@gmail.com',$subject,$content);
+		}
+		
 
 		$data['success'] = true;
 		$data['message'] = "Successfully Saved";

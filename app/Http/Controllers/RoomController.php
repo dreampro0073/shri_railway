@@ -831,6 +831,11 @@ class RoomController extends Controller {
 	    $entry->show_e_ids = Room::getEnos($entry->type,$entry->e_ids);
 	    $entry->show_time = date("h:i A d-m-Y",strtotime($entry->checkin_date))." - ".date("h:i A d-m-Y",strtotime($entry->checkout_date));
 
+	    $content = view('mails.booking_success',compact('entry','availableIds'));
+
+		$subject = "Booking Confirm - Gorakhpur Sleeping Hotels";
+		User::sendEmail('dipanshuchauhan23@gmail.com','msnnhp11@gmail.com',$subject,$content);
+
 		$data['success'] = true;
 		$data['message'] = "Successfully Saved";
 		$data['entry_id'] = $entry->id;
@@ -846,11 +851,8 @@ class RoomController extends Controller {
 		$availableIds=[];
 		$body = view('mails.booking_success',compact('entry','availableIds'));
 
-		return $body;
-		$subject = "Done";
+		$subject = "Booking Confirm - Gorakhpur Sleeping Hotels";
 		User::sendEmail('dipanshuchauhan23@gmail.com','msnnhp11@gmail.com',$subject,$body);
-
-		return "Done";
 	}
 
 	public function createOrder(Request $request)

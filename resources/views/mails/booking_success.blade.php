@@ -393,7 +393,15 @@
         <div class="detail-cell">
           <div class="detail-label">Guests</div>
           <div class="detail-value">{{sizeof($availableIds)}}</div>
-          <div class="detail-sub">Room</div>
+          <div class="detail-sub">
+            @if($entry->type == 1)
+              Pods
+            @elseif($entry->type == 2)
+              Single Cabins
+            @else
+              Double Beds
+            @endif
+          </div>
         </div>
       </div>
     </div>  

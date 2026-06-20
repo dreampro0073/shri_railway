@@ -128,8 +128,7 @@ class LockerController extends Controller {
 				$entry = Locker::where("client_id", $client_id)->find($request->id);
 				$message = "Updated Successfully!";
 				$entry->check_in = date("H:i:s",strtotime($request->check_in));
-				
-
+					
 				DB::table('locker_penalty')->insert([
 					'locker_entry_id' => $entry->id,
 					'paid_amount' => $balance_amount,
@@ -140,7 +139,10 @@ class LockerController extends Controller {
 					'client_id' =>$client_id,
 					'current_time' => date("H:i:s"),
 					'created_at' => date('Y-m-d H:i:s'),
+					'type' => 1,
 				]);
+
+				$checkout_date = date("Y-m-d H:i:s",strtotime("+".$request->no_of_day.' day',strtotime($entry->checkin_date)));
 
 			} else {
 				$entry = new Locker;
@@ -153,6 +155,7 @@ class LockerController extends Controller {
 				$entry->shift = $check_shift;
 				$entry->added_by = Auth::id();
 				$entry->paid_amount = $request->paid_amount;
+				$checkout_date = date("Y-m-d H:i:s",strtotime("+".$entry->no_of_day.' day',strtotime($entry->check_in)));
 
 			}
 
@@ -167,7 +170,7 @@ class LockerController extends Controller {
 			$entry->locker_ids = implode(',',$request->sl_lockers);
 			$entry->save();
 
-			$checkout_date = date("Y-m-d H:i:s",strtotime("+".$entry->no_of_day.' day',strtotime($entry->check_in)));
+			
 	        $entry->checkout_date = $checkout_date;
 
 
@@ -188,14 +191,23 @@ class LockerController extends Controller {
 
 	}
 
-	public function printPost($id = 0){
+	public function printPost($type = 1,$id = 0){
 		$client_id = Auth::user()->client_id;
         $print_data = DB::table('locker_entries')->where("client_id", $client_id)->where('id', $id)->first();
 
         $bm_amount = DB::table('locker_penalty')->where('locker_entry_id','=',$print_data->id)->where("client_id", $client_id)->sum('paid_amount');
-			$print_data->paid_amount = $print_data->paid_amount + $bm_amount;
+		$print_data->paid_amount = $print_data->paid_amount + $bm_amount;
 
-			$print_data->bm_amount = $bm_amount;
+		if($type == 1){
+			$print_data->show_amount = $print_data->paid_amount;
+		}else{
+
+			$pen_amount = DB::table('locker_penalty')->select('paid_amount')->where('locker_entry_id','=',$print_data->id)->where("client_id", $client_id)->where('type',2)->orderBy('id','DESC')->first();
+
+			$print_data->show_amount= ($pen_amount)?$pen_amount->paid_amount:0;
+		}
+
+		$print_data->bm_amount = $bm_amount;
 
         return view('admin.print_page_locker', compact('print_data'));
 	}
@@ -281,6 +293,7 @@ class LockerController extends Controller {
 			'current_time' => date("H:i:s"),
 			'created_at' => date('Y-m-d H:i:s'),
 			'client_id' => $client_id,
+			'type' => 2,
 		]);
 
 		$locker_ids = explode(',', $request->locker_ids);

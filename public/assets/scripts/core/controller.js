@@ -567,7 +567,7 @@ app.controller('lockerCtrl', function($scope , $http, $timeout , DBService) {
                 };
                 $scope.init();
                 setTimeout(function(){
-                    window.open(base_url+'/admin/locker/print/'+data.id,'_blank');
+                    window.open(base_url+'/admin/locker/print/1/'+data.id,'_blank');
                 }, 800);
 
             }
@@ -576,6 +576,7 @@ app.controller('lockerCtrl', function($scope , $http, $timeout , DBService) {
     }
     $scope.onCheckOut = function () {
         $scope.loading = true;
+        var print_id = $scope.formData.id;
         DBService.postCall($scope.formData, '/api/locker/checkout-store').then((data) => {
             if (data.success) {
                 $("#checkoutLokerModel").modal("hide");
@@ -591,6 +592,9 @@ app.controller('lockerCtrl', function($scope , $http, $timeout , DBService) {
                     check_out:'',
                 };
                 $scope.init();
+                setTimeout(function(){
+                    window.open(base_url+'/admin/locker/print/2/'+print_id,'_blank');
+                }, 800);
             }
             $scope.loading = false;
         });

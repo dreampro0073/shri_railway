@@ -325,4 +325,6 @@ ALTER TABLE `room_entries` ADD `deleted` TINYINT NOT NULL DEFAULT '0' AFTER `sta
 ALTER TABLE `room_entries` CHANGE `deleted` `deleted` TINYINT(4) NOT NULL DEFAULT '0' COMMENT '1-->deleted';
 
 ALTER TABLE `room_availability` CHANGE `status` `status` TINYINT(4) NULL DEFAULT '0' COMMENT '1--> Deleted';
+
+ALTER TABLE `locker_penalty` ADD `type` INT NOT NULL DEFAULT '1' AFTER `locker_entry_id`;
 ?>

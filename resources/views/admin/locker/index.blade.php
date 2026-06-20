@@ -107,7 +107,7 @@
                                     @endif
 
                                     <a href="javascript:;" ng-click="edit(item.id)" class="btn btn-warning-600 btn-sm">Edit</a>
-                                    <a href="{{url('/admin/locker/print')}}/@{{item.id}}" class="btn btn-primary-600 btn-sm" target="_blank">Print</a>
+                                    <a href="{{url('/admin/locker/print/1/')}}/@{{item.id}}" class="btn btn-primary-600 btn-sm" target="_blank">Print</a>
                                     
                                 </td>
                             </tr>

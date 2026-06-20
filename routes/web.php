@@ -212,7 +212,7 @@ Route::group(['middleware'=>'auth'],function(){
 		Route::middleware(['check.locker'])->group(function () {
 		   	Route::group(['prefix'=>"locker"], function(){
 				Route::get('/',[LockerController::class,'index']);
-				Route::get('/print/{id?}', [LockerController::class,'printPost']);
+				Route::get('/print/{type}/{id?}', [LockerController::class,'printPost']);
 				
 			});	
 		});

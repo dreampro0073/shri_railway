@@ -92,7 +92,7 @@
 				<span class="text">PNR/ID No.: <b>{{$print_data->pnr_uid}}</b></span>
 			</div>
 			<div class="w-50">
-				<span class="text">Paid Amount: <b>{{ $print_data->paid_amount }}</b></span>
+				<span class="text">Paid Amount: <b>{{ $print_data->show_amount }}</b></span>
 			</div>
 		</div>
 		<div style="margin-bottom:10px;">

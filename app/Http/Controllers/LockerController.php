@@ -128,7 +128,7 @@ class LockerController extends Controller {
 				$entry = Locker::where("client_id", $client_id)->find($request->id);
 				$message = "Updated Successfully!";
 				$entry->check_in = date("H:i:s",strtotime($request->check_in));
-					
+
 				DB::table('locker_penalty')->insert([
 					'locker_entry_id' => $entry->id,
 					'paid_amount' => $balance_amount,
@@ -141,6 +141,7 @@ class LockerController extends Controller {
 					'created_at' => date('Y-m-d H:i:s'),
 					'type' => 1,
 				]);
+
 
 				$checkout_date = date("Y-m-d H:i:s",strtotime("+".$request->no_of_day.' day',strtotime($entry->checkin_date)));
 
@@ -155,7 +156,8 @@ class LockerController extends Controller {
 				$entry->shift = $check_shift;
 				$entry->added_by = Auth::id();
 				$entry->paid_amount = $request->paid_amount;
-				$checkout_date = date("Y-m-d H:i:s",strtotime("+".$entry->no_of_day.' day',strtotime($entry->check_in)));
+
+				$checkout_date = date("Y-m-d H:i:s",strtotime("+".$request->no_of_day.' day'));
 
 			}
 

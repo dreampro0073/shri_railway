@@ -36,7 +36,7 @@ class ScanningController extends Controller {
 			$entries = $entries->where('scanning_entries.train_no', 'LIKE', '%'.$request->train_no.'%');
 		}		
 
-		$entries = $entries->take(150);
+		$entries = $entries->take(100);
 		$entries = $entries->orderBy('id','DESC')->get();
 
 		$show_pay_types = Entry::showPayTypes1();

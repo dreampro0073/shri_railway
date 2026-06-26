@@ -21,7 +21,7 @@ class ScanningController extends Controller {
         ]);
     }
 
-    public function init(Request $request){
+    public function initNew(Request $request){
 	    $clientId = Auth::user()->client_id;
 
 	    $incomingTypes = ScanningEntry::showIncomingTypes();
@@ -76,7 +76,7 @@ class ScanningController extends Controller {
 		]);
 	}
 
-    public function initOld(Request $request){
+    public function init(Request $request){
 
     	$show_incoming_types = ScanningEntry::showIncomingTypes();
 

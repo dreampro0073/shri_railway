@@ -22,10 +22,74 @@ class ScanningController extends Controller {
     }
 
     public function init(Request $request){
+	    $clientId = Auth::user()->client_id;
+
+	    $incomingTypes = ScanningEntry::showIncomingTypes();
+	    $payTypes      = Entry::showPayTypes1();
+
+	    $query = ScanningEntry::select([
+	        'scanning_entries.id',
+	        'scanning_entries.name',
+	        'scanning_entries.train_no',
+	        'scanning_entries.no_of_item',
+	        'scanning_entries.paid_amount',
+	        'scanning_entries.pay_type',
+	        'scanning_entries.incoming_type_id',
+	        'scanning_entries.item_type_id',
+	        'scanning_entries.date_time',
+	        'scanning_item_types.item_type_name'
+	    ])
+	    ->leftJoin(
+	        'scanning_item_types',
+	        'scanning_item_types.id',
+	        '=',
+	        'scanning_entries.item_type_id'
+	    )
+	    ->where('scanning_entries.client_id', $clientId);
+
+		if ($request->filled('slip_id')) {
+		    $query->where('scanning_entries.slip_id', $request->slip_id);
+		}
+
+		if ($request->filled('name')) {
+		    $query->where('scanning_entries.name', 'LIKE', '%' . trim($request->name) . '%');
+		}
+
+		if ($request->filled('train_no')) {
+		    $query->where('scanning_entries.train_no', 'LIKE', '%' . trim($request->train_no) . '%');
+		}
+
+		$entries = $query->latest('scanning_entries.id')->limit(100)->get();
+
+		foreach ($entries as $entry) {
+		    $entry->incoming_type = $incomingTypes[$entry->incoming_type_id] ?? 'NA';
+		    $entry->show_pay_type = $payTypes[$entry->pay_type] ?? 'NA';
+		    $entry->show_date_time = date('d-m-Y h:i A', strtotime($entry->date_time));
+		}
+
+		return response()->json([
+		    'success'        => true,
+		    'entries'        => $entries,
+		    'incoming_types' => $incomingTypes,
+		    'item_types'     => ScanningEntry::itemTypes(),
+		    'rate_list'      => ScanningEntry::rateList(),
+		]);
+	}
+
+    public function initOld(Request $request){
 
     	$show_incoming_types = ScanningEntry::showIncomingTypes();
 
-		$entries = ScanningEntry::select('scanning_entries.*','scanning_item_types.item_type_name')->leftJoin('scanning_item_types','scanning_item_types.id','scanning_entries.item_type_id')->where("scanning_entries.client_id", Auth::user()->client_id);
+		$entries = ScanningEntry::select( 'scanning_entries.id',
+			 'scanning_entries.name',
+			 'scanning_entries.train_no',
+			 'scanning_entries.no_of_item',
+			 'scanning_entries.paid_amount',
+			 'scanning_entries.pay_type',
+			 'scanning_entries.incoming_type_id',
+			 'scanning_entries.item_type_id',
+			 'scanning_entries.date_time',
+			 'scanning_item_types.item_type_name','scanning_item_types.item_type_name')->leftJoin('scanning_item_types','scanning_item_types.id','scanning_entries.item_type_id')->where("scanning_entries.client_id", Auth::user()->client_id);
 		if($request->slip_id){
 			$entries = $entries->where('scanning_entries.slip_id', $request->slip_id);
 		}		

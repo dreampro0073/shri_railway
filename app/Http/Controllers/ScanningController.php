@@ -82,6 +82,7 @@ class ScanningController extends Controller {
 
 		$entries = ScanningEntry::select( 'scanning_entries.id',
 			 'scanning_entries.name',
+			 'scanning_entries.barcodevalue',
 			 'scanning_entries.train_no',
 			 'scanning_entries.no_of_item',
 			 'scanning_entries.paid_amount',

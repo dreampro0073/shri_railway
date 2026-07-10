@@ -327,4 +327,10 @@ ALTER TABLE `room_entries` CHANGE `deleted` `deleted` TINYINT(4) NOT NULL DEFAUL
 ALTER TABLE `room_availability` CHANGE `status` `status` TINYINT(4) NULL DEFAULT '0' COMMENT '1--> Deleted';
 
 ALTER TABLE `locker_penalty` ADD `type` INT NOT NULL DEFAULT '1' AFTER `locker_entry_id`;
+
+//DIpanshu Chauhan 9th July
+
+CREATE TABLE `aadhya_tech`.`temp_otp` ( `id` INT NOT NULL AUTO_INCREMENT , `mobile` VARCHAR(20) NULL DEFAULT NULL , `otp` INT NULL DEFAULT NULL , `add_date` DATE NULL DEFAULT NULL , `created_at` TIMESTAMP NULL DEFAULT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+
+ALTER TABLE `temp_otp` ADD `status` TINYINT NOT NULL DEFAULT '0' AFTER `otp`;
 ?>

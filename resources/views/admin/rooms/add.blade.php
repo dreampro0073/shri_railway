@@ -106,10 +106,27 @@
                             <label>Total Amount</label>
                             <input type="number" ng-model="formData.total_amount" class="form-control" readonly />
                         </div>
-                       
-                        <div class="col-md-3 form-group">
+                        <div class="col-md-3 form-group" ng-if="!otp_verified && entry_id == 0">
+                            <label>Are you want to give discount</label><br>
+
+                            <label>
+                                <input ng-click="sendOtp()" type="radio" ng-model="formData.is_discount" ng-value="1"> Yes
+                            </label>
+
+                            <label style="margin-left:15px;">
+                                <input type="radio" ng-click="resetOtp()" ng-model="formData.is_discount" ng-value="0"> No
+                            </label>
+                        </div>
+                        <div class="col-md-3 form-group" ng-if="formData.is_discount == 1 && !otp_verified">
+                            <label>Verify OTP</label>
+                            <p>@{{otp}}</p>
+                            <input class="form-control" type="number"
+                               ng-model="formData.otp"
+                               ng-keyup="verifyOtp()">
+                        </div>
+                        <div ng-if="otp_verified || entry_id > 0" class="col-md-3 form-group">
                             <label>Discount Amount</label>
-                            <input type="text" ng-model="formData.discount_amount" ng-keyup="disAmount()" class="form-control" />
+                            <input type="text" ng-model="formData.discount_amount" ng-keyup="disAmount()" class="form-control" ng-readonly="entry_id > 0" />
                         </div>
                         <div class="col-md-3 form-group">
                             <label>Paid Amount</label>
@@ -369,8 +386,30 @@
                             <label>Total Amount</label>
                             <input type="number" ng-model="formData.total_amount" class="form-control" readonly />
                         </div>
-                       
+                        <!-- 
                         <div class="col-md-3 form-group">
+                            <label>Discount Amount</label>
+                            <input type="text" ng-model="formData.discount_amount" ng-keyup="disAmount()" class="form-control" />
+                        </div> -->
+                         <div class="col-md-3 form-group" ng-if="!otp_verified">
+                            <label>Are you want to give discount</label><br>
+
+                            <label>
+                                <input ng-click="sendOtp()" type="radio" ng-model="formData.is_discount" ng-value="1"> Yes
+                            </label>
+
+                            <label style="margin-left:15px;">
+                                <input type="radio" ng-click="resetOtp()" ng-model="formData.is_discount" ng-value="0"> No
+                            </label>
+                        </div>
+                        <div class="col-md-3 form-group" ng-if="formData.is_discount == 1 && !otp_verified">
+                            <label>Verify OTP</label>
+                            <p>@{{otp}}</p>
+                            <input class="form-control" type="number"
+                               ng-model="formData.otp"
+                               ng-keyup="verifyOtp()">
+                        </div>
+                        <div ng-if="otp_verified" class="col-md-3 form-group">
                             <label>Discount Amount</label>
                             <input type="text" ng-model="formData.discount_amount" ng-keyup="disAmount()" class="form-control" />
                         </div>

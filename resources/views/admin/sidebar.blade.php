@@ -27,6 +27,13 @@
                 </li>
             @endif
             @if(in_array(8, $service_ids))
+                @if(Auth::user()->priv == 2)
+                    <li class="@if(isset($sidebar)) @if($sidebar == 'otp') active @endif @endif">
+                        <a href="{{url('/admin/latest-otp')}}">
+                            <i class="ri-mail-unread-fill"></i><span>OTP</span>
+                        </a>
+                    </li>
+                @endif
                 <li class="@if(isset($sidebar)) @if($sidebar == 'pods') active @endif @endif">
                     <a href="{{url('/admin/rooms/1')}}">
                         <i class="ri-insert-row-top"></i><span>PODs</span>

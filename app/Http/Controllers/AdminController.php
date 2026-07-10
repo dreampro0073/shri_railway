@@ -87,6 +87,14 @@ class AdminController extends Controller {
             "sidebar" => "checkout-cloak",
             "subsidebar" => "checkout-cloak",
         ]);
+	}
+	public function latestOtp(Request $request){
+		$data = DB::table('temp_otp')->take(50)->orderBy("id","DESC")->get();
+		return view('admin.rooms.latest_otp', [
+			"data" => $data,
+            "sidebar" => "otp",
+            "subsidebar" => "otp",
+        ]);
 	}	
 
 	public function sitting(Request $request){

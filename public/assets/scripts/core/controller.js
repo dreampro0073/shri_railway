@@ -2172,13 +2172,15 @@ app.controller('entryRoomCtrl', function($scope , $http, $timeout , DBService,$i
     $scope.loading = false;
     $scope.formData = {
         name:'',
-        mobile:"",
+        mobile_no:"",
         paid_amount:0,
         no_of_day:'',
         locker_id:'',
         discount_amount:0,
+        is_discount:-1,
+        otp:'',
     };
-    
+    $discount_verified = false;
     $scope.filter = {};
 
     $scope.entry_id = 0;
@@ -2196,9 +2198,49 @@ app.controller('entryRoomCtrl', function($scope , $http, $timeout , DBService,$i
     $scope.total_amount = 0;
     $scope.paid_amount = 0;
     $scope.balance_amount = 0;
-
+    $scope.otp_verified = false;
+    $scope.otp_send = false;
     $scope.old_hr = 0;
-    
+    // $scope.setSendDiscount = (is_discount) => {
+    //     console.log("Hello");
+    //     $scope.formData.is_discount = is_discount;
+    //     $scope.sendOtp();
+    // }
+    $scope.resendOtp = () => {
+        $scope.otp_send = false;
+        $scope.sendOtp();
+    }
+    $scope.sendOtp = () => {
+        DBService.postCall({mobile:$scope.formData.mobile_no}, '/api/rooms/send-otp').then((data) => {
+            if (data.success) {
+               $scope.otp_send = true;
+               alert("Otp Send to the mobile number");
+            }
+        });
+    }
+    $scope.verifyOtp = function () {
+
+        console.log("Hello"+$scope.formData.otp);
+        if ($scope.formData.otp && $scope.formData.otp.toString().length === 4) {
+            console.log("Hello1111"+$scope.formData.otp);
+            DBService.postCall({mobile:$scope.formData.mobile_no,otp:$scope.formData.otp}, '/api/rooms/verify-otp').then((data) => {
+                if (data.success) {
+                   $scope.otp_send = false;
+                   $scope.otp_verified = true;
+                   $scope.formData.otp = '';
+                }else{
+                    alert(data.message);
+                }
+            });
+        }
+    };
+    $scope.resetOtp = () => {
+        $scope.formData.discount_amount = 0;
+        $scope.otp_send = false;
+        $scope.otp_verified = false;
+        $scope.formData.otp = '';
+
+    }
     $scope.init = function () {
         DBService.postCall($scope.filter, '/api/rooms/init/'+$scope.type).then((data) => {
             if (data.success) {
@@ -2262,6 +2304,7 @@ app.controller('entryRoomCtrl', function($scope , $http, $timeout , DBService,$i
         $scope.sl_pods = [];
         $scope.sl_cabins = [];
         $scope.sl_beds = [];
+        $scope.otp_verified = false;
         $scope.formData = {
             name:'',
             mobile:"",
@@ -2270,6 +2313,7 @@ app.controller('entryRoomCtrl', function($scope , $http, $timeout , DBService,$i
             balance_amount:0,
             hours_occ:'',
             discount_amount:0,
+            otp:'',
             
         };
         $("#exampleModalCenter").modal("show");    
@@ -2288,8 +2332,11 @@ app.controller('entryRoomCtrl', function($scope , $http, $timeout , DBService,$i
             balance_amount:0,
             hours_occ:'',
             discount_amount:0,
+            otp:'',
             
         };
+        $scope.otp_verified = false;
+        $scope.otp_send = false;
         $scope.sl_pods = [];
         $scope.sl_beds = [];
         $scope.sl_cabins = [];
@@ -2300,7 +2347,10 @@ app.controller('entryRoomCtrl', function($scope , $http, $timeout , DBService,$i
     $scope.onSubmit = function () {
 
         // $scope.formData.type = $scope.type;
-
+        if($scope.formData.discount_amount > $scope.formData.total_amount){
+            alert("Discount Amount shoud be less then the total amount");
+            return;
+        }
         if($scope.formData.online_booking && $scope.formData.online_booking == 1){
             $scope.formData.type = $scope.formData.type;
         }else{
@@ -2343,12 +2393,13 @@ app.controller('entryRoomCtrl', function($scope , $http, $timeout , DBService,$i
                 $scope.entry_id = 0;
                 $scope.formData = {
                     name:'',
-                    mobile:"",
                     paid_amount:0,
                     total_amount:0,
                     balance_amount:0,
                     hours_occ:'',
                     discount_amount:0,
+                    otp:'',
+                    mobile_no:'',
                     
                 };
                 $scope.sl_pods = [];
@@ -2428,20 +2479,22 @@ app.controller('entryRoomCtrl', function($scope , $http, $timeout , DBService,$i
     }  
 
     $scope.changeAmount = () => {
-        if($scope.formData.type == 1){
+        if($scope.type == 1){
             $scope.changeAmountPod();
         }
 
-        if($scope.formData.type == 2){
+        if($scope.type == 2){
             $scope.changeAmountCabin();
         }
 
-        if($scope.formData.type == 3){
+        if($scope.type == 3){
             $scope.changeAmountBed();
         }
+        console.log("jhhshajhsjahsjahsj");
     }
   
     $scope.changeAmountPod = () => {
+        console.log("changes");
         var total_amount = 0;
         if($scope.formData.hours_occ == 6){
            total_amount= $scope.sl_pods.length*299;
@@ -2464,6 +2517,8 @@ app.controller('entryRoomCtrl', function($scope , $http, $timeout , DBService,$i
             $scope.formData.balance_amount = total_amount - ($scope.formData.paid_amount + $scope.formData.discount_amount); 
 
         }
+
+        console.log($scope.formData.total_amount);
     }
 
     $scope.changeAmountCabin = () => {
@@ -2571,7 +2626,9 @@ app.controller('entryRoomCtrl', function($scope , $http, $timeout , DBService,$i
     }
 
     $scope.disAmount = () => {
-
+        if($scope.formData.total_amount < $scope.formData.discount_amount){
+            return;
+        }
         if($scope.formData.discount_amount > 0 && $scope.formData.total_amount > 0){
             if($scope.entry_id == 0){
                 $scope.formData.paid_amount = $scope.total_amount - $scope.formData.discount_amount;

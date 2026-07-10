@@ -146,6 +146,8 @@ Route::group(['middleware'=>'auth'],function(){
 		Route::get('/reset-password',[UserController::class,'resetPassword']);
 		Route::post('/reset-password',[UserController::class,'updatePassword']);
 
+		Route::get('latest-otp',[AdminController::class,'latestOtp']);
+
 		Route::middleware(['check.sitting'])->group(function () {
 		   Route::group(['prefix'=>"sitting"], function(){
 				Route::get('/',[SittingController::class,'sitting']);
@@ -309,6 +311,7 @@ Route::group(['middleware'=>'auth'],function(){
 
 Route::get('set-slip-id',[SittingController::class,'setSlipId']);
 Route::get('view-scanning/{print_id}',[ScanningController::class,'viewScanning']);
+// Route::get('send-otp',[RoomController::class,'sendOtp']);
 
 Route::group(['prefix'=>"api"], function(){	
 	Route::post('/set-checkout-alert',[UserController::class,'setCheckoutAlert']);
@@ -353,6 +356,8 @@ Route::group(['prefix'=>"api"], function(){
 		Route::post('/checkout-init/{type}',[CloakRoomController::class,'checkoutInit']);
 		Route::post('/checkout-store',[CloakRoomController::class,'checkoutStore']);
 		Route::get('/delete/{id}',[CloakRoomController::class,'delete']);
+
+
 	});
 	Route::group(['prefix'=>"collect-cloak"], function(){
 		Route::post('/init',[CloakRoomCollectController::class,'initRoom']);
@@ -472,6 +477,9 @@ Route::group(['prefix'=>"api"], function(){
 		Route::get('/delete/{id}',[RoomController::class,'delete']);
 		Route::post('/init-single-entry',[RoomController::class,'initSingleEntry']);
 		Route::get('/delete-e-entry/{entry_id}/{e_entry_id}',[RoomController::class,'deleteEnEntry']);
+
+		Route::post('/send-otp',[RoomController::class,'sendOtp']);
+		Route::post('/verify-otp',[RoomController::class,'verifyOTP']);
 
 	});
 

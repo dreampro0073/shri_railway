@@ -46,15 +46,15 @@ class Room extends Model
     }
 
     public static function getBookedPodsAr(){
-        return DB::table('pods')->where('client_id','=',Auth::user()->client_id)->where('status',1)->pluck('e_no')->toArray();
+        return DB::table('pods')->where('client_id','=',Auth::user()->client_id)->where('status',1)->where('hide',0)->pluck('e_no')->toArray();
     }
 
     public static function getBookedSinCabinsAr(){
-        return DB::table('single_cabins')->where('client_id','=',Auth::user()->client_id)->where('status',1)->pluck('e_no')->toArray();
+        return DB::table('single_cabins')->where('client_id','=',Auth::user()->client_id)->where('status',1)->where('hide',0)->pluck('e_no')->toArray();
     }
 
     public static function getBookedBedsAr(){
-        return DB::table('double_beds')->where('client_id','=',Auth::user()->client_id)->where('status',1)->pluck('e_no')->toArray();
+        return DB::table('double_beds')->where('client_id','=',Auth::user()->client_id)->where('status',1)->where('hide',0)->pluck('e_no')->toArray();
     }
 
     public static function getEnos($type,$e_ids){

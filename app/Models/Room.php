@@ -22,27 +22,27 @@ class Room extends Model
     }
 
     public static function getAvailPods(){
-        return DB::table('pods')->where('client_id','=',Auth::user()->client_id)->where('status',0)->get();
+        return DB::table('pods')->where('client_id','=',Auth::user()->client_id)->where('status',0)->where('hide',0)->get();
     }
 
     public static function getAvailSinCabins(){
-        return DB::table('single_cabins')->where('client_id','=',Auth::user()->client_id)->where('status',0)->get();
+        return DB::table('single_cabins')->where('client_id','=',Auth::user()->client_id)->where('status',0)->where('hide',0)->get();
     }
 
     public static function getAvailBeds(){
-        return DB::table('double_beds')->where('client_id','=',Auth::user()->client_id)->where('status',0)->get();
+        return DB::table('double_beds')->where('client_id','=',Auth::user()->client_id)->where('status',0)->where('hide',0)->get();
     }
 
     public static function getAvailPodsAr(){
-        return DB::table('pods')->where('client_id','=',Auth::user()->client_id)->where('status',0)->pluck('e_no')->toArray();
+        return DB::table('pods')->where('client_id','=',Auth::user()->client_id)->where('status',0)->where('hide',0)->pluck('e_no')->toArray();
     }
 
     public static function getAvailSinCabinsAr(){
-        return DB::table('single_cabins')->where('client_id','=',Auth::user()->client_id)->where('status',0)->pluck('e_no')->toArray();
+        return DB::table('single_cabins')->where('client_id','=',Auth::user()->client_id)->where('status',0)->where('hide',0)->pluck('e_no')->toArray();
     }
 
     public static function getAvailBedsAr(){
-        return DB::table('double_beds')->where('client_id','=',Auth::user()->client_id)->where('status',0)->pluck('e_no')->toArray();
+        return DB::table('double_beds')->where('client_id','=',Auth::user()->client_id)->where('status',0)->where('hide',0)->pluck('e_no')->toArray();
     }
 
     public static function getBookedPodsAr(){

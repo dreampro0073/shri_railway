@@ -333,4 +333,11 @@ ALTER TABLE `locker_penalty` ADD `type` INT NOT NULL DEFAULT '1' AFTER `locker_e
 CREATE TABLE `aadhya_tech`.`temp_otp` ( `id` INT NOT NULL AUTO_INCREMENT , `mobile` VARCHAR(20) NULL DEFAULT NULL , `otp` INT NULL DEFAULT NULL , `add_date` DATE NULL DEFAULT NULL , `created_at` TIMESTAMP NULL DEFAULT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
 
 ALTER TABLE `temp_otp` ADD `status` TINYINT NOT NULL DEFAULT '0' AFTER `otp`;
+
+ALTER TABLE `double_beds` ADD `hide` TINYINT(1) NOT NULL DEFAULT '0' `status`;
+
+ALTER TABLE `single_cabins` ADD `hide` TINYINT(1) NOT NULL DEFAULT '0' AFTER `status`;
+
+
+ALTER TABLE `pods` ADD `hide` TINYINT(1) NOT NULL DEFAULT '0' AFTER `status`;
 ?>

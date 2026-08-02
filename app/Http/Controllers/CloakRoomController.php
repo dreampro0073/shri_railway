@@ -458,7 +458,8 @@ class CloakRoomController extends Controller {
 
 				$l_entry->mobile_no = $l_entry->mobile_no*1;
 				$l_entry->train_no = $l_entry->train_no*1;
-				$l_entry->pnr_uid = $l_entry->pnr_uid*1;
+				// $l_entry->pnr_uid = $l_entry->pnr_uid*1;
+				$l_entry->pnr_uid = (string) $l_entry->pnr_uid;
 
 				$l_entry->paid_amount = $l_entry->paid_amount*1;
 

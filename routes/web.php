@@ -135,6 +135,21 @@ Route::group(['middleware'=>'auth'],function(){
 	});
 
 	Route::group(['prefix'=>"admin"], function(){
+		Route::get('total-amount',function(){
+			$sum = DB::table('cloakroom_entries')->whereBetween(['2026-01-01','2026-07-31'])->where('client_id',6)->sum();
+
+			$p_sum = DB::table('cloakroom_penalities')->whereBetween(['2026-01-01','2026-07-31'])->where('client_id',6)->sum();
+
+			echo $sum+$p_sum;
+		});
+
+		Route::get('sitting-total-amount',function(){
+			$sum = DB::table('sitting_entries')->whereBetween(['2026-01-01','2026-07-31'])->where('client_id',1)->sum('paid_amount');
+
+			$p_sum = DB::table('e_entries')->whereBetween(['2026-01-01','2026-07-31'])->where('client_id',1)->sum('paid_amount');
+
+			echo $sum+$p_sum;
+		});
 		Route::post('/uploadFile',[AdminController::class,'uploadFile']);
 		Route::get('/backup-data', [BackupController::class,'dumpData']);
 		// Route::get('/recliners-set', [ReclinerController::class,'reclinersSet']);

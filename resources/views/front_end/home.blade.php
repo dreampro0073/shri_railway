@@ -386,10 +386,10 @@
                     <h3>Dipanshu Chauhan</h3>
                     <div class="role">Founder &amp; Project Manager</div>
                     <p class="text">Keeps timelines, budgets and communication on track from kickoff to delivery.</p>
-                    <div class="socials">
+                    <!-- <div class="socials">
                         <a href="javascript:;" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
                         <a href="javascript:;" aria-label="Email"><i class="bi bi-envelope"></i></a>
-                    </div>
+                    </div> -->
                 </div>
             </div>
             
@@ -399,10 +399,10 @@
                     <h3>Divandra Diwakar</h3>
                     <div class="role">Founder &amp; Backend Engineer</div>
                     <p class="text">Builds the systems and APIs that keep everything running reliably behind the scenes.</p>
-                    <div class="socials">
+                    <!-- <div class="socials">
                         <a href="javascript:;" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
                         <a href="javascript:;" aria-label="Email"><i class="bi bi-envelope"></i></a>
-                    </div>
+                    </div> -->
                 </div>
             </div>
             <div class="col-md-3 col-6 mob-mt-20">
@@ -411,10 +411,10 @@
                     <h3>Pushpendra Diwakar</h3>
                     <div class="role">Mobile Application Developer</div>
                     <p class="text">Develops scalable, user-friendly mobile apps with a focus on performance and reliability.</p>
-                    <div class="socials">
+                    <!-- <div class="socials">
                         <a href="javascript:;" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
                         <a href="javascript:;" aria-label="Email"><i class="bi bi-envelope"></i></a>
-                    </div>
+                    </div> -->
                 </div>
             </div>
             <div class="col-md-3 col-6 mob-mt-20">
@@ -423,10 +423,10 @@
                     <h3>Saloni Chauhan</h3>
                     <div class="role">UI/UX Designer</div>
                     <p class="text">Turns requirements into clean, usable interfaces people actually enjoy working with.</p>
-                    <div class="socials">
+                    <!-- <div class="socials">
                         <a href="javascript:;" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
                         <a href="javascript:;" aria-label="Email"><i class="bi bi-envelope"></i></a>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>

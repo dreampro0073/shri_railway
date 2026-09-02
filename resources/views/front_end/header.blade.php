@@ -3,7 +3,6 @@
 		<div class="row">
 			<div class="col-md-4 col-6">
 				<div class="logo">
-					<!-- <img alt="Aadhyasri Web Solutions | Best IT Company In Haridwar" src="{{url('assets/img/aadh_new.png')}}"> -->
 					<img alt="Aadhyasri Web Solutions | Best IT Company In Haridwar" src="{{url('front-end/images/AashyaFinal1.png')}}">
 				</div>
 			</div>
@@ -19,9 +18,10 @@
 			<div class="col-md-8">
 				<ul class="menu">
 					<li><a href="#home" title="Best Web Development Company in Haridwar" class="scroll-link" rel="noopener">Home</a></li>
-					<li><a href="#about-us" itle="know more about aadhyasri web solutions" class="scroll-link">About Us</a></li>
+					<li><a href="#about-us" title="know more about aadhyasri web solutions" class="scroll-link">About Us</a></li>
 					<li><a href="#our-service" title="Professional Web Development Services" class="scroll-link">Our Services</a></li>
-					<li><a href="#contact" title="Rich out Us" class="scroll-link">Contact US</a></li>
+					<li><a href="#projects" title="See our recent work" class="scroll-link">Projects</a></li>
+					<li><a href="#contact" title="Reach out to us" class="scroll-link">Contact Us</a></li>
 					<li>
 						<a title="Login to tool" href="{{url('/login')}}" class="login-btn theme-btn"><span class="txt">Login</span></a>
 					</li>

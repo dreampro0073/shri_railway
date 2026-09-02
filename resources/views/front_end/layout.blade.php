@@ -1,5 +1,5 @@
 <?php 
-    $version = "1.0.8";
+    $version = "1.0.9";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -20,10 +20,13 @@
     <meta property="og:description" content="Professional web development & digital solutions for your business.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="{{ url('/') }}">
-    <meta property="og:image" content="{{ url('assets/img/favicon.png') }}">
+    <meta property="og:image" content="{{ url('front-end/images/AashyaFinal1.png') }}">
 
     <!-- Favicon -->
     <link rel="icon" sizes="32x32" type="image/x-icon" href="{{ url('assets/img/favicon.png') }}">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
     <link href="{{ url('front-end/plugins/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ url('front-end/plugins/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
@@ -62,7 +65,7 @@
         }
     </script>
     <script src="{{url('front-end/plugins/owlcarousel/owl.carousel.min.js')}}"></script>
-    <script src="{{url('front-end/js/custom.js?v='.$version)}}"></script>
+    <script src="{{url('front-end/js/custom.js?v='.$version) }}"></script>
 
     @yield('footer_scripts')
 

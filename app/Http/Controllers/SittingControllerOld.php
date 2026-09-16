@@ -21,6 +21,59 @@ class SittingControllerOld extends Controller {
 			return view('error');
 		}
 	}
+	public function initEntriesOLD(Request $request){
+		if(Auth::user()->priv == 2){
+			Entry::setCheckStatus();
+		}
+
+		$entries = Sitting::select('sitting_entries.*')->where("sitting_entries.client_id", Auth::user()->client_id);
+		if($request->slip_id){
+			$entries = $entries->where('sitting_entries.slip_id', $request->slip_id);
+		}		
+		if($request->name){
+			$entries = $entries->where('sitting_entries.name', 'LIKE', '%'.$request->name.'%');
+		}		
+		if($request->mobile_no){
+			$entries = $entries->where('sitting_entries.mobile_no', 'LIKE', '%'.$request->mobile_no.'%');
+		}		
+		if($request->pnr_uid){
+			$entries = $entries->where('sitting_entries.pnr_uid', 'LIKE', '%'.$request->pnr_uid.'%');
+		}		
+		if($request->from_date){
+			$entries = $entries->where('sitting_entries.date', '>=', date("Y-m-d", strtotime($request->from_date)));
+		}		
+		if($request->to_date){
+			$entries = $entries->where('sitting_entries.date', "<=", date("Y-m-d", strtotime($request->to_date)));
+		}		
+		if($request->added_by){
+			$entries = $entries->where('sitting_entries.added_by', $request->added_by);
+		}		
+		
+		
+		$entries = $entries->orderBy("checkout_status", 'ASC')->orderBy('id', "DESC")->take(100);
+		$entries = $entries->get();
+		foreach ($entries as $item) {
+			$item->show_time = date("h:i A",strtotime($item->check_in)).' - '.date("h:i A",strtotime($item->check_out));
+			$item->show_date = date("d-m-Y",strtotime($item->date));
+
+			$e_total = Sitting::eSum($item->id);
+
+			$item->paid_amount = $item->paid_amount + $e_total;
+			$item->str_checkout_time = strtotime($item->checkout_date);
+		}
+		$rate_list = Sitting::rateList();
+
+		$pay_types = Entry::payTypes();
+		$hours = Entry::hours();
+		$data['success'] = true;
+		$data['entries'] = $entries;
+		$data['pay_types'] = $pay_types;
+		$data['hours'] = $hours;
+		$data['rate_list'] = $rate_list;
+		$data['users'] = DB::table('users')->select('id','name')->where('priv','!=',4)->where("client_id", Auth::user()->client_id)->get();
+		return Response::json($data, 200, []);
+	}	
+
 	public function initEntries(Request $request){
 		$entries = Sitting::select('sitting_entries.*','users.name as username')->leftJoin('users','users.id','=','sitting_entries.delete_by')->where("sitting_entries.client_id", Auth::user()->client_id);
 		if($request->slip_id){

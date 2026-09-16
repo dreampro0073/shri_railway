@@ -131,4 +131,21 @@ class Entry extends Model
         $p_date = date("Y-m-d");
         return $p_date;
     }
+    public static function hideAmount()
+    {
+        $client_id = Auth::user()->client_id;
+
+        $client = DB::table('clients')
+            ->where('id', $client_id)
+            ->select('id', 'hide_amount')
+            ->first();
+
+        $hide_amount = 0;
+
+        if ($client) {
+            $hide_amount = $client->hide_amount;
+        }
+
+        return $hide_amount;
+    }
 }

@@ -189,6 +189,21 @@ class Sitting extends Model
         $total_collection = $total_shift_upi + $total_shift_cash;
         $last_hour_total = $last_hour_upi_total + $last_hour_cash_total;
 
+
+        /*
+        |--------------------------------------------------------------------------
+        | Hide Amount
+        |--------------------------------------------------------------------------
+        | Sirf privilege 2 ke liye cash amount se hide_amount minus hoga.
+        */
+        if(Auth::user()->privilege == 2){
+            $hide_amount = Entry::hideAmount();
+            $total_shift_cash = $total_shift_cash - $hide_amount;
+            if($total_shift_cash < 0){
+                $total_shift_cash = 0;
+            }
+        }
+
         $data['total_shift_upi'] = $total_shift_upi;
         $data['total_shift_cash'] = $total_shift_cash;
         $data['total_collection'] = $total_collection;

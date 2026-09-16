@@ -133,43 +133,68 @@ class SittingController extends Controller {
 			return view('error');
 		}
 	}
-	public function initEntriesOLD(Request $request){
+	public function initEntries(Request $request){
 		if(Auth::user()->priv == 2){
 			Entry::setCheckStatus();
 		}
-
-		$entries = Sitting::select('sitting_entries.*')->where("sitting_entries.client_id", Auth::user()->client_id);
-		if($request->slip_id){
-			$entries = $entries->where('sitting_entries.slip_id', $request->slip_id);
-		}		
-		if($request->name){
-			$entries = $entries->where('sitting_entries.name', 'LIKE', '%'.$request->name.'%');
-		}		
-		if($request->mobile_no){
-			$entries = $entries->where('sitting_entries.mobile_no', 'LIKE', '%'.$request->mobile_no.'%');
-		}		
-		if($request->pnr_uid){
-			$entries = $entries->where('sitting_entries.pnr_uid', 'LIKE', '%'.$request->pnr_uid.'%');
-		}		
-		if($request->from_date){
-			$entries = $entries->where('sitting_entries.date', '>=', date("Y-m-d", strtotime($request->from_date)));
-		}		
-		if($request->to_date){
-			$entries = $entries->where('sitting_entries.date', "<=", date("Y-m-d", strtotime($request->to_date)));
-		}		
-		if($request->added_by){
-			$entries = $entries->where('sitting_entries.added_by', $request->added_by);
-		}		
 		
+		$client_id = Auth::user()->client_id;
+
+		$hide_amount = Entry::hideAmount();
+
+		$hide_amount = $hide_amount ?? 0;
+
+		$hide_entry_ids = [];
+
+		if($hide_amount > 0){
+
+			$hide_entries = Sitting::select('id','paid_amount')
+				->where("client_id", $client_id)
+				->where('pay_type', 1)
+				->where('checkout_status', 1)
+				->orderBy('id', 'DESC')
+				->get();
+
+			$hidden_amount = 0;
+
+			foreach($hide_entries as $hide_entry){
+
+				$amount = (float)$hide_entry->paid_amount;
+
+				if(($hidden_amount + $amount) <= $hide_amount){
+
+					$hide_entry_ids[] = $hide_entry->id;
+
+					$hidden_amount = $hidden_amount + $amount;
+
+				}else{
+					break;
+				}
+			}
+		}
+
+		$entries = Sitting::select('sitting_entries.*')
+		->where("sitting_entries.client_id", Auth::user()->client_id)
+		->when(!empty($hide_entry_ids), fn($q) => $q->whereNotIn('id', $hide_entry_ids))
+		->when($request->slip_id, fn($q) => $q->where('slip_id', $request->slip_id))
+		->when($request->name, fn($q) => $q->where('name','like',"%{$request->name}%"))
+		->when($request->mobile_no, fn($q) => $q->where('mobile_no','like',"%{$request->mobile_no}%"))
+		->when($request->pnr_uid, fn($q) => $q->where('pnr_uid','like',"%{$request->pnr_uid}%"))
+		->when($request->from_date, fn($q) => $q->whereDate('date','>=',$request->from_date))
+		->when($request->to_date, fn($q) => $q->whereDate('date','<=',$request->to_date))
+		->when($request->added_by, fn($q) => $q->where('added_by',$request->added_by));
 		
 		$entries = $entries->orderBy("checkout_status", 'ASC')->orderBy('id', "DESC")->take(100);
 		$entries = $entries->get();
+
+		$entry_ids = $entries->pluck('id')->toArray();
+
+		$extraSums = DB::table('e_entries')->select('entry_id', DB::raw('SUM(paid_amount) as total'))->whereIn('entry_id', $entry_ids)->where('is_collected', 0)->groupBy('entry_id')->pluck('total', 'entry_id');
+
 		foreach ($entries as $item) {
 			$item->show_time = date("h:i A",strtotime($item->check_in)).' - '.date("h:i A",strtotime($item->check_out));
 			$item->show_date = date("d-m-Y",strtotime($item->date));
-
-			$e_total = Sitting::eSum($item->id);
-
+			$e_total = isset($extraSums[$item->id])?$extraSums[$item->id]:0;
 			$item->paid_amount = $item->paid_amount + $e_total;
 			$item->str_checkout_time = strtotime($item->checkout_date);
 		}
@@ -184,9 +209,8 @@ class SittingController extends Controller {
 		$data['rate_list'] = $rate_list;
 		$data['users'] = DB::table('users')->select('id','name')->where('priv','!=',4)->where("client_id", Auth::user()->client_id)->get();
 		return Response::json($data, 200, []);
-	}	
-
-	public function initEntries(Request $request){
+	}
+	public function initEntriesOld(Request $request){
 		if(Auth::user()->priv == 2){
 			Entry::setCheckStatus();
 		}

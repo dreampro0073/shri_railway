@@ -208,6 +208,7 @@ class SittingController extends Controller {
 		$data['hours'] = $hours;
 		$data['rate_list'] = $rate_list;
 		$data['hide_amount'] = $hide_amount;
+		$data['hide_entry_ids'] = $hide_entry_ids;
 		$data['users'] = DB::table('users')->select('id','name')->where('priv','!=',4)->where("client_id", Auth::user()->client_id)->get();
 		return Response::json($data, 200, []);
 	}

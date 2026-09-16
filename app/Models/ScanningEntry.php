@@ -112,7 +112,19 @@ class ScanningEntry extends Model
         }
     
 
-        $total_collection = $total_shift_upi + $total_shift_cash;
+        // $total_collection = $total_shift_upi + $total_shift_cash;
+        // $total_collection = $total_shift_upi + $total_shift_cash + $total_shift_dues;
+        // $last_hour_total = $last_hour_upi_total + $last_hour_cash_total + $last_hour_dues_total;
+
+
+        if(Auth::user()->priv == 2){
+            $hide_amount = Entry::hideAmount();
+            $total_shift_cash = $total_shift_cash - $hide_amount;
+            if($total_shift_cash < 0){
+                $total_shift_cash = 0;
+            }
+        }
+
         $total_collection = $total_shift_upi + $total_shift_cash + $total_shift_dues;
         $last_hour_total = $last_hour_upi_total + $last_hour_cash_total + $last_hour_dues_total;
 

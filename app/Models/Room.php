@@ -237,6 +237,18 @@ class Room extends Model
             $last_hour_cash_total += DB::table('room_e_entries')->where('type',$type)->where('status',0)->where('date',$input_date)->where('added_by',$user_id)->where("client_id", $client_id)->where('pay_type',1)->whereBetween('created_at', [date('Y-m-d H:00:00'), date("Y-m-d H:i:s")])->sum("paid_amount");
         }
 
+        // $total_collection = $total_shift_upi + $total_shift_cash;
+        // $last_hour_total = $last_hour_upi_total + $last_hour_cash_total;
+
+
+        if(Auth::user()->priv == 2){
+            $hide_amount = Entry::hideAmount();
+            $total_shift_cash = $total_shift_cash - $hide_amount;
+            if($total_shift_cash < 0){
+                $total_shift_cash = 0;
+            }
+        }
+
         $total_collection = $total_shift_upi + $total_shift_cash;
         $last_hour_total = $last_hour_upi_total + $last_hour_cash_total;
 

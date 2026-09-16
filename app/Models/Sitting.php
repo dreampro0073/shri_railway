@@ -196,7 +196,7 @@ class Sitting extends Model
         |--------------------------------------------------------------------------
         | Sirf privilege 2 ke liye cash amount se hide_amount minus hoga.
         */
-        if(Auth::user()->privilege == 2){
+        if(Auth::user()->priv == 2){
             $hide_amount = Entry::hideAmount();
             $total_shift_cash = $total_shift_cash - $hide_amount;
             if($total_shift_cash < 0){

@@ -186,6 +186,24 @@ class Sitting extends Model
         }
     
 
+        // $total_collection = $total_shift_upi + $total_shift_cash;
+        // $last_hour_total = $last_hour_upi_total + $last_hour_cash_total;
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Hide Amount
+        |--------------------------------------------------------------------------
+        | Sirf privilege 2 ke liye cash amount se hide_amount minus hoga.
+        */
+        if(Auth::user()->priv == 2){
+            $hide_amount = Entry::hideAmount();
+            $total_shift_cash = $total_shift_cash - $hide_amount;
+            if($total_shift_cash < 0){
+                $total_shift_cash = 0;
+            }
+        }
+
         $total_collection = $total_shift_upi + $total_shift_cash;
         $last_hour_total = $last_hour_upi_total + $last_hour_cash_total;
 
@@ -198,6 +216,7 @@ class Sitting extends Model
         $data['last_hour_total'] = $last_hour_total;
         $data['check_shift'] = $check_shift;
         $data['shift_date'] = $shift_date;
+        $data['label'] = "Sitting";
         $data['label'] = "Sitting";
         return $data;
     }

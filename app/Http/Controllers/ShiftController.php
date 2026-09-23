@@ -78,8 +78,112 @@ class ShiftController extends Controller {
         	'data' => $data,
         ]);
 	}
-	
+
 	public function getStatus($request, $client_id, $service_ids){ 
+	    $input_date = isset($request['input_date']) ? $request['input_date'] : date("Y-m-d");
+
+	    if(!in_array(Auth::user()->priv, [2,5])){
+	        $user_id = Auth::id();
+	    } else{
+	        $user_id = isset($request['user_id']) ? $request['user_id'] : 0;
+	    }
+	     
+	    $current_shift = Entry::checkShift();
+
+	    $data['total_shift_upi'] = 0;
+	    $data['total_shift_cash'] = 0;
+	    $data['total_shift_dues'] = 0;
+	    $data['total_collection'] = 0;
+	    $data['last_hour_upi_total'] = 0;
+	    $data['last_hour_cash_total'] = 0;
+	    $data['last_hour_dues_total'] = 0;
+	    $data['last_hour_total'] = 0;
+
+	    $data_rows =[];
+
+	    if(in_array(1, $service_ids)){
+	        $sitting_data = Sitting::totalShiftData($input_date,$user_id,$client_id);
+	        $data = $this->calculateAmount($sitting_data, $data);
+
+	        if($user_id && Auth::user()->priv == 2){
+	            $data['chage_pay_type_data'] = Sitting::getChangePayTypeLog($input_date, $user_id);
+	        }
+	        
+	        $data_rows[] = $sitting_data;
+	    }
+
+	    if(in_array(2, $service_ids)){
+	        $cloak_data = CloakRoom::totalShiftData($input_date,$user_id,$client_id);
+	        $data = $this->calculateAmount($cloak_data, $data);
+
+	        $data_rows[] = $cloak_data;
+	    }
+	    
+	    if(in_array(3, $service_ids)){
+	        $canteen_data = Canteen::totalShiftData($input_date,$user_id,$client_id);
+	        $data = $this->calculateAmount($canteen_data, $data);
+
+	        $data_rows[] = $canteen_data;
+	    }       
+
+	    if(in_array(4, $service_ids)){
+	        $massage_data = Massage::totalShiftData($input_date,$user_id,$client_id);
+	        $data = $this->calculateAmount($massage_data, $data);
+
+	        $data_rows[] = $massage_data;
+	    }       
+
+	    if(in_array(5, $service_ids)){
+	        $locker_data = Locker::totalShiftData($input_date,$user_id,$client_id);
+	        $data = $this->calculateAmount($locker_data, $data);
+
+	        $data_rows[] = $locker_data;
+	    }
+
+	    if(in_array(7, $service_ids)){
+	        $recliner_data = Recliner::totalShiftData($input_date,$user_id,$client_id);
+	        $data = $this->calculateAmount($recliner_data, $data);
+
+	        $data_rows[] = $recliner_data;
+	    }       
+
+	    if(in_array(8, $service_ids)){
+	        $pod_data = Room::totalShiftData(1,$input_date,$user_id,$client_id);
+	        $data = $this->calculateAmount($pod_data, $data);
+
+	        $data_rows[] = $pod_data;
+
+	        $singal_cabin_data = Room::totalShiftData(2,$input_date,$user_id,$client_id);
+	        $data = $this->calculateAmount($singal_cabin_data, $data);  
+
+	        $data_rows[] = $singal_cabin_data;
+
+	        $double_bed_data = Room::totalShiftData(3,$input_date,$user_id,$client_id);
+	        $data = $this->calculateAmount($double_bed_data, $data);
+
+	        $data_rows[] = $double_bed_data;
+	    }
+
+	    if(in_array(9, $service_ids)){
+	        $scanning_data = ScanningEntry::totalShiftData($input_date,$user_id,$client_id);
+	        $data = $this->calculateAmount($scanning_data, $data);
+
+	        $data_rows[] = $scanning_data;
+	    }
+
+	    if(in_array(10, $service_ids)){
+	        $rest_data = Rest::totalShiftData($input_date,$user_id,$client_id);
+	        $data = $this->calculateAmount($rest_data, $data);
+
+	        $data_rows[] = $rest_data;
+	    } 
+
+	    $data['data_rows'] = $data_rows;
+	    
+	    return $data;
+	}
+	
+	public function getStatusOld($request, $client_id, $service_ids){ 
 		$input_date = isset($request['input_date']) ? $request['input_date'] : date("Y-m-d");
 		if(Auth::user()->priv != 2){
             $user_id = Auth::id();

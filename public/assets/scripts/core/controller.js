@@ -2715,6 +2715,84 @@ app.controller('clientSettingCtrl', function($scope , $http, $timeout , DBServic
     $scope.loading = false;
     $scope.processing = false;
     $scope.filter = {};
+
+    $scope.clients = [];
+    $scope.shift_rows = [];
+
+    $scope.filter.hide_date = new Date();
+    $scope.filter.input_date = new Date();
+
+    $scope.formatDate = function(date){
+        if(!date){
+            return '';
+        }
+
+        var d = new Date(date);
+        var month = '' + (d.getMonth() + 1);
+        var day = '' + d.getDate();
+        var year = d.getFullYear();
+
+        if(month.length < 2){
+            month = '0' + month;
+        }
+
+        if(day.length < 2){
+            day = '0' + day;
+        }
+
+        return [year, month, day].join('-');
+    }
+
+    $scope.init = function () {
+        var params = {
+            hide_date: $scope.formatDate($scope.filter.hide_date)
+        };
+
+        DBService.postCall(params, '/api/clients/init-amount-setting').then((data) => {
+            if(data.success){
+                $scope.clients = data.clients;  
+            }
+        });
+    }
+
+    $scope.onSubmit = function () {
+        $scope.processing = true;
+
+        var params = {
+            clients: $scope.clients,
+            hide_date: $scope.formatDate($scope.filter.hide_date)
+        };
+
+        DBService.postCall(params, '/api/clients/store-amount-setting').then((data) => {
+            if(data.success){
+                $scope.init();
+            }
+
+            alert(data.message); 
+            $scope.processing = false;
+        });
+    }
+
+    $scope.shiftStatus = function () {
+        $scope.processing = true;
+
+        var params = {
+            input_date: $scope.formatDate($scope.filter.input_date)
+        };
+
+        DBService.postCall(params, '/api/clients/shift-status').then((data) => {
+            if(data.success){
+                $scope.shift_rows = data.shift_rows;
+            }
+
+            $scope.processing = false;
+        });
+    }
+});
+app.controller('clientSettingCtrlOld', function($scope , $http, $timeout , DBService) {
+    $scope.loading = false;
+    $scope.processing = false;
+    $scope.filter = {};
     
     $scope.clients = [];
 

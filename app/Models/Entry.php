@@ -131,8 +131,25 @@ class Entry extends Model
         $p_date = date("Y-m-d");
         return $p_date;
     }
-    public static function hideAmount()
-    {
+    
+
+    public static function hideAmount($client_id=0, $input_date=''){
+        if(!$client_id){
+            return 0;
+        }
+
+        if($input_date == ''){
+            $input_date = date('Y-m-d');
+        }
+
+        $input_date = date('Y-m-d', strtotime($input_date));
+
+        $hide_amount = DB::table('client_hide_amounts')->where('client_id',$client_id)->where('hide_date',$input_date)->value('hide_amount');
+
+        return $hide_amount ? (int)$hide_amount : 0;
+    }
+
+    public static function hideAmountOld(){
         $client_id = Auth::user()->client_id;
 
         $client = DB::table('clients')

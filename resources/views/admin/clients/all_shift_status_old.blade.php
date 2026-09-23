@@ -5,17 +5,8 @@
 
 @section('main')
     <div class="main" ng-controller="clientSettingCtrl" ng-init="shiftStatus();"> 
-
-        <div class="card shadow mb-4 p-4">
-
-            <div class="row">
-                <div class="col-md-4 form-group">
-                    <label>Date</label>
-                    <input type="date" ng-model="filter.input_date" ng-change="shiftStatus()" class="form-control" />
-                </div>
-            </div>
-
-            <table class="table table-bordered table-striped" style="width:100%;margin-top:30px;">
+        <div class="card shadow mb-4 p-4">    
+            <table class="table table-bordered table-striped" style="width:100%;margin-top: 50px;">
                 <thead>   
                     <tr>
                         <th>Name</th>
@@ -25,7 +16,6 @@
                         <th>Total</th>
                     </tr>
                 </thead>
-
                 <tbody>
                     <tr ng-repeat="item in shift_rows">
                         <td>@{{item.client_name}}</td>
@@ -36,8 +26,6 @@
                     </tr>
                 </tbody>
             </table>  
-
         </div>
-
     </div>
 @endsection

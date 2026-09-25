@@ -175,8 +175,103 @@ class Room extends Model
         }
 
     }
+    public static function totalShiftData($type = 1, $input_date = "", $user_id = 0, $client_id, $apply_hide_amount = true){
+        $label = "Pods";
 
-    public static function totalShiftData($type = 1, $input_date= "", $user_id=0, $client_id, $apply_hide_amount=true){
+        if($type == 2) $label = "Single Cabins";
+        if($type == 3) $label = "Double Beds";
+
+        $check_shift = Entry::checkShift();
+        $p_date = Entry::getPDate();
+        $shift_date = date("d-m-Y", strtotime($p_date));
+        $input_date = $input_date ? date("Y-m-d", strtotime($input_date)) : date("Y-m-d");
+
+        if(!in_array(Auth::user()->priv, [2,5])) $user_id = Auth::id();
+
+        $room_query = Room::where('type',$type)->where('date',$input_date)->where('client_id',$client_id);
+        $entry_query = DB::table('room_e_entries')->where('type',$type)->where('status',0)->where('date',$input_date)->where('client_id',$client_id);
+
+        if($user_id != 0){
+            $room_query->where('added_by',$user_id);
+            $entry_query->where('added_by',$user_id);
+        }
+
+        $total_shift_upi = (clone $room_query)->where('pay_type',2)->sum('paid_amount');
+        $total_shift_upi += (clone $entry_query)->where('pay_type',2)->sum('paid_amount');
+
+        $total_shift_cash = (clone $room_query)->where('pay_type',1)->sum('paid_amount');
+        $total_shift_cash += (clone $entry_query)->where('pay_type',1)->sum('paid_amount');
+
+        $from_time = date('Y-m-d H:00:00');
+        $to_time = date('Y-m-d H:i:s');
+
+        $last_hour_upi_total = (clone $room_query)->where('pay_type',2)->whereBetween('created_at',[$from_time,$to_time])->sum('paid_amount');
+        $last_hour_upi_total += (clone $entry_query)->where('pay_type',2)->whereBetween('created_at',[$from_time,$to_time])->sum('paid_amount');
+
+        $last_hour_cash_total = (clone $room_query)->where('pay_type',1)->whereBetween('created_at',[$from_time,$to_time])->sum('paid_amount');
+        $last_hour_cash_total += (clone $entry_query)->where('pay_type',1)->whereBetween('created_at',[$from_time,$to_time])->sum('paid_amount');
+
+        return [
+            'total_shift_upi' => $total_shift_upi,
+            'total_shift_cash' => $total_shift_cash,
+            'total_collection' => $total_shift_upi + $total_shift_cash,
+            'last_hour_upi_total' => $last_hour_upi_total,
+            'last_hour_cash_total' => $last_hour_cash_total,
+            'last_hour_total' => $last_hour_upi_total + $last_hour_cash_total,
+            'check_shift' => $check_shift,
+            'shift_date' => $shift_date,
+            'label' => $label
+        ];
+    }
+    public static function totalShiftDataOldDataKSath($type = 1, $input_date = "", $user_id = 0, $client_id, $apply_hide_amount = true){
+        $label = "Pods";
+        if($type == 2) $label = "Single Cabins";
+        if($type == 3) $label = "Double Beds";
+        $check_shift = Entry::checkShift();
+        $total_shift_cash = 0;
+        $total_shift_upi = 0;
+        $last_hour_cash_total = 0;
+        $last_hour_upi_total = 0;
+        $p_date = Entry::getPDate();
+        $shift_date = date("d-m-Y", strtotime($p_date));
+
+        if(!in_array(Auth::user()->priv, [2,5])) $user_id = Auth::id();
+
+        $input_date = $input_date ? date("Y-m-d", strtotime($input_date)) : date("Y-m-d");
+
+        if($user_id == 0){
+            $total_shift_upi = Room::where('type',$type)->where('date',$input_date)->where("client_id",$client_id)->where('pay_type',2)->sum("paid_amount");
+            $total_shift_upi += DB::table('room_e_entries')->where('type',$type)->where('status',0)->where('date',$input_date)->where("client_id",$client_id)->where('pay_type',2)->sum("paid_amount");
+            $total_shift_cash = Room::where('type',$type)->where('date',$input_date)->where("client_id",$client_id)->where('pay_type',1)->sum("paid_amount");
+            $total_shift_cash += DB::table('room_e_entries')->where('type',$type)->where('status',0)->where('date',$input_date)->where("client_id",$client_id)->where('pay_type',1)->sum("paid_amount");
+            $last_hour_upi_total = Room::where('type',$type)->where('date',$input_date)->where("client_id",$client_id)->where('pay_type',2)->whereBetween('created_at',[date('Y-m-d H:00:00'),date("Y-m-d H:i:s")])->sum("paid_amount");
+            $last_hour_upi_total += DB::table('room_e_entries')->where('type',$type)->where('status',0)->where('date',$input_date)->where("client_id",$client_id)->where('pay_type',2)->whereBetween('created_at',[date('Y-m-d H:00:00'),date("Y-m-d H:i:s")])->sum("paid_amount");
+            $last_hour_cash_total = Room::where('type',$type)->where('date',$input_date)->where("client_id",$client_id)->where('pay_type',1)->whereBetween('created_at',[date('Y-m-d H:00:00'),date("Y-m-d H:i:s")])->sum("paid_amount");
+            $last_hour_cash_total += DB::table('room_e_entries')->where('type',$type)->where('status',0)->where('date',$input_date)->where("client_id",$client_id)->where('pay_type',1)->whereBetween('created_at',[date('Y-m-d H:00:00'),date("Y-m-d H:i:s")])->sum("paid_amount");
+        }else{
+            $total_shift_upi = Room::where('type',$type)->where('date',$input_date)->where('added_by',$user_id)->where("client_id",$client_id)->where('pay_type',2)->sum("paid_amount");
+            $total_shift_upi += DB::table('room_e_entries')->where('type',$type)->where('status',0)->where('date',$input_date)->where('added_by',$user_id)->where("client_id",$client_id)->where('pay_type',2)->sum("paid_amount");
+            $total_shift_cash = Room::where('type',$type)->where('date',$input_date)->where('added_by',$user_id)->where("client_id",$client_id)->where('pay_type',1)->sum("paid_amount");
+            $total_shift_cash += DB::table('room_e_entries')->where('type',$type)->where('status',0)->where('date',$input_date)->where('added_by',$user_id)->where("client_id",$client_id)->where('pay_type',1)->sum("paid_amount");
+            $last_hour_upi_total = Room::where('type',$type)->where('date',$input_date)->where('added_by',$user_id)->where("client_id",$client_id)->where('pay_type',2)->whereBetween('created_at',[date('Y-m-d H:00:00'),date("Y-m-d H:i:s")])->sum("paid_amount");
+            $last_hour_upi_total += DB::table('room_e_entries')->where('type',$type)->where('status',0)->where('date',$input_date)->where('added_by',$user_id)->where("client_id",$client_id)->where('pay_type',2)->whereBetween('created_at',[date('Y-m-d H:00:00'),date("Y-m-d H:i:s")])->sum("paid_amount");
+            $last_hour_cash_total = Room::where('type',$type)->where('date',$input_date)->where('added_by',$user_id)->where("client_id",$client_id)->where('pay_type',1)->whereBetween('created_at',[date('Y-m-d H:00:00'),date("Y-m-d H:i:s")])->sum("paid_amount");
+            $last_hour_cash_total += DB::table('room_e_entries')->where('type',$type)->where('status',0)->where('date',$input_date)->where('added_by',$user_id)->where("client_id",$client_id)->where('pay_type',1)->whereBetween('created_at',[date('Y-m-d H:00:00'),date("Y-m-d H:i:s")])->sum("paid_amount");
+        }
+
+        return [
+            'total_shift_upi' => $total_shift_upi,
+            'total_shift_cash' => $total_shift_cash,
+            'total_collection' => $total_shift_upi + $total_shift_cash,
+            'last_hour_upi_total' => $last_hour_upi_total,
+            'last_hour_cash_total' => $last_hour_cash_total,
+            'last_hour_total' => $last_hour_upi_total + $last_hour_cash_total,
+            'check_shift' => $check_shift,
+            'shift_date' => $shift_date,
+            'label' => $label
+        ];
+    }
+    public static function totalShiftDataOld25Sep($type = 1, $input_date= "", $user_id=0, $client_id, $apply_hide_amount=true){
         $label = "Pods";
 
         if($type == 2){

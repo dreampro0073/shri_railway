@@ -147,22 +147,57 @@ class ShiftController extends Controller {
 	        $data_rows[] = $recliner_data;
 	    }       
 
+	    // if(in_array(8, $service_ids)){
+	    //     $pod_data = Room::totalShiftData(1,$input_date,$user_id,$client_id);
+	    //     $data = $this->calculateAmount($pod_data, $data);
+
+	    //     $data_rows[] = $pod_data;
+
+	    //     $singal_cabin_data = Room::totalShiftData(2,$input_date,$user_id,$client_id);
+	    //     $data = $this->calculateAmount($singal_cabin_data, $data);  
+
+	    //     $data_rows[] = $singal_cabin_data;
+
+	    //     $double_bed_data = Room::totalShiftData(3,$input_date,$user_id,$client_id);
+	    //     $data = $this->calculateAmount($double_bed_data, $data);
+
+	    //     $data_rows[] = $double_bed_data;
+	    // }
+
 	    if(in_array(8, $service_ids)){
-	        $pod_data = Room::totalShiftData(1,$input_date,$user_id,$client_id);
-	        $data = $this->calculateAmount($pod_data, $data);
+		    $pod_data = Room::totalShiftData(1,$input_date,$user_id,$client_id,false);
+		    $singal_cabin_data = Room::totalShiftData(2,$input_date,$user_id,$client_id,false);
+		    $double_bed_data = Room::totalShiftData(3,$input_date,$user_id,$client_id,false);
 
-	        $data_rows[] = $pod_data;
+		    if(in_array(Auth::user()->priv, [2,5])){
+		        $hide_amount = Entry::hideAmount($client_id,$input_date);
 
-	        $singal_cabin_data = Room::totalShiftData(2,$input_date,$user_id,$client_id);
-	        $data = $this->calculateAmount($singal_cabin_data, $data);  
+		        $deduction = min($pod_data['total_shift_cash'],$hide_amount);
+		        $pod_data['total_shift_cash'] -= $deduction;
+		        $hide_amount -= $deduction;
 
-	        $data_rows[] = $singal_cabin_data;
+		        $deduction = min($singal_cabin_data['total_shift_cash'],$hide_amount);
+		        $singal_cabin_data['total_shift_cash'] -= $deduction;
+		        $hide_amount -= $deduction;
 
-	        $double_bed_data = Room::totalShiftData(3,$input_date,$user_id,$client_id);
-	        $data = $this->calculateAmount($double_bed_data, $data);
+		        $deduction = min($double_bed_data['total_shift_cash'],$hide_amount);
+		        $double_bed_data['total_shift_cash'] -= $deduction;
+		        $hide_amount -= $deduction;
 
-	        $data_rows[] = $double_bed_data;
-	    }
+		        $pod_data['total_collection'] = $pod_data['total_shift_upi'] + $pod_data['total_shift_cash'];
+		        $singal_cabin_data['total_collection'] = $singal_cabin_data['total_shift_upi'] + $singal_cabin_data['total_shift_cash'];
+		        $double_bed_data['total_collection'] = $double_bed_data['total_shift_upi'] + $double_bed_data['total_shift_cash'];
+		    }
+
+		    $data = $this->calculateAmount($pod_data,$data);
+		    $data_rows[] = $pod_data;
+
+		    $data = $this->calculateAmount($singal_cabin_data,$data);
+		    $data_rows[] = $singal_cabin_data;
+
+		    $data = $this->calculateAmount($double_bed_data,$data);
+		    $data_rows[] = $double_bed_data;
+		}
 
 	    if(in_array(9, $service_ids)){
 	        $scanning_data = ScanningEntry::totalShiftData($input_date,$user_id,$client_id);

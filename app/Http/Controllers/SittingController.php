@@ -133,7 +133,49 @@ class SittingController extends Controller {
 			return view('error');
 		}
 	}
+	
 	public function initEntries(Request $request){
+		if(Auth::user()->priv == 2){
+			Entry::setCheckStatus();
+		}
+
+		$entries = Sitting::select('sitting_entries.*')
+		->where("sitting_entries.client_id", Auth::user()->client_id)
+		->when($request->slip_id, fn($q) => $q->where('slip_id', $request->slip_id))
+		->when($request->name, fn($q) => $q->where('name','like',"%{$request->name}%"))
+		->when($request->mobile_no, fn($q) => $q->where('mobile_no','like',"%{$request->mobile_no}%"))
+		->when($request->pnr_uid, fn($q) => $q->where('pnr_uid','like',"%{$request->pnr_uid}%"))
+		->when($request->from_date, fn($q) => $q->whereDate('date','>=',$request->from_date))
+		->when($request->to_date, fn($q) => $q->whereDate('date','<=',$request->to_date))
+		->when($request->added_by, fn($q) => $q->where('added_by',$request->added_by));
+		
+		$entries = $entries->orderBy("checkout_status", 'ASC')->orderBy('id', "DESC")->take(100);
+		$entries = $entries->get();
+
+		$entry_ids = $entries->pluck('id')->toArray();
+
+		$extraSums = DB::table('e_entries')->select('entry_id', DB::raw('SUM(paid_amount) as total'))->whereIn('entry_id', $entry_ids)->where('is_collected', 0)->groupBy('entry_id')->pluck('total', 'entry_id');
+
+		foreach ($entries as $item) {
+			$item->show_time = date("h:i A",strtotime($item->check_in)).' - '.date("h:i A",strtotime($item->check_out));
+			$item->show_date = date("d-m-Y",strtotime($item->date));
+			$e_total = isset($extraSums[$item->id])?$extraSums[$item->id]:0;
+			$item->paid_amount = $item->paid_amount + $e_total;
+			$item->str_checkout_time = strtotime($item->checkout_date);
+		}
+		$rate_list = Sitting::rateList();
+
+		$pay_types = Entry::payTypes();
+		$hours = Entry::hours();
+		$data['success'] = true;
+		$data['entries'] = $entries;
+		$data['pay_types'] = $pay_types;
+		$data['hours'] = $hours;
+		$data['rate_list'] = $rate_list;
+		$data['users'] = DB::table('users')->select('id','name')->where('priv','!=',4)->where("client_id", Auth::user()->client_id)->get();
+		return Response::json($data, 200, []);
+	}	
+	public function initEntriesHide(Request $request){
 		if(Auth::user()->priv == 2){
 			Entry::setCheckStatus();
 		}
@@ -212,48 +254,6 @@ class SittingController extends Controller {
 		$data['users'] = DB::table('users')->select('id','name')->where('priv','!=',4)->where("client_id", Auth::user()->client_id)->get();
 		return Response::json($data, 200, []);
 	}
-	public function initEntriesOld(Request $request){
-		if(Auth::user()->priv == 2){
-			Entry::setCheckStatus();
-		}
-
-		$entries = Sitting::select('sitting_entries.*')
-		->where("sitting_entries.client_id", Auth::user()->client_id)
-		->when($request->slip_id, fn($q) => $q->where('slip_id', $request->slip_id))
-		->when($request->name, fn($q) => $q->where('name','like',"%{$request->name}%"))
-		->when($request->mobile_no, fn($q) => $q->where('mobile_no','like',"%{$request->mobile_no}%"))
-		->when($request->pnr_uid, fn($q) => $q->where('pnr_uid','like',"%{$request->pnr_uid}%"))
-		->when($request->from_date, fn($q) => $q->whereDate('date','>=',$request->from_date))
-		->when($request->to_date, fn($q) => $q->whereDate('date','<=',$request->to_date))
-		->when($request->added_by, fn($q) => $q->where('added_by',$request->added_by));
-		
-		$entries = $entries->orderBy("checkout_status", 'ASC')->orderBy('id', "DESC")->take(100);
-		$entries = $entries->get();
-
-		$entry_ids = $entries->pluck('id')->toArray();
-
-		$extraSums = DB::table('e_entries')->select('entry_id', DB::raw('SUM(paid_amount) as total'))->whereIn('entry_id', $entry_ids)->where('is_collected', 0)->groupBy('entry_id')->pluck('total', 'entry_id');
-
-		foreach ($entries as $item) {
-			$item->show_time = date("h:i A",strtotime($item->check_in)).' - '.date("h:i A",strtotime($item->check_out));
-			$item->show_date = date("d-m-Y",strtotime($item->date));
-			$e_total = isset($extraSums[$item->id])?$extraSums[$item->id]:0;
-			$item->paid_amount = $item->paid_amount + $e_total;
-			$item->str_checkout_time = strtotime($item->checkout_date);
-		}
-		$rate_list = Sitting::rateList();
-
-		$pay_types = Entry::payTypes();
-		$hours = Entry::hours();
-		$data['success'] = true;
-		$data['entries'] = $entries;
-		$data['pay_types'] = $pay_types;
-		$data['hours'] = $hours;
-		$data['rate_list'] = $rate_list;
-		$data['users'] = DB::table('users')->select('id','name')->where('priv','!=',4)->where("client_id", Auth::user()->client_id)->get();
-		return Response::json($data, 200, []);
-	}	
-	
 	public function editEntry(Request $request){
 		$sitting_entry = Sitting::where('id', $request->entry_id)->where("client_id", Auth::user()->client_id)->first();
 

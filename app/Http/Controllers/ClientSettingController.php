@@ -74,16 +74,31 @@ class ClientSettingController extends Controller {
                     $hide_amount = 0;
                 }
 
-                DB::table('client_hide_amounts')->updateOrInsert(
-                    [
-                        'client_id' => $client['id'],
-                        'hide_date' => $hide_date
-                    ],
-                    [
+                // DB::table('client_hide_amounts')->updateOrInsert(
+                //     [
+                //         'client_id' => $client['id'],
+                //         'hide_date' => $hide_date
+                //     ],
+                //     [
+                //         'hide_amount' => $hide_amount,
+                //         'updated_at' => date('Y-m-d H:i:s')
+                //     ]
+                // );
+
+                $check = DB::table('client_hide_amounts')->where('client_id',$client['id'])->where('hide_date',$hide_date)->first();
+
+                if($check){
+                    DB::table('client_hide_amounts')->where('client_id',$client['id'])->where('hide_date',$hide_date)->update([
+                            'client_id' => $client['id'],
+                            'hide_date' => $hide_date
+                        ]
+                    );
+                }else{
+                    DB::table('client_hide_amounts')->insert([
                         'hide_amount' => $hide_amount,
-                        'updated_at' => date('Y-m-d H:i:s')
-                    ]
-                );
+                        'updated_at' => date('Y-m-d H:i:s'),
+                    ]);
+                }
             }
 
             $data['success'] = true;

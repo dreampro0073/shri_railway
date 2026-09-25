@@ -8,11 +8,11 @@
         <form name="myForm" novalidate="novalidate" ng-submit="onSubmit(myForm.$valid)" style="margin-top:50px;">
 
             <div class="row" ng-repeat="item in clients">
-                <div class="col-md-4 form-group">
+                <div class="col-md-4 col-6 form-group">
                     <label>Name</label>
                     <input type="text" disabled readonly ng-model="item.client_name" class="form-control" required />
                 </div>
-               <div class="col-md-4 form-group">
+               <div class="col-md-4 col-6 form-group">
                     <label>Amount</label>
                     <input type="text"  ng-model="item.hide_amount" class="form-control" required />
                </div>

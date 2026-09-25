@@ -59,7 +59,7 @@
                         </div>
                         <div class="col-md-3 form-group">
                             <label>Paid Amount</label>
-                            <input type="number" ng-model="formData.paid_amount" class="form-control" readonly />
+                            <input type="number" ng-model="formData.paid_amount" class="form-control" ng-readonly="rate_list.type != 3" />
                         </div>                      
                         <div ng-if="entry_id !=0" class="col-md-3 form-group">
                             <label>Balance Amount</label>
@@ -159,9 +159,7 @@
                             <label>No Of Bag</label>
                             <input type="text" ng-model="formData.no_of_bag" class="form-control"  readonly />
                         </div>
-                    </div>
-                  
-                    <div class="row">  
+
                         <div class="col-md-3 form-group">
                             <label>Pay Type</label>
                             <select ng-model="formData.pay_type" class="form-select"   convert-to-number>
@@ -169,7 +167,7 @@
                                 <option ng-repeat="item in pay_types" value="@{{item.value}}">@{{ item.label}}</option>
                             </select>
                         </div>
-                        <div class="col-md-3 form-group">
+                        <div class="col-md-3 form-group" ng-hide="rate_list.type == 3">
                             <label>Total Amount</label>
                             <input type="number" ng-model="formData.total_balance" class="form-control" readonly />
                         </div> 
@@ -180,7 +178,7 @@
                         </div> 
                         <div class="col-md-3 form-group" style="color:red;">
                             <label>Balance Amount</label>
-                            <input type="number" ng-model="formData.balance" style="color:red;" class="form-control" readonly />
+                            <input type="number" ng-model="formData.balance" style="color:red;" class="form-control" ng-readonly="rate_list.type != 3" />
                         </div>                        
                         
                         

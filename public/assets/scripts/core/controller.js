@@ -100,6 +100,7 @@ app.controller('cloackCtrl', function($scope , $http, $timeout , DBService, Uplo
                 $scope.days = data.days;
                 $scope.cloak_first_rate = data.rate_list.first_rate;
                 $scope.cloak_second_rate = data.rate_list.second_rate;
+                $scope.rate_list = data.rate_list;
                 $scope.d_count = data.d_count;
                 if ($scope.type ==1 ) {
                     $scope.updateCheckoutClass();
@@ -311,26 +312,30 @@ app.controller('cloackCtrl', function($scope , $http, $timeout , DBService, Uplo
 
      $scope.changeAmount = function(){
 
-        var days = parseInt($scope.formData.no_of_day) || 0;
-        var bags = parseInt($scope.formData.no_of_bag) || 0;
-        var firstRate = parseFloat($scope.cloak_first_rate) || 0;
-        var secondRate = parseFloat($scope.cloak_second_rate) || 0;
-        var amount = $scope.cloak_first_rate;
-        if($scope.formData.no_of_day > 1){
-            amount  = (amount + (($scope.formData.no_of_day-1)*$scope.cloak_second_rate));
-            amount = amount*$scope.formData.no_of_bag;
-        } else {
-            amount = amount*$scope.formData.no_of_day*$scope.formData.no_of_bag;
-        }
+        if($scope.rate_list.type != 3){
 
-        if($scope.entry_id == 0){
-            $scope.formData.paid_amount = 0;
-            $scope.formData.paid_amount = amount;
-        }else{
-            $scope.formData.balance_amount = 0;
-            $scope.formData.balance_amount = amount - $scope.formData.paid_amount;
+            var days = parseInt($scope.formData.no_of_day) || 0;
+            var bags = parseInt($scope.formData.no_of_bag) || 0;
+            var firstRate = parseFloat($scope.cloak_first_rate) || 0;
+            var secondRate = parseFloat($scope.cloak_second_rate) || 0;
+            var amount = $scope.cloak_first_rate;
+            if($scope.formData.no_of_day > 1){
+                amount  = (amount + (($scope.formData.no_of_day-1)*$scope.cloak_second_rate));
+                amount = amount*$scope.formData.no_of_bag;
+            } else {
+                amount = amount*$scope.formData.no_of_day*$scope.formData.no_of_bag;
+            }
+
+            if($scope.entry_id == 0){
+                $scope.formData.paid_amount = 0;
+                $scope.formData.paid_amount = amount;
+            }else{
+                $scope.formData.balance_amount = 0;
+                $scope.formData.balance_amount = amount - $scope.formData.paid_amount;
+            }
         }
     }
+
     $scope.delete = function (id) {
         if(confirm("Are you sure?") == true){
             DBService.getCall('/api/cloak-rooms/delete/'+id).then((data) => {
@@ -449,6 +454,10 @@ app.controller('cloackCtrl', function($scope , $http, $timeout , DBService, Uplo
             $interval.cancel(intervalPromise);
         }
     }); 
+
+    $scope.changeBalanc = function(){
+        
+    }
 });
 
 

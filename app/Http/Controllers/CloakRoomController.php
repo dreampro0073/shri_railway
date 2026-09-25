@@ -133,78 +133,6 @@ class CloakRoomController extends Controller {
 	    return response()->json($data, 200);
 	}
 
-	// public function initRoom(Request $request,$type =0){
-	// 	$max_per_page = 10;
-	// 	$page_no = $request->page_no;
-
-	// 	if(Auth::user()->priv == 2){
-	// 		CollectedPenalities::setCheckStatus();
-	// 	}
-
-	// 	$l_entries = DB::table('cloakroom_entries')->select('cloakroom_entries.*','aadhar_details.front as aadhar_front','aadhar_details.back as aadhar_back')->leftJoin("aadhar_details","aadhar_details.aadhar_no", "=" ,"cloakroom_entries.aadhar_no")->where("cloakroom_entries.client_id", Auth::user()->client_id);
-	// 	if($request->slip_id){
-	// 		$l_entries = $l_entries->where('cloakroom_entries.slip_id', $request->slip_id);
-	// 	}
-
-	// 	if($request->unique_id){
-	// 		$l_entries = $l_entries->where('cloakroom_entries.unique_id', 'LIKE', '%'.$request->unique_id.'%');
-	// 	}		
-
-	// 	if($request->name){
-	// 		$l_entries = $l_entries->where('cloakroom_entries.name', 'LIKE', '%'.$request->name.'%');
-	// 	}		
-	// 	if($request->mobile_no){
-	// 		$l_entries = $l_entries->where('cloakroom_entries.mobile_no', 'LIKE', '%'.$request->mobile_no.'%');
-	// 	}		
-	// 	if($request->pnr_uid){
-	// 		$l_entries = $l_entries->where('cloakroom_entries.pnr_uid', 'LIKE', '%'.$request->pnr_uid.'%');
-	// 	}		
-		
-	// 	if($type == 0){
-	// 		$l_entries = $l_entries->where('cloakroom_entries.checkout_status', 0);
-			
-	// 	}
-	// 	if($type == 1){
-	// 		$l_entries = $l_entries->skip(($page_no-1)*$max_per_page)->take($max_per_page);
-	// 	}
-	// 	if($request->has('export') && $request->export == 1){
-	// 		$dt_ar = [date("Y-m-d",strtotime($request->from_date)),date("Y-m-d",strtotime($request->to_date))];
-	// 		$l_entries = $l_entries->whereBetween('date',$dt_ar);
-	// 	}
-	// 	$l_entries = $l_entries->orderBy('cloakroom_entries.id', "DESC")->get();
-	// 	foreach ($l_entries as $key => $item) {
-	// 		$bm_amount = DB::table('cloakroom_penalities')->where("client_id", Auth::user()->client_id)->where('is_collected',0)->where('cloakroom_id','=',$item->id)->sum('paid_amount');
-	// 		$item->sh_paid_amount = $item->paid_amount + $bm_amount;
-	// 		$item->checkin_date_show = date("d M, h:i A",strtotime($item->checkin_date));
-	// 		$item->checkout_date_show = date("d M, h:i A",strtotime($item->checkout_date));
-
-	// 		$item->str_checkout_time = strtotime($item->checkout_date);
-	// 	}
-		
-
-	// 	if($request->has('export') && $request->export == 1){
-    //         if(sizeof($l_entries) > 0){
-    //             include(app_path().'/Excel/export_entries.php');
-    //             $data["excel_link"] = url('temp/'.$filename);
-    //         }
-    //     }
-	// 	$rate_list = DB::table("cloakroom_rate_list")->where("client_id", Auth::user()->client_id)->first();
-	// 	$pay_types = Entry::payTypes();
-
-	// 	$days = Entry::days();
-
-	// 	$show_pay_types = Entry::showPayTypes();
-        
-	// 	$data['success'] = true;
-	// 	$data['l_entries'] = $l_entries;
-	// 	$data['pay_types'] = $pay_types;
-	// 	$data['rate_list'] = $rate_list;
-	// 	$data['days'] = $days;
-	// 	$data["users"] = User::where("active", 1)->where("client_id", Auth::user()->client_id)->where("priv", 3)->pluck("name", 'id')->toArray();
-		
-	// 	return Response::json($data, 200, []);
-	// }
-
 	public function export(){
 		return view('admin.cloakrooms.export', [
             "sidebar" => "export",
@@ -273,7 +201,7 @@ class CloakRoomController extends Controller {
 			} else {
 				$entry = new CloakRoom;
 				$message = "Stored Successfully!";
-				$entry->unique_id = strtotime('now');
+				$entry->unique_id = strtotime('now').Auth::id();
 				
 				$entry->created_at = date("Y-m-d H:i:s");
 				$entry->checkin_date = date("Y-m-d H:i:s");
@@ -354,10 +282,15 @@ class CloakRoomController extends Controller {
         }
         $rate_list = DB::table("cloakroom_rate_list")->where("client_id", Auth::user()->client_id)->first();
         $type = 0;
-        if(User::checkHrType()){
-			return view('admin.cloakrooms.print_page_cloack_unq_1',compact('print_data','total_amount','rate_list','type'));
-		}else{
-			return view('admin.cloakrooms.print_page_cloack',compact('print_data','total_amount','rate_list'));
+
+        if(Auth::user()->client_id == 17){
+        	return view('admin.cloakrooms.print_page_cloack_unq_17',compact('print_data','total_amount','rate_list','type'));
+        } else {
+	        if(User::checkHrType()){
+				return view('admin.cloakrooms.print_page_cloack_unq_1',compact('print_data','total_amount','rate_list','type'));
+			}else{
+				return view('admin.cloakrooms.print_page_cloack',compact('print_data','total_amount','rate_list'));
+			}
 		}
 	}
 
@@ -401,10 +334,16 @@ class CloakRoomController extends Controller {
         		'print_count' => $print_data->print_count+1,
         	]);
         }
-        if(User::checkHrType()){
-			return view('admin.cloakrooms.print_page_cloack_unq_1',compact('print_data','total_amount','rate_list','type'));
-		}else{
-			return view('admin.cloakrooms.print_page_cloack_unq',compact('print_data','total_amount','rate_list','type'));
+
+        if(Auth::user()->client_id == 17){
+        	return view('admin.cloakrooms.print_page_cloack_unq_17',compact('print_data','total_amount','rate_list','type'));
+        } else {
+
+	        if(User::checkHrType()){
+				return view('admin.cloakrooms.print_page_cloack_unq_1',compact('print_data','total_amount','rate_list','type'));
+			}else{
+				return view('admin.cloakrooms.print_page_cloack_unq',compact('print_data','total_amount','rate_list','type'));
+			}
 		}
 	}
 
@@ -456,16 +395,20 @@ class CloakRoomController extends Controller {
 				    }
 				}
 
+				if($rate_list->type == 3){
+					$l_entry->balance = 0;
+				} else {
+					$l_entry->balance = $day* $rate_list->second_rate *$l_entry->no_of_bag;
+					$l_entry->total_balance = $l_entry->paid_amount+$l_entry->balance;
+				}
+
 				$l_entry->mobile_no = $l_entry->mobile_no*1;
 				$l_entry->train_no = $l_entry->train_no*1;
 				// $l_entry->pnr_uid = $l_entry->pnr_uid*1;
 				$l_entry->pnr_uid = (string) $l_entry->pnr_uid;
-
 				$l_entry->paid_amount = $l_entry->paid_amount*1;
 
-				$l_entry->balance = $day* $rate_list->second_rate *$l_entry->no_of_bag;
-
-				$l_entry->total_balance = $l_entry->paid_amount+$l_entry->balance;
+				
 				$l_entry->day = $day;
 				$l_entry->final_days = $day + $l_entry->no_of_day;
 

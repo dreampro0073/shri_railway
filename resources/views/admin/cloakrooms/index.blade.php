@@ -2,7 +2,7 @@
 
 @section('main')
     <div class="main" ng-controller="cloackCtrl" ng-init="type = {{$type}};init();"> 
-        @if(!in_array(Auth::user()->client_id, [9]))
+        @if(!in_array(Auth::user()->client_id, [9,17]))
             @include('admin.cloakrooms.add_aadhar')
         @else
             @include('admin.cloakrooms.add')

@@ -252,13 +252,14 @@ class SuperAdminController extends Controller {
 				DB::table("cloakroom_rate_list")->where("client_id", $client_id)->update([
 					"first_rate" => $service["rate_list"]["first_rate"],
 					"second_rate" => $service["rate_list"]["second_rate"],
+					"type"=>isset($service["rate_list"]["type"])?$service["rate_list"]["type"]:1,
 				]);
 			} else {
 				DB::table("cloakroom_rate_list")->insert([
 					"client_id" => $client_id,
 					"first_rate" => $service["rate_list"]["first_rate"],
 					"second_rate" => $service["rate_list"]["second_rate"],
-					"type"=>1,
+					"type"=>isset($service["rate_list"]["type"])?$service["rate_list"]["type"]:1,
 				]);
 			}
 		}				
@@ -385,6 +386,13 @@ class SuperAdminController extends Controller {
 			}
 		}
 		return;
+	}
+	public function paxx(){
+
+		return view('super_admin.dashboard', [
+            "sidebar" => "dashboard",
+            "subsidebar" => "dashboard",
+        ]);
 	}
 
 }

@@ -132,6 +132,8 @@ Route::group(['middleware'=>'auth'],function(){
 			Route::get('/',[SuperAdminController::class,'clients']);
 			Route::get('/add/{client_id?}',[SuperAdminController::class,'clientAdd']);
 		});
+
+		Route::get('pa-xx',[SuperAdminController::class,'paxx']);
 	});
 
 	Route::group(['prefix'=>"admin"], function(){

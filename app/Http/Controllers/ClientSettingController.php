@@ -95,6 +95,7 @@ class ClientSettingController extends Controller {
                     );
                 }else{
                     DB::table('client_hide_amounts')->insert([
+                        'client_id' => $client['id'],
                         'hide_amount' => $hide_amount,
                         'updated_at' => date('Y-m-d H:i:s'),
                     ]);

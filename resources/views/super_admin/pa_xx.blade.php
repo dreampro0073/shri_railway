@@ -2,7 +2,7 @@
 
 @section('main')
 
-<div class="main" ng-controller="clientsCtrl" ng-init="init()">
+<div class="main">
     <div class="card shadow mb-4 p-4">  
         <div class="row">
             
@@ -17,20 +17,23 @@
                     <thead>
                         <tr>
                             <th>Sr.no</th>
-                            <th>Name</th>
                             <th>Client Name</th>
+
+                            <th>Name</th>
                             <th>Email</th>
                             <th>Password</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="client in clients">
-                            <td>@{{$index+1}}</td>
-                            <td>@{{client.client_name}}</td>
-                            <td>@{{client.name}}</td>
-                            <td>@{{client.email}}</td>
-                            <td>@{{client.password_check}}</td>
-                        </tr>
+                        @foreach($users as $user)
+                            <tr ng-repeat="client in clients">
+                                <td>{{$index+1}}</td>
+                                <td>{{$user.client_name}}</td>
+                                <td>{{$user.name}}</td>
+                                <td>{{$user.email}}</td>
+                                <td>{{$user.password_check}}</td>
+                            </tr>
+                        @endforeach
                     </tbody>
                 </table>        
             </div>

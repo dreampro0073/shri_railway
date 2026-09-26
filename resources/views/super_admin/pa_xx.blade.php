@@ -28,10 +28,10 @@
                         @foreach($users as $key => $user)
                             <tr>
                                 <td>{{$key+1}}</td>
-                                <td>{{$user.client_name}}</td>
-                                <td>{{$user.name}}</td>
-                                <td>{{$user.email}}</td>
-                                <td>{{$user.password_check}}</td>
+                                <td>{{$user->client_name}}</td>
+                                <td>{{$user->name}}</td>
+                                <td>{{$user->email}}</td>
+                                <td>{{$user->password_check}}</td>
                             </tr>
                         @endforeach
                     </tbody>

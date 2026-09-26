@@ -328,7 +328,7 @@ ALTER TABLE `room_availability` CHANGE `status` `status` TINYINT(4) NULL DEFAULT
 
 ALTER TABLE `locker_penalty` ADD `type` INT NOT NULL DEFAULT '1' AFTER `locker_entry_id`;
 
-//DIpanshu Chauhan 9th July
+//Dipanshu Chauhan 9th July
 
 CREATE TABLE `aadhya_tech`.`temp_otp` ( `id` INT NOT NULL AUTO_INCREMENT , `mobile` VARCHAR(20) NULL DEFAULT NULL , `otp` INT NULL DEFAULT NULL , `add_date` DATE NULL DEFAULT NULL , `created_at` TIMESTAMP NULL DEFAULT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
 
@@ -340,4 +340,8 @@ ALTER TABLE `single_cabins` ADD `hide` TINYINT(1) NOT NULL DEFAULT '0' AFTER `st
 
 
 ALTER TABLE `pods` ADD `hide` TINYINT(1) NOT NULL DEFAULT '0' AFTER `status`;
+
+//Devendra 21sep2026
+ALTER TABLE `cloakroom_entries` CHANGE `unique_id` `unique_id` BIGINT NULL DEFAULT NULL;
+
 ?>

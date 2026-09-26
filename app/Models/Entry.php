@@ -77,8 +77,10 @@ class Entry extends Model
                 $ar[] = ['value'=>$days,'label'=>$hours.' hours' ];
             }
         }else{
-            for ($i=1; $i <= 15; $i++) { 
-               $ar[] = ['value'=>$i,'label'=>$i.'Days'];
+            $limit = 15;
+            if(Auth::user()->client_id == 17) $limit = 30;
+            for ($i=1; $i <= $limit; $i++) { 
+               $ar[] = ['value'=>$i,'label'=>$i.' Days'];
             }
         }
 

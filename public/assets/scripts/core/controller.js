@@ -106,9 +106,14 @@ app.controller('cloackCtrl', function($scope , $http, $timeout , DBService, Uplo
                     $scope.updateCheckoutClass();
                 }
                 $scope.users = data.users;
-                if(data.excel_link){
+                // if(data.excel_link){
+                //     $scope.excel_loading = false;
+                //     window.open(data.excel_link,'_blank');
+                // }
+
+                if (data.excel_link) { 
                     $scope.excel_loading = false;
-                    window.open(data.excel_link,'_blank');
+                    window.open(data.excel_link, '_blank'); 
                 }
             }
         });

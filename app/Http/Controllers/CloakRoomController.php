@@ -108,9 +108,13 @@ class CloakRoomController extends Controller {
 	    }
 
 
-	    if ($request->has('export') && $request->export == 1 && sizeof($l_entries) > 0) {
-	        include(app_path().'/Excel/export_entries.php');
-	        $data["excel_link"] = url('temp/'.$filename);
+	    // if ($request->has('export') && $request->export == 1 && sizeof($l_entries) > 0) {
+	    //     include(app_path().'/Excel/export_entries.php');
+	    //     $data["excel_link"] = url('temp/'.$filename);
+	    // }
+
+	    if ($request->has('export') && $request->export == 1 && sizeof($l_entries) > 0) { 
+	    	include(app_path().'/Excel/export_entries.php'); $data["excel_link"] = url('temp/'.$filename); 
 	    }
 
 	    DB::reconnect('mysql');

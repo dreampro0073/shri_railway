@@ -89,15 +89,16 @@ class ClientSettingController extends Controller {
 
                 if($check){
                     DB::table('client_hide_amounts')->where('client_id',$client['id'])->where('hide_date',$hide_date)->update([
-                            'client_id' => $client['id'],
-                            'hide_date' => $hide_date
+                            'hide_amount' => $hide_amount,
+                            'updated_at' => date('Y-m-d H:i:s'),
                         ]
                     );
                 }else{
                     DB::table('client_hide_amounts')->insert([
                         'client_id' => $client['id'],
                         'hide_amount' => $hide_amount,
-                        'updated_at' => date('Y-m-d H:i:s'),
+                        'hide_date' => $hide_date,
+                        
                     ]);
                 }
             }

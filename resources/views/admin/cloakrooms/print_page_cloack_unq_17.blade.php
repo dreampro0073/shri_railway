@@ -56,6 +56,11 @@
 				{{Session::get('gst_no')}}
 			</span>
 		</h4>
+		<div>
+			<span style="display: block;text-align: center;font-size: 14px;">
+				{{Session::get('address')}}
+			</span>
+		</div>
 		<h5>
 			<span class="text">Slip No: <b style="font-size:18px;">{{ $print_data->slip_id }}</b></span>
 		</h5>

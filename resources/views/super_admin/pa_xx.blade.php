@@ -25,9 +25,9 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($users as $user)
-                            <tr ng-repeat="client in clients">
-                                <td>{{$index+1}}</td>
+                        @foreach($users as $key => $user)
+                            <tr>
+                                <td>{{$key+1}}</td>
                                 <td>{{$user.client_name}}</td>
                                 <td>{{$user.name}}</td>
                                 <td>{{$user.email}}</td>

@@ -6,7 +6,7 @@ app.controller('superDashboardCtrl', function($scope , $http, $timeout , DBServi
 app.controller('clientsCtrl', function($scope , $http, $timeout , DBService, Upload,$interval) {
     $scope.clients = [];
     $scope.client = {
-        services: [{demo:''}],
+        services: [{demo:'',rate_list:{type:1}}],
     };
     $scope.client_id = 0;
 

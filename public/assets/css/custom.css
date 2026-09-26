@@ -103,6 +103,9 @@ input[type=number]::-webkit-outer-spin-button {
 button.btn {
   width: 100px; }
 
+.auto {
+  width: auto; }
+
 .ui-widget-content .ui-icon {
   background-image: url("../img/arrow-down-sign-to-navigate.png"); }
 

@@ -4,7 +4,7 @@
           <input type="text" ng-model="service.rate_list.adult_rate" class="form-control">
      </div> 
      <div class="col-md-6 form-group">
-          <label>Adult Secound Rate</label>
+          <label>Adult Second Rate</label>
           <input type="text" ng-model="service.rate_list.adult_rate_sec" class="form-control">
      </div>
      <div class="col-md-6 form-group">
@@ -12,19 +12,27 @@
           <input type="text" ng-model="service.rate_list.child_rate" class="form-control">
      </div> 
      <div class="col-md-6 form-group">
-          <label>Child Secound Rate</label>
+          <label>Child Second Rate</label>
           <input type="text" ng-model="service.rate_list.child_rate_sec" class="form-control">
      </div> 
 </div>
 
 <div class="row" ng-if="service.services_id == 2 || service.services_id == 4 || service.services_id == 5 || service.services_id == 7">
-     <div class="col-md-6 form-group">
+     <div class="col-md-4 form-group">
           <label>First Rate</label>
           <input type="text" ng-model="service.rate_list.first_rate" class="form-control">
      </div> 
-     <div class="col-md-6 form-group">
-          <label>Secound Rate</label>
+     <div class="col-md-4 form-group">
+          <label>Second Rate</label>
           <input type="text" ng-model="service.rate_list.second_rate" class="form-control">
+     </div>
+     <div class="col-md-4 form-group">
+          <label>Rate Type</label>
+          <select ng-model="service.rate_list.type" class="form-select" convert-to-number>
+               <option value="1">Fixed</option>
+               <option value="2">Flexible</option>
+               <option value="3">Open</option>
+          </select>
      </div>
 </div>
 

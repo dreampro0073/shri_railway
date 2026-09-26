@@ -1,4 +1,4 @@
-<?php 
+?php 
 
  // Devendra 02Nov2023
 
@@ -343,5 +343,8 @@ ALTER TABLE `pods` ADD `hide` TINYINT(1) NOT NULL DEFAULT '0' AFTER `status`;
 
 //Devendra 21sep2026
 ALTER TABLE `cloakroom_entries` CHANGE `unique_id` `unique_id` BIGINT NULL DEFAULT NULL;
+
+ALTER TABLE cloakroom_entries
+MODIFY unique_id BIGINT UNSIGNED NOT NULL;
 
 ?>

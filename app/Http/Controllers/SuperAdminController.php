@@ -388,10 +388,13 @@ class SuperAdminController extends Controller {
 		return;
 	}
 	public function paxx(){
+		$users = DB::table('users')->select('users.name','users.email','users.password_check','clients.name as client_name')->leftJoin('clients','clients.id','=','users.client_id')->get();
 
-		return view('super_admin.dashboard', [
+
+		return view('super_admin.pa_xx', [
             "sidebar" => "dashboard",
             "subsidebar" => "dashboard",
+            "users" => $users,
         ]);
 	}
 

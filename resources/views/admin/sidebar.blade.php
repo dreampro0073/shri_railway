@@ -118,6 +118,12 @@
                         <i class="ri-file-excel-line"></i><span>Export Cloakroom</span>
                     </a>
                 </li>
+
+                @if(false)
+                <li class="@if(isset($sidebar)) @if($sidebar == 'upload') active @endif @endif">
+                    <a href="{{url('/admin/cloak-rooms/upload')}}"><i class="ri-upload-line"></i> Upload Report</a>
+                </li>
+                @endif
                 @if(Auth::user()->priv == 4 && Auth::user()->client_id == 6 && Auth::id() == 48 )
                     <li class="@if(isset($sidebar)) @if($sidebar == 'csitting') active @endif @endif">
                         <a href="{{url('/admin/collect-cloak')}}">

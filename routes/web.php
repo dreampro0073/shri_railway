@@ -201,6 +201,8 @@ Route::group(['middleware'=>'auth'],function(){
 				Route::get('/export', [CloakRoomController::class,'export']);
 				Route::get('/print-begs', [CloakRoomController::class,'printBegs']);
 
+				Route::get('/upload', [CloakRoomController::class,'upload']);
+
 				Route::get('/checkout-without-penalty/{id?}', [CloakRoomController::class,'checkoutWithoutPenalty']);
 			});	
 		});

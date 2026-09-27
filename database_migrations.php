@@ -349,7 +349,7 @@ MODIFY unique_id BIGINT UNSIGNED NOT NULL;
 
 //Dipanshu 26 Sep 2026
 
-CREATE TABLE `aadhya_tech`.`room_rate_list` ( `id` INT NOT NULL AUTO_INCREMENT , `client_id` INT NOT NULL DEFAULT '1' , `type` INT NULL DEFAULT '1' , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+CREATE TABLE `room_rate_list` ( `id` INT NOT NULL AUTO_INCREMENT , `client_id` INT NOT NULL DEFAULT '1' , `type` INT NULL DEFAULT '1' , PRIMARY KEY (`id`)) ENGINE = InnoDB;
 
 
 INSERT INTO `pods` (`client_id`, `e_no`, `status`, `hide`, `checkin_date`, `checkout_date`)
@@ -381,6 +381,7 @@ FROM (
     UNION ALL SELECT 86 UNION ALL SELECT 87 UNION ALL SELECT 88 UNION ALL SELECT 89 UNION ALL SELECT 90
 ) AS numbers;
 
-
+// Devendra 27Sep 2026
+ALTER TABLE `cloakroom_entries` ADD `token_number` VARCHAR(255) NULL DEFAULT NULL AFTER `barcodevalue`;
 
 ?>

@@ -22,6 +22,7 @@ class CloakRoomController extends Controller {
             "type" => 0,
         ]);
 	}
+
 	public function allRooms(){
 		return view('admin.cloakrooms.index', [
             "sidebar" => "all-cloakrooms",
@@ -29,6 +30,14 @@ class CloakRoomController extends Controller {
             "type" => 1,
         ]);
 	}
+
+	public function upload(){
+		return view('admin.cloakrooms.upload', [
+            "sidebar" => "upload",
+            "subsidebar" => "upload",
+        ]);
+	}
+
 	public function printBegs(){
 
 		$l_entries = DB::table('cloakroom_entries')->select('slip_id','no_of_bag')->where("cloakroom_entries.client_id", Auth::user()->client_id)->where('checkout_status',0)->get();
@@ -215,6 +224,7 @@ class CloakRoomController extends Controller {
 				$entry->added_by = Auth::id();
 				$entry->paid_amount = $request->paid_amount;
 				$entry->aadhar_no = $request->has('aadhar_no')?$request->aadhar_no:null;
+				$entry->token_number = $request->has('token_number')?$request->token_number:null;
 
 				$entry->slip_id = CloakRoom::getSlipId();
 				

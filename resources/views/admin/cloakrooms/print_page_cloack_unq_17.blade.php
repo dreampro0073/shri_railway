@@ -51,14 +51,22 @@
 <body>
 	<div class="main" id="printableArea">
 		<h4>
-			{{Session::get('client_name')}}
+			<span style="display: block;text-align: center;font-size: 14px;">
+				Northern Railway
+			</span>
+			Contractor - {{Session::get('client_name')}}
 			<span style="display: block;text-align: center;font-size: 14px;">
 				{{Session::get('gst_no')}}
 			</span>
 		</h4>
+
 		<div>
 			<span style="display: block;text-align: center;font-size: 14px;">
 				{{Session::get('address')}}
+			</span>
+
+			<span style="display: block;text-align: center;font-size: 14px;">
+				Cloak Room
 			</span>
 		</div>
 		<h5>
@@ -101,7 +109,7 @@
 				<span class="text">PNR/ID No.: <b>{{$print_data->pnr_uid}}</b></span>
 			</div>
 			<div class="w-50">
-				<span class="text">Paid Amount: <b>{{ $print_data->paid_amount }}</b></span>
+				<span class="text">Token Number: <b>{{ $print_data->token_number }}</b></span>
 			</div>
 		</div>
 

@@ -22,27 +22,34 @@
                             <label>Name</label>
                             <input type="text" ng-model="formData.name" class="form-control" required />
                         </div>
+
+                        @if(Auth::user()->client_id == 17)
+                        <div class="col-md-4 form-group">
+                            <label>Token Number</label>
+                            <input type="text" ng-model="formData.token_number" class="form-control" required />
+                        </div>
+                        @endif
+
                         <div class="col-md-4 form-group">
                             <label>Mobile No.</label>
                             <input type="number" ng-model="formData.mobile_no" class="form-control" required />
                         </div>
+
                         <div class="col-md-4 form-group">
                             <label>No Of Bag</label>
                             <input type="number" min="1" ng-model="formData.no_of_bag" class="form-control" required ng-keyup="changeAmount()" />
                         </div>    
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-3 form-group" ng-if="formData.id > 0">
+                    
+                        <div class="col-md-4 form-group" ng-if="formData.id > 0">
                             <label>Check In</label>
                            
                             <input type="text" class="form-control" ng-model="formData.check_in" readonly>
                         </div>
-                        <div class="col-md-3 form-group">
+                        <div class="col-md-4 form-group">
                             <label>PNR/UID</label>
                             <input type="text" ng-model="formData.pnr_uid" class="form-control" />
                         </div>                        
-                        <div class="col-md-3 form-group">
+                        <div class="col-md-4 form-group">
                             <label>Time Duration</label>
                             <select ng-model="formData.no_of_day" class="form-select" ng-change="changeAmount()" required convert-to-number>
                                 <option value="">--select--</option>
@@ -50,18 +57,18 @@
                             </select>
                         </div>
 
-                        <div class="col-md-3 form-group">
+                        <div class="col-md-4 form-group">
                             <label>Pay Type</label>
                             <select ng-model="formData.pay_type" class="form-select" required  convert-to-number>
                                 <option value="">--select--</option>
                                 <option ng-repeat="item in pay_types" value="@{{item.value}}">@{{ item.label}}</option>
                             </select>
                         </div>
-                        <div class="col-md-3 form-group">
+                        <div class="col-md-4 form-group">
                             <label>Paid Amount</label>
                             <input type="number" ng-model="formData.paid_amount" class="form-control" ng-readonly="rate_list.type != 3" />
                         </div>                      
-                        <div ng-if="entry_id !=0" class="col-md-3 form-group">
+                        <div ng-if="entry_id !=0" class="col-md-4 form-group">
                             <label>Balance Amount</label>
                             <input type="number" ng-model="formData.balance_amount" class="form-control" readonly />
                         </div>                       

@@ -66,6 +66,8 @@ class ClientSettingController extends Controller {
             $hide_date = date('Y-m-d', strtotime($hide_date));
         }
 
+
+
         if(sizeof($clients) > 0){
             foreach($clients as $client){
                 $hide_amount = isset($client['hide_amount']) ? (int)$client['hide_amount'] : 0;
@@ -86,9 +88,8 @@ class ClientSettingController extends Controller {
                 // );
 
                 $check = DB::table('client_hide_amounts')->where('client_id',$client['id'])->where('hide_date',$hide_date)->first();
-
                 if($check){
-                    DB::table('client_hide_amounts')->where('client_id',$client['id'])->where('hide_date',$hide_date)->update([
+                    DB::table('client_hide_amounts')->where('id',$check->id)->update([
                             'hide_amount' => $hide_amount,
                             'updated_at' => date('Y-m-d H:i:s'),
                         ]
@@ -164,6 +165,10 @@ class ClientSettingController extends Controller {
                 }
 
                 $client->total_collection = $client->total_shift_cash + $client->total_shift_upi;
+
+                if(isset($client->total_shift_dues)){
+                    $client->total_collection += $client->total_shift_dues;
+                }
             }
 
             $grand_total->total_collection += $client->total_collection;

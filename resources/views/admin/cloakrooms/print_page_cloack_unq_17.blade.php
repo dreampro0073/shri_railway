@@ -153,7 +153,10 @@
 		<div style="margin-top:10px;text-align: right;">
 			Authorised Signatory : {{Auth::user()->name}}
 		</div>
-
+		<div style="margin-top:10px;text-align: right;">
+			Contact Us : {{Session::get('mobile')}}
+		</div>
+		@if(false)
 		<div style="margin-top:10px;text-align:center;">
 			<p style="margin-top:10px;font-size: 16px;">
 				<strong>Thanks Visit Again</strong>
@@ -162,6 +165,7 @@
 		        2024 &copy; Aadhyasri Web Solutions, aadhyasriwebsolutions@gmail.com
 		    </span>
 		</div>
+		@endif
 	</div>
 	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
 	<script type="text/javascript">

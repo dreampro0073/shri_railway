@@ -91,8 +91,15 @@ class RoomController extends Controller {
 		$hours = Room::hours();
 		$show_pay_types = Entry::showPayTypes();
 		$avail_pods = Room::getAvailPods();
-		$avail_cabins = Room::getAvailSinCabins();
-		$avail_beds = Room::getAvailBeds();
+
+		$avail_cabins = [];
+		$avail_beds = [];
+		if(Auth::user()->client_id == 10){
+			$avail_cabins = Room::getAvailSinCabins();
+			$avail_beds = Room::getAvailBeds();	
+		}
+
+		$rate_type = Room::rateType();
 
 		$data['success'] = true;
 		$data['entries'] = $entries;
@@ -101,6 +108,7 @@ class RoomController extends Controller {
 		$data['avail_pods'] = $avail_pods;
 		$data['avail_cabins'] = $avail_cabins;
 		$data['avail_beds'] = $avail_beds;
+		$data['rate_type'] = $rate_type;
 
 		return Response::json($data, 200, []);
 	}
@@ -697,6 +705,33 @@ class RoomController extends Controller {
 
 		return Response::json($data,200,[]);
 	}
+	public function calculateRoomAmount(Request $request){
+	    $type = (int) $request->type;
+	    $quantity = (int) $request->quantity;
+	    $hours = (int) $request->hours_occ;
+
+	    $discount = (float) ($request->discount_amount ?? 0);
+	    $paidAmount = (float) ($request->paid_amount ?? 0);
+	    $entryId = (int) ($request->entry_id ?? 0);
+
+	    $totalAmount = Room::getAmount($type, $hours, $quantity);
+	    $rate = $quantity > 0 ? $totalAmount / $quantity : 0;
+	    if ($entryId == 0) {
+	        $paidAmount = $totalAmount - $discount;
+	        $balanceAmount = $totalAmount - $paidAmount;
+	    } else {
+	        $balanceAmount = $totalAmount - ($paidAmount + $discount);
+	    }
+
+	    return Response::json([
+	        'success' => true,
+	        'total_amount' => $totalAmount,
+	        'paid_amount' => $paidAmount,
+	        'balance_amount' => $balanceAmount,
+	        'rate' => $rate,
+	    ], 200, []);
+	}
+	
 	public function getRoomAmount(Request $request){
 		$type = $request->type;
 		$hours_occ = $request->hours_occ;
@@ -1008,5 +1043,61 @@ class RoomController extends Controller {
 
 		return Response::json($data, 200, []);
 	}
+
+	// public function calculateRoomAmountOld(Request $request){
+	//     $type = (int) $request->type;
+	//     $quantity = (int) $request->quantity;
+	//     $hours = (int) $request->hours_occ;
+
+	//     $discount = (float) ($request->discount_amount ?? 0);
+	//     $paidAmount = (float) ($request->paid_amount ?? 0);
+	//     $entryId = (int) ($request->entry_id ?? 0);
+	//     $rates = [
+	//         1 => [ // Pod
+	//             6  => 299,
+	//             12 => 499,
+	//             24 => 799,
+	//         ],
+
+	//         2 => [ // Single Cabin
+	//             6  => 399,
+	//             12 => 599,
+	//             24 => 1199,
+	//         ],
+
+	//         3 => [ // Double Bed
+	//             6  => 599,
+	//             12 => 899,
+	//             24 => 1699,
+	//         ],
+	//     ];
+
+	//     $rate = $rates[$type][$hours] ?? 0;
+
+	//     $totalAmount = $quantity * $rate;
+
+	//     if ($entryId == 0) {
+
+	//         if ($discount > 0) {
+	//             $paidAmount = $totalAmount - $discount;
+	//         } else {
+	//             $paidAmount = $totalAmount;
+	//         }
+
+	//         $balanceAmount = $totalAmount - $paidAmount;
+
+	//     } else {
+
+	//         $balanceAmount = $totalAmount - ($paidAmount + $discount);
+	//     }
+
+	//     $data['success'] = true;
+	//     $data['total_amount'] = $totalAmount;
+	//     $data['paid_amount'] = $paidAmount;
+	//     $data['balance_amount'] = $balanceAmount;
+	//     $data['rate'] = $rate;
+
+	//     return Response::json($data,200,[]);
+	// }
 
 }

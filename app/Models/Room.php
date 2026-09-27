@@ -21,6 +21,14 @@ class Room extends Model
         return $ar;
     }
 
+    public static function rateType(){
+        $rate = DB::table('room_rate_list')
+            ->where('client_id', Auth::user()->client_id)
+            ->first();
+
+        return isset($rate->type) ? $rate->type : 1;
+    }
+
     public static function getAvailPods(){
         return DB::table('pods')->where('client_id','=',Auth::user()->client_id)->where('status',0)->where('hide',0)->get();
     }
@@ -93,7 +101,39 @@ class Room extends Model
 
         return $ar;
     }
-    public static function getAmount($type,$hour,$size){
+    public static function getAmount($type, $hour, $size)
+    {
+        $rates = [
+            1 => [
+                6  => 299,
+                12 => 499,
+                24 => 799,
+            ],
+            2 => [
+                6  => 399,
+                12 => 599,
+                24 => 1199,
+            ],
+            3 => [
+                6  => 599,
+                12 => 899,
+                24 => 1699,
+            ],
+        ];
+
+        if ($hour > 0 && $hour <= 6) {
+            $rate = $rates[$type][6] ?? 0;
+        } elseif ($hour > 6 && $hour <= 12) {
+            $rate = $rates[$type][12] ?? 0;
+        } elseif ($hour > 12 && $hour <= 24) {
+            $rate = $rates[$type][24] ?? 0;
+        } else {
+            $rate = $rates[$type][24] ?? 0;
+        }
+
+        return $rate * $size;
+    }
+    public static function getAmountOld($type,$hour,$size){
         $balance= 0;
         if($type == 1){
             if($hour > 0 && $hour <= 6){

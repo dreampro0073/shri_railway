@@ -39,6 +39,7 @@
                         <i class="ri-insert-row-top"></i><span>PODs</span>
                     </a>
                 </li>
+                @if(Auth::user()->client_id != 18)
                 <li class="@if(isset($sidebar)) @if($sidebar == 'scabins') active @endif @endif">
                     <a href="{{url('/admin/rooms/2')}}">
                         <i class="ri-hotel-bed-fill"></i><span>Single Suit Cabin</span>
@@ -55,6 +56,7 @@
                         <i class="ri-hotel-bed-line"></i><span>Online Booking</span>
                     </a>
                 </li>
+                @endif
             @endif
             @if(in_array(8, $service_ids) && Auth::user()->priv == 2)
                 <li class="@if(isset($sidebar)) @if($sidebar == 'all-entries') active @endif @endif">

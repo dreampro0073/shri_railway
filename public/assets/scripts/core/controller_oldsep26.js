@@ -2216,860 +2216,6 @@ app.controller('entryRoomCtrl', function($scope , $http, $timeout , DBService,$i
     $scope.otp_verified = false;
     $scope.otp_send = false;
     $scope.old_hr = 0;
-   
-    $scope.resendOtp = () => {
-        $scope.otp_send = false;
-        $scope.sendOtp();
-    }
-    $scope.sendOtp = () => {
-        DBService.postCall({mobile:$scope.formData.mobile_no}, '/api/rooms/send-otp').then((data) => {
-            if (data.success) {
-               $scope.otp_send = true;
-               alert("Otp Send to the mobile number");
-            }
-        });
-    }
-    $scope.verifyOtp = function () {
-        if ($scope.formData.otp && $scope.formData.otp.toString().length === 4) {
-            console.log("Hello1111"+$scope.formData.otp);
-            DBService.postCall({mobile:$scope.formData.mobile_no,otp:$scope.formData.otp}, '/api/rooms/verify-otp').then((data) => {
-                if (data.success) {
-                   $scope.otp_send = false;
-                   $scope.otp_verified = true;
-                   $scope.formData.otp = '';
-                }else{
-                    alert(data.message);
-                }
-            });
-        }
-    };
-    $scope.resetOtp = () => {
-        $scope.formData.discount_amount = 0;
-        $scope.otp_send = false;
-        $scope.otp_verified = false;
-        $scope.formData.otp = '';
-    }
-    $scope.init = function () {
-        DBService.postCall($scope.filter, '/api/rooms/init/'+$scope.type).then((data) => {
-            if (data.success) {
-                $scope.pay_types = data.pay_types;
-                $scope.entries = data.entries;
-                $scope.avail_pods = data.avail_pods;
-                $scope.avail_cabins = data.avail_cabins;
-                $scope.avail_beds = data.avail_beds;
-                $scope.hours = data.hours;
-                $scope.updateCheckoutClass();
-            }
-        });
-    }
-    $scope.filterClear = function(){
-        $scope.filter = {};
-        $scope.init();
-    }
-
-    $scope.edit = function(entry_id){
-        $scope.entry_id = entry_id;
-        $scope.sl_pods = [];
-        $scope.sl_cabins = [];
-        $scope.sl_beds = [];
-        DBService.postCall({entry_id : $scope.entry_id}, '/api/rooms/edit-init').then((data) => {
-            if (data.success) {
-                console.log(data.l_entry.discount_amount+'hhhhh');
-                $scope.formData = data.l_entry;
-                $scope.total_amount = data.l_entry.total_amount;
-
-                $scope.old_hr = data.l_entry.hours_occ;
-
-                $scope.sl_pods = data.sl_pods;
-                $scope.sl_cabins = data.sl_cabins;
-                $scope.sl_beds = data.sl_beds;
-                $("#exampleModalCenter").modal("show");
-            }
-            
-        });
-    }    
-
-    $scope.checkoutLoker = function(entry_id, freePenalty){
-        $scope.entry_id = entry_id;
-        alert(freePenalty);
-        
-        if(confirm("Are you sure?") == true){
-            DBService.postCall({entry_id : $scope.entry_id, freePenalty: freePenalty}, '/api/rooms/checkout-init').then((data) => {
-                if (data.timeOut) {
-                    $scope.formData = data.l_entry;
-                    
-                    $("#checkoutModal").modal("show");
-                }else{
-                    $scope.init(); 
-                }
-                
-            });
-        }
-    }
-
-    $scope.add = function(){
-        $scope.entry_id = 0;
-        $scope.sl_pods = [];
-        $scope.sl_cabins = [];
-        $scope.sl_beds = [];
-        $scope.otp_verified = false;
-        $scope.formData = {
-            name:'',
-            mobile:"",
-            paid_amount:0,
-            total_amount:0,
-            balance_amount:0,
-            hours_occ:'',
-            discount_amount:0,
-            otp:'',
-            
-        };
-        $("#exampleModalCenter").modal("show");    
-    }
-
-    $scope.hideModal = () => {
-        $("#exampleModalCenter").modal("hide");
-        $("#checkoutModal").modal("hide");
-        $("#checkinModal").modal("hide");
-        $scope.entry_id = 0;
-        $scope.formData = {
-            name:'',
-            mobile:"",
-            paid_amount:0,
-            total_amount:0,
-            balance_amount:0,
-            hours_occ:'',
-            discount_amount:0,
-            otp:'',
-            
-        };
-        $scope.otp_verified = false;
-        $scope.otp_send = false;
-        $scope.sl_pods = [];
-        $scope.sl_beds = [];
-        $scope.sl_cabins = [];
-
-        $scope.old_hr = 0;
-    }
-
-    $scope.onSubmit = function () {
-        if($scope.formData.discount_amount > $scope.formData.total_amount){
-            alert("Discount Amount shoud be less then the total amount");
-            return;
-        }
-        if($scope.formData.online_booking && $scope.formData.online_booking == 1){
-            $scope.formData.type = $scope.formData.type;
-        }else{
-            $scope.formData.type= $scope.type;
-        }
-       
-        if($scope.formData.type == 1 && $scope.sl_pods.length == 0 ){
-            alert('Please select at least one pods');
-            return;
-        }
-
-        if($scope.formData.type == 2 && $scope.sl_cabins.length == 0 ){
-            alert('Please select at least one single cabins');
-            return;
-        }
-
-        if($scope.formData.type == 3 && $scope.sl_beds.length == 0 ){
-            alert('Please select at least one double bed');
-            return;
-        }
-
-        $scope.loading = true;
-
-        if($scope.formData.type == 1){
-            $scope.formData.sl_pods = $scope.sl_pods;
-        }
-        if($scope.formData.type == 2){
-            $scope.formData.sl_cabins = $scope.sl_cabins;
-        }
-        if($scope.formData.type == 3){
-            $scope.formData.sl_beds = $scope.sl_beds;
-        }
-
-        DBService.postCall($scope.formData, '/api/rooms/store/'+$scope.formData.type).then((data) => {
-            if (data.success) {
-                $scope.loading = false;
-
-                $("#exampleModalCenter").modal("hide");
-                $scope.hideModal();
-                $scope.entry_id = 0;
-                $scope.formData = {
-                    name:'',
-                    paid_amount:0,
-                    total_amount:0,
-                    balance_amount:0,
-                    hours_occ:'',
-                    discount_amount:0,
-                    otp:'',
-                    mobile_no:'',
-                    
-                };
-                $scope.sl_pods = [];
-                $scope.sl_beds = [];
-                $scope.sl_cabins = [];
-                $scope.init();
-                setTimeout(function(){
-                    window.open(base_url+'/admin/rooms/print/'+data.id,'_blank');
-                }, 800);
-
-            }
-            $scope.loading = false;
-        });
-    }
-    $scope.onCheckOut = function () {
-        $scope.loading = true;
-        DBService.postCall($scope.formData, '/api/rooms/checkout-store').then((data) => {
-            if (data.success) {
-                $("#checkoutModal").modal("hide");
-                $scope.entry_id = 0;
-                $scope.formData = {
-                    name:'',
-                    mobile:"",
-                    total_amount:0,
-                    paid_amount:0,
-                    balance_amount:0,
-                    hours_occ:0,
-                    check_in:'',
-                    check_out:'',
-                    discount_amount:0,
-                };
-                $scope.init();
-                setTimeout(function(){
-                    window.open(base_url+'/admin/rooms/print/'+data.entry_id,'_blank');
-                }, 800);
-            }
-            $scope.loading = false;
-        });
-    }
-
-
-    $scope.markCheckin = function(entry_id){
-        $scope.entry_id = entry_id;
-        $scope.sl_pods = [];
-        $scope.sl_cabins = [];
-        $scope.sl_beds = [];
-        DBService.postCall({entry_id : $scope.entry_id}, '/api/rooms/check-init').then((data) => {
-            if (data.success) {
-                $scope.formData = data.l_entry;
-                $scope.total_amount = data.l_entry.total_amount;
-                $scope.formData.type = $scope.formData.type;
-               
-                $scope.old_hr = data.l_entry.hours_occ;
-
-                $scope.sl_pods = data.sl_pods;
-                $scope.sl_cabins = data.sl_cabins;
-                $scope.sl_beds = data.sl_beds;
-
-                $("#checkinModal").modal("show");
-            }
-            
-        });
-    }  
-
-    $scope.deleteBooking = function(entry_id){
-
-        $scope.entry_id = entry_id;
-      
-        DBService.postCall({entry_id : $scope.entry_id}, '/api/rooms/delete-room-entery').then((data) => {
-            if (data.success) {
-                $scope.init();
-            }
-            
-        });
-    }  
-
-    $scope.changeAmount = function() {
-        console.log("helloooooo");
-        if ($scope.type == 1) {
-            quantity = $scope.sl_pods.length;
-        } else if ($scope.type == 2) {
-            quantity = $scope.sl_cabins.length;
-        } else if ($scope.type == 3) {
-            quantity = $scope.sl_beds.length;
-        }   
-
-        var sendObj = {
-            type: $scope.type,
-            quantity: quantity,
-            hours_occ: $scope.formData.hours_occ,
-            entry_id: $scope.entry_id,
-            discount_amount: $scope.formData.discount_amount || 0,
-            paid_amount: $scope.formData.paid_amount || 0
-        };
-        DBService.postCall(sendObj, '/api/rooms/calculate-room-amount').then((data) => {
-            if (data.success) {
-                $scope.total_amount = data.total_amount;
-                $scope.formData.total_amount = data.total_amount;
-                $scope.formData.paid_amount = data.paid_amount;
-                $scope.formData.balance_amount = data.balance_amount;
-                $scope.balance_amount = data.balance_amount;
-            }
-            
-        });
-    };
-
-    $scope.delete = function (id) {
-        if(confirm("Are you sure?") == true){
-            DBService.getCall('/api/rooms/delete/'+id).then((data) => {
-                alert(data.message);
-                $scope.init();
-            });
-        }
-    }
-
-    $scope.toggleSelection = (array, id) => {
-        let index = array.indexOf(id);
-        if (index === -1) {
-            array.push(id);
-        } else {
-            array.splice(index, 1);
-        }
-        $scope.changeAmount();
-    };
-
-
-    $scope.insPods = (pod_id) => {
-        if ( $scope.formData.id && $scope.formData.online_booking == 1 && $scope.sl_pods.length >= parseInt($scope.formData.no_of_rooms) && !$scope.sl_pods.includes(pod_id)) { 
-            return;
-        }
-        $scope.toggleSelection($scope.sl_pods, pod_id);
-    };
-    $scope.insCabins = (cabin_id) => {
-        $scope.toggleSelection($scope.sl_cabins, cabin_id);
-    };
-
-    $scope.insBeds = (bed_id) => {
-        $scope.toggleSelection($scope.sl_beds, bed_id);
-    };
-
-    $scope.disAmount = () => {
-        if($scope.formData.total_amount < $scope.formData.discount_amount){
-            return;
-        }
-        if($scope.formData.discount_amount > 0 && $scope.formData.total_amount > 0){
-            if($scope.entry_id == 0){
-                $scope.formData.paid_amount = $scope.total_amount - $scope.formData.discount_amount;
-            }else{
-                var str_data = (parseInt($scope.formData.paid_amount) + parseInt($scope.formData.discount_amount));
-                
-                $scope.formData.balance_amount = $scope.total_amount - str_data;
-            }
-            
-        }
-    }
-
-    $scope.updateCheckoutClass = function(){
-        const milliseconds = new Date().getTime();
-        const unixTimestamp = Math.floor(milliseconds / 1000);
-        for (var i = 0; i < $scope.entries.length; i++) {
-            $scope.entries[i].check_class = "";
-            if($scope.entries[i].checkout_status == 0){
-                if(unixTimestamp > $scope.entries[i].str_checkout_time){
-                    $scope.entries[i].check_class = "t-danger";
-                } else {
-                    if((unixTimestamp+1200) > $scope.entries[i].str_checkout_time){
-                        $scope.entries[i].check_class = "t-warning";
-                    } else {
-                        $scope.entries[i].check_class = "t-info";
-                    }
-                }
-            }
-
-        }
-    }
-
-    var intervalPromise = $interval($scope.updateCheckoutClass, 12000);
-    $scope.$on('$destroy', function() {
-        if (intervalPromise) {
-            $interval.cancel(intervalPromise);
-        }
-    });
-});
-
-app.controller('allRoomEntryCtrl', function($scope , $http, $timeout , DBService) {
-    $scope.loading = false;
-    
-    $scope.filter = {};
-    $scope.entries = [{}];
-    $l_entry = {};
-
-    $scope.init = function () {
-        DBService.postCall($scope.filter, '/api/rooms/init-all').then((data) => {
-            if (data.success) {
-                $scope.entries = data.entries;  
-            }
-        });
-    }
-    $scope.initSingleEntry = function (entry_id) {
-        // console.log(entry_id);
-        DBService.postCall({entry_id:entry_id}, '/api/rooms/init-single-entry').then((data) => {
-            if (data.success) {
-                $scope.l_entry = data.l_entry; 
-                $("#viewModal").modal("show");
-            }
-        });
-    }
-    $scope.hideModal = function(){
-        $("#viewModal").modal("hide");
-    }
-    $scope.deleteEntry = function(entry_id,e_entry_id){
-        console.log(entry_id,e_entry_id);
-        DBService.getCall('/api/rooms/delete-e-entry/'+entry_id+'/'+e_entry_id).then((data) => {
-            if (data.success) {
-                $("#viewModal").modal("hide");
-            }else{
-                $("#viewModal").modal("hide");
-                
-            }
-        });
-    }
-    $scope.filterClear = function(){
-        $scope.filter = {};
-        $scope.init();
-    }
-});
-app.controller('clientSettingCtrl', function($scope , $http, $timeout , DBService) {
-    $scope.loading = false;
-    $scope.processing = false;
-    $scope.filter = {};
-
-    $scope.clients = [];
-    $scope.shift_rows = [];
-
-    $scope.filter.hide_date = new Date();
-    $scope.filter.input_date = new Date();
-
-    $scope.formatDate = function(date){
-        if(!date){
-            return '';
-        }
-
-        var d = new Date(date);
-        var month = '' + (d.getMonth() + 1);
-        var day = '' + d.getDate();
-        var year = d.getFullYear();
-
-        if(month.length < 2){
-            month = '0' + month;
-        }
-
-        if(day.length < 2){
-            day = '0' + day;
-        }
-
-        return [year, month, day].join('-');
-    }
-
-    $scope.init = function () {
-        var params = {
-            hide_date: $scope.formatDate($scope.filter.hide_date)
-        };
-
-        DBService.postCall(params, '/api/clients/init-amount-setting').then((data) => {
-            if(data.success){
-                $scope.clients = data.clients;  
-            }
-        });
-    }
-
-    $scope.onSubmit = function () {
-        $scope.processing = true;
-
-        var params = {
-            clients: $scope.clients,
-            hide_date: $scope.formatDate($scope.filter.hide_date)
-        };
-
-        DBService.postCall(params, '/api/clients/store-amount-setting').then((data) => {
-            if(data.success){
-                $scope.init();
-            }
-
-            alert(data.message); 
-            $scope.processing = false;
-        });
-    }
-
-    $scope.shiftStatus = function () {
-        $scope.processing = true;
-
-        var params = {
-            input_date: $scope.formatDate($scope.filter.input_date)
-        };
-
-        DBService.postCall(params, '/api/clients/shift-status').then((data) => {
-            if(data.success){
-                $scope.shift_rows = data.shift_rows;
-            }
-
-            $scope.processing = false;
-        });
-    }
-});
-app.controller('clientSettingCtrlOld', function($scope , $http, $timeout , DBService) {
-    $scope.loading = false;
-    $scope.processing = false;
-    $scope.filter = {};
-    
-    $scope.clients = [];
-
-    $scope.init = function () {
-        DBService.postCall($scope.filter, '/api/clients/init-amount-setting').then((data) => {
-            if (data.success) {
-                $scope.clients = data.clients;  
-            }
-        });
-    }
-    $scope.onSubmit = function () {
-        $scope.processing = true;
-        DBService.postCall({clients:$scope.clients}, '/api/clients/store-amount-setting').then((data) => {
-            if (data.success) {
-                $scope.init();
-            }
-            alert(data.message); 
-            $scope.processing = false;
-        });
-    }
-
-    $scope.shiftStatus = function () {
-        $scope.processing = true;
-        DBService.postCall($scope.filter, '/api/clients/shift-status').then((data) => {
-            if(data.success){
-                $scope.shift_rows = data.shift_rows;
-            }
-        });
-    }
-});
-app.controller('scanningCtrl', function($scope , $http, $timeout , DBService) {
-    $scope.loading = false;
-    $scope.processing = false;
-    $scope.filter = {};
-    
-    $scope.entries = [];
-    $scope.incoming_types = [];
-    $scope.item_types = [];
-    $scope.rate_list = [];
-
-    $scope.formData = {
-        name:'',
-        paid_amount:0,
-
-    }
-
-    $scope.init = function () {
-        DBService.postCall($scope.filter, '/api/scanning/init').then((data) => {
-            if (data.success) {
-                $scope.entries = data.entries;  
-                $scope.incoming_types = data.incoming_types;  
-                $scope.item_types = data.item_types;  
-                $scope.rate_list = data.rate_list;  
-            }
-
-            // console.log($scope.entries);
-        });
-    }
-    $scope.add = () => {
-        $("#exampleModalCenter").modal("show");
-    }
-    $scope.filterClear = function(){
-        $scope.filter = {};
-        $scope.init();
-    }
-    $scope.hideModal =() => {
-
-        $("#exampleModalCenter").modal("hide");
-        $scope.formData.name = '';
-        $scope.formData.paid_amount = 0;
-    }
-    $scope.onSubmit = function () {
-        $scope.processing = true;
-        DBService.postCall($scope.formData, '/api/scanning/store').then((data) => {
-            if (data.success) {
-                $scope.init();
-                $scope.hideModal();
-
-                 setTimeout(function(){
-                    window.open(base_url+'/admin/scanning/print/'+data.print_id,'_blank');
-                }, 800);
-            }else{
-                alert(data.message); 
-            }
-            $scope.processing = false;
-        });
-    }
-
-    $scope.calAmount = () => {
-
-        var my_item = $scope.rate_list.find(item => item.item_type_id == $scope.formData.item_type_id && item.incoming_type_id == $scope.formData.incoming_type_id);
-
-        $scope.formData.paid_amount = $scope.formData.no_of_item*my_item.rate;
-
-
-    }
-
-});
-
-app.controller('restCtrl', function($scope , $http, $timeout , DBService) {
-    $scope.loading = false;
-    $scope.processing = false;
-    $scope.formData = {
-        pay_type:1,
-        no_of_hours:1,
-        no_of_people:1,
-        paid_amount:0,
-    };
-
-    $scope.filter = {};
-  
-    $scope.entries = [];
-    $scope.rate_list ={};
- 
-    $scope.init = function () {
-        
-        DBService.postCall($scope.filter, '/api/rest/init').then((data) => {
-            if(data.success){
-                $scope.pay_types = data.pay_types;
-                $scope.entries = data.entries;
-                $scope.rate_list = data.rate_list;
-                $scope.formData.paid_amount = $scope.formData.no_of_hours*$scope.rate_list.first_rate;
-            }
-        });
-    }
-    $scope.filterClear = function(){
-        $scope.filter = {};
-        $scope.init();
-    }
-
-    $scope.calAmount = function(){
-        $scope.formData.paid_amount = $scope.formData.no_of_people*$scope.formData.no_of_hours*$scope.rate_list.first_rate;
-    }
-
-    $scope.onSubmit = function () {
-        $scope.processing = true;
-        DBService.postCall($scope.formData, '/api/rest/store').then((data) => {
-            if (data.success) {
-                $scope.formData = {
-                    pay_type:1,
-                    no_of_hours:1,
-                    no_of_people:1,
-                    paid_amount:0,
-                };
-                $scope.init();
-                setTimeout(function(){
-                    window.open(base_url+'/admin/rest/print/'+data.id, '_blank')
-                }, 800);
-            }
-            $scope.processing = false;
-        });
-    }
-
-   
-});
-
-// app.controller('dailyEntryCtrl', function($scope , $http, $timeout , DBService) {
-//     $scope.loading = false;
-//     $scope.formData = {
-//         name:'',
-//         mobile:'',
-//         pay_type: 1,
-//         total_amount: 0,
-//         total_item:0,
-//         products: [{demo:''}],
-
-//     };
-
-//     $scope.products = [];
-
-
-//     // $scope.total_amount= 0;
-//     $scope.filter = {};
-//     $scope.entry_id = 0;
-//     $scope.daily_entries = [];
-//     $scope.canteen_items = [];
-
-//     $scope.selectConfig = {
-//         valueField: 'canteen_item_id',
-//         labelField: 'item_name',
-//         maxItems:1,
-//         searchField: 'item_name',
-//         create: false,
-//         onInitialize: function(selectize){
-              
-//         }
-//     }
-//     $scope.init = function () {
-//         DBService.postCall($scope.filter, '/api/daily-entries/init').then((data) => {
-//             $scope.daily_entries = data.daily_entries;
-//             $scope.canteen_items = data.canteen_items;
-//         });
-//     }
-
-//     $scope.filterClear = function(){
-//         $scope.filter = {};
-//         $scope.init();
-//     }
-
-//     $scope.edit = function(entry_id){
-//         $scope.entry_id = entry_id;
-//         DBService.postCall({entry_id : $scope.entry_id}, '/api/daily-entries/edit-init').then((data) => {
-//             if (data.success) {
-//                 $scope.formData = data.s_entry;
-//                 $("#exampleModalCenter").modal("show");
-//             }
-//         });
-//     }
-
-//     $scope.hideModal = () => {
-//         $("#exampleModalCenter").modal("hide");
-//         $scope.entry_id = 0;
-//         $scope.formData = {
-//             name:'',
-//             mobile:'',
-//             items:[],
-//         };
-//         $scope.init();
-//     }
-
-//     $scope.add = () => {
-//         $("#exampleModalCenter").modal("show");
-//         $scope.entry_id = 0;
-//         $scope.formData = {
-//             name:'',
-//             mobile:'',
-//             items:[],
-//         };
-//     }
-
-//     $scope.onSubmit = function () {
-//         $scope.loading = true;
-//         $scope.formData.products = $scope.products;
-//         if($scope.products.length == 0){
-//             alert("Plese select at least one item.");
-//             $scope.loading = false;
-//             return;
-//         }
-//         DBService.postCall($scope.formData, '/api/daily-entries/store').then((data) => {
-//             if (data.success) {
-//                 alert(data.message);
-//                 $("#exampleModalCenter").modal("hide");
-
-//                 $scope.formData = {
-//                     name:'',
-//                     mobile:'',
-//                     items:[],
-//                 };
-//                 $scope.products = [];
-//                 $scope.init();
-//                 setTimeout(function(){
-//                     window.open(base_url+'/admin/daily-entries/print/'+data.entry_id,'_blank');
-//                 }, 800);
-//             }else{
-//                 alert(data.message);
-//             }
-//             $scope.loading = false;
-//         });
-//     }
-
-//     $scope.onAddProdcut = () => {
-//         // console.log($scope.product);
-
-//         // var total_amount = $scope.total_amount;
-//         let products = $scope.products;
-
-//         var my_item = null;
-//         for (let i = 0; i < $scope.canteen_items.length; i++) {
-//             let c_item = $scope.canteen_items[i];
-//             if (c_item.canteen_item_id == $scope.product.canteen_item_id) {
-//                 my_item = c_item;
-//             }
-//         }
-//         let index = -1;
-
-//         for (var i = 0; i < products.length; i++) {
-//             let c_product = products[i];
-//             if(c_product.canteen_item_id == $scope.product.canteen_item_id){
-//                 index = i;
-//             }
-//         }
-
-//         if (index == -1) {
-//             my_item.paid_amount = my_item.price*$scope.product.quantity;
-//             my_item.quantity = $scope.product.quantity;
-//             products.push(my_item);
-//         } else {
-//             // total_amount += my_item.price*$scope.product.quantity;
-//             $scope.products[index].quantity += $scope.product.quantity;
-//             $scope.products[index].paid_amount = my_item.price*$scope.products[index].quantity;
-//         }
-
-//         $scope.product = {
-//             canteen_item_id:0,
-//             item_name:'',
-//             quantity:'',
-//         }; 
-
-//         $scope.products = products;
-
-//         var total_amount = 0;
-//         var total_item = 0;
-//         for (var i = 0; i < $scope.products.length; i++) {
-//             var el = $scope.products[i];
-//             total_amount = total_amount+el.paid_amount;
-//             total_item = total_item+el.quantity;
-//         }
-
-//         $scope.formData.total_amount = total_amount;
-//         $scope.formData.total_item = total_item;
-
-//     }
-
-//     $scope.editItem = (index) => {
-//         $scope.product = $scope.products[index];
-//         $scope.products.splice(index,1);
-//     }
-
-// });
-
-
-app.controller('entryRoomCtrlOld', function($scope , $http, $timeout , DBService,$interval) {
-    $scope.type = 0;
-    $scope.loading = false;
-    $scope.formData = {
-        name:'',
-        mobile_no:"",
-        paid_amount:0,
-        no_of_day:'',
-        locker_id:'',
-        discount_amount:0,
-        is_discount:-1,
-        otp:'',
-        hours_occ:'',
-    };
-    $discount_verified = false;
-    $scope.filter = {};
-
-    $scope.entry_id = 0;
-
-    $scope.check_shift = "";
-    $scope.pay_types = [];
-    $scope.avail_pods = [];
-    $scope.avail_cabins = [];
-    $scope.avail_beds = [];
-    $scope.hours = [];
-
-    $scope.sl_pods = [];
-    $scope.sl_cabins = [];
-    $scope.sl_beds = [];
-    $scope.total_amount = 0;
-    $scope.paid_amount = 0;
-    $scope.balance_amount = 0;
-    $scope.otp_verified = false;
-    $scope.otp_send = false;
-    $scope.old_hr = 0;
     // $scope.setSendDiscount = (is_discount) => {
     //     console.log("Hello");
     //     $scope.formData.is_discount = is_discount;
@@ -3080,10 +2226,6 @@ app.controller('entryRoomCtrlOld', function($scope , $http, $timeout , DBService
         $scope.sendOtp();
     }
     $scope.sendOtp = () => {
-        if($scope.formData.mobile_no == ''){
-            alert("Please enter the mobile number first!");
-            return;
-        }
         DBService.postCall({mobile:$scope.formData.mobile_no}, '/api/rooms/send-otp').then((data) => {
             if (data.success) {
                $scope.otp_send = true;
@@ -3599,3 +2741,447 @@ app.controller('entryRoomCtrlOld', function($scope , $http, $timeout , DBService
         }
     });
 });
+
+app.controller('allRoomEntryCtrl', function($scope , $http, $timeout , DBService) {
+    $scope.loading = false;
+    
+    $scope.filter = {};
+    $scope.entries = [{}];
+    $l_entry = {};
+
+    $scope.init = function () {
+        DBService.postCall($scope.filter, '/api/rooms/init-all').then((data) => {
+            if (data.success) {
+                $scope.entries = data.entries;  
+            }
+        });
+    }
+    $scope.initSingleEntry = function (entry_id) {
+        // console.log(entry_id);
+        DBService.postCall({entry_id:entry_id}, '/api/rooms/init-single-entry').then((data) => {
+            if (data.success) {
+                $scope.l_entry = data.l_entry; 
+                $("#viewModal").modal("show");
+            }
+        });
+    }
+    $scope.hideModal = function(){
+        $("#viewModal").modal("hide");
+    }
+    $scope.deleteEntry = function(entry_id,e_entry_id){
+        console.log(entry_id,e_entry_id);
+        DBService.getCall('/api/rooms/delete-e-entry/'+entry_id+'/'+e_entry_id).then((data) => {
+            if (data.success) {
+                $("#viewModal").modal("hide");
+            }else{
+                $("#viewModal").modal("hide");
+                
+            }
+        });
+    }
+    $scope.filterClear = function(){
+        $scope.filter = {};
+        $scope.init();
+    }
+});
+app.controller('clientSettingCtrl', function($scope , $http, $timeout , DBService) {
+    $scope.loading = false;
+    $scope.processing = false;
+    $scope.filter = {};
+
+    $scope.clients = [];
+    $scope.shift_rows = [];
+
+    $scope.filter.hide_date = new Date();
+    $scope.filter.input_date = new Date();
+
+    $scope.formatDate = function(date){
+        if(!date){
+            return '';
+        }
+
+        var d = new Date(date);
+        var month = '' + (d.getMonth() + 1);
+        var day = '' + d.getDate();
+        var year = d.getFullYear();
+
+        if(month.length < 2){
+            month = '0' + month;
+        }
+
+        if(day.length < 2){
+            day = '0' + day;
+        }
+
+        return [year, month, day].join('-');
+    }
+
+    $scope.init = function () {
+        var params = {
+            hide_date: $scope.formatDate($scope.filter.hide_date)
+        };
+
+        DBService.postCall(params, '/api/clients/init-amount-setting').then((data) => {
+            if(data.success){
+                $scope.clients = data.clients;  
+            }
+        });
+    }
+
+    $scope.onSubmit = function () {
+        $scope.processing = true;
+
+        var params = {
+            clients: $scope.clients,
+            hide_date: $scope.formatDate($scope.filter.hide_date)
+        };
+
+        DBService.postCall(params, '/api/clients/store-amount-setting').then((data) => {
+            if(data.success){
+                $scope.init();
+            }
+
+            alert(data.message); 
+            $scope.processing = false;
+        });
+    }
+
+    $scope.shiftStatus = function () {
+        $scope.processing = true;
+
+        var params = {
+            input_date: $scope.formatDate($scope.filter.input_date)
+        };
+
+        DBService.postCall(params, '/api/clients/shift-status').then((data) => {
+            if(data.success){
+                $scope.shift_rows = data.shift_rows;
+            }
+
+            $scope.processing = false;
+        });
+    }
+});
+app.controller('clientSettingCtrlOld', function($scope , $http, $timeout , DBService) {
+    $scope.loading = false;
+    $scope.processing = false;
+    $scope.filter = {};
+    
+    $scope.clients = [];
+
+    $scope.init = function () {
+        DBService.postCall($scope.filter, '/api/clients/init-amount-setting').then((data) => {
+            if (data.success) {
+                $scope.clients = data.clients;  
+            }
+        });
+    }
+    $scope.onSubmit = function () {
+        $scope.processing = true;
+        DBService.postCall({clients:$scope.clients}, '/api/clients/store-amount-setting').then((data) => {
+            if (data.success) {
+                $scope.init();
+            }
+            alert(data.message); 
+            $scope.processing = false;
+        });
+    }
+
+    $scope.shiftStatus = function () {
+        $scope.processing = true;
+        DBService.postCall($scope.filter, '/api/clients/shift-status').then((data) => {
+            if(data.success){
+                $scope.shift_rows = data.shift_rows;
+            }
+        });
+    }
+});
+app.controller('scanningCtrl', function($scope , $http, $timeout , DBService) {
+    $scope.loading = false;
+    $scope.processing = false;
+    $scope.filter = {};
+    
+    $scope.entries = [];
+    $scope.incoming_types = [];
+    $scope.item_types = [];
+    $scope.rate_list = [];
+
+    $scope.formData = {
+        name:'',
+        paid_amount:0,
+
+    }
+
+    $scope.init = function () {
+        DBService.postCall($scope.filter, '/api/scanning/init').then((data) => {
+            if (data.success) {
+                $scope.entries = data.entries;  
+                $scope.incoming_types = data.incoming_types;  
+                $scope.item_types = data.item_types;  
+                $scope.rate_list = data.rate_list;  
+            }
+
+            // console.log($scope.entries);
+        });
+    }
+    $scope.add = () => {
+        $("#exampleModalCenter").modal("show");
+    }
+    $scope.filterClear = function(){
+        $scope.filter = {};
+        $scope.init();
+    }
+    $scope.hideModal =() => {
+
+        $("#exampleModalCenter").modal("hide");
+        $scope.formData.name = '';
+        $scope.formData.paid_amount = 0;
+    }
+    $scope.onSubmit = function () {
+        $scope.processing = true;
+        DBService.postCall($scope.formData, '/api/scanning/store').then((data) => {
+            if (data.success) {
+                $scope.init();
+                $scope.hideModal();
+
+                 setTimeout(function(){
+                    window.open(base_url+'/admin/scanning/print/'+data.print_id,'_blank');
+                }, 800);
+            }else{
+                alert(data.message); 
+            }
+            $scope.processing = false;
+        });
+    }
+
+    $scope.calAmount = () => {
+
+        var my_item = $scope.rate_list.find(item => item.item_type_id == $scope.formData.item_type_id && item.incoming_type_id == $scope.formData.incoming_type_id);
+
+        $scope.formData.paid_amount = $scope.formData.no_of_item*my_item.rate;
+
+
+    }
+
+});
+
+app.controller('restCtrl', function($scope , $http, $timeout , DBService) {
+    $scope.loading = false;
+    $scope.processing = false;
+    $scope.formData = {
+        pay_type:1,
+        no_of_hours:1,
+        no_of_people:1,
+        paid_amount:0,
+    };
+
+    $scope.filter = {};
+  
+    $scope.entries = [];
+    $scope.rate_list ={};
+ 
+    $scope.init = function () {
+        
+        DBService.postCall($scope.filter, '/api/rest/init').then((data) => {
+            if(data.success){
+                $scope.pay_types = data.pay_types;
+                $scope.entries = data.entries;
+                $scope.rate_list = data.rate_list;
+                $scope.formData.paid_amount = $scope.formData.no_of_hours*$scope.rate_list.first_rate;
+            }
+        });
+    }
+    $scope.filterClear = function(){
+        $scope.filter = {};
+        $scope.init();
+    }
+
+    $scope.calAmount = function(){
+        $scope.formData.paid_amount = $scope.formData.no_of_people*$scope.formData.no_of_hours*$scope.rate_list.first_rate;
+    }
+
+    $scope.onSubmit = function () {
+        $scope.processing = true;
+        DBService.postCall($scope.formData, '/api/rest/store').then((data) => {
+            if (data.success) {
+                $scope.formData = {
+                    pay_type:1,
+                    no_of_hours:1,
+                    no_of_people:1,
+                    paid_amount:0,
+                };
+                $scope.init();
+                setTimeout(function(){
+                    window.open(base_url+'/admin/rest/print/'+data.id, '_blank')
+                }, 800);
+            }
+            $scope.processing = false;
+        });
+    }
+
+   
+});
+
+// app.controller('dailyEntryCtrl', function($scope , $http, $timeout , DBService) {
+//     $scope.loading = false;
+//     $scope.formData = {
+//         name:'',
+//         mobile:'',
+//         pay_type: 1,
+//         total_amount: 0,
+//         total_item:0,
+//         products: [{demo:''}],
+
+//     };
+
+//     $scope.products = [];
+
+
+//     // $scope.total_amount= 0;
+//     $scope.filter = {};
+//     $scope.entry_id = 0;
+//     $scope.daily_entries = [];
+//     $scope.canteen_items = [];
+
+//     $scope.selectConfig = {
+//         valueField: 'canteen_item_id',
+//         labelField: 'item_name',
+//         maxItems:1,
+//         searchField: 'item_name',
+//         create: false,
+//         onInitialize: function(selectize){
+              
+//         }
+//     }
+//     $scope.init = function () {
+//         DBService.postCall($scope.filter, '/api/daily-entries/init').then((data) => {
+//             $scope.daily_entries = data.daily_entries;
+//             $scope.canteen_items = data.canteen_items;
+//         });
+//     }
+
+//     $scope.filterClear = function(){
+//         $scope.filter = {};
+//         $scope.init();
+//     }
+
+//     $scope.edit = function(entry_id){
+//         $scope.entry_id = entry_id;
+//         DBService.postCall({entry_id : $scope.entry_id}, '/api/daily-entries/edit-init').then((data) => {
+//             if (data.success) {
+//                 $scope.formData = data.s_entry;
+//                 $("#exampleModalCenter").modal("show");
+//             }
+//         });
+//     }
+
+//     $scope.hideModal = () => {
+//         $("#exampleModalCenter").modal("hide");
+//         $scope.entry_id = 0;
+//         $scope.formData = {
+//             name:'',
+//             mobile:'',
+//             items:[],
+//         };
+//         $scope.init();
+//     }
+
+//     $scope.add = () => {
+//         $("#exampleModalCenter").modal("show");
+//         $scope.entry_id = 0;
+//         $scope.formData = {
+//             name:'',
+//             mobile:'',
+//             items:[],
+//         };
+//     }
+
+//     $scope.onSubmit = function () {
+//         $scope.loading = true;
+//         $scope.formData.products = $scope.products;
+//         if($scope.products.length == 0){
+//             alert("Plese select at least one item.");
+//             $scope.loading = false;
+//             return;
+//         }
+//         DBService.postCall($scope.formData, '/api/daily-entries/store').then((data) => {
+//             if (data.success) {
+//                 alert(data.message);
+//                 $("#exampleModalCenter").modal("hide");
+
+//                 $scope.formData = {
+//                     name:'',
+//                     mobile:'',
+//                     items:[],
+//                 };
+//                 $scope.products = [];
+//                 $scope.init();
+//                 setTimeout(function(){
+//                     window.open(base_url+'/admin/daily-entries/print/'+data.entry_id,'_blank');
+//                 }, 800);
+//             }else{
+//                 alert(data.message);
+//             }
+//             $scope.loading = false;
+//         });
+//     }
+
+//     $scope.onAddProdcut = () => {
+//         // console.log($scope.product);
+
+//         // var total_amount = $scope.total_amount;
+//         let products = $scope.products;
+
+//         var my_item = null;
+//         for (let i = 0; i < $scope.canteen_items.length; i++) {
+//             let c_item = $scope.canteen_items[i];
+//             if (c_item.canteen_item_id == $scope.product.canteen_item_id) {
+//                 my_item = c_item;
+//             }
+//         }
+//         let index = -1;
+
+//         for (var i = 0; i < products.length; i++) {
+//             let c_product = products[i];
+//             if(c_product.canteen_item_id == $scope.product.canteen_item_id){
+//                 index = i;
+//             }
+//         }
+
+//         if (index == -1) {
+//             my_item.paid_amount = my_item.price*$scope.product.quantity;
+//             my_item.quantity = $scope.product.quantity;
+//             products.push(my_item);
+//         } else {
+//             // total_amount += my_item.price*$scope.product.quantity;
+//             $scope.products[index].quantity += $scope.product.quantity;
+//             $scope.products[index].paid_amount = my_item.price*$scope.products[index].quantity;
+//         }
+
+//         $scope.product = {
+//             canteen_item_id:0,
+//             item_name:'',
+//             quantity:'',
+//         }; 
+
+//         $scope.products = products;
+
+//         var total_amount = 0;
+//         var total_item = 0;
+//         for (var i = 0; i < $scope.products.length; i++) {
+//             var el = $scope.products[i];
+//             total_amount = total_amount+el.paid_amount;
+//             total_item = total_item+el.quantity;
+//         }
+
+//         $scope.formData.total_amount = total_amount;
+//         $scope.formData.total_item = total_item;
+
+//     }
+
+//     $scope.editItem = (index) => {
+//         $scope.product = $scope.products[index];
+//         $scope.products.splice(index,1);
+//     }
+
+// });

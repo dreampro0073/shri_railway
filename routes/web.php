@@ -512,6 +512,8 @@ Route::group(['prefix'=>"api"], function(){
 		Route::post('/send-otp',[RoomController::class,'sendOtp']);
 		Route::post('/verify-otp',[RoomController::class,'verifyOTP']);
 
+		Route::post('/calculate-room-amount', [RoomController::class, 'calculateRoomAmount']);
+
 	});
 
 	Route::group(['prefix'=>"clients"], function(){

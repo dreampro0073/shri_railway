@@ -30,8 +30,8 @@ section{background:#fff;border:1px solid var(--line);border-radius:14px;margin:0
 table{width:100%;border-collapse:collapse;margin-top:12px;font-size:14px}th,td{border:1px solid var(--line);padding:10px;vertical-align:top;text-align:left}th{background:#f5f8fa}
 .tip{margin-top:16px;padding:12px 14px;border-radius:8px;background:#fff7e8;border:1px solid #f5d49b}.warn{background:#fff1f0;border-color:#ffc9c5}
 .footer{color:#6c7782;text-align:center;padding:16px 0 40px;font-size:13px}
-@media(max-width:900px){.layout{grid-template-columns:1fr}nav{position:relative;top:0;height:auto;border-right:0;border-bottom:1px solid var(--line)}main{padding:20px}.grid{grid-template-columns:1fr}.topbar{position:relative}.hero h1{font-size:28px}}
-@media print{body{background:#fff}.topbar,nav{display:none}.layout{display:block}main{padding:0;max-width:none}section,.hero{box-shadow:none;break-inside:avoid}.screen img{max-height:650px;object-fit:contain}.print-btn{display:none}}
+@@media(max-width:900px){.layout{grid-template-columns:1fr}nav{position:relative;top:0;height:auto;border-right:0;border-bottom:1px solid var(--line)}main{padding:20px}.grid{grid-template-columns:1fr}.topbar{position:relative}.hero h1{font-size:28px}}
+@@media print{body{background:#fff}.topbar,nav{display:none}.layout{display:block}main{padding:0;max-width:none}section,.hero{box-shadow:none;break-inside:avoid}.screen img{max-height:650px;object-fit:contain}.print-btn{display:none}}
 </style></head>
 <body>
 <div class="topbar"><div class="brand"><span>Cloakroom</span> Software User Manual</div><button class="print-btn" onclick="window.print()">Print / Save as PDF</button></div>

@@ -65,7 +65,7 @@ class ClientSettingController extends Controller {
 
             })
             ->where('clients.org_id', 1)
-            ->orderBy('clients.client_name')
+            ->orderBy('clients.id')
             ->get();
 
         return Response::json([

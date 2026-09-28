@@ -94,6 +94,8 @@
                     <div class="text-center mt-5">
                         <button type="submit" class="btn btn-success btn-user btn-block min-wid" style="margin:auto;">Login</button>
                     </div>
+
+                    <a href="{{url('user-manual')}}" target="_blank" style="margin-top: 10px;text-decoration: underline;font-style: italic;">User Manual</a>
                 </div>
               
                 

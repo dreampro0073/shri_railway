@@ -35,8 +35,156 @@ class ClientSettingController extends Controller {
         ]);
     }
 
-
     public function initAmountSetting(Request $request){
+        $hide_date = $request->input('hide_date');
+
+        if (!$hide_date) {
+            $hide_date = date('Y-m-d');
+        } else {
+            $hide_date = date('Y-m-d', strtotime($hide_date));
+        }
+
+        $clients = DB::table('clients')
+            ->select(
+                'clients.id',
+                'clients.client_name',
+                DB::raw('IFNULL(client_hide_amounts.hide_amount,0) as hide_amount')
+            )
+            ->leftJoin('client_hide_amounts', function($join) use ($hide_date) {
+
+                $join->on(
+                    'client_hide_amounts.client_id',
+                    '=',
+                    'clients.id'
+                )
+                ->where(
+                    'client_hide_amounts.hide_date',
+                    '=',
+                    $hide_date
+                );
+
+            })
+            ->where('clients.org_id', 1)
+            ->orderBy('clients.client_name')
+            ->get();
+
+        return Response::json([
+            'success' => true,
+            'clients' => $clients,
+            'hide_date' => $hide_date
+        ], 200, []);
+    }
+
+    public function storeAmountSetting(Request $request){
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'hide_date' => 'required|date_format:Y-m-d',
+                'clients' => 'required|array'
+            ]
+        );
+
+        if ($validator->fails()) {
+            return Response::json([
+                'success' => false,
+                'message' => $validator->errors()->first()
+            ], 200, []);
+        }
+
+        $clients = $request->input('clients', []);
+
+        $hide_date = date(
+            'Y-m-d',
+            strtotime($request->input('hide_date'))
+        );
+
+        if (sizeof($clients) == 0) {
+
+            return Response::json([
+                'success' => false,
+                'message' => 'No changes found.'
+            ], 200, []);
+
+        }
+
+        DB::beginTransaction();
+
+        try {
+
+            foreach ($clients as $client) {
+
+                if (!isset($client['id'])) {
+                    continue;
+                }
+
+                $client_id = (int) $client['id'];
+
+                $valid_client = DB::table('clients')
+                    ->where('id', $client_id)
+                    ->where('org_id', 1)
+                    ->first();
+
+                if (!$valid_client) {
+                    continue;
+                }
+
+                $hide_amount = isset($client['hide_amount'])
+                    ? (int) $client['hide_amount']
+                    : 0;
+
+                if ($hide_amount < 0) {
+                    $hide_amount = 0;
+                }
+
+                $check = DB::table('client_hide_amounts')
+                    ->where('client_id', $client_id)
+                    ->where('hide_date', $hide_date)
+                    ->first();
+
+                if ($check) {
+
+                    DB::table('client_hide_amounts')
+                        ->where('id', $check->id)
+                        ->update([
+                            'hide_amount' => $hide_amount,
+                            'updated_at' => date('Y-m-d H:i:s')
+                        ]);
+
+                } else {
+
+                    DB::table('client_hide_amounts')
+                        ->insert([
+                            'client_id' => $client_id,
+                            'hide_amount' => $hide_amount,
+                            'hide_date' => $hide_date,
+                            'created_at' => date('Y-m-d H:i:s'),
+                            'updated_at' => date('Y-m-d H:i:s')
+                        ]);
+
+                }
+
+            }
+
+            DB::commit();
+
+            return Response::json([
+                'success' => true,
+                'message' => 'Successfully Updated'
+            ], 200, []);
+
+        } catch (\Exception $e) {
+
+            DB::rollBack();
+
+            return Response::json([
+                'success' => false,
+                'message' => 'Something Went Wrong'
+            ], 200, []);
+
+        }
+    }
+
+    public function initAmountSetting29Old(Request $request){
         $hide_date = $request->input('hide_date');
 
         if(!$hide_date){
@@ -56,7 +204,7 @@ class ClientSettingController extends Controller {
         return Response::json($data,200,[]);
     }
 
-    public function storeAmountSetting(Request $request){
+    public function storeAmountSetting29Old(Request $request){
         $clients = $request->input('clients',[]);
         $hide_date = $request->input('hide_date');
 

@@ -372,3 +372,35 @@ input[type="file"] {
 		color: var(--web-black-color);
 	}
 }
+
+.main {
+    position: relative;
+}
+
+.setting-loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.75);
+    z-index: 99999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.setting-loader-box {
+    background: #ffffff;
+    padding: 20px 35px;
+    border-radius: 5px;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.15);
+    text-align: center;
+    font-size: 16px;
+}
+
+.setting-loader-box i {
+    display: block;
+    font-size: 28px;
+    margin-bottom: 10px;
+}

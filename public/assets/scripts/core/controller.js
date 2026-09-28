@@ -2632,19 +2632,22 @@ app.controller('allRoomEntryCtrl', function($scope , $http, $timeout , DBService
         $scope.init();
     }
 });
-app.controller('clientSettingCtrl', function($scope , $http, $timeout , DBService) {
+
+app.controller('clientSettingCtrl', function($scope, $http, $timeout, DBService) {
+
     $scope.loading = false;
     $scope.processing = false;
     $scope.filter = {};
-
     $scope.clients = [];
     $scope.shift_rows = [];
 
     $scope.filter.hide_date = new Date();
     $scope.filter.input_date = new Date();
 
-    $scope.formatDate = function(date){
-        if(!date){
+    var initRequestNo = 0;
+
+    $scope.formatDate = function(date) {
+        if (!date) {
             return '';
         }
 
@@ -2653,97 +2656,298 @@ app.controller('clientSettingCtrl', function($scope , $http, $timeout , DBServic
         var day = '' + d.getDate();
         var year = d.getFullYear();
 
-        if(month.length < 2){
+        if (month.length < 2) {
             month = '0' + month;
         }
 
-        if(day.length < 2){
+        if (day.length < 2) {
             day = '0' + day;
         }
 
         return [year, month, day].join('-');
-    }
+    };
 
-    $scope.init = function () {
+    $scope.init = function() {
+
+        if ($scope.processing) {
+            return;
+        }
+
+        var selectedDate = $scope.formatDate($scope.filter.hide_date);
+
+        if (!selectedDate) {
+            return;
+        }
+
+        initRequestNo++;
+
+        var currentRequestNo = initRequestNo;
+
+        $scope.loading = true;
+        $scope.clients = [];
+
         var params = {
-            hide_date: $scope.formatDate($scope.filter.hide_date)
+            hide_date: selectedDate
         };
 
-        DBService.postCall(params, '/api/clients/init-amount-setting').then((data) => {
-            if(data.success){
-                $scope.clients = data.clients;  
-            }
-        });
-    }
+        DBService.postCall(params, '/api/clients/init-amount-setting').then(function(data) {
 
-    $scope.onSubmit = function () {
+            if (currentRequestNo !== initRequestNo) {
+                return;
+            }
+
+            if ($scope.formatDate($scope.filter.hide_date) !== selectedDate) {
+                return;
+            }
+
+            if (data.success) {
+
+                $scope.clients = data.clients || [];
+
+                angular.forEach($scope.clients, function(client) {
+
+                    client.hide_amount = parseInt(client.hide_amount || 0, 10);
+
+                    client.original_hide_amount = client.hide_amount;
+
+                });
+
+            } else {
+
+                $scope.clients = [];
+
+                if (data.message) {
+                    alert(data.message);
+                }
+            }
+
+        }).catch(function() {
+
+            if (currentRequestNo === initRequestNo) {
+                $scope.clients = [];
+                alert('Unable to load client amount settings.');
+            }
+
+        }).finally(function() {
+
+            if (currentRequestNo === initRequestNo) {
+                $scope.loading = false;
+            }
+
+        });
+    };
+
+    $scope.onSubmit = function(formValid) {
+
+        if (!formValid) {
+            return;
+        }
+
+        if ($scope.loading || $scope.processing) {
+            return;
+        }
+
+        var selectedDate = $scope.formatDate($scope.filter.hide_date);
+
+        if (!selectedDate) {
+            alert('Please select date.');
+            return;
+        }
+
+        var changedClients = [];
+
+        angular.forEach($scope.clients, function(client) {
+
+            var currentAmount = parseInt(client.hide_amount || 0, 10);
+
+            var originalAmount = parseInt(client.original_hide_amount || 0, 10);
+
+            if (currentAmount !== originalAmount) {
+
+                changedClients.push({
+                    id: client.id,
+                    hide_amount: currentAmount
+                });
+
+            }
+
+        });
+
+        if (changedClients.length === 0) {
+            alert('No changes found.');
+            return;
+        }
+
         $scope.processing = true;
 
+        var submitDate = selectedDate;
+
         var params = {
-            clients: $scope.clients,
-            hide_date: $scope.formatDate($scope.filter.hide_date)
+            clients: changedClients,
+            hide_date: submitDate
         };
 
-        DBService.postCall(params, '/api/clients/store-amount-setting').then((data) => {
-            if(data.success){
-                $scope.init();
+        DBService.postCall(params, '/api/clients/store-amount-setting').then(function(data) {
+
+            alert(data.message);
+
+            if (data.success) {
+
+                if ($scope.formatDate($scope.filter.hide_date) === submitDate) {
+                    $scope.init();
+                }
+
             }
 
-            alert(data.message); 
-            $scope.processing = false;
-        });
-    }
+        }).catch(function() {
 
-    $scope.shiftStatus = function () {
+            alert('Unable to save amount setting.');
+
+        }).finally(function() {
+
+            $scope.processing = false;
+
+        });
+    };
+
+    $scope.shiftStatus = function() {
+
+        if ($scope.processing) {
+            return;
+        }
+
         $scope.processing = true;
 
         var params = {
             input_date: $scope.formatDate($scope.filter.input_date)
         };
 
-        DBService.postCall(params, '/api/clients/shift-status').then((data) => {
-            if(data.success){
-                $scope.shift_rows = data.shift_rows;
+        DBService.postCall(params, '/api/clients/shift-status').then(function(data) {
+
+            if (data.success) {
+                $scope.shift_rows = data.shift_rows || [];
             }
 
+        }).finally(function() {
+
             $scope.processing = false;
+
         });
-    }
+    };
+
 });
-app.controller('clientSettingCtrlOld', function($scope , $http, $timeout , DBService) {
-    $scope.loading = false;
-    $scope.processing = false;
-    $scope.filter = {};
+// app.controller('clientSettingCtrl', function($scope , $http, $timeout , DBService) {
+//     $scope.loading = false;
+//     $scope.processing = false;
+//     $scope.filter = {};
+
+//     $scope.clients = [];
+//     $scope.shift_rows = [];
+
+//     $scope.filter.hide_date = new Date();
+//     $scope.filter.input_date = new Date();
+
+//     $scope.formatDate = function(date){
+//         if(!date){
+//             return '';
+//         }
+
+//         var d = new Date(date);
+//         var month = '' + (d.getMonth() + 1);
+//         var day = '' + d.getDate();
+//         var year = d.getFullYear();
+
+//         if(month.length < 2){
+//             month = '0' + month;
+//         }
+
+//         if(day.length < 2){
+//             day = '0' + day;
+//         }
+
+//         return [year, month, day].join('-');
+//     }
+
+//     $scope.init = function () {
+//         var params = {
+//             hide_date: $scope.formatDate($scope.filter.hide_date)
+//         };
+
+//         DBService.postCall(params, '/api/clients/init-amount-setting').then((data) => {
+//             if(data.success){
+//                 $scope.clients = data.clients;  
+//             }
+//         });
+//     }
+
+//     $scope.onSubmit = function () {
+//         $scope.processing = true;
+
+//         var params = {
+//             clients: $scope.clients,
+//             hide_date: $scope.formatDate($scope.filter.hide_date)
+//         };
+
+//         DBService.postCall(params, '/api/clients/store-amount-setting').then((data) => {
+//             if(data.success){
+//                 $scope.init();
+//             }
+
+//             alert(data.message); 
+//             $scope.processing = false;
+//         });
+//     }
+
+//     $scope.shiftStatus = function () {
+//         $scope.processing = true;
+
+//         var params = {
+//             input_date: $scope.formatDate($scope.filter.input_date)
+//         };
+
+//         DBService.postCall(params, '/api/clients/shift-status').then((data) => {
+//             if(data.success){
+//                 $scope.shift_rows = data.shift_rows;
+//             }
+
+//             $scope.processing = false;
+//         });
+//     }
+// });
+// app.controller('clientSettingCtrlOld', function($scope , $http, $timeout , DBService) {
+//     $scope.loading = false;
+//     $scope.processing = false;
+//     $scope.filter = {};
     
-    $scope.clients = [];
+//     $scope.clients = [];
 
-    $scope.init = function () {
-        DBService.postCall($scope.filter, '/api/clients/init-amount-setting').then((data) => {
-            if (data.success) {
-                $scope.clients = data.clients;  
-            }
-        });
-    }
-    $scope.onSubmit = function () {
-        $scope.processing = true;
-        DBService.postCall({clients:$scope.clients}, '/api/clients/store-amount-setting').then((data) => {
-            if (data.success) {
-                $scope.init();
-            }
-            alert(data.message); 
-            $scope.processing = false;
-        });
-    }
+//     $scope.init = function () {
+//         DBService.postCall($scope.filter, '/api/clients/init-amount-setting').then((data) => {
+//             if (data.success) {
+//                 $scope.clients = data.clients;  
+//             }
+//         });
+//     }
+//     $scope.onSubmit = function () {
+//         $scope.processing = true;
+//         DBService.postCall({clients:$scope.clients}, '/api/clients/store-amount-setting').then((data) => {
+//             if (data.success) {
+//                 $scope.init();
+//             }
+//             alert(data.message); 
+//             $scope.processing = false;
+//         });
+//     }
 
-    $scope.shiftStatus = function () {
-        $scope.processing = true;
-        DBService.postCall($scope.filter, '/api/clients/shift-status').then((data) => {
-            if(data.success){
-                $scope.shift_rows = data.shift_rows;
-            }
-        });
-    }
-});
+//     $scope.shiftStatus = function () {
+//         $scope.processing = true;
+//         DBService.postCall($scope.filter, '/api/clients/shift-status').then((data) => {
+//             if(data.success){
+//                 $scope.shift_rows = data.shift_rows;
+//             }
+//         });
+//     }
+// });
 app.controller('scanningCtrl', function($scope , $http, $timeout , DBService) {
     $scope.loading = false;
     $scope.processing = false;

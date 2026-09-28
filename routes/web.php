@@ -47,8 +47,8 @@ Route::get('/webcam/get', [WebcamController::class,'webCamGet']);
 Route::post('/webcam/store', [WebcamController::class, 'store']);
 Route::post('/login', [UserController::class,'postLogin']);
 
-Route::get('user-manual',function(){
-	return view('front_end.cloakroom_user_manual');
+Route::get('/user-manual',function(){
+	return view('front_end.user-manual');
 });
 Route::get('/error',function(){
 	return view('error');

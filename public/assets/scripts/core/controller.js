@@ -65,6 +65,10 @@ app.controller('cloackCtrl', function($scope , $http, $timeout , DBService, Uplo
         export:0,
     };
 
+    $scope.total_entries = 0;
+    $scope.total_pages = 1;
+    $scope.per_page = 100;
+
     $scope.aadhar_details = {};
     $scope.formData = {
         name:'',
@@ -102,6 +106,12 @@ app.controller('cloackCtrl', function($scope , $http, $timeout , DBService, Uplo
                 $scope.cloak_second_rate = data.rate_list.second_rate;
                 $scope.rate_list = data.rate_list;
                 $scope.d_count = data.d_count;
+
+                $scope.total_entries = data.total_entries || 0;
+                $scope.total_pages = data.total_pages || 1;
+                $scope.filter.page_no = data.page_no || 1;
+                $scope.per_page = data.per_page || 100;
+
                 if ($scope.type ==1 ) {
                     $scope.updateCheckoutClass();
                 }
@@ -120,11 +130,40 @@ app.controller('cloackCtrl', function($scope , $http, $timeout , DBService, Uplo
         $scope.productName = '';
         $("#productName").focus();
     }
-    $scope.getData = (page) => {
-        $scope.filter.page_no = $scope.filter.page_no + page;
+    // $scope.getData = (page) => {
+    //     $scope.filter.page_no = $scope.filter.page_no + page;
+    //     $scope.init();
+    //     // console.log($scope.filter);
+    // }
+
+    
+    $scope.getData = function (page) {
+        var nextPage = ($scope.filter.page_no || 1) + page;
+
+        if (nextPage < 1 || nextPage > $scope.total_pages) {
+            return;
+        }
+
+        $scope.filter.page_no = nextPage;
         $scope.init();
-        // console.log($scope.filter);
-    }
+    };
+
+    $scope.searchData = function () {
+        $scope.filter.page_no = 1;
+        $scope.init();
+    };
+
+    $scope.filterClear = function () {
+        $scope.filter = {
+            page_no: 1,
+            export: 0
+        };
+
+        $scope.total_entries = 0;
+        $scope.total_pages = 1;
+
+        $scope.init();
+    };
     $scope.export = () => {
 
         $scope.type = 1;

@@ -41,11 +41,11 @@
                             </div>
                         </div>
                         <div class="col-md-6 text-right" style="margin-top: 28px;" class="mb-2">
-                            <button type="button" ng-click="init()" class="btn btn-warning-600  align-items-center gap-6 d-inline-flex">
-                                <span class="d-flex text-md">
-                                    <i class="ri-search-line"></i>
-                                </span>
+                            <button type="button" ng-click="searchData()" class="btn btn-warning-600 align-items-center gap-6 d-inline-flex">
+                                <i class="ri-search-line"></i>
                                 Search
+                            </button>
+                        
                             </button>
                             <button type="button" ng-click="filterClear()" class="btn btn-danger-600  align-items-center gap-6 d-inline-flex">
                                 <span class="d-flex text-md">
@@ -74,7 +74,7 @@
                 </form>
             </div>
       
-            <div class="row d-none">
+            <!-- <div class="row d-none">
                 <div class="col-md-6">
                    
                 </div>
@@ -86,6 +86,50 @@
                         <li ng-if="l_entries.length == 100" ng-click="getData(1)">>></li>    
                     </ul>
                 </div>
+            </div> -->
+
+            <div class="cloak-pagination-wrapper"
+                 ng-if="total_entries > 0">
+
+                <div class="cloak-pagination-info">
+                    Showing
+                    <strong>
+                        @{{ ((filter.page_no - 1) * per_page) + 1 }}
+                    </strong>
+                    to
+                    <strong>
+                        @{{ ((filter.page_no - 1) * per_page) + l_entries.length }}
+                    </strong>
+                    of
+                    <strong>@{{ total_entries }}</strong>
+                    records
+                </div>
+
+                <div class="cloak-pagination-controls">
+
+                    <button type="button" class="cloak-page-btn" ng-click="getData(-1)" ng-disabled="filter.page_no <= 1" title="Previous page">
+                        <i class="ri-arrow-left-s-line"></i>
+                        <span style="margin-left: 3px;">Previous</span>
+                    </button>
+                    <button type="button" class="cloak-page-btn active" disabled>
+                        @{{ filter.page_no }}
+                    </button>
+
+                    <span class="cloak-page-label">
+                        of @{{ total_pages }}
+                    </span>
+
+                    <button type="button" class="cloak-page-btn" ng-click="getData(1)" ng-disabled="filter.page_no >= total_pages" title="Next page">
+                        <span style="margin-right: 3px;">Next</span>
+                        <i class="ri-arrow-right-s-line"></i>
+                    </button>
+
+                </div>
+            </div>
+            <div class="alert alert-danger"
+                 ng-if="total_entries == 0">
+                <i class="ri-information-line"></i>
+                No records found!
             </div>
             <div class="dt-layout-row dt-layout-table">
                 <div class="dt-layout-cell">
@@ -113,7 +157,9 @@
                         <tbody ng-if="l_entries.length > 0" >
                            
                             <tr ng-repeat="item in l_entries " ng-class="item.check_class">
-                                <td>@{{ $index+1 }}</td>
+                                <td>
+                                    @{{ ((filter.page_no - 1) * per_page) + $index + 1 }}
+                                </td>
                                 <td>@{{ item.slip_id }}</td>
                                
                                 <td>@{{ item.name }}</td>

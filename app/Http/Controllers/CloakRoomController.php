@@ -47,7 +47,158 @@ class CloakRoomController extends Controller {
             "l_entries" => $l_entries,
         ]);
 	}
-	public function initRoom(Request $request, $type = 0){
+	
+	public function initRoom(Request $request, $type = 0)
+	{
+	    ini_set('max_execution_time', 300);
+	    ini_set('memory_limit', '512M');
+
+	    $max_per_page = 100;
+	    $page_no = max(1, (int) $request->input('page_no', 1));
+	    $client_id = Auth::user()->client_id;
+
+	    $is_export = $request->input('export') == 1;
+
+	    DB::disconnect('mysql');
+	    DB::reconnect('mysql');
+
+	    if (Auth::user()->priv == 2) {
+	        CollectedPenalities::setCheckStatus();
+	    }
+
+	    $query = DB::table('cloakroom_entries')
+	        ->select('cloakroom_entries.*')
+	        ->where('cloakroom_entries.client_id', $client_id);
+
+	    // Search filters
+	    if ($request->filled('slip_id')) {
+	        $query->where('cloakroom_entries.slip_id', $request->slip_id);
+	    }
+
+	    if ($request->filled('unique_id')) {
+	        $query->where(
+	            'cloakroom_entries.unique_id',
+	            'LIKE',
+	            '%' . $request->unique_id . '%'
+	        );
+	    }
+
+	    if ($request->filled('name')) {
+	        $query->where(
+	            'cloakroom_entries.name',
+	            'LIKE',
+	            '%' . $request->name . '%'
+	        );
+	    }
+
+	    if ($request->filled('mobile_no')) {
+	        $query->where(
+	            'cloakroom_entries.mobile_no',
+	            'LIKE',
+	            '%' . $request->mobile_no . '%'
+	        );
+	    }
+
+	    if ($request->filled('pnr_uid')) {
+	        $query->where(
+	            'cloakroom_entries.pnr_uid',
+	            'LIKE',
+	            '%' . $request->pnr_uid . '%'
+	        );
+	    }
+
+	    // Type filter
+	    if ((int) $type === 0) {
+	        $query->where('cloakroom_entries.checkout_status', 0);
+	    }
+
+	    // Export date filter
+	    if ($is_export) {
+	        if ($request->filled('from_date') && $request->filled('to_date')) {
+	            $from = date('Y-m-d', strtotime($request->from_date));
+	            $to = date('Y-m-d', strtotime($request->to_date));
+
+	            $query->whereBetween('cloakroom_entries.date', [$from, $to]);
+	        } else {
+	            return response()->json([
+	                'success' => false,
+	                'message' => 'Please select both dates.'
+	            ], 422);
+	        }
+	    }
+
+	    // Total records before pagination
+	    $total_entries = (clone $query)->count('cloakroom_entries.id');
+
+	    // Pagination: 100 records per page, except Excel export
+	    if (!$is_export) {
+	        $query->skip(($page_no - 1) * $max_per_page)
+	              ->take($max_per_page);
+	    }
+
+	    // Fetch entries
+	    $l_entries = $query
+	        ->orderByDesc('cloakroom_entries.id')
+	        ->get();
+
+	    // Calculate paid amount and format dates
+	    foreach ($l_entries as $item) {
+	        $bm_amount = DB::table('cloakroom_penalities')
+	            ->where('client_id', $client_id)
+	            ->where('is_collected', 0)
+	            ->where('cloakroom_id', $item->id)
+	            ->sum('paid_amount');
+
+	        $item->sh_paid_amount = $item->paid_amount + $bm_amount;
+
+	        $item->checkin_date_show = $item->checkin_date
+	            ? date('d M, h:i A', strtotime($item->checkin_date))
+	            : '';
+
+	        $item->checkout_date_show = $item->checkout_date
+	            ? date('d M, h:i A', strtotime($item->checkout_date))
+	            : '';
+
+	        $item->str_checkout_time = $item->checkout_date
+	            ? strtotime($item->checkout_date)
+	            : 0;
+	    }
+
+	    // Excel export: export all matching records
+	    if ($is_export && $l_entries->count() > 0) {
+	        include(app_path() . '/Excel/export_entries.php');
+
+	        $data['excel_link'] = url('temp/' . $filename);
+	    }
+
+	    // Rate list
+	    $rate_list = DB::table('cloakroom_rate_list')
+	        ->where('client_id', $client_id)
+	        ->first();
+
+	    $data['success'] = true;
+	    $data['l_entries'] = $l_entries;
+	    $data['pay_types'] = Entry::payTypes();
+	    $data['rate_list'] = $rate_list;
+	    $data['days'] = Entry::days();
+	    $data['show_pay_types'] = Entry::showPayTypes();
+
+	    // Pagination information
+	    $data['page_no'] = $page_no;
+	    $data['per_page'] = $max_per_page;
+	    $data['total_entries'] = $total_entries;
+	    $data['total_pages'] = (int) ceil($total_entries / $max_per_page);
+
+	    // Users
+	    $data['users'] = User::where('active', 1)
+	        ->where('client_id', $client_id)
+	        ->where('priv', 3)
+	        ->pluck('name', 'id')
+	        ->toArray();
+
+	    return response()->json($data, 200);
+	}
+	public function initRoomOld(Request $request, $type = 0){
 	    ini_set('max_execution_time', 300);
 	    ini_set('memory_limit', '512M');
 

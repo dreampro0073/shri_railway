@@ -63,8 +63,17 @@
                         <button type="button" class="profile-dropdown__button d-flex align-items-center justify-content-between p-10 w-100 overflow-hidden bg-neutral-50 radius-12 "  data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
                             <span class="d-flex align-items-start gap-10">
                                 <span class="profile-dropdown__contents">
-                                    <span class="h6 mb-0 text-md d-block text-primary-light">{{Auth::user()->name}}</span>
-                                 
+                                    
+                                    <!-- Desktop -->
+                                    <span class="h6 mb-0 text-md d-block text-primary-light profile-name-desktop">
+                                        {{ Auth::user()->name }}
+                                    </span>
+
+                                    <!-- Mobile -->
+                                    <span class="h6 mb-0 text-md d-block text-primary-light profile-name-mobile">
+                                        {{ strtoupper(substr(Auth::user()->name, 0, 2)) }}
+                                    </span>
+
                                 </span>
                             </span>
                             <span class="profile-dropdown__icon pe-8 text-xl d-flex line-height-1">

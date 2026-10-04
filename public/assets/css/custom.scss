@@ -492,3 +492,16 @@ input[type="file"] {
         justify-content: center;
     }
 }
+.profile-name-mobile {
+    display: none !important;
+}
+
+@media (max-width: 767px) {
+    .profile-name-desktop {
+        display: none !important;
+    }
+
+    .profile-name-mobile {
+        display: block !important;
+    }
+}

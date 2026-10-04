@@ -372,8 +372,7 @@ input[type="file"] {
 
 .cloak-page-btn:disabled {
   opacity: 0.4;
-  cursor: not-allowed;
-  background: #f8fafc; }
+  cursor: not-allowed; }
 
 .cloak-page-label {
   padding: 0 8px;

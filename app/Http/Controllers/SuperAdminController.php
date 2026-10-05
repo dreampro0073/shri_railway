@@ -180,6 +180,7 @@ class SuperAdminController extends Controller {
 				$password = User::getRandPassword();
                 $user->password = Hash::make($password);
                 $user->password_check = $password;
+                $user->priv = 2;
 				$user->save();
 				$user->perent_user_id = $user->id;
 				$user->save();

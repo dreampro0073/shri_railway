@@ -180,14 +180,15 @@
                     <i class="ri-24-hours-fill"></i><span>Shift Status</span>
                 </a>
             </li>
-            @if(Auth::user()->priv == 2)
-                <li class="@if(isset($sidebar)) @if($sidebar == 'users') active @endif @endif">
-                    <a href="{{url('/admin/users')}}">
-                        <i class="ri-group-line"></i><span>Users</span>
-                    </a>
-                </li>
-            @endif
+            
      
+        @endif
+        @if(Auth::user()->priv == 2)
+            <li class="@if(isset($sidebar)) @if($sidebar == 'users') active @endif @endif">
+                <a href="{{url('/admin/users')}}">
+                    <i class="ri-group-line"></i><span>Users</span>
+                </a>
+            </li>
         @endif
         @if(Auth::user()->priv == 5 && Auth::user()->org_id == 1 && Auth::user()->is_super == 1)
             <li class="@if(isset($sidebar)) @if($sidebar == 'set_amount') active @endif @endif">

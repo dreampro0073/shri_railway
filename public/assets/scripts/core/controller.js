@@ -2220,7 +2220,7 @@ app.controller('sittingCollectCtrl', function($scope , $http, $timeout , DBServi
     
 });
 
-app.controller('entryRoomCtrl', function($scope , $http, $timeout , DBService,$interval) {
+app.controller('entryRoomCtrlOld', function($scope , $http, $timeout , DBService,$interval) {
     $scope.type = 0;
     $scope.loading = false;
     $scope.formData = {
@@ -2627,6 +2627,428 @@ app.controller('entryRoomCtrl', function($scope , $http, $timeout , DBService,$i
             $interval.cancel(intervalPromise);
         }
     });
+});
+
+app.controller('entryRoomCtrl', function($scope , $http, $timeout , DBService,$interval) {
+    $scope.type = 0;
+    $scope.client_id = 0;
+    $scope.isManualClient = function(){ return [18,19].indexOf(parseInt($scope.client_id,10)) !== -1; };
+    $scope.manualPaidAmount = function(){ if (!$scope.isManualClient() || $scope.entry_id != 0) return; var amount = Number($scope.formData.paid_amount || 0); $scope.formData.total_amount = amount; $scope.formData.balance_amount = 0; $scope.total_amount = amount; };
+    $scope.manualEditBalance = function(){ if (!$scope.isManualClient() || $scope.entry_id == 0) return; $scope.formData.total_amount = Number($scope.formData.paid_amount || 0) + Number($scope.formData.balance_amount || 0); $scope.total_amount = $scope.formData.total_amount; };
+    $scope.loading = false;
+    $scope.formData = {
+        name:'',
+        mobile_no:"",
+        paid_amount:0,
+        no_of_day:'',
+        locker_id:'',
+        discount_amount:0,
+        is_discount:-1,
+        otp:'',
+        hours_occ:'',
+    };
+    $discount_verified = false;
+    $scope.filter = {};
+
+    $scope.entry_id = 0;
+
+    $scope.check_shift = "";
+    $scope.pay_types = [];
+    $scope.avail_pods = [];
+    $scope.avail_cabins = [];
+    $scope.avail_beds = [];
+    $scope.hours = [];
+
+    $scope.sl_pods = [];
+    $scope.sl_cabins = [];
+    $scope.sl_beds = [];
+    $scope.total_amount = 0;
+    $scope.paid_amount = 0;
+    $scope.balance_amount = 0;
+    $scope.otp_verified = false;
+    $scope.otp_send = false;
+    $scope.old_hr = 0;
+   
+    $scope.resendOtp = () => {
+        $scope.otp_send = false;
+        $scope.sendOtp();
+    }
+    $scope.sendOtp = () => {
+        DBService.postCall({mobile:$scope.formData.mobile_no}, '/api/rooms/send-otp').then((data) => {
+            if (data.success) {
+               $scope.otp_send = true;
+               alert("Otp Send to the mobile number");
+            }
+        });
+    }
+    $scope.verifyOtp = function () {
+        if ($scope.formData.otp && $scope.formData.otp.toString().length === 4) {
+            console.log("Hello1111"+$scope.formData.otp);
+            DBService.postCall({mobile:$scope.formData.mobile_no,otp:$scope.formData.otp}, '/api/rooms/verify-otp').then((data) => {
+                if (data.success) {
+                   $scope.otp_send = false;
+                   $scope.otp_verified = true;
+                   $scope.formData.otp = '';
+                }else{
+                    alert(data.message);
+                }
+            });
+        }
+    };
+    $scope.resetOtp = () => {
+        $scope.formData.discount_amount = 0;
+        $scope.otp_send = false;
+        $scope.otp_verified = false;
+        $scope.formData.otp = '';
+    }
+    $scope.init = function () {
+        DBService.postCall($scope.filter, '/api/rooms/init/'+$scope.type).then((data) => {
+            if (data.success) {
+                $scope.pay_types = data.pay_types;
+                $scope.entries = data.entries;
+                $scope.avail_pods = data.avail_pods;
+                $scope.avail_cabins = data.avail_cabins;
+                $scope.avail_beds = data.avail_beds;
+                $scope.hours = data.hours;
+                $scope.updateCheckoutClass();
+            }
+        });
+    }
+    $scope.filterClear = function(){
+        $scope.filter = {};
+        $scope.init();
+    }
+
+    $scope.edit = function(entry_id){
+        $scope.entry_id = entry_id;
+        $scope.sl_pods = [];
+        $scope.sl_cabins = [];
+        $scope.sl_beds = [];
+        DBService.postCall({entry_id : $scope.entry_id}, '/api/rooms/edit-init').then((data) => {
+            if (data.success) {
+                console.log(data.l_entry.discount_amount+'hhhhh');
+                $scope.formData = data.l_entry;
+                if ($scope.isManualClient()) { $scope.formData.balance_amount = 0; $scope.manualEditBalance(); }
+                $scope.total_amount = data.l_entry.total_amount;
+
+                $scope.old_hr = data.l_entry.hours_occ;
+
+                $scope.sl_pods = data.sl_pods;
+                $scope.sl_cabins = data.sl_cabins;
+                $scope.sl_beds = data.sl_beds;
+                $("#exampleModalCenter").modal("show");
+            }
+            
+        });
+    }    
+
+    $scope.checkoutLoker = function(entry_id, freePenalty){
+        $scope.entry_id = entry_id;
+        alert(freePenalty);
+        
+        if(confirm("Are you sure?") == true){
+            DBService.postCall({entry_id : $scope.entry_id, freePenalty: freePenalty}, '/api/rooms/checkout-init').then((data) => {
+                if (data.timeOut) {
+                    $scope.formData = data.l_entry;
+                    
+                    $("#checkoutModal").modal("show");
+                }else{
+                    $scope.init(); 
+                }
+                
+            });
+        }
+    }
+
+    $scope.add = function(){
+        $scope.entry_id = 0;
+        $scope.sl_pods = [];
+        $scope.sl_cabins = [];
+        $scope.sl_beds = [];
+        $scope.otp_verified = false;
+        $scope.formData = {
+            name:'',
+            mobile:"",
+            paid_amount:0,
+            total_amount:0,
+            balance_amount:0,
+            hours_occ:'',
+            discount_amount:0,
+            otp:'',
+            
+        };
+        $("#exampleModalCenter").modal("show");    
+    }
+
+    $scope.hideModal = () => {
+        $("#exampleModalCenter").modal("hide");
+        $("#checkoutModal").modal("hide");
+        $("#checkinModal").modal("hide");
+        $scope.entry_id = 0;
+        $scope.formData = {
+            name:'',
+            mobile:"",
+            paid_amount:0,
+            total_amount:0,
+            balance_amount:0,
+            hours_occ:'',
+            discount_amount:0,
+            otp:'',
+            
+        };
+        $scope.otp_verified = false;
+        $scope.otp_send = false;
+        $scope.sl_pods = [];
+        $scope.sl_beds = [];
+        $scope.sl_cabins = [];
+
+        $scope.old_hr = 0;
+    }
+
+    $scope.onSubmit = function () {
+        if ($scope.isManualClient()) { var amount = $scope.entry_id == 0 ? $scope.formData.paid_amount : $scope.formData.balance_amount; if (amount === undefined || amount === null || amount === '' || !isFinite(Number(amount)) || Number(amount) < 0) { alert('Please enter a valid amount'); return; } if ($scope.entry_id == 0) $scope.manualPaidAmount(); else $scope.manualEditBalance(); }
+        if($scope.formData.discount_amount > $scope.formData.total_amount){
+            alert("Discount Amount shoud be less then the total amount");
+            return;
+        }
+        if($scope.formData.online_booking && $scope.formData.online_booking == 1){
+            $scope.formData.type = $scope.formData.type;
+        }else{
+            $scope.formData.type= $scope.type;
+        }
+       
+        if($scope.formData.type == 1 && $scope.sl_pods.length == 0 ){
+            alert('Please select at least one pods');
+            return;
+        }
+
+        if($scope.formData.type == 2 && $scope.sl_cabins.length == 0 ){
+            alert('Please select at least one single cabins');
+            return;
+        }
+
+        if($scope.formData.type == 3 && $scope.sl_beds.length == 0 ){
+            alert('Please select at least one double bed');
+            return;
+        }
+
+        $scope.loading = true;
+
+        if($scope.formData.type == 1){
+            $scope.formData.sl_pods = $scope.sl_pods;
+        }
+        if($scope.formData.type == 2){
+            $scope.formData.sl_cabins = $scope.sl_cabins;
+        }
+        if($scope.formData.type == 3){
+            $scope.formData.sl_beds = $scope.sl_beds;
+        }
+
+        DBService.postCall($scope.formData, '/api/rooms/store/'+$scope.formData.type).then((data) => {
+            if (data.success) {
+                $scope.loading = false;
+
+                $("#exampleModalCenter").modal("hide");
+                $scope.hideModal();
+                $scope.entry_id = 0;
+                $scope.formData = {
+                    name:'',
+                    paid_amount:0,
+                    total_amount:0,
+                    balance_amount:0,
+                    hours_occ:'',
+                    discount_amount:0,
+                    otp:'',
+                    mobile_no:'',
+                    
+                };
+                $scope.sl_pods = [];
+                $scope.sl_beds = [];
+                $scope.sl_cabins = [];
+                $scope.init();
+                setTimeout(function(){
+                    window.open(base_url+'/admin/rooms/print/'+data.id,'_blank');
+                }, 800);
+
+            }
+            $scope.loading = false;
+        });
+    }
+    $scope.onCheckOut = function () {
+        $scope.loading = true;
+        DBService.postCall($scope.formData, '/api/rooms/checkout-store').then((data) => {
+            if (data.success) {
+                $("#checkoutModal").modal("hide");
+                $scope.entry_id = 0;
+                $scope.formData = {
+                    name:'',
+                    mobile:"",
+                    total_amount:0,
+                    paid_amount:0,
+                    balance_amount:0,
+                    hours_occ:0,
+                    check_in:'',
+                    check_out:'',
+                    discount_amount:0,
+                };
+                $scope.init();
+                setTimeout(function(){
+                    window.open(base_url+'/admin/rooms/print/'+data.entry_id,'_blank');
+                }, 800);
+            }
+            $scope.loading = false;
+        });
+    }
+
+
+    $scope.markCheckin = function(entry_id){
+        $scope.entry_id = entry_id;
+        $scope.sl_pods = [];
+        $scope.sl_cabins = [];
+        $scope.sl_beds = [];
+        DBService.postCall({entry_id : $scope.entry_id}, '/api/rooms/check-init').then((data) => {
+            if (data.success) {
+                $scope.formData = data.l_entry;
+                $scope.total_amount = data.l_entry.total_amount;
+                $scope.formData.type = $scope.formData.type;
+               
+                $scope.old_hr = data.l_entry.hours_occ;
+
+                $scope.sl_pods = data.sl_pods;
+                $scope.sl_cabins = data.sl_cabins;
+                $scope.sl_beds = data.sl_beds;
+
+                $("#checkinModal").modal("show");
+            }
+            
+        });
+    }  
+
+    $scope.deleteBooking = function(entry_id){
+
+        $scope.entry_id = entry_id;
+      
+        DBService.postCall({entry_id : $scope.entry_id}, '/api/rooms/delete-room-entery').then((data) => {
+            if (data.success) {
+                $scope.init();
+            }
+            
+        });
+    }  
+
+    $scope.changeAmount = function() {
+        if ($scope.isManualClient()) { if ($scope.entry_id == 0) $scope.manualPaidAmount(); else $scope.manualEditBalance(); return; }
+        console.log("helloooooo");
+        if ($scope.type == 1) {
+            quantity = $scope.sl_pods.length;
+        } else if ($scope.type == 2) {
+            quantity = $scope.sl_cabins.length;
+        } else if ($scope.type == 3) {
+            quantity = $scope.sl_beds.length;
+        }   
+
+        var sendObj = {
+            type: $scope.type,
+            quantity: quantity,
+            hours_occ: $scope.formData.hours_occ,
+            entry_id: $scope.entry_id,
+            discount_amount: $scope.formData.discount_amount || 0,
+            paid_amount: $scope.formData.paid_amount || 0
+        };
+        DBService.postCall(sendObj, '/api/rooms/calculate-room-amount').then((data) => {
+            if (data.success) {
+                $scope.total_amount = data.total_amount;
+                $scope.formData.total_amount = data.total_amount;
+                $scope.formData.paid_amount = data.paid_amount;
+                $scope.formData.balance_amount = data.balance_amount;
+                $scope.balance_amount = data.balance_amount;
+            }
+            
+        });
+    };
+
+    $scope.delete = function (id) {
+        if(confirm("Are you sure?") == true){
+            DBService.getCall('/api/rooms/delete/'+id).then((data) => {
+                alert(data.message);
+                $scope.init();
+            });
+        }
+    }
+
+    $scope.toggleSelection = (array, id) => {
+        let index = array.indexOf(id);
+        if (index === -1) {
+            array.push(id);
+        } else {
+            array.splice(index, 1);
+        }
+        $scope.changeAmount();
+    };
+
+
+    $scope.insPods = (pod_id) => {
+        if ( $scope.formData.id && $scope.formData.online_booking == 1 && $scope.sl_pods.length >= parseInt($scope.formData.no_of_rooms) && !$scope.sl_pods.includes(pod_id)) { 
+            return;
+        }
+        $scope.toggleSelection($scope.sl_pods, pod_id);
+    };
+    $scope.insCabins = (cabin_id) => {
+        $scope.toggleSelection($scope.sl_cabins, cabin_id);
+    };
+
+    $scope.insBeds = (bed_id) => {
+        $scope.toggleSelection($scope.sl_beds, bed_id);
+    };
+
+    $scope.disAmount = () => {
+        if($scope.formData.total_amount < $scope.formData.discount_amount){
+            return;
+        }
+        if($scope.formData.discount_amount > 0 && $scope.formData.total_amount > 0){
+            if($scope.entry_id == 0){
+                $scope.formData.paid_amount = $scope.total_amount - $scope.formData.discount_amount;
+            }else{
+                var str_data = (parseInt($scope.formData.paid_amount) + parseInt($scope.formData.discount_amount));
+                
+                $scope.formData.balance_amount = $scope.total_amount - str_data;
+            }
+            
+        }
+    }
+
+    $scope.updateCheckoutClass = function(){
+        const milliseconds = new Date().getTime();
+        const unixTimestamp = Math.floor(milliseconds / 1000);
+        for (var i = 0; i < $scope.entries.length; i++) {
+            $scope.entries[i].check_class = "";
+            if($scope.entries[i].checkout_status == 0){
+                if(unixTimestamp > $scope.entries[i].str_checkout_time){
+                    $scope.entries[i].check_class = "t-danger";
+                } else {
+                    if((unixTimestamp+1200) > $scope.entries[i].str_checkout_time){
+                        $scope.entries[i].check_class = "t-warning";
+                    } else {
+                        $scope.entries[i].check_class = "t-info";
+                    }
+                }
+            }
+
+        }
+    }
+
+    var intervalPromise = $interval($scope.updateCheckoutClass, 12000);
+    $scope.$on('$destroy', function() {
+        if (intervalPromise) {
+            $interval.cancel(intervalPromise);
+        }
+    });
+
+    $scope.updateCheckoutTotal = function() {
+        var paid = parseFloat($scope.formData.paid_amount) || 0;
+        var collect = parseFloat($scope.formData.collect_amount) || 0;
+        $scope.formData.total_balance = paid + collect;
+    };
 });
 
 app.controller('allRoomEntryCtrl', function($scope , $http, $timeout , DBService) {

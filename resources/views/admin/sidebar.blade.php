@@ -39,7 +39,7 @@
                         <i class="ri-insert-row-top"></i><span>PODs</span>
                     </a>
                 </li>
-                @if(Auth::user()->client_id != 18)
+                @if(!in_array(Auth::user()->client_id,[18,19]))
                 <li class="@if(isset($sidebar)) @if($sidebar == 'scabins') active @endif @endif">
                     <a href="{{url('/admin/rooms/2')}}">
                         <i class="ri-hotel-bed-fill"></i><span>Single Suit Cabin</span>

@@ -165,38 +165,30 @@ class ShiftController extends Controller {
 	    // }
 
 	    if(in_array(8, $service_ids)){
-		    $pod_data = Room::totalShiftData(1,$input_date,$user_id,$client_id,false);
-		    $singal_cabin_data = Room::totalShiftData(2,$input_date,$user_id,$client_id,false);
-		    $double_bed_data = Room::totalShiftData(3,$input_date,$user_id,$client_id,false);
+		    $client_room_types = [18 => [1], 19 => [1]];
+		    $allowed_types = $client_room_types[$client_id] ?? [1,2,3];
+
+		    $room_data = [];
+
+		    foreach($allowed_types as $room_type){
+		        $room_data[$room_type] = Room::totalShiftData($room_type,$input_date,$user_id,$client_id,false);
+		    }
 
 		    if(in_array(Auth::user()->priv, [2,5])){
 		        $hide_amount = Entry::hideAmount($client_id,$input_date);
 
-		        $deduction = min($pod_data['total_shift_cash'],$hide_amount);
-		        $pod_data['total_shift_cash'] -= $deduction;
-		        $hide_amount -= $deduction;
-
-		        $deduction = min($singal_cabin_data['total_shift_cash'],$hide_amount);
-		        $singal_cabin_data['total_shift_cash'] -= $deduction;
-		        $hide_amount -= $deduction;
-
-		        $deduction = min($double_bed_data['total_shift_cash'],$hide_amount);
-		        $double_bed_data['total_shift_cash'] -= $deduction;
-		        $hide_amount -= $deduction;
-
-		        $pod_data['total_collection'] = $pod_data['total_shift_upi'] + $pod_data['total_shift_cash'];
-		        $singal_cabin_data['total_collection'] = $singal_cabin_data['total_shift_upi'] + $singal_cabin_data['total_shift_cash'];
-		        $double_bed_data['total_collection'] = $double_bed_data['total_shift_upi'] + $double_bed_data['total_shift_cash'];
+		        foreach($allowed_types as $room_type){
+		            $deduction = min($room_data[$room_type]['total_shift_cash'],$hide_amount);
+		            $room_data[$room_type]['total_shift_cash'] -= $deduction;
+		            $hide_amount -= $deduction;
+		            $room_data[$room_type]['total_collection'] = $room_data[$room_type]['total_shift_upi'] + $room_data[$room_type]['total_shift_cash'];
+		        }
 		    }
 
-		    $data = $this->calculateAmount($pod_data,$data);
-		    $data_rows[] = $pod_data;
-
-		    $data = $this->calculateAmount($singal_cabin_data,$data);
-		    $data_rows[] = $singal_cabin_data;
-
-		    $data = $this->calculateAmount($double_bed_data,$data);
-		    $data_rows[] = $double_bed_data;
+		    foreach($allowed_types as $room_type){
+		        $data = $this->calculateAmount($room_data[$room_type],$data);
+		        $data_rows[] = $room_data[$room_type];
+		    }
 		}
 
 	    if(in_array(9, $service_ids)){

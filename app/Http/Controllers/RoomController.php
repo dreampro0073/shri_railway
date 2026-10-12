@@ -313,27 +313,26 @@ class RoomController extends Controller {
 			$total_amount = $request->total_amount;
 			$paid_amount = $request->paid_amount;
 			$balance_amount = $request->balance_amount;
+            if (in_array((int) $client_id, [18,19])) { $request->validate(['paid_amount' => 'required|numeric|min:0', 'balance_amount' => 'nullable|numeric|min:0']); if (!$request->id) { $paid_amount = (float) $request->paid_amount; $balance_amount = 0; } $total_amount = (float) $request->paid_amount + (float) $balance_amount; }
 			if($request->id){
-				$entry = Room::find($request->id);
-				$message = "Updated Successfully!";
-				if($user_id != $entry->added_by){
-					DB::table('room_e_entries')->insert([
-						'entry_id' => $entry->id,
-						'added_by' => $user_id,
-						'client_id' => $client_id,
-						'date' => $date,
-						'pay_type' => $request->pay_type,
-						'type' => $type,
-						'shift' => $check_shift,
-						'paid_amount' => $request->balance_amount,
-						'created_at' => date("Y-m-d H:i:s"),
-						'current_time' => date("H:i:s"),
-					]);
-				}else{
-					$paid_amount = $paid_amount + $balance_amount;
-					$entry->paid_amount = $paid_amount;
-				}
-			} else {
+			    $entry = Room::where('id', $request->id)->where('client_id', $client_id)->firstOrFail();
+			    $message = "Updated Successfully!";
+
+			    if((float) $balance_amount > 0){
+			        DB::table('room_e_entries')->insert([
+			            'entry_id' => $entry->id,
+			            'added_by' => $user_id,
+			            'client_id' => $client_id,
+			            'date' => $date,
+			            'pay_type' => $request->pay_type,
+			            'type' => $type,
+			            'shift' => $check_shift,
+			            'paid_amount' => $balance_amount,
+			            'created_at' => date("Y-m-d H:i:s"),
+			            'current_time' => date("H:i:s"),
+			        ]);
+			    }
+			}else {
 				$entry = new Room;
 				$message = "Stored Successfully!";
 				$entry->unique_id = strtotime('now');
@@ -575,7 +574,7 @@ class RoomController extends Controller {
 
     public function checkoutInit(Request $request){
 
-    	$now_time = strtotime(date("Y-m-d H:i:s",strtotime("+10 minutes")));
+    	$now_time = in_array((int) Auth::user()->client_id, [18,19]) ? time() : strtotime(date("Y-m-d H:i:s",strtotime("+10 minutes")));
     	$l_entry = Room::where('id', $request->entry_id)->first();
     	$checkout_time = strtotime($l_entry->checkout_date);
 
@@ -607,15 +606,19 @@ class RoomController extends Controller {
 			$l_entry->pnr_uid = $l_entry->pnr_uid;
 			$l_entry->paid_amount = $l_entry->paid_amount*1;
 
+			$extra_paid = DB::table('room_e_entries')->where('entry_id', $l_entry->id)->where('client_id', $l_entry->client_id)->where('status', 0)->sum('paid_amount');
+			$l_entry->paid_amount = (float) $l_entry->paid_amount + (float) $extra_paid;
+
 			$l_entry->check_in = date("H:i A",strtotime($l_entry->check_in));
 			$l_entry->check_out = date("H:i A",strtotime($l_entry->check_out));
 
 
-			$balance = Room::getAmount($l_entry->type,$hour,sizeof($e_ids));
+			$balance = in_array((int) Auth::user()->client_id, [18,19]) ? 0 : Room::getAmount($l_entry->type,$hour,sizeof($e_ids));
 			// dd($balance);
 			$l_entry->balance = $balance;
 			$l_entry->collect_amount = $balance;
-			$l_entry->total_balance = $l_entry->paid_amount+$l_entry->balance;
+			// $l_entry->total_balance = $l_entry->paid_amount+$l_entry->balance;
+			$l_entry->total_balance = (float) $l_entry->paid_amount + (float) $l_entry->collect_amount;
 			$l_entry->hour = $hour;
 			$data['l_entry'] = $l_entry;
 			$data['success'] = true;
@@ -714,7 +717,8 @@ class RoomController extends Controller {
 	    $paidAmount = (float) ($request->paid_amount ?? 0);
 	    $entryId = (int) ($request->entry_id ?? 0);
 
-	    $totalAmount = Room::getAmount($type, $hours, $quantity);
+	    if (in_array((int) Auth::user()->client_id, [18,19])) { $amount = $entryId == 0 ? max(0, $paidAmount) : max(0, $paidAmount + (float) ($request->balance_amount ?? 0)); return Response::json(['success'=>true,'total_amount'=>$amount,'paid_amount'=>$paidAmount,'balance_amount'=>$entryId == 0 ? 0 : (float) ($request->balance_amount ?? 0),'rate'=>0],200,[]); }
+        $totalAmount = Room::getAmount($type, $hours, $quantity);
 	    $rate = $quantity > 0 ? $totalAmount / $quantity : 0;
 	    if ($entryId == 0) {
 	        $paidAmount = $totalAmount - $discount;
@@ -722,6 +726,14 @@ class RoomController extends Controller {
 	    } else {
 	        $balanceAmount = $totalAmount - ($paidAmount + $discount);
 	    }
+
+	    // if(!in_array(Auth::user()->client_id,[18,19])){
+	    // 	$totalAmount
+	    //     $paidAmount,
+	    //     $balanceAmount,
+	    //     $rate,
+	    // }
+
 
 	    return Response::json([
 	        'success' => true,

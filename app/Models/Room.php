@@ -87,10 +87,8 @@ class Room extends Model
 
     public static function hours(){
         $ar = [];
-        $ar[] = ['value'=>6,'label'=>6];
-        $ar[] = ['value'=>12,'label'=>12];
-        $ar[] = ['value'=>24,'label'=>24];
-        
+        $values = in_array((int) Auth::user()->client_id, [18,19]) ? [4,8,12,24] : [6,12,24];
+        foreach ($values as $value) { $ar[] = ['value'=>$value,'label'=>$value]; }
         return $ar;
     }
     public static function types(){

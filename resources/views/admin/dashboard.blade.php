@@ -191,7 +191,7 @@
 
     @if(in_array(8, $service_ids))
     <div class="row">
-
+        @if(!in_array(Auth::user()->client_id,[18,19]))
         <div class="col-md-4">
             <a class="no-dec" href="{{url('/admin/rooms/3')}}">
                 <div class="card shadow-2 radius-8 gradient-bg-end-2 h-100">
@@ -225,6 +225,7 @@
             </a> 
             
         </div>
+        @endif
         <div class="col-md-4">
             <a class="no-dec" href="{{url('/admin/rooms/1')}}">
                 <div class="card shadow-2 radius-8 gradient-bg-end-4 h-100">
@@ -241,8 +242,7 @@
             </a> 
             
         </div> 
-    </div>	
-    <div class="row mt-3">
+        @if(!in_array(Auth::user()->client_id,[18,19]))
         <div class="col-md-4">
             <a class="no-dec" href="{{url('/admin/rooms/3')}}">
                 <div class="card shadow-2 radius-8 gradient-bg-end-1 h-100">
@@ -275,6 +275,7 @@
             </a> 
             
         </div> 
+        @endif
         <div class="col-md-4">
             <a class="no-dec" href="{{url('/admin/rooms/1')}}">
                 <div class="card shadow-2 radius-8 gradient-bg-end-4 h-100">
@@ -290,7 +291,8 @@
                 </div>
             </a>
         </div> 
-    </div>
+    </div>	
+   
     @endif
 </div>
 @endsection

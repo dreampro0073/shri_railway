@@ -48,6 +48,7 @@ $ar_names = array(
     "Date",
     "From Date",
     "To Date",
+    "Checkout Date",
     "Name",
     "Mobile",
     "NO of Day",
@@ -61,6 +62,7 @@ $ar_fields = array(
     "date",
     "checkin_date",
     "checkout_date",
+    "checkout_time",
     "name",
     "mobile_no",
     "no_of_day",
@@ -78,7 +80,9 @@ $ar_width = array(
     "20",
     "20",
     "20",
+    "20",
     "20"
+
 );
 
 $seq = 1;
@@ -148,7 +152,7 @@ foreach ($l_entries as $row) {
                 ? date("d-m-Y", strtotime($row->{$ar}))
                 : "";
 
-        } elseif ($ar == 'checkin_date' || $ar == 'checkout_date') {
+        } elseif ($ar == 'checkin_date' || $ar == 'checkout_date' || $ar == 'checkout_time') {
 
             $var = isset($row->{$ar}) && !empty($row->{$ar})
                 ? date("d-m-Y h:i A", strtotime($row->{$ar}))

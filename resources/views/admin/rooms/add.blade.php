@@ -264,7 +264,7 @@
                         </div>
 
                         <!-- DISCOUNT -->
-
+                        @if(!in_array(Auth::user()->client_id,[18,19]))
                         <div class="col-md-3 form-group"
                             ng-if="!otp_verified && entry_id == 0">
 
@@ -309,12 +309,12 @@
                         </div>
 
                         <!-- PAID -->
+                        @endif
 
                         <div class="col-md-3 form-group">
                             <label>Paid Amount</label>
 
-                            <input type="number" ng-model="formData.paid_amount"
-                                class="form-control" readonly />
+                            <input type="number" ng-model="formData.paid_amount" ng-change="manualPaidAmount()" class="form-control" min="0" step="0.01" ng-readonly="entry_id != 0 || !isManualClient()" />
                         </div>
 
                         <!-- BALANCE -->
@@ -322,8 +322,7 @@
                         <div ng-if="entry_id !=0" class="col-md-3 form-group">
                             <label>Balance Amount</label>
 
-                            <input type="number" ng-model="formData.balance_amount"
-                                class="form-control" readonly />
+                            <input type="number" ng-model="formData.balance_amount" ng-change="manualEditBalance()" class="form-control" min="0" step="0.01" ng-readonly="!isManualClient()" />
                         </div>
 
                         <!-- REMARKS -->
@@ -513,8 +512,7 @@
                         <div class="col-md-4 form-group">
                             <label>Collect Amount</label>
 
-                            <input type="number" ng-model="formData.collect_amount"
-                                class="form-control" min="0" />
+                            <input type="number" ng-model="formData.collect_amount" ng-change="updateCheckoutTotal()" class="form-control" min="0" step="0.01" />
                         </div>
 
                         <div class="col-md-8 form-group">

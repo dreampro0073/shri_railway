@@ -1,7 +1,7 @@
 @extends('admin.layout')
 
 @section('main')
-    <div class="main" ng-controller="massageCtrl" ng-init="init();"> 
+    <div class="main" ng-controller="massageCtrl" ng-init="init();">
         @include('admin.massage.add')
         <div class="card shadow mb-4 p-4">
             

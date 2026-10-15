@@ -53,7 +53,7 @@
                         
                         <div class="col-md-4 form-group">
                             <label>Paid Amount</label>
-                            <input type="number" ng-model="formData.paid_amount" class="form-control" readonly />
+                            <input type="number" ng-model="formData.paid_amount" class="form-control" ng-disabled="rate_list.type != 3" required min=1 />
                         </div> 
                          <div class="col-md-4 form-group">
                             <label>Remarks</label>

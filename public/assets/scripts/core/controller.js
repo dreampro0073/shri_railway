@@ -740,13 +740,14 @@ app.controller('massageCtrl', function($scope , $http, $timeout , DBService) {
     }
 
     $scope.changeTime = function(){
-        
-        $scope.formData.paid_amount = 0;
-        if($scope.formData.time_period == 10){
-            $scope.formData.paid_amount = $scope.rate_list.first_rate*$scope.formData.no_of_person;
-        }
-        if($scope.formData.time_period == 20){
-            $scope.formData.paid_amount = $scope.rate_list.second_rate*$scope.formData.no_of_person;
+        if($scope.rate_list.type != 3){
+            $scope.formData.paid_amount = 0;
+            if($scope.formData.time_period == 10){
+                $scope.formData.paid_amount = $scope.rate_list.first_rate*$scope.formData.no_of_person;
+            }
+            if($scope.formData.time_period == 20){
+                $scope.formData.paid_amount = $scope.rate_list.second_rate*$scope.formData.no_of_person;
+            }
         }
     }
 
@@ -754,7 +755,6 @@ app.controller('massageCtrl', function($scope , $http, $timeout , DBService) {
         $scope.loading = true;
         DBService.postCall($scope.formData, '/api/massage/store').then((data) => {
             if (data.success) {
-
 
                 $("#massageModal").modal("hide");
                 $scope.entry_id = 0;

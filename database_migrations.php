@@ -384,4 +384,7 @@ FROM (
 // Devendra 27Sep 2026
 ALTER TABLE `cloakroom_entries` ADD `token_number` VARCHAR(255) NULL DEFAULT NULL AFTER `barcodevalue`;
 
+// Devendra 15Oct 2026
+ALTER TABLE `massage_rate_list` ADD `type` INT(1) NOT NULL DEFAULT '0' AFTER `second_rate`;
+
 ?>

@@ -113,11 +113,14 @@
                         </a>
                     </li>
                 @endif
-                <li class="@if(isset($sidebar)) @if($sidebar == 'export') active @endif @endif">
-                    <a href="{{url('/admin/cloak-rooms/export')}}">
-                        <i class="ri-file-excel-line"></i><span>Export Cloakroom</span>
-                    </a>
-                </li>
+                @if(!in_array(Auth::user()->client_id, [9]))
+                    <li class="@if(isset($sidebar) && $sidebar == 'export') active @endif">
+                        <a href="{{ url('/admin/cloak-rooms/export') }}">
+                            <i class="ri-file-excel-line"></i>
+                            <span>Export Cloakroom</span>
+                        </a>
+                    </li>
+                @endif
 
                 @if(false)
                 <li class="@if(isset($sidebar)) @if($sidebar == 'upload') active @endif @endif">

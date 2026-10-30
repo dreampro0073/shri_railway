@@ -8354,9 +8354,9 @@ td {
 }
 
 .btn-primary-600 {
-  background-color: var(--primary-600);
-  color: #fff;
-  border-color: var(--primary-600);
+  background-color: var(--primary-600) !important;
+  color: #fff !important;
+  border-color: var(--primary-600) !important;
 }
 
 .btn-primary-600:hover {

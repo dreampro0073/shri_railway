@@ -293,6 +293,37 @@ class ApiController extends Controller {
         $user = Auth::user();
         $client_id = $user->client_id;
 
+        $max_per_page = 100;
+        $page_no = max(1, (int) $request->input('page_no', 1));
+
+        $canteen_items = DB::table('canteen_items');
+        if($request->filled('item_name')){
+            $canteen_items = $canteen_items->where('item_name','LIKE','%'.$request->item_name.'%');
+        }
+
+        if($request->filled('barcodevalue_search')){
+            $canteen_items = $canteen_items->where('barcodevalue','LIKE','%'.$request->barcodevalue_search.'%');
+        }
+
+        $canteen_items = $canteen_items->where('client_id',$client_id);
+
+        $total_entries = (clone $canteen_items)->count('id');
+
+        $canteen_items = $canteen_items->orderBy('id','DESC')->skip(($page_no - 1) * $max_per_page)->take($max_per_page)->get();
+
+        $data["success"] = true;
+        $data["canteen_items"] = $canteen_items;
+        $data["page_no"] = $page_no;
+        $data["per_page"] = $max_per_page;
+        $data["total_entries"] = $total_entries;
+        $data["total_pages"] = (int) ceil($total_entries / $max_per_page);
+
+        return Response::json($data,200,array());
+    }
+    public function initCanteenItemsOld(Request $request){
+        $user = Auth::user();
+        $client_id = $user->client_id;
+
         $canteen_items = DB::table('canteen_items');
         if($request->has('item_name')){
             $canteen_items = $canteen_items->where('item_name','LIKE','%'.$request->item_name.'%');
@@ -326,6 +357,56 @@ class ApiController extends Controller {
         return Response::json($data,200,array());
     }
     public function storeCanteenItem(Request $request){
+        $user = Auth::user();
+        $client_id = $user->client_id;
+
+        $cre = [
+            'item_name'=>$request->item_name,
+            'item_short_name'=>$request->item_short_name,
+            'price'=>$request->price,
+            'barcodevalue'=>$request->barcodevalue,
+        ];
+
+        $rules = [
+            'item_name'=>'required',
+            'item_short_name'=>'required',
+            'price'=>'required',
+        ];
+
+        if($request->has('id')){
+            $rules['barcodevalue'] = 'nullable|unique:canteen_items,barcodevalue,'.$request->id.',id,client_id,'.$client_id;
+        }else{
+            $rules['barcodevalue'] = 'nullable|unique:canteen_items,barcodevalue,NULL,id,client_id,'.$client_id;
+        }
+
+        $validator = Validator::make($cre,$rules);
+
+        if($validator->passes()){
+
+            $canteen_item = CanteenItem::where('client_id',$client_id)->find($request->id);
+            $data['message'] = 'This item is updated successfully to the canteen';
+            if(!$canteen_item){
+                $canteen_item = new CanteenItem;
+                $data['message'] = 'This item is added successfully to the canteen';
+            }
+            $canteen_item->item_name = $request->item_name;
+            $canteen_item->item_short_name = $request->item_short_name;
+            $canteen_item->price = $request->price;
+            $canteen_item->added_by = $user->id;
+            $canteen_item->client_id = $client_id;
+            $canteen_item->barcodevalue = $request->barcodevalue ?: null;
+
+            $canteen_item->save();
+            $data['success'] = true;
+
+        } else {
+            $message = $validator->errors()->first();
+            $data['success'] = false;
+            $data['message'] = $message;
+        }
+        return Response::json($data, 200, []);
+    }
+    public function storeCanteenItemOld(Request $request){
         $user = Auth::user();
         $client_id = $user->client_id;
         
@@ -529,45 +610,89 @@ class ApiController extends Controller {
         return view('admin.daily_entries.index',compact('sidebar'));
     }
 
+    // public function initEntries(Request $request){
+    //     $user = Auth::user();
+    //     $client_id = $user->client_id;
+    //     $page_no = $request->page_no;
+    //     $date = $request->date;
+    //     $max_per_page = 10;
+
+    //     $entries = DailyEntry::select('daily_entries.*')->where('client_id',$user->client_id);
+    //     if($request->id){
+    //         $entries = $entries->where('daily_entries.id', $request->id);
+    //     }       
+    //     if($request->name){
+    //         $entries = $entries->where('daily_entries.name', 'LIKE', '%'.$request->name.'%');
+    //     }         
+    //     if($request->mobile){
+    //         $entries = $entries->where('daily_entries.mobile', 'LIKE', '%'.$request->mobile.'%');
+    //     }
+        
+    //     $entries = $entries->skip(($page_no-1)*$max_per_page)->take($max_per_page)->orderBy('id','DESC')->where('client_id',$user->client_id)->get();
+
+    //     foreach ($entries as $key => $entry) {
+    //         $entry->time = date("h:i a,d M",strtotime($entry->created_at));
+    //     }
+
+    //     $data['success'] = true;
+    //     $data['daily_entries'] = $entries;
+
+    //     // dd(Auth::user());
+
+    //     $canteen_items = DB::table('canteen_items')->select('id as canteen_item_id','price','item_name','barcodevalue')->where("stock", '>', 0)->where('client_id',$client_id)->get();
+
+    //     foreach ($canteen_items as $key => $canteen_item) {
+    //         $canteen_item->quantity  = 1;
+    //         $canteen_item->paid_amount = $canteen_item->price * $canteen_item->quantity; 
+    //     }
+
+    //     $data["canteen_items"] = $canteen_items;
+
+    //     return Response::json($data, 200, []);
+    // }
+
     public function initEntries(Request $request){
         $user = Auth::user();
         $client_id = $user->client_id;
-        $page_no = $request->page_no;
-        $date = $request->date;
-        $max_per_page = 10;
+        $max_per_page = 100;
+        $page_no = max(1, (int) $request->input('page_no', 1));
 
-        $entries = DailyEntry::select('daily_entries.*')->where('client_id',$user->client_id);
-        if($request->id){
-            $entries = $entries->where('daily_entries.id', $request->id);
-        }       
-        if($request->name){
-            $entries = $entries->where('daily_entries.name', 'LIKE', '%'.$request->name.'%');
-        }         
-        if($request->mobile){
-            $entries = $entries->where('daily_entries.mobile', 'LIKE', '%'.$request->mobile.'%');
+        $entries = DailyEntry::select('daily_entries.*')->where('client_id',$client_id);
+
+        if($request->filled('id')){
+            $entries = $entries->where('daily_entries.id',$request->id);
         }
-        
-        $entries = $entries->skip(($page_no-1)*$max_per_page)->take($max_per_page)->orderBy('id','DESC')->where('client_id',$user->client_id)->get();
+        if($request->filled('name')){
+            $entries = $entries->where('daily_entries.name','LIKE','%'.$request->name.'%');
+        }
+        if($request->filled('mobile')){
+            $entries = $entries->where('daily_entries.mobile','LIKE','%'.$request->mobile.'%');
+        }
 
-        foreach ($entries as $key => $entry) {
+        $total_entries = (clone $entries)->count('id');
+
+        $entries = $entries->orderBy('id','DESC')->skip(($page_no-1)*$max_per_page)->take($max_per_page)->get();
+
+        foreach($entries as $key => $entry){
             $entry->time = date("h:i a,d M",strtotime($entry->created_at));
+        }
+
+        $canteen_items = DB::table('canteen_items')->select('id as canteen_item_id','price','item_name','barcodevalue','stock')->where('stock','>',0)->where('client_id',$client_id)->orderBy('item_name','ASC')->get();
+
+        foreach($canteen_items as $key => $canteen_item){
+            $canteen_item->quantity = 1;
+            $canteen_item->paid_amount = $canteen_item->price;
         }
 
         $data['success'] = true;
         $data['daily_entries'] = $entries;
+        $data['canteen_items'] = $canteen_items;
+        $data['page_no'] = $page_no;
+        $data['per_page'] = $max_per_page;
+        $data['total_entries'] = $total_entries;
+        $data['total_pages'] = (int) ceil($total_entries / $max_per_page);
 
-        // dd(Auth::user());
-
-        $canteen_items = DB::table('canteen_items')->select('id as canteen_item_id','price','item_name','barcodevalue')->where("stock", '>', 0)->where('client_id',$client_id)->get();
-
-        foreach ($canteen_items as $key => $canteen_item) {
-            $canteen_item->quantity  = 1;
-            $canteen_item->paid_amount = $canteen_item->price * $canteen_item->quantity; 
-        }
-
-        $data["canteen_items"] = $canteen_items;
-
-        return Response::json($data, 200, []);
+        return Response::json($data,200,[]);
     }
     
     public function editEntry(Request $request){
@@ -606,6 +731,112 @@ class ApiController extends Controller {
 
     }
     public function store(Request $request){
+        $user = Auth::user();
+        $client_id = $user->client_id;
+        $name = $request->filled('name') ? $request->name : $user->name;
+
+        $validator = Validator::make($request->all(), [
+            'pay_type'=>'required|in:1,2',
+            'products'=>'required|array|min:1',
+            'products.*.canteen_item_id'=>'required|integer',
+            'products.*.quantity'=>'required|integer|min:1',
+        ]);
+
+        if($validator->fails()){
+            $data['success'] = false;
+            $data['message'] = $validator->errors()->first();
+            return Response::json($data,200,[]);
+        }
+
+        try{
+            $result = DB::transaction(function() use ($request,$user,$client_id,$name){
+
+                $items = $request->products;
+                $final_items = [];
+
+                foreach($items as $key => $item){
+                    $canteen_item_id = (int) $item['canteen_item_id'];
+                    $quantity = (int) $item['quantity'];
+
+                    if(!isset($final_items[$canteen_item_id])){
+                        $final_items[$canteen_item_id] = [
+                            'canteen_item_id'=>$canteen_item_id,
+                            'quantity'=>$quantity,
+                        ];
+                    }else{
+                        $final_items[$canteen_item_id]['quantity'] += $quantity;
+                    }
+                }
+
+                $total_amount = 0;
+
+                foreach($final_items as $key => $item){
+                    $check = DB::table('canteen_items')->where('id',$item['canteen_item_id'])->where('client_id',$client_id)->lockForUpdate()->first();
+
+                    if(!$check){
+                        throw new \Exception('Canteen item not found.');
+                    }
+
+                    if($check->stock < $item['quantity']){
+                        throw new \Exception('Insufficient stock for '.$check->item_name.'. Available stock: '.$check->stock);
+                    }
+
+                    $final_items[$key]['price'] = (float) $check->price;
+                    $final_items[$key]['paid_amount'] = round($check->price * $item['quantity'],2);
+                    $total_amount += $final_items[$key]['paid_amount'];
+                }
+
+                $total_amount = round($total_amount,2);
+                $unique_id = strtotime("now");
+
+                $ins_data = [
+                    'unique_id'=>$unique_id,
+                    'client_id'=>$client_id,
+                    'added_by'=>$user->id,
+                    'name'=>$name,
+                    'mobile'=>$request->has('mobile')?$request->mobile:null,
+                    'total_amount'=>$total_amount,
+                    'pay_type'=>$request->pay_type,
+                    'date'=>date('Y-m-d'),
+                    'check_in'=>date("H:i:s"),
+                    'created_at'=>date("Y-m-d H:i:s"),
+                ];
+
+                $entry_id = DB::table('daily_entries')->insertGetId($ins_data);
+
+                foreach($final_items as $key => $item){
+                    DB::table('daily_entry_items')->insert([
+                        'canteen_item_id'=>$item['canteen_item_id'],
+                        'entry_id'=>$entry_id,
+                        'client_id'=>$client_id,
+                        'paid_amount'=>$item['paid_amount'],
+                        'quantity'=>$item['quantity'],
+                        'created_at'=>date("Y-m-d H:i:s"),
+                    ]);
+
+                    DB::table('canteen_items')->where('id',$item['canteen_item_id'])->where('client_id',$client_id)->decrement('stock',$item['quantity']);
+                }
+
+                return [
+                    'entry_id'=>$entry_id,
+                    'unique_id'=>$unique_id,
+                ];
+            });
+
+            $data['success'] = true;
+            $data['unique_id'] = $result['unique_id'];
+            $data['billing_date'] = date("M d Y h:i:sA");
+            $data['entry_id'] = $result['entry_id'];
+            $data['message'] = "Item's detail is stored successfully!";
+
+        }catch(\Exception $e){
+            $data['success'] = false;
+            $data['message'] = $e->getMessage();
+        }
+
+        return Response::json($data,200,[]);
+    }
+    public function storeOld(Request $request){
         $user = Auth::user();
         $client_id = $user->client_id;
         $name = $user->name;

@@ -7,7 +7,7 @@
                 <div class="row">
                     <div class="col-md-3 form-group">
                         <label>Barcode</label>
-                        <input id="barcodevalue" autofocus type="text" ng-model="formData.barcodevalue" class="form-control" required />
+                        <input id="barcodevalue" autofocus type="text" ng-model="formData.barcodevalue" class="form-control" />
                     </div>
                     <div class="col-md-3 form-group">
                         <label>Item Name</label>
@@ -73,7 +73,51 @@
                     </div>
                 </form>
             </div>
-            <div class="dt-layout-row dt-layout-table">
+
+            <div class="cloak-pagination-wrapper" ng-if="total_entries > 0">
+
+                <div class="cloak-pagination-info">
+                    Showing
+                    <strong>
+                        @{{ ((filter.page_no - 1) * per_page) + 1 }}
+                    </strong>
+                    to
+                    <strong>
+                        @{{ ((filter.page_no - 1) * per_page) + canteen_items.length }}
+                    </strong>
+                    of
+                    <strong>@{{ total_entries }}</strong>
+                    records
+                </div>
+
+                <div class="cloak-pagination-controls">
+
+                    <button type="button" class="cloak-page-btn" ng-click="getData(-1)" ng-disabled="filter.page_no <= 1" title="Previous page">
+                        <i class="ri-arrow-left-s-line"></i>
+                        <span style="margin-left: 3px;">Previous</span>
+                    </button>
+
+                    <button type="button" class="cloak-page-btn active" disabled>
+                        @{{ filter.page_no }}
+                    </button>
+
+                    <span class="cloak-page-label">
+                        of @{{ total_pages }}
+                    </span>
+
+                    <button type="button" class="cloak-page-btn" ng-click="getData(1)" ng-disabled="filter.page_no >= total_pages" title="Next page">
+                        <span style="margin-right: 3px;">Next</span>
+                        <i class="ri-arrow-right-s-line"></i>
+                    </button>
+
+                </div>
+            </div>
+
+            <div class="alert alert-danger" ng-if="total_entries == 0">
+                <i class="ri-information-line"></i>
+                No records found!
+            </div>
+            <div ng-if="total_entries > 0" class="dt-layout-row dt-layout-table">
                 <div class="dt-layout-cell">
                     <table class="table table-bordered table-striped" >
                         <thead >
@@ -105,7 +149,7 @@
                             </tr>
                         </tbody>
                     </table>
-                    <div ng-if="canteen_items.length == 0" class="alert alert-danger">Data Not Found!</div>
+                    
                 </div>
             </div>  
            

@@ -1676,7 +1676,7 @@ app.controller('userCtrl', function($scope , $http, $timeout , DBService) {
     }
 });
 
-app.controller('canteenItemsCtrl', function($scope , $http, $timeout , DBService) {
+app.controller('canteenItemsCtrlOld', function($scope , $http, $timeout , DBService) {
     $scope.loading = false;
     $scope.formData = {
         item_name:'',
@@ -1820,7 +1820,179 @@ app.controller('canteenItemsCtrl', function($scope , $http, $timeout , DBService
     }
 });
 
-app.controller('dailyEntryCtrl', function($scope , $http, $timeout , DBService) {
+app.controller('canteenItemsCtrl', function($scope , $http, $timeout , DBService) {
+    $scope.loading = false;
+    $scope.formData = {
+        item_name:'',
+        item_short_name:'',
+        price:'',
+        barcodevalue:'',
+    };
+    $scope.stockData = {
+        stock:'',
+    };
+    $scope.filter = {
+        barcodevalue_search:'',
+        page_no:1,
+    };
+    $scope.total_entries = 0;
+    $scope.total_pages = 1;
+    $scope.per_page = 100;
+    $scope.canteen_item_id = 0;
+    $scope.canteen_item_stock_id = 0;
+    $scope.canteen_items = [];
+
+    $scope.init = function () {
+        DBService.postCall($scope.filter, '/api/canteen-items/init').then((data) => {
+            if(data.success){
+                $scope.canteen_items = data.canteen_items;
+                $scope.total_entries = data.total_entries || 0;
+                $scope.total_pages = data.total_pages || 1;
+                $scope.filter.page_no = data.page_no || 1;
+                $scope.per_page = data.per_page || 100;
+            }
+            $("#barcodevalue").focus();
+        });
+    }
+
+    $scope.getData = function (page) {
+        var nextPage = ($scope.filter.page_no || 1) + page;
+
+        if (nextPage < 1 || nextPage > $scope.total_pages) {
+            return;
+        }
+
+        $scope.filter.page_no = nextPage;
+        $scope.init();
+    };
+
+    $scope.searchData = function () {
+        $scope.filter.page_no = 1;
+        $scope.init();
+    };
+
+    $scope.filterClear = function(){
+        $scope.filter = {
+            barcodevalue_search:'',
+            page_no:1,
+        };
+        $scope.total_entries = 0;
+        $scope.total_pages = 1;
+        $scope.init();
+    }
+
+    $scope.edit = function(canteen_item_id){
+        $scope.canteen_item_id = canteen_item_id;
+        DBService.postCall({canteen_item_id : $scope.canteen_item_id}, '/api/canteen-items/edit').then((data) => {
+            if (data.success) {
+                $scope.formData = data.canteen_item;
+                $("#exampleModalCenter").modal("show");
+            }
+        });
+    }
+
+    $scope.hideModal = () => {
+        $("#exampleModalCenter").modal("hide");
+        $scope.canteen_item_id = 0;
+        $scope.formData = {
+            item_name:'',
+            item_short_name:'',
+            price:'',
+            barcodevalue:'',
+        };
+        $scope.init();
+    }
+
+    $scope.add = () => {
+        $scope.canteen_item_id = 0;
+        $scope.formData = {
+            item_name:'',
+            item_short_name:'',
+            price:'',
+            barcodevalue:'',
+        };
+        $("#barcodevalue").focus();
+        setTimeout(function() {
+            $("#exampleModalCenter").modal("show");
+        }, 300);
+    }
+
+    $scope.onSubmit = function () {
+        console.log($scope.formData);
+        $scope.loading = true;
+        DBService.postCall($scope.formData, '/api/canteen-items/store').then((data) => {
+            if (data.success) {
+                alert(data.message);
+                $("#exampleModalCenter").modal("hide");
+
+                $scope.formData = {
+                    item_name:'',
+                    item_short_name:'',
+                    price:'',
+                    barcodevalue:'',
+                };
+                $scope.init();
+            }else{
+                alert(data.message);
+            }
+            $scope.loading = false;
+        });
+    }
+
+    $scope.initStocks = function () {
+        $scope.filter.canteen_item_id = $scope.canteen_item_id;
+        console.log($scope.filter+'hello');
+        DBService.postCall($scope.filter, '/api/canteen-items/stocks/init').then((data) => {
+            $scope.item_stocks = data.item_stocks;
+        });
+    }
+
+    $scope.hideStockModal = () => {
+        $("#stockModal").modal("hide");
+        $scope.stockData = {
+            stock:'',
+        };
+        $scope.initStocks();
+    }
+
+    $scope.addStock = () => {
+        $("#stockModal").modal("show");
+        $scope.stockData = {
+            stock:'',
+        };
+    }
+
+    $scope.editStock = function(canteen_item_stock_id){
+        $scope.canteen_item_stock_id = canteen_item_stock_id;
+        DBService.postCall({canteen_item_stock_id : $scope.canteen_item_stock_id}, '/api/canteen-items/stocks/edit').then((data) => {
+            if (data.success) {
+                $scope.stockData = data.item_stock;
+                $("#stockModal").modal("show");
+            }
+        });
+    }
+
+    $scope.onStockSubmit = function () {
+        $scope.loading = true;
+        $scope.stockData.canteen_item_id = $scope.canteen_item_id;
+        DBService.postCall($scope.stockData, '/api/canteen-items/stocks/store').then((data) => {
+            if (data.success) {
+                alert(data.message);
+                $("#stockModal").modal("hide");
+
+                $scope.stockData = {
+                    stock:'',
+                };
+                $scope.initStocks();
+            }else{
+                alert(data.message);
+            }
+            $scope.loading = false;
+        });
+    }
+});
+
+app.controller('dailyEntryCtrlOld', function($scope , $http, $timeout , DBService) {
     $scope.loading = false;
     $scope.formData = {
         name:'',
@@ -2055,6 +2227,318 @@ app.controller('dailyEntryCtrl', function($scope , $http, $timeout , DBService) 
     // }
 
 });
+
+
+
+
+app.controller('dailyEntryCtrl', function($scope , $http, $timeout , DBService) {
+    $scope.loading = false;
+    $scope.formData = {
+        name:'',
+        mobile:'',
+        pay_type:'',
+        total_amount:0,
+        total_item:0,
+        products:[{demo:''}],
+    };
+
+    $scope.products = [];
+    $scope.product = {
+        canteen_item_id:0,
+        item_name:'',
+        quantity:1,
+    };
+
+    $scope.filter = {
+        page_no:1,
+    };
+    $scope.total_entries = 0;
+    $scope.total_pages = 1;
+    $scope.per_page = 100;
+    $scope.entry_id = 0;
+    $scope.daily_entries = [];
+    $scope.canteen_items = [];
+    $scope.productname = '';
+    $scope.scannedValue = '';
+
+    $scope.manualSearch = '';
+    $scope.manualSelectedItem = null;
+    $scope.manualQuantity = 1;
+    $scope.manualDropdownOpen = false;
+
+    $scope.selectConfig = {
+        valueField:'barcodevalue',
+        labelField:'item_name',
+        maxItems:1,
+        searchField:'item_name',
+        create:false,
+        onInitialize:function(selectize){}
+    };
+
+    $scope.setNull = () => {
+        $scope.entry_id = 0;
+        $scope.formData = {
+            name:'',
+            mobile:'',
+            pay_type:'',
+            total_amount:0,
+            total_item:0,
+            products:[{demo:''}],
+        };
+        $scope.products = [];
+        $scope.product = {
+            canteen_item_id:0,
+            item_name:'',
+            quantity:1,
+        };
+        $scope.productname = '';
+        $scope.scannedValue = '';
+        $scope.manualSearch = '';
+        $scope.manualSelectedItem = null;
+        $scope.manualQuantity = 1;
+        $scope.manualDropdownOpen = false;
+    };
+
+    $scope.init = function () {
+        DBService.postCall($scope.filter, '/api/daily-entries/init').then((data) => {
+            if(data.success){
+                $scope.daily_entries = data.daily_entries;
+                $scope.canteen_items = data.canteen_items;
+                $scope.total_entries = data.total_entries || 0;
+                $scope.total_pages = data.total_pages || 1;
+                $scope.filter.page_no = data.page_no || 1;
+                $scope.per_page = data.per_page || 100;
+            }
+        });
+    };
+
+    $scope.getData = function (page) {
+        var nextPage = ($scope.filter.page_no || 1) + page;
+
+        if(nextPage < 1 || nextPage > $scope.total_pages){
+            return;
+        }
+
+        $scope.filter.page_no = nextPage;
+        $scope.init();
+    };
+
+    $scope.searchData = function () {
+        $scope.filter.page_no = 1;
+        $scope.init();
+    };
+
+    $scope.filterClear = function(){
+        $scope.filter = {
+            page_no:1,
+        };
+        $scope.total_entries = 0;
+        $scope.total_pages = 1;
+        $scope.init();
+    };
+
+    $scope.edit = function(entry_id){
+        $scope.setNull();
+        $scope.entry_id = entry_id;
+        DBService.postCall({entry_id:$scope.entry_id}, '/api/daily-entries/edit-init').then((data) => {
+            if(data.success){
+                $scope.formData = data.s_entry;
+                $("#exampleModalCenter").modal("show");
+            }
+        });
+    };
+
+    $scope.hideModal = () => {
+        $("#exampleModalCenter").modal("hide");
+        $scope.entry_id = 0;
+        $scope.init();
+    };
+
+    $scope.add = () => {
+        $scope.setNull();
+        $timeout(function(){
+            $("#exampleModalCenter").modal("show");
+            $("#productname").focus();
+        },300);
+    };
+
+    $scope.calculateTotal = function(){
+        var total_amount = 0;
+        var total_item = 0;
+
+        for(var i = 0; i < $scope.products.length; i++){
+            var el = $scope.products[i];
+            total_amount += parseFloat(el.paid_amount) || 0;
+            total_item += parseInt(el.quantity) || 0;
+        }
+
+        $scope.formData.total_amount = Math.round(total_amount * 100) / 100;
+        $scope.formData.total_item = total_item;
+    };
+
+    $scope.addItemToBill = function(my_item, quantity){
+        if(!my_item){
+            alert("Item not found!");
+            return false;
+        }
+
+        quantity = quantity == null ? 1 : Number(quantity);
+
+        if(!Number.isInteger(quantity) || quantity < 1){
+            alert("Please enter a valid quantity");
+            return false;
+        }
+
+        var available_stock = parseInt(my_item.stock);
+        var added_quantity = 0;
+
+        for(var i = 0; i < $scope.products.length; i++){
+            if($scope.products[i].canteen_item_id == my_item.canteen_item_id){
+                added_quantity += parseInt($scope.products[i].quantity) || 0;
+            }
+        }
+
+        if(isNaN(available_stock) || available_stock < (added_quantity + quantity)){
+            alert("Insufficient stock for " + my_item.item_name + ". Available: " + Math.max(0, available_stock - added_quantity));
+            return false;
+        }
+
+        var item = angular.copy(my_item);
+        item.quantity = quantity;
+        item.paid_amount = Math.round((parseFloat(item.price) || 0) * quantity * 100) / 100;
+
+        $scope.products.push(item);
+        $scope.calculateTotal();
+
+        return true;
+    };
+
+    // Barcode scanner - existing flow
+    $scope.onAddProdcut = () => {
+        var barcode = ($scope.productname || '').toString().trim();
+
+        if(barcode == ''){
+            return;
+        }
+
+        var my_item = $scope.canteen_items.find(item => {
+            return item.barcodevalue != null && item.barcodevalue.toString() == barcode;
+        });
+
+        if($scope.addItemToBill(my_item,1)){
+            $scope.productname = '';
+            $scope.product = {
+                canteen_item_id:0,
+                item_name:'',
+                quantity:1,
+            };
+        }
+
+        $timeout(function(){
+            $("#productname").focus();
+        },0);
+    };
+
+    // Manual dropdown selection
+    $scope.selectManualItem = function(item, event){
+        if(event){
+            event.preventDefault();
+        }
+
+        $scope.manualSelectedItem = item;
+        $scope.manualSearch = item.item_name;
+        $scope.manualDropdownOpen = false;
+    };
+
+    $scope.closeManualDropdown = function(){
+        $timeout(function(){
+            $scope.manualDropdownOpen = false;
+        },150);
+    };
+
+    $scope.onManualSearchChange = function(){
+        $scope.manualSelectedItem = null;
+        $scope.manualDropdownOpen = true;
+    };
+
+    // Manual item with quantity
+    $scope.addManualItem = function(){
+        if(!$scope.manualSelectedItem){
+            alert("Please select an item from dropdown");
+            return;
+        }
+
+        if($scope.addItemToBill($scope.manualSelectedItem,$scope.manualQuantity)){
+            $scope.manualSelectedItem = null;
+            $scope.manualSearch = '';
+            $scope.manualQuantity = 1;
+            $scope.manualDropdownOpen = false;
+
+            $timeout(function(){
+                $("#productname").focus();
+            },0);
+        }
+    };
+
+    $scope.removeItem = (index) => {
+        $scope.products.splice(index,1);
+        $scope.calculateTotal();
+    };
+
+    $scope.handleKeyPress = function(event){
+        if(event.which === 13){
+            event.preventDefault();
+            $scope.onAddProdcut();
+            $scope.scannedValue = '';
+        }else{
+            $scope.scannedValue = ($scope.scannedValue || '') + event.key;
+        }
+    };
+
+    $scope.onSubmit = function () {
+        $scope.formData.products = $scope.products;
+
+        if($scope.products.length == 0){
+            alert("Please select at least one item.");
+            return;
+        }
+
+        if($scope.formData.pay_type == ''){
+            alert("Please select the pay type");
+            return;
+        }
+
+        if($scope.formData.total_amount == 0){
+            alert("Please select at least one item");
+            return;
+        }
+
+        $scope.loading = true;
+
+        DBService.postCall($scope.formData, '/api/daily-entries/store').then((data) => {
+            if(data.success){
+                alert(data.message);
+                $("#exampleModalCenter").modal("hide");
+                $scope.setNull();
+                $scope.filter.page_no = 1;
+                $scope.init();
+
+                setTimeout(function(){
+                    window.open(base_url+'/admin/daily-entries/print/'+data.entry_id,'_blank');
+                },800);
+            }else{
+                alert(data.message);
+            }
+            $scope.loading = false;
+        },() => {
+            $scope.loading = false;
+            alert("Unable to save bill. Please try again.");
+        });
+    };
+});
+
+
+
 
 app.controller('cloackPenltyCollectCtrl', function($scope , $http, $timeout , DBService) {
     $scope.loading = false;

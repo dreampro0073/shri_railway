@@ -473,7 +473,7 @@ class CloakRoomController extends Controller {
 		// }
 
 		$rate_list = DB::table("cloakroom_rate_list")->where("client_id", Auth::user()->client_id)->first();
-        $print_data = DB::table('cloakroom_entries')->where("client_id", Auth::user()->client_id)->where('barcodevalue', $print_id)->first();
+        $print_data = DB::table('cloakroom_entries')->select('cloakroom_entries.*','users.name as username')->leftJoin('users','users.id','=','cloakroom_entries.added_by')->where("client_id", Auth::user()->client_id)->where('cloakroom_entries.barcodevalue', $print_id)->first();
 
         $total_amount = $print_data->paid_amount;
 

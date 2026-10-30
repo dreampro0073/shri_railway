@@ -159,7 +159,7 @@
 			<span style="text-align:right;font-weight: bold;">Note: We are not responsible for keeping eatable items inside your bag. Rats can be destroy your food and bags</span>
 		</div>
 		<div style="margin-top:10px;text-align: right;">
-			Authorised Signatory : {{$print_data->username}}
+			Authorised Signatory : {{Auth::user()->name}}
 		</div>
 		<div style="margin-top:10px;text-align: right;">
 			Contact Us : {{Session::get('mobile')}}

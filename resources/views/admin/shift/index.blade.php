@@ -20,7 +20,7 @@
                 </div>
             </div>
           
-            @if(Auth::user()->priv == 2)
+            @if(Auth::user()->priv == 2 && !in_array(Auth::user()->client_id, [2, 3, 9]))
             <div class="row mb-3">
                 
                 <div class="col-md-3 form-group">

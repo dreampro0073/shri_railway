@@ -20,19 +20,20 @@
                 </div>
             </div>
           
-            @if(Auth::user()->priv == 2 && !in_array(Auth::user()->client_id, [2, 3, 9]))
+            @if(Auth::user()->priv == 2)
             <div class="row mb-3">
                 
                 <div class="col-md-3 form-group">
                     <input type="text" placeholder="DD-MM-YYYY" class="datepicker form-control" ng-model="filter.input_date">
-                </div>               
-                <div class="col-md-3 form-group" >
-                    <select ng-model="filter.user_id" class="form-select" convert-to-number>
-                        <option value="">Select</option>
-                        <option value="@{{user.id}}" ng-repeat="user in users">@{{user.name}}</option>
-                    </select>
-                    
-                </div>
+                </div>   
+                @if(!in_array(Auth::user()->client_id, [2, 3, 9]))
+                    <div class="col-md-3 form-group">
+                        <select ng-model="filter.user_id" class="form-select" convert-to-number>
+                            <option value="">Select</option>
+                            <option value="@{{user.id}}" ng-repeat="user in users">@{{user.name}}</option>
+                        </select>
+                    </div>
+                @endif
                 <div class="col-md-3">
                     <button ng-click="serach()" class="btn  btn-primary-600 gap-6 d-inline-flex">
                         <span class="d-flex text-md">

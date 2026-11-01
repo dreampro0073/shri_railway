@@ -304,13 +304,13 @@ class ClientSettingController extends Controller {
                 $client->total_shift_upi = isset($c_shift['total_shift_upi']) ? $c_shift['total_shift_upi'] : 0;
                 $client->total_shift_dues = isset($c_shift['total_shift_dues']) ? $c_shift['total_shift_dues'] : 0;
 
-                // if(Auth::user()->priv == 2){
-                //     $client->total_shift_cash = $client->total_shift_cash - $client->hide_amount;
+                if(Auth::user()->priv == 2){
+                    $client->total_shift_cash = $client->total_shift_cash - $client->hide_amount;
 
-                //     if($client->total_shift_cash < 0){
-                //         $client->total_shift_cash = 0;
-                //     }
-                // }
+                    if($client->total_shift_cash < 0){
+                        $client->total_shift_cash = 0;
+                    }
+                }
 
                 $client->total_collection = $client->total_shift_cash + $client->total_shift_upi;
 

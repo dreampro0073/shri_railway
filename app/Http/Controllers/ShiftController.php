@@ -82,29 +82,11 @@ class ShiftController extends Controller {
 	public function getStatus($request, $client_id, $service_ids){ 
 	    $input_date = isset($request['input_date']) ? $request['input_date'] : date("Y-m-d");
 
-	    // if(!in_array(Auth::user()->priv, [2,5])){
-	    //     $user_id = Auth::id();
-	    // } else{
-	    //     $user_id = isset($request['user_id']) ? $request['user_id'] : 0;
-	    // }
-
-	    $is_hide_amount_user = in_array(Auth::user()->priv, [2,5]);
-
-		$selected_user_id = isset($request['user_id'])
-		    ? $request['user_id']
-		    : 0;
-
-		if (!$is_hide_amount_user) {
-		    $user_id = Auth::id();
-		} else {
-		    // Priv 2 and 5: always calculate all users' data
-		    $user_id = 0;
-		}
-
-		// Hide amount will be fetched only once
-		$hide_amount_remaining = $is_hide_amount_user
-		    ? max(0, (float) Entry::hideAmount($client_id, $input_date))
-		    : 0;
+	    if(!in_array(Auth::user()->priv, [2,5])){
+	        $user_id = Auth::id();
+	    } else{
+	        $user_id = isset($request['user_id']) ? $request['user_id'] : 0;
+	    }
 	     
 	    $current_shift = Entry::checkShift();
 
@@ -192,25 +174,16 @@ class ShiftController extends Controller {
 		        $room_data[$room_type] = Room::totalShiftData($room_type,$input_date,$user_id,$client_id,false);
 		    }
 
-		    // if(in_array(Auth::user()->priv, [2,5])){
-		    //     $hide_amount = Entry::hideAmount($client_id,$input_date);
+		    if(in_array(Auth::user()->priv, [2,5])){
+		        $hide_amount = Entry::hideAmount($client_id,$input_date);
 
-		    //     foreach($allowed_types as $room_type){
-		    //         $deduction = min($room_data[$room_type]['total_shift_cash'],$hide_amount);
-		    //         $room_data[$room_type]['total_shift_cash'] -= $deduction;
-		    //         $hide_amount -= $deduction;
-		    //         $room_data[$room_type]['total_collection'] = $room_data[$room_type]['total_shift_upi'] + $room_data[$room_type]['total_shift_cash'];
-		    //     }
-		    // }
-
-		    if ($is_hide_amount_user) {
-			    foreach ($allowed_types as $room_type) {
-			        $room_data[$room_type] = $this->applyHideAmountToRow(
-			            $room_data[$room_type],
-			            $hide_amount_remaining
-			        );
-			    }
-			}
+		        foreach($allowed_types as $room_type){
+		            $deduction = min($room_data[$room_type]['total_shift_cash'],$hide_amount);
+		            $room_data[$room_type]['total_shift_cash'] -= $deduction;
+		            $hide_amount -= $deduction;
+		            $room_data[$room_type]['total_collection'] = $room_data[$room_type]['total_shift_upi'] + $room_data[$room_type]['total_shift_cash'];
+		        }
+		    }
 
 		    foreach($allowed_types as $room_type){
 		        $data = $this->calculateAmount($room_data[$room_type],$data);
@@ -219,21 +192,10 @@ class ShiftController extends Controller {
 		}
 
 	    if(in_array(9, $service_ids)){
-	        // $scanning_data = ScanningEntry::totalShiftData($input_date,$user_id,$client_id);
-	        // $data = $this->calculateAmount($scanning_data, $data);
-
-	        // $data_rows[] = $scanning_data;
-
 	        $scanning_data = ScanningEntry::totalShiftData($input_date,$user_id,$client_id);
+	        $data = $this->calculateAmount($scanning_data, $data);
 
-			if ($is_hide_amount_user) {
-			    $scanning_data = $this->applyHideAmountToRow(
-			        $scanning_data,
-			        $hide_amount_remaining
-			    );
-			}
-
-			$data = $this->calculateAmount($scanning_data, $data);
+	        $data_rows[] = $scanning_data;
 	    }
 
 	    if(in_array(10, $service_ids)){
@@ -248,27 +210,7 @@ class ShiftController extends Controller {
 	    return $data;
 	}
 	
-	private function applyHideAmountToRow($row, &$hide_amount_remaining)
-	{
-	    if ($hide_amount_remaining <= 0) {
-	        return $row;
-	    }
-
-	    $cash = max(0, (float) ($row['total_shift_cash'] ?? 0));
-
-	    $deduction = min($cash, $hide_amount_remaining);
-
-	    $row['total_shift_cash'] = $cash - $deduction;
-
-	    $row['total_collection'] = max(
-	        0,
-	        (float) ($row['total_collection'] ?? 0) - $deduction
-	    );
-
-	    $hide_amount_remaining -= $deduction;
-
-	    return $row;
-	}
+	
 
 	public function calculateAmount($total_data, $data){
 
@@ -306,51 +248,22 @@ class ShiftController extends Controller {
 		$data_rows =[];
 
 		if(in_array(1, $service_ids)){
-			// $sitting_data = Sitting::totalShiftData($input_date,$user_id,$client_id);
-			// $data = $this->calculateAmount($sitting_data, $data);
-
 			$sitting_data = Sitting::totalShiftData($input_date,$user_id,$client_id);
-
-			if ($is_hide_amount_user) {
-			    $sitting_data = $this->applyHideAmountToRow(
-			        $sitting_data,
-			        $hide_amount_remaining
-			    );
-			}
-
+			// $data['sitting_data'] = $sitting_data;
 			$data = $this->calculateAmount($sitting_data, $data);
-
-			// if($user_id && Auth::user()->priv == 2){
-			// 	$data['chage_pay_type_data'] = Sitting::getChangePayTypeLog($input_date, $user_id);
-			// }
-
-			if($selected_user_id && Auth::user()->priv == 2){
-			    $data['chage_pay_type_data'] = Sitting::getChangePayTypeLog(
-			        $input_date,
-			        $selected_user_id
-			    );
+			if($user_id && Auth::user()->priv == 2){
+				$data['chage_pay_type_data'] = Sitting::getChangePayTypeLog($input_date, $user_id);
 			}
 			
 			$data_rows[] = $sitting_data;
 		}
 
 		if(in_array(2, $service_ids)){
-			// $cloak_data = CloakRoom::totalShiftData($input_date,$user_id,$client_id);
-			// // $data['cloak_data'] = $cloak_data;
-			// $data = $this->calculateAmount($cloak_data, $data);
-
-			// $data_rows[] = $cloak_data;
-
 			$cloak_data = CloakRoom::totalShiftData($input_date,$user_id,$client_id);
-
-			if ($is_hide_amount_user) {
-			    $cloak_data = $this->applyHideAmountToRow(
-			        $cloak_data,
-			        $hide_amount_remaining
-			    );
-			}
-
+			// $data['cloak_data'] = $cloak_data;
 			$data = $this->calculateAmount($cloak_data, $data);
+
+			$data_rows[] = $cloak_data;
 		}
 		
 		if(in_array(3, $service_ids)){

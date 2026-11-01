@@ -174,14 +174,14 @@ class Sitting extends Model
             $last_hour_cash_total += DB::table('e_entries')->where('is_collected', '!=', 1)->where('client_id', $client_id)->where('added_by',$user_id)->where('date',$input_date)->where('pay_type',1)->whereBetween('created_at', [date('Y-m-d H:00:00'), date("Y-m-d H:i:s")])->sum("paid_amount"); 
         }
 
-        // if($apply_hide_amount && in_array(Auth::user()->priv, [2,5])){
-        //     $hide_amount = Entry::hideAmount($client_id, $input_date);
-        //     $total_shift_cash = $total_shift_cash - $hide_amount;
+        if($apply_hide_amount && in_array(Auth::user()->priv, [2,5])){
+            $hide_amount = Entry::hideAmount($client_id, $input_date);
+            $total_shift_cash = $total_shift_cash - $hide_amount;
 
-        //     if($total_shift_cash < 0){
-        //         $total_shift_cash = 0;
-        //     }
-        // }
+            if($total_shift_cash < 0){
+                $total_shift_cash = 0;
+            }
+        }
 
         $total_collection = $total_shift_upi + $total_shift_cash;
         $last_hour_total = $last_hour_upi_total + $last_hour_cash_total;
@@ -227,6 +227,8 @@ class Sitting extends Model
 
 
             $total_shift_upi += DB::table('e_entries')->where('is_collected', '!=', 1)->where('client_id', $client_id)->where('date',$input_date)->where('pay_type',2)->sum("paid_amount");
+
+
 
             $total_shift_cash = Sitting::where('client_id', $client_id)->where('date',$input_date)->where('pay_type',1)->sum("paid_amount");
 

@@ -93,14 +93,14 @@ class CloakRoom extends Model
             $last_hour_cash_total += DB::table('cloakroom_penalities')->where('is_collected','!=',1)->where('date',$input_date)->where('added_by',$user_id)->where("client_id",$client_id)->where('pay_type',1)->whereBetween('current_time',[$from_time,$to_time])->sum("paid_amount");
         }
 
-        if($apply_hide_amount && in_array(Auth::user()->priv, [2,5])){
-            $hide_amount = Entry::hideAmount($client_id,$input_date);
-            $total_shift_cash = $total_shift_cash - $hide_amount;
+        // if($apply_hide_amount && in_array(Auth::user()->priv, [2,5])){
+        //     $hide_amount = Entry::hideAmount($client_id,$input_date);
+        //     $total_shift_cash = $total_shift_cash - $hide_amount;
 
-            if($total_shift_cash < 0){
-                $total_shift_cash = 0;
-            }
-        }
+        //     if($total_shift_cash < 0){
+        //         $total_shift_cash = 0;
+        //     }
+        // }
 
         $total_collection = $total_shift_upi + $total_shift_cash;
         $last_hour_total = $last_hour_upi_total + $last_hour_cash_total;

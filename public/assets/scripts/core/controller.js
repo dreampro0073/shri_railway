@@ -3681,8 +3681,115 @@ app.controller('clientSettingCtrl', function($scope, $http, $timeout, DBService)
 
         });
     };
-
+    
     $scope.onSubmit = function(formValid) {
+
+        if (!formValid) {
+            return;
+        }
+
+        if ($scope.loading || $scope.processing) {
+            return;
+        }
+
+        var selectedDate = $scope.formatDate($scope.filter.hide_date);
+
+        if (!selectedDate) {
+            alert('Please select date.');
+            return;
+        }
+
+        var changedClients = [];
+
+        angular.forEach($scope.clients, function(client) {
+
+            var currentAmount = parseInt(client.hide_amount, 10);
+            var originalAmount = parseInt(client.original_hide_amount, 10);
+
+            if (isNaN(currentAmount)) {
+                currentAmount = 0;
+            }
+
+            if (isNaN(originalAmount)) {
+                originalAmount = 0;
+            }
+
+            if (currentAmount !== originalAmount) {
+
+                changedClients.push({
+                    id: client.id,
+                    hide_amount: currentAmount
+                });
+
+            }
+
+        });
+
+        if (changedClients.length === 0) {
+            alert('No changes found.');
+            return;
+        }
+
+        $scope.processing = true;
+
+        var submitDate = selectedDate;
+        var saveSuccess = false;
+
+        var params = {
+            clients: changedClients,
+            hide_date: submitDate
+        };
+
+        DBService.postCall(
+            params,
+            '/api/clients/store-amount-setting'
+        ).then(function(data) {
+
+            alert(data.message || 'Something Went Wrong');
+
+            if (data.success) {
+
+                saveSuccess = true;
+
+                // Update original values after successful save
+                angular.forEach(changedClients, function(changedClient) {
+
+                    angular.forEach($scope.clients, function(client) {
+
+                        if (Number(client.id) === Number(changedClient.id)) {
+
+                            client.original_hide_amount =
+                                changedClient.hide_amount;
+
+                        }
+
+                    });
+
+                });
+
+            }
+
+        }).catch(function() {
+
+            alert('Unable to save amount setting.');
+
+        }).finally(function() {
+
+            // First release processing lock
+            $scope.processing = false;
+
+            // Then refresh values from database
+            if (
+                saveSuccess &&
+                $scope.formatDate($scope.filter.hide_date) === submitDate
+            ) {
+                $scope.init();
+            }
+
+        });
+    };
+
+    $scope.onSubmitOld = function(formValid) {
 
         if (!formValid) {
             return;

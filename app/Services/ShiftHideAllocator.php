@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Services;
 
 use App\Models\Entry;
@@ -15,6 +16,7 @@ class ShiftHideAllocator
         $userId,
         $serviceIds
     ) {
+
         // Priv 3 staff: No hide amount
         if (
             !Auth::check() ||
@@ -23,19 +25,91 @@ class ShiftHideAllocator
             return $data;
         }
 
-        // Hide amount in whole rupees, stored as cents
-        // Example: Rs 1000 => 100000 cents
+        /*
+        |--------------------------------------------------------------------------
+        | FIX: Normalize date format
+        |--------------------------------------------------------------------------
+        | Example:
+        | 22-10-2026 => 2026-10-22
+        | 2026-10-22 => 2026-10-22
+        */
+
+        if ($date instanceof \DateTimeInterface) {
+
+            $date = $date->format('Y-m-d');
+
+        } else {
+
+            $date = trim((string) $date);
+
+            if (preg_match('/^\d{2}-\d{2}-\d{4}$/', $date)) {
+
+                $parsedDate = \DateTime::createFromFormat(
+                    '!d-m-Y',
+                    $date
+                );
+
+                if (
+                    !$parsedDate ||
+                    $parsedDate->format('d-m-Y') !== $date
+                ) {
+                    throw new \InvalidArgumentException(
+                        'Invalid shift date.'
+                    );
+                }
+
+                $date = $parsedDate->format('Y-m-d');
+
+            } elseif (preg_match('/^\d{4}-\d{2}-\d{2}$/', $date)) {
+
+                $parsedDate = \DateTime::createFromFormat(
+                    '!Y-m-d',
+                    $date
+                );
+
+                if (
+                    !$parsedDate ||
+                    $parsedDate->format('Y-m-d') !== $date
+                ) {
+                    throw new \InvalidArgumentException(
+                        'Invalid shift date.'
+                    );
+                }
+
+            } else {
+
+                throw new \InvalidArgumentException(
+                    'Invalid shift date format.'
+                );
+            }
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Hide amount calculation
+        |--------------------------------------------------------------------------
+        */
+
         $hideRupees = (int) round(
-            max(0, (float) Entry::hideAmount($clientId, $date))
+            max(
+                0,
+                (float) Entry::hideAmount($clientId, $date)
+            )
         );
 
+        // Convert rupees to cents
         $hideCents = $hideRupees * 100;
 
         if ($hideCents <= 0) {
             return $data;
         }
 
-        // Only these services are eligible
+        /*
+        |--------------------------------------------------------------------------
+        | Eligible services
+        |--------------------------------------------------------------------------
+        */
+
         $eligibleLabels = [
             'Sitting',
             'CloakRoom',
@@ -45,7 +119,12 @@ class ShiftHideAllocator
             'Scanning'
         ];
 
-        // Total eligible cash for selected report
+        /*
+        |--------------------------------------------------------------------------
+        | Calculate eligible cash
+        |--------------------------------------------------------------------------
+        */
+
         $eligibleRowsCashCents = 0;
 
         foreach ($rows as $row) {
@@ -57,6 +136,7 @@ class ShiftHideAllocator
                     true
                 )
             ) {
+
                 $eligibleRowsCashCents += (int) round(
                     max(
                         0,
@@ -70,7 +150,12 @@ class ShiftHideAllocator
             return $data;
         }
 
-        // All staff / overall report
+        /*
+        |--------------------------------------------------------------------------
+        | Overall report
+        |--------------------------------------------------------------------------
+        */
+
         if ((int) $userId === 0) {
 
             $deductionCents = min(
@@ -80,22 +165,17 @@ class ShiftHideAllocator
 
         } else {
 
-            // Staff-wise eligible cash
+            /*
+            |--------------------------------------------------------------------------
+            | Staff-wise cash calculation
+            |--------------------------------------------------------------------------
+            */
+
             $cashByStaff = self::cashByStaff(
                 $clientId,
                 $date,
                 $serviceIds
             );
-
-            \Log::info('SHIFT_HIDE_DEBUG', [
-			    'client_id' => $clientId,
-			    'date' => $date,
-			    'selected_user_id' => $userId,
-			    'logged_in_priv' => Auth::user()->priv,
-			    'hide_amount' => $hideRupees,
-			    'cash_by_staff' => $cashByStaff,
-			    'eligible_cash' => $eligibleRowsCashCents / 100
-			]);
 
             $totalCashCents = array_sum($cashByStaff);
 
@@ -103,16 +183,19 @@ class ShiftHideAllocator
                 return $data;
             }
 
-            // Never hide more than available cash
+            // Hide cannot exceed available cash
             $hideCents = min(
                 $hideCents,
                 $totalCashCents
             );
 
-            // Full rupees only
-            $hideWholeRupees = intdiv($hideCents, 100);
+            // Allocate only whole rupees
+            $hideWholeRupees = intdiv(
+                $hideCents,
+                100
+            );
 
-            // Consistent staff order
+            // Consistent staff ordering
             ksort($cashByStaff, SORT_NUMERIC);
 
             $previousCash = 0;
@@ -120,8 +203,6 @@ class ShiftHideAllocator
 
             foreach ($cashByStaff as $staffId => $cashCents) {
 
-                // Cumulative allocation ensures
-                // total matches exactly
                 $before = intdiv(
                     $hideWholeRupees * $previousCash,
                     $totalCashCents
@@ -136,8 +217,9 @@ class ShiftHideAllocator
 
                 if ((int) $staffId === (int) $userId) {
 
-                    // Whole-rupee hide allocation
-                    $deductionCents = ($after - $before) * 100;
+                    $deductionCents = (
+                        $after - $before
+                    ) * 100;
 
                     break;
                 }
@@ -150,7 +232,12 @@ class ShiftHideAllocator
             );
         }
 
-        // Apply allocated hide amount to eligible rows
+        /*
+        |--------------------------------------------------------------------------
+        | Apply deduction only on eligible services
+        |--------------------------------------------------------------------------
+        */
+
         foreach ($rows as &$row) {
 
             if ($deductionCents <= 0) {
@@ -181,17 +268,25 @@ class ShiftHideAllocator
 
             $deductAmount = $deduct / 100;
 
-            $row['total_shift_cash'] =
-                ($rowCashCents - $deduct) / 100;
+            // Update service cash
+            $row['total_shift_cash'] = (
+                $rowCashCents - $deduct
+            ) / 100;
 
+            // Update service collection
             $row['total_collection'] =
-                (float) $row['total_collection'] - $deductAmount;
+                (float) $row['total_collection']
+                - $deductAmount;
 
+            // Update grand cash
             $data['total_shift_cash'] =
-                (float) $data['total_shift_cash'] - $deductAmount;
+                (float) $data['total_shift_cash']
+                - $deductAmount;
 
+            // Update grand collection
             $data['total_collection'] =
-                (float) $data['total_collection'] - $deductAmount;
+                (float) $data['total_collection']
+                - $deductAmount;
 
             $deductionCents -= $deduct;
         }
@@ -201,15 +296,28 @@ class ShiftHideAllocator
         return $data;
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | Staff-wise cash collection
+    |--------------------------------------------------------------------------
+    */
+
     private static function cashByStaff(
         $clientId,
         $date,
         $serviceIds
     ) {
+
         $tables = [];
 
-        // Sitting
+        /*
+        |--------------------------------------------------------------------------
+        | Sitting
+        |--------------------------------------------------------------------------
+        */
+
         if (in_array(1, $serviceIds)) {
+
             $tables[] = [
                 'sitting_entries',
                 null,
@@ -223,8 +331,14 @@ class ShiftHideAllocator
             ];
         }
 
-        // Cloakroom
+        /*
+        |--------------------------------------------------------------------------
+        | Cloakroom
+        |--------------------------------------------------------------------------
+        */
+
         if (in_array(2, $serviceIds)) {
+
             $tables[] = [
                 'cloakroom_entries',
                 null,
@@ -238,7 +352,12 @@ class ShiftHideAllocator
             ];
         }
 
-        // Room
+        /*
+        |--------------------------------------------------------------------------
+        | Room
+        |--------------------------------------------------------------------------
+        */
+
         if (in_array(8, $serviceIds)) {
 
             $roomTypes = in_array(
@@ -259,14 +378,26 @@ class ShiftHideAllocator
             ];
         }
 
-        // Scanning
+        /*
+        |--------------------------------------------------------------------------
+        | Scanning
+        |--------------------------------------------------------------------------
+        */
+
         if (in_array(9, $serviceIds)) {
+
             $tables[] = [
                 'scanning_entries',
                 null,
                 null
             ];
         }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Get actual cash of each staff
+        |--------------------------------------------------------------------------
+        */
 
         $amounts = [];
 
@@ -282,16 +413,28 @@ class ShiftHideAllocator
                 ->where('pay_type', 1);
 
             if ($filter === 'is_collected') {
-                $query->where('is_collected', '!=', 1);
+
+                $query->where(
+                    'is_collected',
+                    '!=',
+                    1
+                );
             }
 
             if ($filter === 'type') {
-                $query->whereIn('type', $value);
+
+                $query->whereIn(
+                    'type',
+                    $value
+                );
             }
 
             if ($filter === 'room_extra') {
-                $query->whereIn('type', $value)
-                      ->where('status', 0);
+
+                $query->whereIn(
+                    'type',
+                    $value
+                )->where('status', 0);
             }
 
             $results = $query
@@ -306,8 +449,9 @@ class ShiftHideAllocator
                     (float) $result->cash * 100
                 );
 
-                $amounts[$id] =
-                    ($amounts[$id] ?? 0) + $cashCents;
+                $amounts[$id] = (
+                    $amounts[$id] ?? 0
+                ) + $cashCents;
             }
         }
 

@@ -87,6 +87,16 @@ class ShiftHideAllocator
                 $serviceIds
             );
 
+            \Log::info('SHIFT_HIDE_DEBUG', [
+			    'client_id' => $clientId,
+			    'date' => $date,
+			    'selected_user_id' => $userId,
+			    'logged_in_priv' => Auth::user()->priv,
+			    'hide_amount' => $hideRupees,
+			    'cash_by_staff' => $cashByStaff,
+			    'eligible_cash' => $eligibleRowsCashCents / 100
+			]);
+
             $totalCashCents = array_sum($cashByStaff);
 
             if ($totalCashCents <= 0) {

@@ -290,7 +290,7 @@ class Shift extends Model{
         $data_rows = [];
 
         if(in_array(1, $service_ids)){
-            $sitting_data = Sitting::totalShiftData($input_date,$user_id,$client_id);
+            $sitting_data = Sitting::totalShiftData($input_date,$user_id,$client_id,false);
             $data = Shift::calculateAmount($sitting_data, $data);
 
             if($user_id && Auth::user()->priv == 2){
@@ -301,7 +301,7 @@ class Shift extends Model{
         }
 
         if(in_array(2, $service_ids)){
-            $cloak_data = CloakRoom::totalShiftData($input_date,$user_id,$client_id);
+            $cloak_data = CloakRoom::totalShiftData($input_date,$user_id,$client_id,false);
             $data = Shift::calculateAmount($cloak_data, $data);
 
             $data_rows[] = $cloak_data;
@@ -350,38 +350,17 @@ class Shift extends Model{
         // }
 
         if(in_array(8, $service_ids)){
-            $pod_data = Room::totalShiftData(1,$input_date,$user_id,$client_id,false);
-            $singal_cabin_data = Room::totalShiftData(2,$input_date,$user_id,$client_id,false);
-            $double_bed_data = Room::totalShiftData(3,$input_date,$user_id,$client_id,false);
-
-            if(in_array(Auth::user()->priv, [2,5])){
-                $hide_amount = Entry::hideAmount($client_id,$input_date);
-
-                $deduction = min($pod_data['total_shift_cash'],$hide_amount);
-                $pod_data['total_shift_cash'] -= $deduction;
-                $hide_amount -= $deduction;
-
-                $deduction = min($singal_cabin_data['total_shift_cash'],$hide_amount);
-                $singal_cabin_data['total_shift_cash'] -= $deduction;
-                $hide_amount -= $deduction;
-
-                $deduction = min($double_bed_data['total_shift_cash'],$hide_amount);
-                $double_bed_data['total_shift_cash'] -= $deduction;
-                $hide_amount -= $deduction;
-
-                $pod_data['total_collection'] = $pod_data['total_shift_upi'] + $pod_data['total_shift_cash'];
-                $singal_cabin_data['total_collection'] = $singal_cabin_data['total_shift_upi'] + $singal_cabin_data['total_shift_cash'];
-                $double_bed_data['total_collection'] = $double_bed_data['total_shift_upi'] + $double_bed_data['total_shift_cash'];
+            $client_room_types = [18 => [1], 19 => [1]];
+            $allowed_types = $client_room_types[$client_id] ?? [1,2,3];
+            $room_data = [];
+            foreach ($allowed_types as $room_type) {
+                $room_data[$room_type] = Room::totalShiftData($room_type,$input_date,$user_id,$client_id,false);
             }
 
-            $data_rows[] = $pod_data;
-            $data = Shift::calculateAmount($pod_data,$data);
-
-            $data_rows[] = $singal_cabin_data;
-            $data = Shift::calculateAmount($singal_cabin_data,$data);
-
-            $data_rows[] = $double_bed_data;
-            $data = Shift::calculateAmount($double_bed_data,$data);
+            foreach ($allowed_types as $room_type) {
+                $data_rows[] = $room_data[$room_type];
+                $data = Shift::calculateAmount($room_data[$room_type], $data);
+            }
         }
 
         if(in_array(9, $service_ids)){
@@ -398,7 +377,7 @@ class Shift extends Model{
             $data = Shift::calculateAmount($rest_data, $data);
         } 
 
-        return $data;
+        return \App\Services\ShiftHideAllocator::apply($data, $data_rows, $client_id, $input_date, $user_id, $service_ids);
     }
 
     public static function getStatusOld($request=null, $client_id=0, $service_ids=[]){ 

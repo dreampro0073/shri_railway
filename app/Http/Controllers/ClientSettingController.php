@@ -15,8 +15,8 @@ use App\Models\Shift;
 
 class ClientSettingController extends Controller {
 
-	public function setAmount(Request $request){
-		$sidebar = 'set_amount';
+    public function setAmount(Request $request){
+        $sidebar = 'set_amount';
         $subsidebar = 'set_amount';
         return view('admin.clients.set_shift_status',[
             'sidebar'=>$sidebar,
@@ -297,20 +297,13 @@ class ClientSettingController extends Controller {
             $client->total_shift_upi = 0;
             $client->total_shift_dues = 0;
 
-            $c_shift = Shift::getStatus($request,$client->id,$service_ids);
+            $c_shift = Shift::getStatus($request->all(),$client->id,$service_ids);
 
             if($c_shift){
                 $client->total_shift_cash = isset($c_shift['total_shift_cash']) ? $c_shift['total_shift_cash'] : 0;
                 $client->total_shift_upi = isset($c_shift['total_shift_upi']) ? $c_shift['total_shift_upi'] : 0;
                 $client->total_shift_dues = isset($c_shift['total_shift_dues']) ? $c_shift['total_shift_dues'] : 0;
 
-                if(Auth::user()->priv == 2){
-                    $client->total_shift_cash = $client->total_shift_cash - $client->hide_amount;
-
-                    if($client->total_shift_cash < 0){
-                        $client->total_shift_cash = 0;
-                    }
-                }
 
                 $client->total_collection = $client->total_shift_cash + $client->total_shift_upi;
 

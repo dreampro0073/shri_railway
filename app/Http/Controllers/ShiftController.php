@@ -102,7 +102,7 @@ class ShiftController extends Controller {
 	    $data_rows =[];
 
 	    if(in_array(1, $service_ids)){
-	        $sitting_data = Sitting::totalShiftData($input_date,$user_id,$client_id);
+	        $sitting_data = Sitting::totalShiftData($input_date,$user_id,$client_id,false);
 	        $data = $this->calculateAmount($sitting_data, $data);
 
 	        if($user_id && Auth::user()->priv == 2){
@@ -113,7 +113,7 @@ class ShiftController extends Controller {
 	    }
 
 	    if(in_array(2, $service_ids)){
-	        $cloak_data = CloakRoom::totalShiftData($input_date,$user_id,$client_id);
+	        $cloak_data = CloakRoom::totalShiftData($input_date,$user_id,$client_id,false);
 	        $data = $this->calculateAmount($cloak_data, $data);
 
 	        $data_rows[] = $cloak_data;
@@ -174,17 +174,6 @@ class ShiftController extends Controller {
 		        $room_data[$room_type] = Room::totalShiftData($room_type,$input_date,$user_id,$client_id,false);
 		    }
 
-		    if(in_array(Auth::user()->priv, [2,5])){
-		        $hide_amount = Entry::hideAmount($client_id,$input_date);
-
-		        foreach($allowed_types as $room_type){
-		            $deduction = min($room_data[$room_type]['total_shift_cash'],$hide_amount);
-		            $room_data[$room_type]['total_shift_cash'] -= $deduction;
-		            $hide_amount -= $deduction;
-		            $room_data[$room_type]['total_collection'] = $room_data[$room_type]['total_shift_upi'] + $room_data[$room_type]['total_shift_cash'];
-		        }
-		    }
-
 		    foreach($allowed_types as $room_type){
 		        $data = $this->calculateAmount($room_data[$room_type],$data);
 		        $data_rows[] = $room_data[$room_type];
@@ -192,7 +181,7 @@ class ShiftController extends Controller {
 		}
 
 	    if(in_array(9, $service_ids)){
-	        $scanning_data = ScanningEntry::totalShiftData($input_date,$user_id,$client_id);
+	        $scanning_data = ScanningEntry::totalShiftData($input_date,$user_id,$client_id,false);
 	        $data = $this->calculateAmount($scanning_data, $data);
 
 	        $data_rows[] = $scanning_data;
@@ -205,6 +194,7 @@ class ShiftController extends Controller {
 	        $data_rows[] = $rest_data;
 	    } 
 
+	    $data = \App\Services\ShiftHideAllocator::apply($data, $data_rows, $client_id, $input_date, $user_id, $service_ids);
 	    $data['data_rows'] = $data_rows;
 	    
 	    return $data;

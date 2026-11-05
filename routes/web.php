@@ -50,6 +50,11 @@ Route::post('/login', [UserController::class,'postLogin']);
 Route::get('/user-manual',function(){
 	return view('front_end.user-manual');
 });
+Route::get('/user-manual-sitting',function(){
+	return view('front_end.user-manual-sitting');
+});
+
+
 Route::get('/error',function(){
 	return view('error');
 });

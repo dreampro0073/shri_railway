@@ -195,14 +195,13 @@ class ShiftHideAllocator
                 100
             );
 
-            // Consistent staff ordering
+            // Preserve original proportional allocation for each staff.
             ksort($cashByStaff, SORT_NUMERIC);
 
             $previousCash = 0;
-            $deductionCents = 0;
+            $staffDeductions = [];
 
             foreach ($cashByStaff as $staffId => $cashCents) {
-
                 $before = intdiv(
                     $hideWholeRupees * $previousCash,
                     $totalCashCents
@@ -215,15 +214,23 @@ class ShiftHideAllocator
                     $totalCashCents
                 );
 
-                if ((int) $staffId === (int) $userId) {
-
-                    $deductionCents = (
-                        $after - $before
-                    ) * 100;
-
-                    break;
-                }
+                $staffDeductions[$staffId] = ($after - $before) * 100;
             }
+
+            // Only round visible Sitting amounts, where totals permit.
+            // Room/Cloakroom/Scanning deductions retain their old treatment.
+            if (in_array(1, $serviceIds)) {
+                $staffDeductions = self::roundSittingStaffShares(
+                    $staffDeductions,
+                    $cashByStaff,
+                    $clientId,
+                    $date
+                );
+            }
+
+            $deductionCents = isset($staffDeductions[(int) $userId])
+                ? $staffDeductions[(int) $userId]
+                : 0;
 
             // Avoid negative cash
             $deductionCents = min(
@@ -294,6 +301,120 @@ class ShiftHideAllocator
         unset($row);
 
         return $data;
+    }
+
+    /**
+     * Adjust only the part of each staff's hide deduction which is consumed
+     * by Sitting. All staff deductions must still sum to the same hide amount.
+     * If the Sitting visible total cannot be split into multiples of Rs 10,
+     * leave the existing proportional calculation completely unchanged.
+     */
+    private static function roundSittingStaffShares(
+        $originalDeductions,
+        $cashByStaff,
+        $clientId,
+        $date
+    ) {
+        $sittingCash = [];
+
+        foreach (['sitting_entries', 'e_entries'] as $table) {
+            $query = DB::table($table)
+                ->select('added_by')
+                ->selectRaw('SUM(paid_amount) as cash')
+                ->where('client_id', $clientId)
+                ->where('date', $date)
+                ->where('pay_type', 1);
+
+            if ($table === 'e_entries') {
+                $query->where('is_collected', '!=', 1);
+            }
+
+            foreach ($query->groupBy('added_by')->get() as $item) {
+                $id = (int) $item->added_by;
+                $sittingCash[$id] = ($sittingCash[$id] ?? 0)
+                    + (int) round((float) $item->cash * 100);
+            }
+        }
+
+        $sittingDeductions = [];
+        $nonSittingDeductions = [];
+        $visibleSitting = [];
+        $totalVisible = 0;
+        $totalSittingDeduction = 0;
+
+        foreach ($originalDeductions as $staffId => $deduction) {
+            $cash = max(0, (int) ($sittingCash[$staffId] ?? 0));
+            $allCash = max(0, (int) ($cashByStaff[$staffId] ?? 0));
+
+            // Mismatch between service query and total query: do not alter.
+            if ($cash > $allCash || $deduction > $allCash) {
+                return $originalDeductions;
+            }
+
+            // Sitting comes first in the existing service deduction loop.
+            $sittingDeduction = min($deduction, $cash);
+            $sittingDeductions[$staffId] = $sittingDeduction;
+            $nonSittingDeductions[$staffId] = $deduction - $sittingDeduction;
+            $visibleSitting[$staffId] = $cash - $sittingDeduction;
+            $totalVisible += $visibleSitting[$staffId];
+            $totalSittingDeduction += $sittingDeduction;
+        }
+
+        // A sum like Rs 221 cannot be composed solely of Rs 10 multiples.
+        if ($totalVisible % 1000 !== 0) {
+            return $originalDeductions;
+        }
+
+        $targetUnits = intdiv($totalVisible, 1000);
+        $units = [];
+        $remainders = [];
+        $allocated = 0;
+
+        foreach ($visibleSitting as $staffId => $cents) {
+            $units[$staffId] = intdiv($cents, 1000);
+            $remainders[$staffId] = $cents % 1000;
+            $allocated += $units[$staffId];
+        }
+
+        $remaining = $targetUnits - $allocated;
+        arsort($remainders, SORT_NUMERIC);
+
+        // Largest-remainder allocation, respecting the staff's real cash.
+        foreach ($remainders as $staffId => $remainder) {
+            if ($remaining <= 0) {
+                break;
+            }
+
+            $nextVisible = ($units[$staffId] + 1) * 1000;
+            if ($nextVisible <= (int) ($sittingCash[$staffId] ?? 0)) {
+                $units[$staffId]++;
+                $remaining--;
+            }
+        }
+
+        if ($remaining !== 0) {
+            return $originalDeductions;
+        }
+
+        $updated = [];
+        foreach ($originalDeductions as $staffId => $deduction) {
+            $newSittingDeduction = (int) ($sittingCash[$staffId] ?? 0)
+                - ($units[$staffId] * 1000);
+
+            if ($newSittingDeduction < 0) {
+                return $originalDeductions;
+            }
+
+            $updated[$staffId] = $newSittingDeduction
+                + $nonSittingDeductions[$staffId];
+        }
+
+        // Exact reconciliation: never change the total hidden amount.
+        if (array_sum($updated) !== array_sum($originalDeductions)) {
+            return $originalDeductions;
+        }
+
+        return $updated;
     }
 
     /*

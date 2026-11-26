@@ -66,6 +66,7 @@ class Kernel extends HttpKernel
         'check.room' => \App\Http\Middleware\CheckRoom::class,
         'check.scanning' => \App\Http\Middleware\CheckScanning::class,
         'check.rest' => \App\Http\Middleware\CheckRest::class,
+        'offline.idempotent' => \App\Http\Middleware\OfflineSyncIdempotency::class,
         'check.gcanteen' => \App\Http\Middleware\CheckGCanteen::class,
         'portal' => \App\Http\Middleware\PortalUser::class,
         'admin' => \App\Http\Middleware\AdminUser::class,

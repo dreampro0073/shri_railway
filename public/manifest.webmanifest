@@ -1,0 +1,9 @@
+{
+  "name": "Aadhyasri Billing",
+  "short_name": "Aadhyasri",
+  "start_url": "./login",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff"
+}

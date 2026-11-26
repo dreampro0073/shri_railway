@@ -13,6 +13,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="manifest" href="{{url('manifest.webmanifest')}}">
 
     <title>Aadhyasri Web Solutions</title>
     
@@ -88,6 +89,18 @@
                             </a>
                          </li>
                          <li>
+                            <a href="{{url('/admin/offline-setup')}}" class="dropdown-item rounded text-secondary-light bg-hover-neutral-200 text-hover-neutral-900 d-flex align-items-center gap-2 py-6">
+                                <i class="ri-wifi-off-line"></i>
+                                Offline Setup
+                            </a>
+                         </li>
+                         <li>
+                            <a id="offlineSwitchLink" href="{{url('/login?offline=1')}}" class="dropdown-item rounded text-secondary-light bg-hover-neutral-200 text-hover-neutral-900 d-flex align-items-center gap-2 py-6">
+                                <i class="ri-user-switch-line"></i>
+                                Switch Offline Operator
+                            </a>
+                         </li>
+                         <li>
                             <a href="{{url('logout')}}" class="dropdown-item rounded text-secondary-light bg-hover-neutral-200 text-hover-neutral-900 d-flex align-items-center gap-2 py-6">
                                 <i class="ri-shut-down-line"></i>
                                 Log Out
@@ -103,6 +116,7 @@
         </div>
 
         <div class="dashboard-main-body">
+            <div id="offlineBillNotice" class="alert alert-warning" style="display:none;" role="status"></div>
             @yield('main')
         </div>
     </main>
@@ -116,6 +130,49 @@
         var auto_alert_status = "{{Session::get('auto_alert_status')}}";
         var authCheck = "{{Auth::user()->is_auto_alert_access}}";
         var api_key = "{{Auth::user()->api_token}}";
+        var auth_user_id = {{ (int) Auth::id() }};
+        try {
+            if (!navigator.onLine) {
+                window.aadhyaOfflineSession = JSON.parse(localStorage.getItem('aadhyaOfflineSession') || 'null');
+            }
+        } catch (e) {
+            window.aadhyaOfflineSession = null;
+        }
+        if (window.aadhyaOfflineSession) {
+            var offlineServiceRoutes = {
+                '/admin/sitting': 1,
+                '/admin/cloak-rooms': 2,
+                '/admin/daily-entries': 3,
+                '/admin/massage': 4,
+                '/admin/locker': 5,
+                '/admin/recliners': 7,
+                '/admin/rooms': 8,
+                '/admin/scanning': 9,
+                '/admin/rest': 10
+            };
+            var offlineAllowedServices = (window.aadhyaOfflineSession.service_ids || []).map(Number);
+            var offlineCurrentPath = window.location.pathname;
+            var offlineCurrentServiceRoute = Object.keys(offlineServiceRoutes).find(function (route) {
+                return offlineCurrentPath === route || offlineCurrentPath.indexOf(route + '/') === 0;
+            });
+            if (offlineCurrentServiceRoute && offlineAllowedServices.indexOf(offlineServiceRoutes[offlineCurrentServiceRoute]) === -1) {
+                window.location.replace(base_url + '/admin/dashboard');
+            }
+            document.querySelectorAll('#sidebar-menu a[href]').forEach(function (link) {
+                var linkPath = new URL(link.href, window.location.href).pathname;
+                var serviceRoute = Object.keys(offlineServiceRoutes).find(function (route) {
+                    return linkPath === route || linkPath.indexOf(route + '/') === 0;
+                });
+                if (serviceRoute && offlineAllowedServices.indexOf(offlineServiceRoutes[serviceRoute]) === -1) {
+                    var item = link.closest('li');
+                    if (item) item.style.display = 'none';
+                }
+                if (linkPath.indexOf('/admin/users') === 0 && Number(window.aadhyaOfflineSession.priv) !== 2) {
+                    var userItem = link.closest('li');
+                    if (userItem) userItem.style.display = 'none';
+                }
+            });
+        }
     </script>
 
     <!-- <script type="text/javascript" src="{{url('assets/scripts/jquery.min.js')}}"></script>
@@ -146,6 +203,54 @@
 
     <script>
       angular.module("app").constant("CSRF_TOKEN", "{{ csrf_token() }}");
+    </script>
+    <script>
+      if ('serviceWorker' in navigator && window.isSecureContext) {
+        navigator.serviceWorker.register("{{url('service-worker.js')}}").catch(function () {});
+      }
+      (function () {
+        var offlineSwitchLink = document.getElementById('offlineSwitchLink');
+        function updateOfflineSwitchLink() {
+          if (offlineSwitchLink) offlineSwitchLink.style.display = navigator.onLine ? 'none' : '';
+        }
+        updateOfflineSwitchLink();
+        window.addEventListener('online', function () {
+          window.aadhyaOfflineSession = null;
+          localStorage.removeItem('aadhyaOfflineSession');
+          localStorage.removeItem('aadhyaOfflineLoginActive');
+          updateOfflineSwitchLink();
+        });
+        window.addEventListener('offline', updateOfflineSwitchLink);
+        function refreshOfflineBillNotice() {
+          if (!window.indexedDB) return;
+          var request = indexedDB.open('aadhyaOfflineBilling', 2);
+          request.onsuccess = function () {
+            var db = request.result;
+            if (!db.objectStoreNames.contains('bill_queue')) { db.close(); return; }
+            var tx = db.transaction('bill_queue', 'readonly');
+            var read = tx.objectStore('bill_queue').getAll();
+            read.onsuccess = function () {
+              var bills = read.result || [];
+              var pending = bills.filter(function (bill) { return bill.status === 'pending'; }).length;
+              var review = bills.filter(function (bill) { return bill.status === 'needs_review'; }).length;
+              var notice = document.getElementById('offlineBillNotice');
+              if (pending || review) {
+                notice.style.display = 'block';
+                notice.className = 'alert ' + (review ? 'alert-danger' : 'alert-warning');
+                notice.textContent = pending + ' offline bill(s) waiting to sync.' + (review ? ' ' + review + ' bill(s) need review: open Offline Setup on this PC.' : '');
+              } else {
+                notice.style.display = 'none';
+              }
+              db.close();
+            };
+            read.onerror = function () { db.close(); };
+          };
+        }
+        window.addEventListener('aadhya-offline-bill-queued', refreshOfflineBillNotice);
+        window.addEventListener('aadhya-offline-bill-synced', refreshOfflineBillNotice);
+        window.addEventListener('online', function () { setTimeout(refreshOfflineBillNotice, 1000); });
+        setTimeout(refreshOfflineBillNotice, 1000);
+      })();
     </script>
 </body>
 </html>

@@ -777,6 +777,10 @@ class ApiController extends Controller {
                         throw new \Exception('Canteen item not found.');
                     }
 
+                    if($request->header('X-Offline-Id') && isset($item['price']) && round((float) $item['price'], 2) != round((float) $check->price, 2)){
+                        throw new \Exception('Price changed for '.$check->item_name.'. This offline bill needs review before it can sync.');
+                    }
+
                     if($check->stock < $item['quantity']){
                         throw new \Exception('Insufficient stock for '.$check->item_name.'. Available stock: '.$check->stock);
                     }

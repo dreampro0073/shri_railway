@@ -27,6 +27,7 @@ use App\Http\Controllers\RestController;
 use App\Http\Controllers\GodownCanteenController;
 use App\Http\Controllers\WebcamController;
 use App\Http\Controllers\WebController;
+use App\Http\Controllers\OfflineSetupController;
 
 
 /*
@@ -145,6 +146,7 @@ Route::group(['middleware'=>'auth'],function(){
 	});
 
 	Route::group(['prefix'=>"admin"], function(){
+		Route::get('/offline-setup',[OfflineSetupController::class,'index']);
 		// Route::get('total-amount', function () {
 
 		//     $sum = DB::table('cloakroom_entries')
@@ -355,6 +357,7 @@ Route::get('view-scanning/{print_id}',[ScanningController::class,'viewScanning']
 // Route::get('send-otp',[RoomController::class,'sendOtp']);
 
 Route::group(['prefix'=>"api"], function(){	
+	Route::post('/offline-setup',[OfflineSetupController::class,'registerDevice']);
 	Route::post('/set-checkout-alert',[UserController::class,'setCheckoutAlert']);
 	Route::group(['prefix'=>"shift"], function(){
 		Route::post('/init',[ShiftController::class,'init']);
@@ -370,10 +373,10 @@ Route::group(['prefix'=>"api"], function(){
 	Route::group(['prefix'=>"sitting"], function(){
 		Route::post('/init',[SittingController::class,'initEntries']);
 		Route::post('/edit-init',[SittingController::class,'editEntry']);
-		Route::post('/store',[SittingController::class,'store']);
+		Route::post('/store',[SittingController::class,'store'])->middleware('offline.idempotent');
 		Route::post('/cal-check',[SittingController::class,'calCheck']);
 		// Route::post('/checkout-init/{type}',[SittingController::class,'checkoutInit']);	
-		Route::post('/checkout-store',[SittingController::class,'checkoutStore']);
+		Route::post('/checkout-store',[SittingController::class,'checkoutStore'])->middleware('offline.idempotent');
 		Route::post('/checkout-new/{type}',[SittingController::class,'newCheckout']);
 		Route::post('/checkout-alert',[SittingController::class,'checkoutAlert']);
 			
@@ -382,20 +385,20 @@ Route::group(['prefix'=>"api"], function(){
 	Route::group(['prefix'=>"recliners"], function(){
 		Route::post('/init',[ReclinerController::class,'initEntries']);
 		Route::post('/edit-init',[ReclinerController::class,'editEntry']);
-		Route::post('/store',[ReclinerController::class,'store']);
+		Route::post('/store',[ReclinerController::class,'store'])->middleware('offline.idempotent');
 		Route::post('/cal-check',[ReclinerController::class,'calCheck']);
 		Route::post('/checkout-init/{type}',[ReclinerController::class,'checkoutInit']);	
-		Route::post('/checkout-store',[ReclinerController::class,'checkoutStore']);
+		Route::post('/checkout-store',[ReclinerController::class,'checkoutStore'])->middleware('offline.idempotent');
 		Route::post('/checkout-new/{type}',[ReclinerController::class,'newCheckout']);
 	});
 
 	Route::group(['prefix'=>"cloak-rooms"], function(){
 		Route::post('/init/{type}',[CloakRoomController::class,'initRoom']);
 		Route::post('/edit-init',[CloakRoomController::class,'editRoom']);
-		Route::post('/store',[CloakRoomController::class,'store']);
+		Route::post('/store',[CloakRoomController::class,'store'])->middleware('offline.idempotent');
 		Route::post('/cal-check',[CloakRoomController::class,'calCheck']);
 		Route::post('/checkout-init/{type}',[CloakRoomController::class,'checkoutInit']);
-		Route::post('/checkout-store',[CloakRoomController::class,'checkoutStore']);
+		Route::post('/checkout-store',[CloakRoomController::class,'checkoutStore'])->middleware('offline.idempotent');
 		Route::get('/delete/{id}',[CloakRoomController::class,'delete']);
 
 
@@ -416,7 +419,7 @@ Route::group(['prefix'=>"api"], function(){
 	Route::group(['prefix'=>"daily-entries"], function(){
 		Route::post('/init',[ApiController::class,'initEntries']);
 		Route::post('/edit-init',[ApiController::class,'editEntry']);
-		Route::post('/store',[ApiController::class,'store']);
+		Route::post('/store',[ApiController::class,'store'])->middleware('offline.idempotent');
 	});
 
 	Route::group(['prefix'=>"canteen-items"], function(){
@@ -464,17 +467,17 @@ Route::group(['prefix'=>"api"], function(){
 	Route::group(['prefix'=>"massage"], function(){
 		Route::post('/init',[MassageController::class,'initMassage']);
 		Route::post('/edit-init',[MassageController::class,'editMassage']);
-		Route::post('/store',[MassageController::class,'store']);
+		Route::post('/store',[MassageController::class,'store'])->middleware('offline.idempotent');
 		Route::get('/delete/{id}',[MassageController::class,'delete']);
 
 	});
 	Route::group(['prefix'=>"locker"], function(){
 		Route::post('/init',[LockerController::class,'initLocker']);
 		Route::post('/edit-init',[LockerController::class,'editLocker']);
-		Route::post('/store',[LockerController::class,'store']);
+		Route::post('/store',[LockerController::class,'store'])->middleware('offline.idempotent');
 		Route::post('/cal-check',[LockerController::class,'calCheck']);
 		Route::post('/checkout-init',[LockerController::class,'checkoutInit']);
-		Route::post('/checkout-store',[LockerController::class,'checkoutStore']);
+		Route::post('/checkout-store',[LockerController::class,'checkoutStore'])->middleware('offline.idempotent');
 		Route::get('/delete/{id}',[LockerController::class,'delete']);
 	});
 	
@@ -511,10 +514,10 @@ Route::group(['prefix'=>"api"], function(){
 		Route::post('/init-all',[RoomController::class,'initAllEntry']);
 		Route::post('/edit-init',[RoomController::class,'editEntry']);
 		Route::post('/check-init',[RoomController::class,'checkInit']);
-		Route::post('/store/{type}',[RoomController::class,'store']);
+		Route::post('/store/{type}',[RoomController::class,'store'])->middleware('offline.idempotent');
 		Route::post('/cal-check',[RoomController::class,'calCheck']);
 		Route::post('/checkout-init',[RoomController::class,'checkoutInit']);
-		Route::post('/checkout-store',[RoomController::class,'checkoutStore']);
+		Route::post('/checkout-store',[RoomController::class,'checkoutStore'])->middleware('offline.idempotent');
 		Route::get('/delete/{id}',[RoomController::class,'delete']);
 		Route::post('/init-single-entry',[RoomController::class,'initSingleEntry']);
 		Route::get('/delete-e-entry/{entry_id}/{e_entry_id}',[RoomController::class,'deleteEnEntry']);
@@ -535,12 +538,12 @@ Route::group(['prefix'=>"api"], function(){
 
 	Route::group(['prefix'=>"scanning"], function(){
 		Route::post('/init',[ScanningController::class,'init']);
-		Route::post('/store',[ScanningController::class,'store']);
+		Route::post('/store',[ScanningController::class,'store'])->middleware('offline.idempotent');
 	});
 	
 	Route::group(['prefix'=>"rest"], function(){
 		Route::post('/init',[RestController::class,'init']);
-		Route::post('/store',[RestController::class,'store']);
+		Route::post('/store',[RestController::class,'store'])->middleware('offline.idempotent');
 	});
 	Route::group(['prefix'=>"superAdmin"], function(){
 		Route::post('/get-clients',[SuperAdminController::class,'getClients']);
